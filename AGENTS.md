@@ -44,8 +44,8 @@ Sprint cards are GitHub issues labelled `sprint`. Their labels say what can happ
 How the rules are enforced:
 
 - [CODEOWNERS](.github/CODEOWNERS) requires @tjbanks's review for everything except `data/claims/`, `data/homology/` and `data/sources/`.
-- The `main` ruleset requires a pull request and a passing `checks` job.
-- Until a second maintainer joins, the maintainer (a human, never an agent acting through the maintainer's login) merges their own pull requests with the admin bypass.
+- The `main` ruleset requires a pull request and code-owner review. The `main-ci` ruleset requires a passing `checks` job and blocks force pushes and deletion; nobody can bypass it.
+- Until a second maintainer joins, the maintainer (a human, never an agent acting through the maintainer's login) merges their own pull requests with the admin bypass, which skips code-owner review but never CI.
 
 ## Roles
 
