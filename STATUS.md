@@ -1,0 +1,59 @@
+# Status
+
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 2 October 2026.
+
+## Phase
+
+Phase 0, Foundations: in progress. Gate 0 passes when a full rebuild from empty passes, the gold set is frozen and the eval harness runs.
+
+## Sprints
+
+Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/axonarium/issues?q=is%3Aissue%20label%3Asprint).
+
+| Sprint | State |
+| --- | --- |
+| 0.1 Repo scaffold | Done |
+| 0.2 Schema v0.1 in LinkML | Ready for an agent |
+| 1.1 License audit | Ready for an agent |
+| C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
+| 0.3–0.6 and 1.2–1.6 | Blocked on earlier sprints |
+
+Later phases get cards when they start.
+
+## Decided
+
+- v1 scope: rat and mouse amygdala at region and neuron-type level, with human homology, SONATA export and a resource paper.
+- Stack: GitHub as the source of truth, then Supabase, then Next.js on Vercel, with shadcn/ui, React Three Fiber and react-force-graph, plus an MCP server for agents.
+- The nine design principles in [docs/plan.md](docs/plan.md), including "adopt, don't invent".
+- Community input: identifier-only evidence for or against a claim, with an allowlist and three defensive layers.
+- Name: Axonarium ([ADR 0003](docs/decisions/0003-project-name.md)). Licences: Apache-2.0 for code and CC BY 4.0 for data ([ADR 0002](docs/decisions/0002-licensing.md)).
+
+## Waiting on the maintainer
+
+- [ ] Gold-set curation: the maintainer alone, or with a second curator?
+- [ ] Whether visitors can suggest papers that have no matching claim yet.
+- [ ] The remaining open decisions in [docs/plan.md](docs/plan.md), Part 1.
+- [ ] A trademark search before announcing.
+- [ ] Auto-renew for axonarium.org, which expires 2027-10-02.
+- [ ] Requiring 2FA in the GitHub organization.
+- [ ] A second organization owner.
+- [ ] Claiming the PyPI project name.
+- [ ] Pointing the domains at the repo with 302 redirects until the site exists.
+
+## Setup
+
+From plan Part 3.5:
+
+| Step | State |
+| --- | --- |
+| Project email alias | Done: admin@axonarium.com |
+| Domains | Done: axonarium.com and axonarium.org |
+| GitHub organization and repo | Done; a second owner is needed |
+| Vercel | Not started; needed for sprint 3.3 |
+| Supabase | Not started; needed for the live API in Phase 3 |
+| LLM API key with a spending cap | Not started; needed for sprint 0.6 |
+| PyPI and npm | npm scope held; PyPI project name unclaimed |
+
+## Metrics
+
+None yet.
