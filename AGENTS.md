@@ -45,7 +45,7 @@ How the rules are enforced:
 
 - [CODEOWNERS](.github/CODEOWNERS) requires @tjbanks's review for everything except `data/claims/`, `data/homology/` and `data/sources/`.
 - The `main` ruleset requires a pull request and a passing `checks` job.
-- Until a second maintainer joins, the maintainer merges their own pull requests with the admin bypass.
+- Until a second maintainer joins, the maintainer (a human, never an agent acting through the maintainer's login) merges their own pull requests with the admin bypass.
 
 ## Roles
 
@@ -65,6 +65,7 @@ Role prompts will live in `agents/roles/`.
 ## Ground rules
 
 - **Adopt, don't invent.** Check "Proven building blocks" in [docs/plan.md](docs/plan.md) first. A new dependency or a replacement needs an ADR and human review.
+- **Agents never merge.** Agents never merge or approve pull requests, and never use the admin bypass (`gh pr merge --admin`), even when they act through a maintainer's login. A human merges, or tells the agent to.
 - **Files are the truth.** Agents never write to a database directly.
 - **Provenance.** Fill in the provenance fields of the pull request template.
 - **Human-only paths.** The gold set and evals, the allowlist, CODEOWNERS, licences and governance files change only when a sprint card says so, and always with human review.

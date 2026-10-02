@@ -62,7 +62,7 @@ body:
     id: who
     attributes:
       label: Who
-      description: Whether a human gate applies.
+      description: Who does the work, and whether a human reviews the result. Either way, the merge rules in AGENTS.md decide who merges.
       options:
         - Agent
         - Agent + review
