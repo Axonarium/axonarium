@@ -9,3 +9,8 @@ SPDX-License-Identifier = "Apache-2.0"
 path = "data/**"
 SPDX-FileCopyrightText = "2026 The Axonarium contributors"
 SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = "CODE_OF_CONDUCT.md"
+SPDX-FileCopyrightText = ["Organization for Ethical Source", "2026 The Axonarium contributors"]
+SPDX-License-Identifier = "CC-BY-SA-4.0"
