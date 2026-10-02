@@ -14,3 +14,8 @@ SPDX-License-Identifier = "CC-BY-4.0"
 path = "CODE_OF_CONDUCT.md"
 SPDX-FileCopyrightText = ["Organization for Ethical Source", "2026 The Axonarium contributors"]
 SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = "docs/decisions/adr-template.md"
+SPDX-FileCopyrightText = "MADR contributors"
+SPDX-License-Identifier = "CC0-1.0"
