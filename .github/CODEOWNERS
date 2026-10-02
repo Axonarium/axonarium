@@ -1,0 +1,11 @@
+# Code owners must approve pull requests that change the paths they own.
+# See AGENTS.md, "Merge rules". The last matching pattern wins.
+
+# Everything needs the maintainer by default: code, schema, CI, evals,
+# the gold set, the allowlist and docs.
+*                @tjbanks
+
+# Claim data merges on green CI under the merge rules, so it has no owner.
+/data/claims/
+/data/homology/
+/data/sources/
