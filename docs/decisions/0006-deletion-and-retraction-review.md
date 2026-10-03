@@ -23,10 +23,10 @@ Chosen option: "a retractions log", because it puts every such pull request on a
 The `checks changes` step in the required CI job fails when:
 
 * a claim is deleted without a new `deleted` entry;
-* a claim's status becomes `retracted` without a new `retracted` entry;
+* a claim's status becomes `retracted` without a new `retracted` entry, or stops being `retracted` without a new `restored` entry;
 * existing entries are edited, reordered or removed.
 
-Moving a claim file isn't a deletion.
+Changes are judged by claim ID against the point where the branch left the base, so moving a claim file isn't a deletion, and a claim replaced by a symbolic link is.
 
 ### Consequences
 

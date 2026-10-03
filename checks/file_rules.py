@@ -71,7 +71,9 @@ def _measurements(record: Record) -> list[tuple[int, dict]]:
 
 
 def _finite(value) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    if isinstance(value, bool):
+        return False
+    return isinstance(value, int) or (isinstance(value, float) and math.isfinite(value))
 
 
 def _extra_mapping(record: Record) -> list[Finding]:
@@ -186,9 +188,13 @@ def _neuron_type_region(record: Record) -> list[Finding]:
     return []
 
 
-RULES = [_schema, _file_name, _extra_mapping, _extra_key, _empty_text, _non_finite, _uncertainty, _unit,
-         _absent_result, _role, _independent_verifier, _doi_case, _homology_pair, _neuron_type_region]
+# These assume the record's types are right, so they run only once the schema check passes.
+SEMANTIC_RULES = [_extra_mapping, _extra_key, _empty_text, _non_finite, _uncertainty, _unit, _absent_result,
+                  _role, _independent_verifier, _doi_case, _homology_pair, _neuron_type_region]
 
 
 def check_file(record: Record) -> list[Finding]:
-    return [finding for rule in RULES for finding in rule(record)]
+    findings = _schema(record) + _file_name(record)
+    if any(f.rule == "schema" for f in findings):
+        return findings
+    return findings + [finding for rule in SEMANTIC_RULES for finding in rule(record)]

@@ -43,3 +43,34 @@ def test_broken_fixture_reports_its_rule(valid_tree, fixture):
     overlay(valid_tree, fixture)
     findings = run_files(valid_tree)
     assert {f.rule for f in findings} == {fixture.name}, [str(f) for f in findings]
+
+
+ODD_INPUTS = {
+    "unhashable-key": (b"? [a, b]\n: 1\nid: clm-pq22bk4dtz\n", {"yaml-error"}),
+    "not-utf8": (b"id: clm-pq22bk4dtz\nparaphrase: \xff\xfe\n", {"yaml-error"}),
+    "recursive-alias": (b"id: clm-pq22bk4dtz\nextra: &a {x.y: *a}\n", {"yaml-error"}),
+    "any-alias": (b"id: &i clm-pq22bk4dtz\nalso: *i\n", {"yaml-error"}),
+    "list-quantity": (None, {"schema"}),
+    "huge-int": (None, {"unit"}),
+    "list-atlas": (None, {"schema"}),
+}
+
+
+@pytest.mark.parametrize("case", sorted(ODD_INPUTS))
+def test_odd_input_is_reported_not_raised(valid_tree, case):
+    raw, expected = ODD_INPUTS[case]
+    path = valid_tree / "claims" / "examples" / "clm-pq22bk4dtz.yaml"
+    if raw is not None:
+        path.write_bytes(raw)
+    else:
+        text = path.read_text()
+        text = {"list-quantity": text.replace("quantity: projection_density", "quantity: [projection_density]"),
+                "huge-int": text.replace("value: 0.12", "value: " + "9" * 400),
+                "list-atlas": text.replace("  atlas: allen-mouse-ccf-2017\npredicate", "  atlas: [allen-mouse-ccf-2017]\npredicate")}[case]
+        path.write_text(text, encoding="utf-8")
+    assert {f.rule for f in run_files(valid_tree)} == expected
+
+
+def test_symlinks_are_reported(valid_tree):
+    (valid_tree / "claims" / "examples" / "link.yaml").symlink_to("/nonexistent/clm.yaml")
+    assert {f.rule for f in run_files(valid_tree)} == {"symlink"}

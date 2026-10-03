@@ -34,8 +34,9 @@ def check_tree(records: list[Record]) -> list[Finding]:
             others = ", ".join(str(r.path) for r in holders)
             findings += [Finding(str(r.path), "duplicate-id", f"ID {record_id} is also used by: {others}") for r in holders]
 
-    neuron_types = {r.data.get("id") for r in records if r.cls == "NeuronType"}
-    atlas_species = {r.data.get("id"): r.data.get("species") for r in records if r.cls == "Atlas"}
+    ids_of = lambda cls: [r for r in records if r.cls == cls and isinstance(r.data.get("id"), str)]
+    neuron_types = {r.data["id"] for r in ids_of("NeuronType")}
+    atlas_species = {r.data["id"]: r.data.get("species") for r in ids_of("Atlas")}
 
     for record in records:
         atlases = [r.get("atlas") for r, _ in _refs(record)]
@@ -48,8 +49,8 @@ def check_tree(records: list[Record]) -> list[Finding]:
             ref_id = ref.get("id")
             if isinstance(ref_id, str) and ref_id.startswith("nt-") and ref_id not in neuron_types:
                 findings.append(Finding(str(record.path), "unknown-reference", f"neuron type {ref_id} has no record in entities/neuron_types/"))
-            atlas = ref.get("atlas")
-            if record.cls in CLAIMS and species and atlas in atlas_species and atlas_species[atlas] != species:
+            atlas = ref.get("atlas") if isinstance(ref.get("atlas"), str) else None
+            if record.cls in CLAIMS and isinstance(species, str) and atlas in atlas_species and atlas_species[atlas] != species:
                 findings.append(Finding(str(record.path), "atlas-species",
                                         f"{ref_id} is in {atlas} ({atlas_species[atlas]}), but this side of the claim is {species}"))
     return findings

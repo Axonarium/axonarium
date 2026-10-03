@@ -1179,7 +1179,8 @@
             "description": "What happened to a claim in the retractions log.",
             "enum": [
                 "deleted",
-                "retracted"
+                "retracted",
+                "restored"
             ],
             "title": "RetractionAction",
             "type": "string"
@@ -1190,7 +1191,7 @@
             "properties": {
                 "action": {
                     "$ref": "#/$defs/RetractionAction",
-                    "description": "Whether the claim was deleted or retracted."
+                    "description": "Whether the claim was deleted, retracted or restored."
                 },
                 "claim": {
                     "description": "The ID of the deleted or retracted claim.",

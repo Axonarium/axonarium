@@ -12,7 +12,7 @@ CREATE TYPE "Role" AS ENUM ('curator', 'ingester', 'extractor', 'verifier', 'rec
 CREATE TYPE "Verdict" AS ENUM ('agree', 'disagree', 'unsure');
 CREATE TYPE "QuantityKind" AS ENUM ('connection_probability', 'synapse_count', 'conduction_delay', 'projection_density', 'fraction_of_labelled_neurons');
 CREATE TYPE "Transmitter" AS ENUM ('glutamate', 'gaba', 'acetylcholine', 'dopamine', 'serotonin', 'noradrenaline', 'neuropeptide', 'unknown');
-CREATE TYPE "RetractionAction" AS ENUM ('deleted', 'retracted');
+CREATE TYPE "RetractionAction" AS ENUM ('deleted', 'retracted', 'restored');
 CREATE TYPE "HomologyBasis" AS ENUM ('connectivity', 'gene_expression', 'cytoarchitecture', 'development', 'function', 'expert_assertion');
 
 CREATE TABLE "Any" (
@@ -272,7 +272,7 @@ CREATE TABLE "RetractionEntry" (
 );
 COMMENT ON TABLE "RetractionEntry" IS 'One deleted or retracted claim, and why.';
 COMMENT ON COLUMN "RetractionEntry".claim IS 'The ID of the deleted or retracted claim.';
-COMMENT ON COLUMN "RetractionEntry".action IS 'Whether the claim was deleted or retracted.';
+COMMENT ON COLUMN "RetractionEntry".action IS 'Whether the claim was deleted, retracted or restored.';
 COMMENT ON COLUMN "RetractionEntry".reason IS 'Why, in a sentence or two.';
 COMMENT ON COLUMN "RetractionEntry"."RetractionLog_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "RetractionEntry".curation_id IS 'Who drafted or curated the claim.';

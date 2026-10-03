@@ -29,14 +29,15 @@ Run these before pushing a change to this folder; pre-commit and CI run them too
 
 ```bash
 uv run python -m checks files                       # every file here
-uv run python -m checks changes --base origin/main  # what your branch changes
+uv run python -m checks changes --base origin/main  # what your branch changed since it left main
 ```
 
 Each problem prints as `<path>: <rule-id>: <message>`.
 
 | Rule | Means |
 | --- | --- |
-| `yaml-error`, `duplicate-key` | The file isn't valid YAML, or repeats a key |
+| `yaml-error`, `duplicate-key` | The file isn't valid UTF-8 YAML, uses anchors or aliases, or repeats a key |
+| `symlink` | A symbolic link instead of a real file |
 | `unknown-location` | The file isn't in a folder above (`.yml` files included) |
 | `schema` | The record breaks the schema for its folder's class |
 | `file-name` | The file name doesn't match the ID |
@@ -54,9 +55,9 @@ Each problem prints as `<path>: <rule-id>: <message>`.
 | `duplicate-id` | Two files share an ID |
 | `unknown-reference` | A neuron type or atlas that has no record here |
 | `atlas-species` | A claim's species doesn't match the atlas its regions come from |
-| `deletion-unlogged`, `retraction-unlogged` | A claim was deleted or retracted without a new entry in `retractions.yaml` |
+| `deletion-unlogged`, `retraction-unlogged`, `restoration-unlogged` | A claim was deleted, retracted, or restored from retraction without a new entry in `retractions.yaml` |
 | `log-rewritten` | An existing entry in `retractions.yaml` was edited, reordered or removed |
 
 ## Deleting or retracting a claim
 
-Add an entry to `retractions.yaml` in the same pull request, giving the claim's ID, `deleted` or `retracted`, a reason, and who decided. Never edit or remove existing entries. The maintainer owns that file, so these pull requests always need their review ([ADR 0006](../docs/decisions/0006-deletion-and-retraction-review.md)).
+Add an entry to `retractions.yaml` in the same pull request, giving the claim's ID, `deleted`, `retracted` or `restored`, a reason, and who decided. Never edit or remove existing entries. The maintainer owns that file, so these pull requests always need their review ([ADR 0006](../docs/decisions/0006-deletion-and-retraction-review.md)).

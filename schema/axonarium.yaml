@@ -668,7 +668,7 @@ slots:
   action:
     range: RetractionAction
     required: true
-    description: Whether the claim was deleted or retracted.
+    description: Whether the claim was deleted, retracted or restored.
   reason:
     required: true
     description: Why, in a sentence or two.
@@ -868,3 +868,5 @@ enums:
         description: The claim's file was removed, for example as a duplicate or an error.
       retracted:
         description: The claim's status became retracted because its source was retracted.
+      restored:
+        description: A retracted claim's status was changed back, for example because the retraction was withdrawn.
