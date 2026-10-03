@@ -136,7 +136,8 @@ def test_example_citations_use_the_test_prefix():
 GENERATED = SCHEMA_DIR / "generated"
 GENERATORS = [
     (["gen-json-schema"], "axonarium.schema.json"),
-    (["gen-sqltables", "--dialect", "postgresql"], "axonarium.sql"),
+    (["gen-sqltables", "--dialect", "postgresql", "--autogenerate_index", "false",
+      "--generate_abstract_class_ddl", "false"], "axonarium.sql"),
 ]
 
 
@@ -165,3 +166,18 @@ def test_json_schema_agrees_with_linkml():
     rejected_valid = {path.name: json_errors(path) for path in VALID if json_errors(path)}
     accepted_invalid = [path.name for path in INVALID if not json_errors(path)]
     assert rejected_valid == {} and accepted_invalid == [], (rejected_valid, accepted_invalid)
+
+
+def test_sql_generation_is_path_independent(tmp_path):
+    """CI and contributors check out to different paths; the generated SQL must not depend on it."""
+    import shutil
+    import subprocess
+
+    command = next(cmd for cmd, name in GENERATORS if name == "axonarium.sql")
+    outputs = set()
+    for folder in ("a", "a-much-longer-folder-name/nested/deeper"):
+        copy = tmp_path / folder / "axonarium.yaml"
+        copy.parent.mkdir(parents=True)
+        shutil.copy(SCHEMA, copy)
+        outputs.add(subprocess.run([*command, str(copy)], capture_output=True, text=True, check=True).stdout)
+    assert len(outputs) == 1, "gen-sqltables output depends on where the schema file is"

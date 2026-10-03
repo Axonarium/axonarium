@@ -1,9 +1,9 @@
-CREATE TYPE "ClaimStatus" AS ENUM ('proposed', 'accepted', 'disputed', 'retracted');
 CREATE TYPE "ConnectivityPredicate" AS ENUM ('projects_to', 'synapses_onto', 'functionally_connects_to');
 CREATE TYPE "EvidenceClass" AS ENUM ('anterograde_tracer', 'retrograde_tracer', 'single_neuron_reconstruction', 'electron_microscopy', 'transsynaptic_tracer', 'optogenetic_circuit_mapping', 'paired_recording', 'electrical_stimulation');
 CREATE TYPE "Result" AS ENUM ('present', 'absent', 'ambiguous');
 CREATE TYPE "Sign" AS ENUM ('excitatory', 'inhibitory', 'modulatory', 'unknown');
 CREATE TYPE "OrdinalStrength" AS ENUM ('weak', 'moderate', 'strong');
+CREATE TYPE "ClaimStatus" AS ENUM ('proposed', 'accepted', 'disputed', 'retracted');
 CREATE TYPE "Correspondence" AS ENUM ('equivalent', 'partial');
 CREATE TYPE "Confidence" AS ENUM ('high', 'medium', 'low');
 CREATE TYPE "EntityType" AS ENUM ('region', 'neuron_type');
@@ -18,7 +18,6 @@ CREATE TABLE "Any" (
 	id SERIAL NOT NULL,
 	PRIMARY KEY (id)
 );
-CREATE INDEX "ix_Any_id" ON "Any" (id);
 COMMENT ON TABLE "Any" IS 'Any JSON value. Used for the open-ended extra map.';
 
 CREATE TABLE "EntityRef" (
@@ -28,7 +27,6 @@ CREATE TABLE "EntityRef" (
 	atlas TEXT,
 	PRIMARY KEY (uid)
 );
-CREATE INDEX "ix_EntityRef_uid" ON "EntityRef" (uid);
 COMMENT ON TABLE "EntityRef" IS 'A reference to a region or neuron type, used as the subject or object of a claim.';
 COMMENT ON COLUMN "EntityRef".type IS 'Whether the reference is to a region or a neuron type.';
 COMMENT ON COLUMN "EntityRef".id IS 'The entity''s ID: an atlas region (MBA, HBA), a UBERON term, a project neuron type (nt-...) or a Cell Ontology term.';
@@ -43,7 +41,6 @@ CREATE TABLE "Citation" (
 	locator TEXT NOT NULL,
 	PRIMARY KEY (id)
 );
-CREATE INDEX "ix_Citation_id" ON "Citation" (id);
 COMMENT ON TABLE "Citation" IS 'Where a claim''s evidence is: one paper or preprint, and the figure, table or section within it.';
 COMMENT ON COLUMN "Citation".doi IS 'The paper''s DOI, without the https://doi.org/ prefix.';
 COMMENT ON COLUMN "Citation".pmid IS 'The paper''s PubMed ID. Quote it in YAML.';
@@ -61,7 +58,6 @@ CREATE TABLE "Curation" (
 	date DATE NOT NULL,
 	PRIMARY KEY (id)
 );
-CREATE INDEX "ix_Curation_id" ON "Curation" (id);
 COMMENT ON TABLE "Curation" IS 'Who drafted or curated a claim, and how.';
 COMMENT ON COLUMN "Curation".by IS 'Whether a human or an agent did the work.';
 COMMENT ON COLUMN "Curation".orcid IS 'The human''s ORCID iD, without the https://orcid.org/ prefix.';
@@ -81,7 +77,6 @@ CREATE TABLE "Verification" (
 	date DATE NOT NULL,
 	PRIMARY KEY (id)
 );
-CREATE INDEX "ix_Verification_id" ON "Verification" (id);
 COMMENT ON TABLE "Verification" IS 'An independent check of a claim against its source.';
 COMMENT ON COLUMN "Verification".by IS 'Whether a human or an agent did the work.';
 COMMENT ON COLUMN "Verification".orcid IS 'The human''s ORCID iD, without the https://orcid.org/ prefix.';
@@ -95,34 +90,7 @@ CREATE TABLE "KnowledgeBase" (
 	id SERIAL NOT NULL,
 	PRIMARY KEY (id)
 );
-CREATE INDEX "ix_KnowledgeBase_id" ON "KnowledgeBase" (id);
 COMMENT ON TABLE "KnowledgeBase" IS 'Every record in one container, as written to dumps. Files in data/ hold one record each.';
-
-CREATE TABLE "Claim" (
-	id TEXT NOT NULL,
-	paraphrase TEXT NOT NULL,
-	excerpt TEXT,
-	status "ClaimStatus" NOT NULL,
-	source_id INTEGER NOT NULL,
-	curation_id INTEGER NOT NULL,
-	verification_id INTEGER,
-	extra_id INTEGER,
-	PRIMARY KEY (id),
-	FOREIGN KEY(source_id) REFERENCES "Citation" (id),
-	FOREIGN KEY(curation_id) REFERENCES "Curation" (id),
-	FOREIGN KEY(verification_id) REFERENCES "Verification" (id),
-	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
-);
-CREATE INDEX "ix_Claim_id" ON "Claim" (id);
-COMMENT ON TABLE "Claim" IS 'One sourced statement about one relationship. Holds the fields every kind of claim shares: where the evidence is, who curated and checked it, and its status.';
-COMMENT ON COLUMN "Claim".id IS 'The record''s identifier.';
-COMMENT ON COLUMN "Claim".paraphrase IS 'The evidence summarised in the curator''s own words. Copyright-safe: verbatim text belongs in excerpt, and only from openly licensed papers.';
-COMMENT ON COLUMN "Claim".excerpt IS 'A short verbatim quotation, at most 300 characters, taken only from an openly licensed paper.';
-COMMENT ON COLUMN "Claim".status IS 'Where the claim is in its life cycle.';
-COMMENT ON COLUMN "Claim".source_id IS 'Where the evidence for the claim is.';
-COMMENT ON COLUMN "Claim".curation_id IS 'Who drafted or curated the claim.';
-COMMENT ON COLUMN "Claim".verification_id IS 'The independent check of the claim, if one was made.';
-COMMENT ON COLUMN "Claim".extra_id IS 'Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here.';
 
 CREATE TABLE "ConnectivityClaim" (
 	predicate "ConnectivityPredicate" NOT NULL,
@@ -151,7 +119,6 @@ CREATE TABLE "ConnectivityClaim" (
 	FOREIGN KEY(verification_id) REFERENCES "Verification" (id),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-CREATE INDEX "ix_ConnectivityClaim_id" ON "ConnectivityClaim" (id);
 COMMENT ON TABLE "ConnectivityClaim" IS 'A claim that a region or neuron type connects to another in one species, shown by one kind of evidence. Edges are computed from these claims at build time and are never edited by hand.';
 COMMENT ON COLUMN "ConnectivityClaim".predicate IS 'The kind of connection claimed.';
 COMMENT ON COLUMN "ConnectivityClaim".species IS 'The organism, as an NCBI Taxonomy ID such as NCBITaxon:10090.';
@@ -196,7 +163,6 @@ CREATE TABLE "HomologyClaim" (
 	FOREIGN KEY(verification_id) REFERENCES "Verification" (id),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-CREATE INDEX "ix_HomologyClaim_id" ON "HomologyClaim" (id);
 COMMENT ON TABLE "HomologyClaim" IS 'A claim that a region or neuron type in one species corresponds to one in another. Homology is a weighted, cited claim, never a merge of nodes.';
 COMMENT ON COLUMN "HomologyClaim".subject_species IS 'The organism of the homology claim''s subject.';
 COMMENT ON COLUMN "HomologyClaim".object_species IS 'The organism of the homology claim''s object.';
@@ -227,7 +193,6 @@ CREATE TABLE "Atlas" (
 	FOREIGN KEY("KnowledgeBase_id") REFERENCES "KnowledgeBase" (id),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-CREATE INDEX "ix_Atlas_id" ON "Atlas" (id);
 COMMENT ON TABLE "Atlas" IS 'A specific, pinned version of a reference atlas. An atlas update creates a new record and a mapping file, never silent ID changes.';
 COMMENT ON COLUMN "Atlas".id IS 'The record''s identifier.';
 COMMENT ON COLUMN "Atlas".name IS 'The entity''s full name.';
@@ -252,7 +217,6 @@ CREATE TABLE "NeuronType" (
 	FOREIGN KEY(region_uid) REFERENCES "EntityRef" (uid),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-CREATE INDEX "ix_NeuronType_id" ON "NeuronType" (id);
 COMMENT ON TABLE "NeuronType" IS 'A population of neurons with a shared location, transmitter and markers. Mapped to the Cell Ontology where a term exists.';
 COMMENT ON COLUMN "NeuronType".id IS 'The record''s identifier.';
 COMMENT ON COLUMN "NeuronType".name IS 'The entity''s full name.';
@@ -277,7 +241,6 @@ CREATE TABLE "Source" (
 	FOREIGN KEY("KnowledgeBase_id") REFERENCES "KnowledgeBase" (id),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-CREATE INDEX "ix_Source_id" ON "Source" (id);
 COMMENT ON TABLE "Source" IS 'Cached metadata for a paper or preprint that claims cite. Filled from Crossref and PubMed in Phase 1.';
 COMMENT ON COLUMN "Source".id IS 'The record''s identifier.';
 COMMENT ON COLUMN "Source".title IS 'The paper''s title.';
@@ -303,7 +266,6 @@ CREATE TABLE "Measurement" (
 	PRIMARY KEY (id),
 	FOREIGN KEY("ConnectivityClaim_id") REFERENCES "ConnectivityClaim" (id)
 );
-CREATE INDEX "ix_Measurement_id" ON "Measurement" (id);
 COMMENT ON TABLE "Measurement" IS 'A quantity reported for a connection, with its unit and uncertainty. A missing field means unknown; nothing has a default.';
 COMMENT ON COLUMN "Measurement".quantity IS 'What was measured.';
 COMMENT ON COLUMN "Measurement".value IS 'The measured value, in unit.';
@@ -330,7 +292,6 @@ CREATE TABLE "Region" (
 	FOREIGN KEY("KnowledgeBase_id") REFERENCES "KnowledgeBase" (id),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-CREATE INDEX "ix_Region_id" ON "Region" (id);
 COMMENT ON TABLE "Region" IS 'A structure as defined in one pinned atlas version, mapped to UBERON.';
 COMMENT ON COLUMN "Region".id IS 'The record''s identifier.';
 COMMENT ON COLUMN "Region".name IS 'The entity''s full name.';
@@ -347,8 +308,6 @@ CREATE TABLE "HomologyClaim_basis" (
 	PRIMARY KEY ("HomologyClaim_id", basis),
 	FOREIGN KEY("HomologyClaim_id") REFERENCES "HomologyClaim" (id)
 );
-CREATE INDEX "ix_HomologyClaim_basis_HomologyClaim_id" ON "HomologyClaim_basis" ("HomologyClaim_id");
-CREATE INDEX "ix_HomologyClaim_basis_basis" ON "HomologyClaim_basis" (basis);
 COMMENT ON TABLE "HomologyClaim_basis" IS 'None';
 COMMENT ON COLUMN "HomologyClaim_basis"."HomologyClaim_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "HomologyClaim_basis".basis IS 'The kinds of evidence the correspondence rests on.';
@@ -359,8 +318,6 @@ CREATE TABLE "NeuronType_markers" (
 	PRIMARY KEY ("NeuronType_id", markers),
 	FOREIGN KEY("NeuronType_id") REFERENCES "NeuronType" (id)
 );
-CREATE INDEX "ix_NeuronType_markers_markers" ON "NeuronType_markers" (markers);
-CREATE INDEX "ix_NeuronType_markers_NeuronType_id" ON "NeuronType_markers" ("NeuronType_id");
 COMMENT ON TABLE "NeuronType_markers" IS 'None';
 COMMENT ON COLUMN "NeuronType_markers"."NeuronType_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "NeuronType_markers".markers IS 'Gene symbols that identify the neuron type, such as Sst.';
@@ -371,8 +328,6 @@ CREATE TABLE "NeuronType_synonyms" (
 	PRIMARY KEY ("NeuronType_id", synonyms),
 	FOREIGN KEY("NeuronType_id") REFERENCES "NeuronType" (id)
 );
-CREATE INDEX "ix_NeuronType_synonyms_synonyms" ON "NeuronType_synonyms" (synonyms);
-CREATE INDEX "ix_NeuronType_synonyms_NeuronType_id" ON "NeuronType_synonyms" ("NeuronType_id");
 COMMENT ON TABLE "NeuronType_synonyms" IS 'None';
 COMMENT ON COLUMN "NeuronType_synonyms"."NeuronType_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "NeuronType_synonyms".synonyms IS 'Other names for the entity.';
@@ -383,8 +338,6 @@ CREATE TABLE "Region_synonyms" (
 	PRIMARY KEY ("Region_id", synonyms),
 	FOREIGN KEY("Region_id") REFERENCES "Region" (id)
 );
-CREATE INDEX "ix_Region_synonyms_Region_id" ON "Region_synonyms" ("Region_id");
-CREATE INDEX "ix_Region_synonyms_synonyms" ON "Region_synonyms" (synonyms);
 COMMENT ON TABLE "Region_synonyms" IS 'None';
 COMMENT ON COLUMN "Region_synonyms"."Region_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "Region_synonyms".synonyms IS 'Other names for the entity.';

@@ -56,7 +56,7 @@ Regenerate after changing the schema; a test fails until you do:
 
 ```bash
 uv run gen-json-schema schema/axonarium.yaml > schema/generated/axonarium.schema.json
-uv run gen-sqltables --dialect postgresql schema/axonarium.yaml > schema/generated/axonarium.sql
+uv run gen-sqltables --dialect postgresql --autogenerate_index false --generate_abstract_class_ddl false schema/axonarium.yaml > schema/generated/axonarium.sql
 ```
 
 ## Writing YAML for this schema
