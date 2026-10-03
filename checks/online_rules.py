@@ -6,12 +6,14 @@ from pathlib import Path
 
 from checks.findings import Finding, Record
 from checks.http import Fetcher, LookupFailed
-from checks.identifiers import citation_of, curies_in
+from checks.identifiers import canonical, citation_of, curies_in
 from checks.lookups import ATLAS_GRAPHS, arxiv_doi, atlas_structure, doi_agency, ncbi_summary, ontology_term
 from checks.sources import fetch_source
 
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
 ATLAS_NAMES = {"MBA": "mouse", "HBA": "human"}
+KINDS = {"doi": "DOI", "pmid": "PubMed ID", "pmcid": "PubMed Central ID", "arxiv": "arXiv ID"}
+ODD_ANSWER = (TypeError, AttributeError, KeyError, ValueError, IndexError)  # A registry answer of an unexpected shape
 
 
 def mismatched(cited: str, summary: dict, idtype: str) -> str | None:
@@ -38,6 +40,8 @@ class _Asker:
                 self.answers[key] = question()
             except LookupFailed as error:
                 self.answers[key] = error
+            except ODD_ANSWER as error:
+                self.answers[key] = LookupFailed(" ".join(key), f"unexpected answer from the registry ({type(error).__name__}: {error})")
         return self.answers[key]
 
     def _exists(self, path: str, key: tuple, question, missing: str) -> tuple[list[Finding], object]:
@@ -50,6 +54,8 @@ class _Asker:
         return [], answer
 
     def term(self, path: str, curie: str) -> list[Finding]:
+        if not canonical("curie", curie):
+            return [Finding(path, "unknown-term", f"{curie!r} is not a canonical ID (ASCII digits only, nothing around them)")]
         prefix = curie.split(":")[0]
         if prefix in ATLAS_GRAPHS:
             answer = self._ask(("structure", curie), lambda: atlas_structure(self.fetch, curie))
@@ -82,8 +88,12 @@ class _Asker:
         return self.doi(path, arxiv_doi(arxiv), f"arXiv ID {arxiv} does not exist (doi.org has no {arxiv_doi(arxiv)})")
 
     def citation(self, path: str, cited: dict[str, str]) -> list[Finding]:
+        findings, cited = [], dict(cited)
+        for kind, label in KINDS.items():
+            if kind in cited and not canonical(kind, cited[kind]):
+                findings.append(Finding(path, "unknown-citation", f"{label} {cited.pop(kind)!r} is not in canonical form"))
         doi, pmid, pmcid = cited.get("doi"), cited.get("pmid"), cited.get("pmcid")
-        findings = self.doi(path, doi) if doi else []
+        findings += self.doi(path, doi) if doi else []
         if pmid:
             found, summary = self.pubmed(path, pmid)
             findings += found
@@ -102,6 +112,9 @@ class _Asker:
 
     def source(self, path: str, data: dict) -> list[Finding]:
         scheme, _, rest = data["id"].partition(":")
+        kind = {"doi": "doi", "pubmed": "pmid", "pmc": "pmcid", "arxiv": "arxiv"}.get(scheme)
+        if kind is None or not canonical(kind, rest):
+            return [Finding(path, "unknown-citation", f"source ID {data['id']!r} is not in canonical form")]
         if scheme == "pubmed":
             return self.pubmed(path, rest)[0]
         if scheme == "pmc":

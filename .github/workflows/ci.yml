@@ -40,4 +40,5 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           BASE_REF: ${{ github.base_ref }}
-        run: uv run --frozen python -m checks online --base "origin/$BASE_REF"
+        # The cache lives outside the checkout, so answers committed in a pull request are never read.
+        run: uv run --frozen python -m checks online --base "origin/$BASE_REF" --cache "$RUNNER_TEMP/checks-cache"

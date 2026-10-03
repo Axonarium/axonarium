@@ -9,7 +9,7 @@ import yaml
 
 from checks.findings import Finding
 from checks.http import Fetcher, LookupFailed
-from checks.identifiers import citation_of, source_file_name, spdx_from_url
+from checks.identifiers import canonical, citation_of, source_file_name, spdx_from_url
 from checks.loading import load_tree
 from checks.lookups import CROSSREF, DATACITE, crossref_work, datacite_record, doi_agency
 
@@ -50,7 +50,7 @@ def _crossref_licence(entries, today: date) -> str | None:
     """The version-of-record licence in force: a Creative Commons one as its SPDX ID if any, else the first URL."""
     urls = [e["URL"] for e in entries if isinstance(e, dict) and isinstance(e.get("URL"), str)
             and e.get("content-version") in ("vor", "unspecified")
-            and (_date(e.get("start")) or today) <= today] if isinstance(entries, list) else []
+            and (_date(e.get("start")) or date.max) <= today] if isinstance(entries, list) else []
     return next((spdx for url in urls if (spdx := spdx_from_url(url))), urls[0] if urls else None)
 
 
@@ -124,6 +124,8 @@ def _fetch(fetch: Fetcher, doi: str, today: date, path: Path) -> tuple[dict | No
         record = fetch_source(fetch, doi, today)
     except LookupFailed as error:
         return None, [Finding(str(path), "lookup-failed", f"lookup failed: {error}")]
+    except (TypeError, AttributeError, KeyError, ValueError, IndexError) as error:  # A registry answer of an unexpected shape
+        return None, [Finding(str(path), "lookup-failed", f"lookup failed: unexpected answer for {doi} ({type(error).__name__}: {error})")]
     if record is None:
         return None, [Finding(str(path), "unknown-citation", f"DOI {doi} does not exist (doi.org)")]
     return record, []
@@ -140,6 +142,9 @@ def fill_sources(data_dir: Path, fetch: Fetcher, today: date, refresh: bool = Fa
     written, findings = [], []
     for doi, claim_path in sorted(cited.items()):
         if f"doi:{doi}" in existing:
+            continue
+        if not canonical("doi", doi):
+            findings.append(Finding(str(claim_path), "unknown-citation", f"DOI {doi!r} is not in canonical form"))
             continue
         fresh, found = _fetch(fetch, doi, today, claim_path)
         findings += found

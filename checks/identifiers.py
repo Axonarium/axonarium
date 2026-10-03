@@ -12,6 +12,14 @@ CC_LICENCE = re.compile(
     re.IGNORECASE,
 )
 OPEN_LICENCE = re.compile(r"^(CC0-1\.0|CC-BY-\d\.\d(-[A-Z]+)?)$")
+# The only forms the online checks look up: ASCII, no surrounding whitespace, no leading zeros.
+CANONICAL = {
+    "curie": re.compile(r"(UBERON|CL|NCBITaxon|MBA|HBA):[0-9]+"),
+    "doi": re.compile(r"10\.[0-9]{4,9}/[!-~]+"),
+    "pmid": re.compile(r"[1-9][0-9]*"),
+    "pmcid": re.compile(r"PMC[1-9][0-9]*"),
+    "arxiv": re.compile(r"[0-9]{4}\.[0-9]{4,5}(v[1-9][0-9]*)?"),
+}
 
 
 def curies_in(value) -> set[str]:
@@ -49,6 +57,11 @@ def spdx_from_url(url: str) -> str | None:
 def is_open_licence(spdx: str | None) -> bool:
     """Whether verbatim excerpts may be taken from a source under this licence: CC0 or CC BY, nothing stricter."""
     return isinstance(spdx, str) and bool(OPEN_LICENCE.match(spdx))
+
+
+def canonical(kind: str, value: str) -> bool:
+    """Whether an identifier is in the exact form its registry is asked for (see CANONICAL)."""
+    return bool(CANONICAL[kind].fullmatch(value))
 
 
 def citation_of(data: dict) -> dict[str, str]:

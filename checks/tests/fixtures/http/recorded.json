@@ -6,8 +6,6 @@
    "msg": [
     {
      "id": 295,
-     "acronym": "BLA",
-     "name": "Basolateral amygdalar nucleus",
      "graph_id": 1
     }
    ]
@@ -20,8 +18,6 @@
    "msg": [
     {
      "id": 4249,
-     "acronym": "HiF",
-     "name": "hippocampal formation",
      "graph_id": 10
     }
    ]
@@ -34,8 +30,6 @@
    "msg": [
     {
      "id": 536,
-     "acronym": "CEA",
-     "name": "Central amygdalar nucleus",
      "graph_id": 1
     }
    ]
@@ -401,7 +395,6 @@
     "terms": [
      {
       "obo_id": "CL:0000399",
-      "label": "obsolete phloem element",
       "is_obsolete": true,
       "term_replaced_by": null
      }
@@ -416,7 +409,6 @@
     "terms": [
      {
       "obo_id": "CL:0000679",
-      "label": "glutamatergic neuron",
       "is_obsolete": false,
       "term_replaced_by": null
      }
@@ -431,7 +423,6 @@
     "terms": [
      {
       "obo_id": "NCBITaxon:10090",
-      "label": "Mus musculus",
       "is_obsolete": false,
       "term_replaced_by": null
      }
@@ -446,7 +437,6 @@
     "terms": [
      {
       "obo_id": "NCBITaxon:9606",
-      "label": "Homo sapiens",
       "is_obsolete": false,
       "term_replaced_by": null
      }
@@ -461,7 +451,6 @@
     "terms": [
      {
       "obo_id": "UBERON:0001006",
-      "label": "obsolete spiracle",
       "is_obsolete": true,
       "term_replaced_by": null
      }
@@ -476,7 +465,6 @@
     "terms": [
      {
       "obo_id": "UBERON:0002883",
-      "label": "central amygdaloid nucleus",
       "is_obsolete": false,
       "term_replaced_by": null
      }

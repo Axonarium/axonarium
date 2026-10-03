@@ -8,6 +8,7 @@ import pytest
 import yaml
 
 from checks.cli import main, run_files
+from checks.http import Fetcher
 from checks.lookups import crossref_work, datacite_record
 from checks.sources import fill_sources, source_from_crossref, source_from_datacite
 
@@ -101,3 +102,41 @@ def test_cli_sources(tree, replay, tmp_path, capsys):
     (tree / HINTIRYAN_FILE).unlink()
     assert main(["sources", "--data", str(tree), "--cache", str(tmp_path / "cache")], opener=replay) == 0
     assert capsys.readouterr().out.splitlines() == [f"wrote {tree / HINTIRYAN_FILE}"]
+
+
+def test_licence_without_start_date_not_counted():
+    message = {"license": [{"URL": "https://creativecommons.org/licenses/by/4.0/", "content-version": "vor"}]}
+    assert "license" not in source_from_crossref("10.5555/x", message, TODAY)
+
+
+def test_fill_reports_odd_registry_answer(tree, replay):
+    (tree / HINTIRYAN_FILE).unlink()
+    url = "https://api.crossref.org/works/10.1038/s41467-021-22915-5"
+
+    def opener(asked, headers, timeout):
+        return (200, {}, b'{"message": {"updated-by": [{"type": ["retraction"]}]}}') if asked == url else replay(asked, headers, timeout)
+
+    written, findings = fill_sources(tree, Fetcher(None, opener, sleep=lambda seconds: None), TODAY)
+    assert written == [] and [f.rule for f in findings] == ["lookup-failed"]
+
+
+def test_fill_skips_non_canonical_doi(tree, fetch):
+    (tree / HINTIRYAN_FILE).unlink()
+    claim = tree / "claims" / "examples" / "clm-9dd2wps80g.yaml"
+    claim.write_text(claim.read_text(encoding="utf-8").replace(f"doi: {HINTIRYAN}", f'doi: "{HINTIRYAN}\\n"'), encoding="utf-8")
+    written, findings = fill_sources(tree, fetch, TODAY)
+    assert written == [] and [f.rule for f in findings] == ["unknown-citation"] and fetch.requested == []
+
+
+def test_cli_refresh_ignores_cached_answers(tree, replay, tmp_path):
+    # A local run warmed the cache before the paper was retracted; --refresh must ask again.
+    cache, crossref = tmp_path / "cache", "https://api.crossref.org/works/10.1016/s0140-6736%2897%2911096-0"
+
+    def before_retraction(url, headers, timeout):
+        return (200, {}, b'{"message": {"title": ["Old"], "updated-by": []}}') if url == crossref else replay(url, headers, timeout)
+
+    Fetcher(cache, before_retraction, sleep=lambda seconds: None).get_json(crossref)
+    stale = {"id": f"doi:{WAKEFIELD}", "title": "Old", "retracted": False}
+    (tree / WAKEFIELD_FILE).write_text(yaml.safe_dump(stale, sort_keys=False), encoding="utf-8")
+    assert main(["sources", "--refresh", "--data", str(tree), "--cache", str(cache)], opener=replay) == 0
+    assert yaml.safe_load((tree / WAKEFIELD_FILE).read_text(encoding="utf-8"))["retracted"] is True

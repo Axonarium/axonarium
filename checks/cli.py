@@ -50,7 +50,8 @@ def main(argv: list[str] | None = None, opener: Opener = default_opener) -> int:
         scope = changed_since(args.data, args.base) if args.base else None
         findings = check_online(records, Fetcher(args.cache, opener), date.today(), scope)
     else:
-        written, findings = fill_sources(args.data, Fetcher(args.cache, opener), date.today(), args.refresh)
+        fetch = Fetcher(args.cache, opener, read_cache=not args.refresh)  # A refresh asks the registries again.
+        written, findings = fill_sources(args.data, fetch, date.today(), args.refresh)
         for path in written:
             print(f"wrote {path}")
     for finding in findings:

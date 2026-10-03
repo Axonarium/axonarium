@@ -138,3 +138,54 @@ def test_same_url_fetched_once_per_run():
     assert [fetcher.get_json(URL), fetcher.get_json(URL)] == [{"a": 1}, {"a": 1}]
     assert [fetcher.get_json(NCBI + "1"), fetcher.get_json(NCBI + "1")] == [None, None]
     assert fetcher.requested == [URL, NCBI + "1"]
+
+
+def test_cache_entry_from_the_future_ignored(tmp_path):
+    entry = {"url": URL, "fetched_at": 9e12, "body": {"forged": True}}
+    (tmp_path / f"{hashlib.sha256(URL.encode()).hexdigest()}.json").write_text(json.dumps(entry))
+    assert Clock().fetcher(Script({URL: [ok({"a": 1})]}), tmp_path).get_json(URL) == {"a": 1}
+
+
+def test_cache_not_read_when_disabled(tmp_path):
+    clock = Clock()
+    clock.fetcher(Script({URL: [ok({"a": 1})]}), tmp_path).get_json(URL)
+    fresh = Fetcher(tmp_path, Script({URL: [ok({"a": 2})]}), sleep=clock.sleep, clock=lambda: clock.t,
+                    wall=lambda: clock.wall_t, read_cache=False)
+    assert fresh.get_json(URL) == {"a": 2}
+    assert clock.fetcher(Script({}), tmp_path).get_json(URL) == {"a": 2}  # still written
+
+
+def test_failure_remembered_per_url():
+    script, clock = Script({URL: [(500, {}, b"")] * 4}), Clock()
+    fetcher = clock.fetcher(script)
+    for _ in range(2):
+        with pytest.raises(LookupFailed):
+            fetcher.get_json(URL)
+    assert len(script.calls) == 4
+
+
+def test_host_given_up_after_an_outage():
+    other_url, other_host = URL.replace("1", "2"), NCBI + "1"
+    script, clock = Script({URL: [OSError("down")] * 4, other_host: [ok()]}), Clock()
+    fetcher = clock.fetcher(script)
+    with pytest.raises(LookupFailed):
+        fetcher.get_json(URL)
+    with pytest.raises(LookupFailed, match="unavailable"):
+        fetcher.get_json(other_url)
+    assert fetcher.get_json(other_host) == {"ok": True}
+    assert [call[0] for call in script.calls] == [URL] * 4 + [other_host]
+
+
+def test_client_errors_do_not_mark_a_host_down():
+    script, clock = Script({URL: [(400, {}, b"")], URL.replace("1", "2"): [ok()]}), Clock()
+    fetcher = clock.fetcher(script)
+    with pytest.raises(LookupFailed):
+        fetcher.get_json(URL)
+    assert fetcher.get_json(URL.replace("1", "2")) == {"ok": True}
+
+
+def test_invalid_url_not_retried():
+    script, clock = Script({URL: [ValueError("URL can't contain control characters")]}), Clock()
+    with pytest.raises(LookupFailed, match="control characters"):
+        clock.fetcher(script).get_json(URL)
+    assert len(script.calls) == 1 and clock.slept == []

@@ -60,13 +60,13 @@ def _keep(mapping: dict, keys: tuple[str, ...]) -> dict:
 
 
 def trim(url: str, body):
-    """A registry response cut down to the fields the checks read, so recordings stay small and readable."""
+    """A registry response cut down to the fields the checks read: small, and free of Allen content (ADR 0005)."""
     host = urlsplit(url).hostname
     if host == "www.ebi.ac.uk":
         terms = body.get("_embedded", {}).get("terms", [])
-        return {"_embedded": {"terms": [_keep(t, ("obo_id", "label", "is_obsolete", "term_replaced_by")) for t in terms]}}
+        return {"_embedded": {"terms": [_keep(t, ("obo_id", "is_obsolete", "term_replaced_by")) for t in terms]}}
     if host == "api.brain-map.org":
-        return {"success": body.get("success"), "msg": [_keep(m, ("id", "acronym", "name", "graph_id")) for m in body.get("msg", [])]}
+        return {"success": body.get("success"), "msg": [_keep(m, ("id", "graph_id")) for m in body.get("msg", [])]}
     if host == "api.crossref.org":
         return {"message": _keep(body["message"], ("DOI", "type", "title", "container-title", "issued", "license", "updated-by"))}
     if host == "api.datacite.org":

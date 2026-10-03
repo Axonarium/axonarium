@@ -55,17 +55,23 @@ class Fetcher:
     """Fetches JSON with a per-host rate limit, retries, and an optional on-disk cache of successful answers."""
 
     def __init__(self, cache_dir: Path | None = None, opener: Opener = default_opener,
-                 sleep=time.sleep, clock=time.monotonic, wall=time.time):
-        self.cache_dir, self.opener = cache_dir, opener
+                 sleep=time.sleep, clock=time.monotonic, wall=time.time, read_cache: bool = True):
+        self.cache_dir, self.opener, self.read_cache = cache_dir, opener, read_cache
         self.sleep, self.clock, self.wall = sleep, clock, wall
         self.requested: list[str] = []
         self._last: dict[str, float] = {}
-        self._answers: dict[str, Any] = {}  # This run's answers, so each URL is fetched once.
+        self._answers: dict[str, Any] = {}  # This run's answers and failures, so each URL is fetched once.
+        self._down: dict[str, LookupFailed] = {}  # Hosts that failed every attempt; not asked again this run.
 
     def get_json(self, url: str) -> Any | None:
         """The parsed JSON of a 200 answer; None for 404 or 410; LookupFailed for anything else."""
         if url not in self._answers:
-            self._answers[url] = self._get(url)
+            try:
+                self._answers[url] = self._get(url)
+            except LookupFailed as error:
+                self._answers[url] = error
+        if isinstance(self._answers[url], LookupFailed):
+            raise self._answers[url]
         return self._answers[url]
 
     def _get(self, url: str) -> Any | None:
@@ -73,6 +79,8 @@ class Fetcher:
         if cached is not _MISSING:
             return cached
         host = urlsplit(url).hostname or ""
+        if host in self._down:
+            raise LookupFailed(url, f"{host} was unavailable earlier in this run ({self._down[host].reason})")
         reason = ""
         for attempt in range(ATTEMPTS):
             self._wait_for(host)
@@ -82,6 +90,8 @@ class Fetcher:
                 status, headers, body = self.opener(url, {"User-Agent": USER_AGENT, "Accept": "application/json"}, TIMEOUT)
             except (OSError, HTTPException) as error:
                 reason = f"{type(error).__name__}: {error}"
+            except ValueError as error:  # A URL the opener refuses, such as one with control characters: retrying won't help.
+                raise LookupFailed(url, f"{type(error).__name__}: {error}") from None
             else:
                 if status == 200:
                     try:
@@ -97,7 +107,8 @@ class Fetcher:
                 reason, delay = f"HTTP {status}", _retry_after(headers)
             if attempt + 1 < ATTEMPTS:
                 self.sleep(min(delay, MAX_RETRY_AFTER) if delay is not None else BACKOFF[attempt])
-        raise LookupFailed(url, f"{reason} after {ATTEMPTS} attempts")
+        self._down[host] = LookupFailed(url, f"{reason} after {ATTEMPTS} attempts")
+        raise self._down[host]
 
     def _wait_for(self, host: str) -> None:
         if host in self._last:
@@ -111,11 +122,11 @@ class Fetcher:
 
     def _cached(self, url: str):
         path = self._cache_path(url)
-        if path is None or not path.exists():
+        if path is None or not self.read_cache or not path.exists():
             return _MISSING
         try:
             entry = json.loads(path.read_text(encoding="utf-8"))
-            if entry["url"] == url and self.wall() - float(entry["fetched_at"]) < TTL:
+            if entry["url"] == url and 0 <= self.wall() - float(entry["fetched_at"]) < TTL:
                 return entry["body"]
         except (OSError, ValueError, KeyError, TypeError):
             pass  # A damaged entry is simply fetched again.

@@ -1,10 +1,12 @@
 """The `online` command: identifiers and citations looked up in their registries, from replayed responses."""
 
+import json
 import shutil
 from datetime import date
 from pathlib import Path
 
 import pytest
+import yaml
 
 from checks.change_rules import changed_since
 from checks.cli import main, run_files
@@ -119,3 +121,39 @@ def test_scope_untracked_file(online_repo, fetch):
 def test_scope_ignores_deleted_files(online_repo, fetch):
     (online_repo / "homology" / "hom-c643x76f02.yaml").unlink()
     assert scoped(online_repo, fetch) == [] and fetch.requested == []
+
+
+def test_ci_cache_outside_checkout():
+    # A pull request could commit forged answers under .cache/; CI must never read a cache from the checkout.
+    workflow = yaml.safe_load((Path(__file__).resolve().parents[2] / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8"))
+    runs = [step["run"] for job in workflow["jobs"].values() for step in job["steps"] if "checks online" in step.get("run", "")]
+    assert runs and all('--cache "$RUNNER_TEMP/' in run for run in runs), runs
+
+
+@pytest.mark.parametrize("old, new, rule", [
+    ("id: MBA:295\n", "id: MBA:２９５\n", "unknown-term"),
+    ("id: MBA:295\n", 'id: "MBA:295\\n"\n', "unknown-term"),
+    ('pmid: "34001873"', 'pmid: "034001873"', "unknown-citation"),
+    ("pmcid: PMC8129205", "pmcid: PMC08129205", "unknown-citation"),
+    ("doi: 10.1038/s41467-021-22915-5", 'doi: "10.1038/s41467-021-22915-5\\n"', "unknown-citation"),
+], ids=["full-width-digits", "trailing-newline-term", "pmid-leading-zero", "pmcid-leading-zero", "doi-trailing-newline"])
+def test_non_canonical_ids_are_unknown(online_tree, fetch, old, new, rule):
+    claim = online_tree / "claims" / "examples" / "clm-9dd2wps80g.yaml"
+    text = claim.read_text(encoding="utf-8")
+    assert old in text
+    claim.write_text(text.replace(old, new, 1), encoding="utf-8")
+    findings = [f for f in online(online_tree, fetch) if f.path == str(claim)]
+    assert [f.rule for f in findings] == [rule], [str(f) for f in findings]
+
+
+@pytest.mark.parametrize("url, body", [
+    (OLS.format(ontology="uberon", curie="UBERON:0002883"), {"_embedded": None}),
+    (OLS.format(ontology="uberon", curie="UBERON:0002883"), {"_embedded": []}),
+    (CROSSREF.format(doi="10.1038/s41467-021-22915-5"), {"message": {"updated-by": [{"type": ["retraction"]}]}}),
+], ids=["ols-null", "ols-list", "crossref-odd-update"])
+def test_odd_registry_answers_are_reported_not_raised(online_tree, replay, url, body):
+    def opener(asked, headers, timeout):
+        return (200, {}, json.dumps(body).encode()) if asked == url else replay(asked, headers, timeout)
+
+    findings = online(online_tree, Fetcher(None, opener, sleep=lambda seconds: None))
+    assert findings and {f.rule for f in findings} == {"lookup-failed"}, [str(f) for f in findings]

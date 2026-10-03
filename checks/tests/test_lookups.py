@@ -6,6 +6,7 @@ import pytest
 
 from checks.http import Fetcher
 from checks.lookups import Term, arxiv_doi, atlas_structure, doi_agency, ncbi_summary, ontology_term
+from checks.tests.conftest import RECORDED
 
 
 @pytest.mark.parametrize("curie, term", [
@@ -59,3 +60,14 @@ def test_doi_is_quoted_in_requests():
     doi = "10.1002/(sici)1096-9861(19960101)364:1<1::aid-cne1>3.0.co;2-#"
     assert doi_agency(Fetcher(None, opener, sleep=lambda s: None), doi) is None
     assert sent == ["https://doi.org/ra/10.1002/%28sici%291096-9861%2819960101%29364%3A1%3C1%3A%3Aaid-cne1%3E3.0.co%3B2-%23"]
+
+
+def test_recordings_hold_no_allen_or_ontology_text():
+    # ADR 0005: Allen content is never committed; ontology labels would need attribution. Keep only what the checks read.
+    recorded = json.loads(RECORDED.read_text(encoding="utf-8"))
+    for url, entry in recorded.items():
+        body = entry["body"] or {}
+        if "api.brain-map.org" in url:
+            assert all(set(s) <= {"id", "graph_id"} for s in body.get("msg", [])), url
+        if "www.ebi.ac.uk/ols4" in url:
+            assert all(set(t) <= {"obo_id", "is_obsolete", "term_replaced_by"} for t in body.get("_embedded", {}).get("terms", [])), url
