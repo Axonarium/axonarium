@@ -134,8 +134,10 @@ def test_example_citations_use_the_test_prefix():
 
 
 GENERATED = SCHEMA_DIR / "generated"
+RECORD_CLASSES = ["ConnectivityClaim", "HomologyClaim", "Atlas", "Region", "NeuronType", "Source"]
 GENERATORS = [
     (["gen-json-schema"], "axonarium.schema.json"),
+    *[(["gen-json-schema", "--top-class", cls, "--closed"], f"json/{cls}.schema.json") for cls in RECORD_CLASSES],
     (["gen-sqltables", "--dialect", "postgresql", "--autogenerate_index", "false",
       "--generate_abstract_class_ddl", "false"], "axonarium.sql"),
 ]
@@ -151,17 +153,17 @@ def test_generated_file_is_current(command, name):
 
 
 def test_json_schema_agrees_with_linkml():
+    """Each record class's JSON Schema, used as shipped (as an editor would), gives LinkML's verdicts."""
     import json
 
     import jsonschema
 
-    schema = json.loads((GENERATED / "axonarium.schema.json").read_text(encoding="utf-8"))
-    validator_class = jsonschema.validators.validator_for(schema)
-
     def json_errors(path: Path) -> list[str]:
+        schema = json.loads((GENERATED / "json" / f"{target_class(path)}.schema.json").read_text(encoding="utf-8"))
+        validator_class = jsonschema.validators.validator_for(schema)
+        validator = validator_class(schema, format_checker=validator_class.FORMAT_CHECKER)
         instance = json.loads(json.dumps(load(path), default=str))
-        root = {"$schema": schema.get("$schema"), "$defs": schema["$defs"], "$ref": f"#/$defs/{target_class(path)}"}
-        return [e.message for e in validator_class(root).iter_errors(instance)]
+        return [e.message for e in validator.iter_errors(instance)]
 
     rejected_valid = {path.name: json_errors(path) for path in VALID if json_errors(path)}
     accepted_invalid = [path.name for path in INVALID if not json_errors(path)]

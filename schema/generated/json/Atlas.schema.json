@@ -1,0 +1,1473 @@
+{
+    "$defs": {
+        "Actor": {
+            "description": "Who did a piece of work.",
+            "enum": [
+                "human",
+                "agent"
+            ],
+            "title": "Actor",
+            "type": "string"
+        },
+        "Any": {
+            "additionalProperties": true,
+            "description": "Any JSON value. Used for the open-ended extra map.",
+            "title": "Any",
+            "type": [
+                "null",
+                "boolean",
+                "object",
+                "number",
+                "string"
+            ]
+        },
+        "Atlas": {
+            "additionalProperties": false,
+            "description": "A specific, pinned version of a reference atlas. An atlas update creates a new record and a mapping file, never silent ID changes.",
+            "properties": {
+                "brainglobe_name": {
+                    "description": "The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The entity's full name.",
+                    "type": "string"
+                },
+                "species": {
+                    "description": "The organism, as an NCBI Taxonomy ID such as NCBITaxon:10090.",
+                    "pattern": "^NCBITaxon:\\d+$",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "Where the atlas is published.",
+                    "format": "uri",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "version": {
+                    "description": "The atlas version, as its authors name it.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "species",
+                "version"
+            ],
+            "title": "Atlas",
+            "type": "object"
+        },
+        "Citation": {
+            "additionalProperties": false,
+            "anyOf": [
+                {
+                    "properties": {
+                        "doi": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "doi"
+                    ]
+                },
+                {
+                    "properties": {
+                        "pmid": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "pmid"
+                    ]
+                },
+                {
+                    "properties": {
+                        "pmcid": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "pmcid"
+                    ]
+                },
+                {
+                    "properties": {
+                        "arxiv": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "arxiv"
+                    ]
+                }
+            ],
+            "description": "Where a claim's evidence is: one paper or preprint, and the figure, table or section within it.",
+            "properties": {
+                "arxiv": {
+                    "description": "The preprint's arXiv ID, such as 2409.13740.",
+                    "pattern": "^\\d{4}\\.\\d{4,5}(v\\d+)?$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "doi": {
+                    "description": "The paper's DOI, without the https://doi.org/ prefix.",
+                    "pattern": "^10\\.\\d{4,9}/\\S+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "locator": {
+                    "description": "Where in the source the evidence is, such as \"Fig. 3B\".",
+                    "type": "string"
+                },
+                "pmcid": {
+                    "description": "The paper's PubMed Central ID, such as PMC1234567.",
+                    "pattern": "^PMC\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "pmid": {
+                    "description": "The paper's PubMed ID. Quote it in YAML.",
+                    "pattern": "^\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "locator"
+            ],
+            "title": "Citation",
+            "type": "object"
+        },
+        "Claim": {
+            "additionalProperties": false,
+            "description": "One sourced statement about one relationship. Holds the fields every kind of claim shares: where the evidence is, who curated and checked it, and its status.",
+            "properties": {
+                "curation": {
+                    "$ref": "#/$defs/Curation",
+                    "description": "Who drafted or curated the claim."
+                },
+                "excerpt": {
+                    "description": "A short verbatim quotation, at most 300 characters, taken only from an openly licensed paper.",
+                    "pattern": "^[\\s\\S]{1,300}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "type": "string"
+                },
+                "paraphrase": {
+                    "description": "The evidence summarised in the curator's own words. Copyright-safe: verbatim text belongs in excerpt, and only from openly licensed papers.",
+                    "type": "string"
+                },
+                "source": {
+                    "$ref": "#/$defs/Citation",
+                    "description": "Where the evidence for the claim is."
+                },
+                "status": {
+                    "$ref": "#/$defs/ClaimStatus",
+                    "description": "Where the claim is in its life cycle."
+                },
+                "verification": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Verification"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "The independent check of the claim, if one was made."
+                }
+            },
+            "required": [
+                "id",
+                "source",
+                "paraphrase",
+                "curation",
+                "status"
+            ],
+            "title": "Claim",
+            "type": "object"
+        },
+        "ClaimStatus": {
+            "description": "Where a claim is in its life cycle.",
+            "enum": [
+                "proposed",
+                "accepted",
+                "disputed",
+                "retracted"
+            ],
+            "title": "ClaimStatus",
+            "type": "string"
+        },
+        "Confidence": {
+            "description": "How strong the evidence for a homology is.",
+            "enum": [
+                "high",
+                "medium",
+                "low"
+            ],
+            "title": "Confidence",
+            "type": "string"
+        },
+        "ConnectivityClaim": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "predicate": {
+                                "const": "projects_to"
+                            }
+                        },
+                        "required": [
+                            "predicate"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "evidence_class": {
+                                "anyOf": [
+                                    {
+                                        "const": "anterograde_tracer"
+                                    },
+                                    {
+                                        "const": "retrograde_tracer"
+                                    },
+                                    {
+                                        "const": "single_neuron_reconstruction"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "evidence_class"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "predicate": {
+                                "const": "synapses_onto"
+                            }
+                        },
+                        "required": [
+                            "predicate"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "evidence_class": {
+                                "anyOf": [
+                                    {
+                                        "const": "electron_microscopy"
+                                    },
+                                    {
+                                        "const": "transsynaptic_tracer"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "evidence_class"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "predicate": {
+                                "const": "functionally_connects_to"
+                            }
+                        },
+                        "required": [
+                            "predicate"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "evidence_class": {
+                                "anyOf": [
+                                    {
+                                        "const": "optogenetic_circuit_mapping"
+                                    },
+                                    {
+                                        "const": "paired_recording"
+                                    },
+                                    {
+                                        "const": "electrical_stimulation"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "evidence_class"
+                        ]
+                    }
+                }
+            ],
+            "description": "A claim that a region or neuron type connects to another in one species, shown by one kind of evidence. Edges are computed from these claims at build time and are never edited by hand.",
+            "properties": {
+                "curation": {
+                    "$ref": "#/$defs/Curation",
+                    "description": "Who drafted or curated the claim."
+                },
+                "evidence_class": {
+                    "$ref": "#/$defs/EvidenceClass",
+                    "description": "The method that produced the evidence."
+                },
+                "excerpt": {
+                    "description": "A short verbatim quotation, at most 300 characters, taken only from an openly licensed paper.",
+                    "pattern": "^[\\s\\S]{1,300}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^clm-[0-9a-hjkmnp-tv-z]{10}$",
+                    "type": "string"
+                },
+                "measurements": {
+                    "description": "Quantities reported for the connection.",
+                    "items": {
+                        "$ref": "#/$defs/Measurement"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "object": {
+                    "$ref": "#/$defs/EntityRef",
+                    "description": "The region or neuron type the relationship ends at."
+                },
+                "paraphrase": {
+                    "description": "The evidence summarised in the curator's own words. Copyright-safe: verbatim text belongs in excerpt, and only from openly licensed papers.",
+                    "type": "string"
+                },
+                "predicate": {
+                    "$ref": "#/$defs/ConnectivityPredicate",
+                    "description": "The kind of connection claimed."
+                },
+                "result": {
+                    "$ref": "#/$defs/Result",
+                    "description": "What the evidence showed. \"absent\" means tested and not found, which is different from no claim at all."
+                },
+                "sign": {
+                    "$ref": "#/$defs/Sign",
+                    "description": "The effect of the connection. Required, so that \"unknown\" is stated deliberately."
+                },
+                "source": {
+                    "$ref": "#/$defs/Citation",
+                    "description": "Where the evidence for the claim is."
+                },
+                "species": {
+                    "description": "The organism, as an NCBI Taxonomy ID such as NCBITaxon:10090.",
+                    "pattern": "^NCBITaxon:\\d+$",
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/$defs/ClaimStatus",
+                    "description": "Where the claim is in its life cycle."
+                },
+                "strength": {
+                    "$ref": "#/$defs/OrdinalStrength",
+                    "description": "The connection's strength on an ordinal scale, if reported."
+                },
+                "subject": {
+                    "$ref": "#/$defs/EntityRef",
+                    "description": "The region or neuron type the relationship starts from."
+                },
+                "verification": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Verification"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "The independent check of the claim, if one was made."
+                }
+            },
+            "required": [
+                "subject",
+                "predicate",
+                "object",
+                "species",
+                "evidence_class",
+                "result",
+                "sign",
+                "id",
+                "source",
+                "paraphrase",
+                "curation",
+                "status"
+            ],
+            "title": "ConnectivityClaim",
+            "type": "object"
+        },
+        "ConnectivityPredicate": {
+            "description": "The kinds of connection a claim can state. Each allows only its own evidence classes, so anatomical and functional evidence never share an edge type.",
+            "enum": [
+                "projects_to",
+                "synapses_onto",
+                "functionally_connects_to"
+            ],
+            "title": "ConnectivityPredicate",
+            "type": "string"
+        },
+        "Correspondence": {
+            "description": "How fully two entities in different species correspond.",
+            "enum": [
+                "equivalent",
+                "partial"
+            ],
+            "title": "Correspondence",
+            "type": "string"
+        },
+        "Curation": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "by": {
+                                "const": "human"
+                            }
+                        },
+                        "required": [
+                            "by"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "orcid": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "orcid"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "by": {
+                                "const": "agent"
+                            }
+                        },
+                        "required": [
+                            "by"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "model": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "prompt": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "model",
+                            "prompt"
+                        ]
+                    }
+                }
+            ],
+            "description": "Who drafted or curated a claim, and how.",
+            "properties": {
+                "by": {
+                    "$ref": "#/$defs/Actor",
+                    "description": "Whether a human or an agent did the work."
+                },
+                "date": {
+                    "description": "When the work was done. Quote it in YAML.",
+                    "format": "date",
+                    "type": "string"
+                },
+                "model": {
+                    "description": "The model ID an agent ran on, such as claude-opus-5-5.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "orcid": {
+                    "description": "The human's ORCID iD, without the https://orcid.org/ prefix.",
+                    "pattern": "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "prompt": {
+                    "description": "The versioned role prompt an agent ran, such as extract@1.0.0.",
+                    "pattern": "^[a-z][a-z0-9_-]*@\\d+\\.\\d+\\.\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "role": {
+                    "$ref": "#/$defs/Role",
+                    "description": "The role the human or agent acted in."
+                }
+            },
+            "required": [
+                "by",
+                "role",
+                "date"
+            ],
+            "title": "Curation",
+            "type": "object"
+        },
+        "EntityRef": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "region"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "id": {
+                                "anyOf": [
+                                    {
+                                        "pattern": "^(MBA|HBA):\\d+$"
+                                    },
+                                    {
+                                        "pattern": "^UBERON:\\d{7}$"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "neuron_type"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "id": {
+                                "anyOf": [
+                                    {
+                                        "pattern": "^nt-[0-9a-hjkmnp-tv-z]{10}$"
+                                    },
+                                    {
+                                        "pattern": "^CL:\\d{7}$"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "id": {
+                                "pattern": "^(MBA|HBA):"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "atlas": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "atlas"
+                        ]
+                    }
+                }
+            ],
+            "description": "A reference to a region or neuron type, used as the subject or object of a claim.",
+            "properties": {
+                "atlas": {
+                    "description": "The pinned atlas version an atlas region belongs to, such as allen-mouse-ccf-2017. Required for MBA and HBA IDs.",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "The entity's ID: an atlas region (MBA, HBA), a UBERON term, a project neuron type (nt-...) or a Cell Ontology term.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/$defs/EntityType",
+                    "description": "Whether the reference is to a region or a neuron type."
+                }
+            },
+            "required": [
+                "type",
+                "id"
+            ],
+            "title": "EntityRef",
+            "type": "object"
+        },
+        "EntityType": {
+            "description": "The kinds of entity a claim can connect.",
+            "enum": [
+                "region",
+                "neuron_type"
+            ],
+            "title": "EntityType",
+            "type": "string"
+        },
+        "EvidenceClass": {
+            "description": "The methods that produce connectivity evidence.",
+            "enum": [
+                "anterograde_tracer",
+                "retrograde_tracer",
+                "single_neuron_reconstruction",
+                "electron_microscopy",
+                "transsynaptic_tracer",
+                "optogenetic_circuit_mapping",
+                "paired_recording",
+                "electrical_stimulation"
+            ],
+            "title": "EvidenceClass",
+            "type": "string"
+        },
+        "HomologyBasis": {
+            "description": "The kinds of evidence a homology rests on.",
+            "enum": [
+                "connectivity",
+                "gene_expression",
+                "cytoarchitecture",
+                "development",
+                "function",
+                "expert_assertion"
+            ],
+            "title": "HomologyBasis",
+            "type": "string"
+        },
+        "HomologyClaim": {
+            "additionalProperties": false,
+            "description": "A claim that a region or neuron type in one species corresponds to one in another. Homology is a weighted, cited claim, never a merge of nodes.",
+            "properties": {
+                "basis": {
+                    "description": "The kinds of evidence the correspondence rests on.",
+                    "items": {
+                        "$ref": "#/$defs/HomologyBasis"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                },
+                "confidence": {
+                    "$ref": "#/$defs/Confidence",
+                    "description": "How strong the evidence for the correspondence is."
+                },
+                "correspondence": {
+                    "$ref": "#/$defs/Correspondence",
+                    "description": "How fully the two entities correspond."
+                },
+                "curation": {
+                    "$ref": "#/$defs/Curation",
+                    "description": "Who drafted or curated the claim."
+                },
+                "excerpt": {
+                    "description": "A short verbatim quotation, at most 300 characters, taken only from an openly licensed paper.",
+                    "pattern": "^[\\s\\S]{1,300}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^hom-[0-9a-hjkmnp-tv-z]{10}$",
+                    "type": "string"
+                },
+                "object": {
+                    "$ref": "#/$defs/EntityRef",
+                    "description": "The region or neuron type the relationship ends at."
+                },
+                "object_species": {
+                    "description": "The organism of the homology claim's object.",
+                    "pattern": "^NCBITaxon:\\d+$",
+                    "type": "string"
+                },
+                "paraphrase": {
+                    "description": "The evidence summarised in the curator's own words. Copyright-safe: verbatim text belongs in excerpt, and only from openly licensed papers.",
+                    "type": "string"
+                },
+                "source": {
+                    "$ref": "#/$defs/Citation",
+                    "description": "Where the evidence for the claim is."
+                },
+                "status": {
+                    "$ref": "#/$defs/ClaimStatus",
+                    "description": "Where the claim is in its life cycle."
+                },
+                "subject": {
+                    "$ref": "#/$defs/EntityRef",
+                    "description": "The region or neuron type the relationship starts from."
+                },
+                "subject_species": {
+                    "description": "The organism of the homology claim's subject.",
+                    "pattern": "^NCBITaxon:\\d+$",
+                    "type": "string"
+                },
+                "verification": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Verification"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "The independent check of the claim, if one was made."
+                }
+            },
+            "required": [
+                "subject",
+                "subject_species",
+                "object",
+                "object_species",
+                "correspondence",
+                "confidence",
+                "basis",
+                "id",
+                "source",
+                "paraphrase",
+                "curation",
+                "status"
+            ],
+            "title": "HomologyClaim",
+            "type": "object"
+        },
+        "KnowledgeBase": {
+            "additionalProperties": false,
+            "description": "Every record in one container, as written to dumps. Files in data/ hold one record each.",
+            "properties": {
+                "atlases": {
+                    "description": "Every pinned atlas version.",
+                    "items": {
+                        "$ref": "#/$defs/Atlas"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "connectivity_claims": {
+                    "description": "Every connectivity claim.",
+                    "items": {
+                        "$ref": "#/$defs/ConnectivityClaim"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "homology_claims": {
+                    "description": "Every homology claim.",
+                    "items": {
+                        "$ref": "#/$defs/HomologyClaim"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "neuron_types": {
+                    "description": "Every neuron type.",
+                    "items": {
+                        "$ref": "#/$defs/NeuronType"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "regions": {
+                    "description": "Every region.",
+                    "items": {
+                        "$ref": "#/$defs/Region"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "sources": {
+                    "description": "Every cached source.",
+                    "items": {
+                        "$ref": "#/$defs/Source"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "title": "KnowledgeBase",
+            "type": "object"
+        },
+        "Measurement": {
+            "additionalProperties": false,
+            "description": "A quantity reported for a connection, with its unit and uncertainty. A missing field means unknown; nothing has a default.",
+            "properties": {
+                "ci_high": {
+                    "description": "Upper bound of the 95% confidence interval.",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "ci_low": {
+                    "description": "Lower bound of the 95% confidence interval.",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "n": {
+                    "description": "Sample size behind the measurement.",
+                    "minimum": 1,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "quantity": {
+                    "$ref": "#/$defs/QuantityKind",
+                    "description": "What was measured."
+                },
+                "sd": {
+                    "description": "Standard deviation.",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "sem": {
+                    "description": "Standard error of the mean.",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "unit": {
+                    "description": "The UCUM unit code, such as ms, or \"1\" for a dimensionless value.",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "The measured value, in unit.",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "quantity",
+                "value",
+                "unit"
+            ],
+            "title": "Measurement",
+            "type": "object"
+        },
+        "NeuronType": {
+            "additionalProperties": false,
+            "description": "A population of neurons with a shared location, transmitter and markers. Mapped to the Cell Ontology where a term exists.",
+            "properties": {
+                "cell_ontology": {
+                    "description": "The matching Cell Ontology term.",
+                    "pattern": "^CL:\\d{7}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^nt-[0-9a-hjkmnp-tv-z]{10}$",
+                    "type": "string"
+                },
+                "markers": {
+                    "description": "Gene symbols that identify the neuron type, such as Sst.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "description": "The entity's full name.",
+                    "type": "string"
+                },
+                "region": {
+                    "$ref": "#/$defs/EntityRef",
+                    "description": "Where the neuron type's cell bodies are."
+                },
+                "species": {
+                    "description": "The organism, as an NCBI Taxonomy ID such as NCBITaxon:10090.",
+                    "pattern": "^NCBITaxon:\\d+$",
+                    "type": "string"
+                },
+                "synonyms": {
+                    "description": "Other names for the entity.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "transmitter": {
+                    "$ref": "#/$defs/Transmitter",
+                    "description": "The neuron type's main neurotransmitter."
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "species",
+                "region"
+            ],
+            "title": "NeuronType",
+            "type": "object"
+        },
+        "OrdinalStrength": {
+            "description": "Connection strength on an ordinal scale.",
+            "enum": [
+                "weak",
+                "moderate",
+                "strong"
+            ],
+            "title": "OrdinalStrength",
+            "type": "string"
+        },
+        "QuantityKind": {
+            "description": "The quantities a measurement can report.",
+            "enum": [
+                "connection_probability",
+                "synapse_count",
+                "conduction_delay",
+                "projection_density",
+                "fraction_of_labelled_neurons"
+            ],
+            "title": "QuantityKind",
+            "type": "string"
+        },
+        "Region": {
+            "additionalProperties": false,
+            "description": "A structure as defined in one pinned atlas version, mapped to UBERON.",
+            "properties": {
+                "acronym": {
+                    "description": "The region's acronym in its atlas.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "atlas": {
+                    "description": "The pinned atlas version the region belongs to.",
+                    "type": "string"
+                },
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^(MBA|HBA):\\d+$",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The entity's full name.",
+                    "type": "string"
+                },
+                "parent": {
+                    "description": "The region one level up in the atlas hierarchy.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "synonyms": {
+                    "description": "Other names for the entity.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "uberon": {
+                    "description": "The matching UBERON term.",
+                    "pattern": "^UBERON:\\d{7}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "atlas"
+            ],
+            "title": "Region",
+            "type": "object"
+        },
+        "Result": {
+            "description": "What a test of a connection showed.",
+            "enum": [
+                "present",
+                "absent",
+                "ambiguous"
+            ],
+            "title": "Result",
+            "type": "string"
+        },
+        "Role": {
+            "description": "The roles in the agent operating model, plus human curators.",
+            "enum": [
+                "curator",
+                "ingester",
+                "extractor",
+                "verifier",
+                "reconciler",
+                "triage"
+            ],
+            "title": "Role",
+            "type": "string"
+        },
+        "Sign": {
+            "description": "The effect a connection has on its target.",
+            "enum": [
+                "excitatory",
+                "inhibitory",
+                "modulatory",
+                "unknown"
+            ],
+            "title": "Sign",
+            "type": "string"
+        },
+        "Source": {
+            "additionalProperties": false,
+            "description": "Cached metadata for a paper or preprint that claims cite. Filled from Crossref and PubMed in Phase 1.",
+            "properties": {
+                "extra": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Any"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^(doi:10\\.\\d{4,9}/\\S+|pubmed:\\d+|pmc:PMC\\d+|arxiv:\\d{4}\\.\\d{4,5}(v\\d+)?)$",
+                    "type": "string"
+                },
+                "journal": {
+                    "description": "The journal or preprint server.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "license": {
+                    "description": "The paper's licence, as an SPDX ID where one exists.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "open_access": {
+                    "description": "Whether the full text is openly available.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "retracted": {
+                    "description": "Whether the paper has been retracted, per Crossref.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "title": {
+                    "description": "The paper's title.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "year": {
+                    "description": "The year of publication.",
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "Source",
+            "type": "object"
+        },
+        "Transmitter": {
+            "description": "A neuron type's main neurotransmitter.",
+            "enum": [
+                "glutamate",
+                "gaba",
+                "acetylcholine",
+                "dopamine",
+                "serotonin",
+                "noradrenaline",
+                "neuropeptide",
+                "unknown"
+            ],
+            "title": "Transmitter",
+            "type": "string"
+        },
+        "Verdict": {
+            "description": "A verifier's conclusion.",
+            "enum": [
+                "agree",
+                "disagree",
+                "unsure"
+            ],
+            "title": "Verdict",
+            "type": "string"
+        },
+        "Verification": {
+            "additionalProperties": false,
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "by": {
+                                "const": "human"
+                            }
+                        },
+                        "required": [
+                            "by"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "orcid": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "orcid"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "by": {
+                                "const": "agent"
+                            }
+                        },
+                        "required": [
+                            "by"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "model": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "prompt": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "model",
+                            "prompt"
+                        ]
+                    }
+                }
+            ],
+            "description": "An independent check of a claim against its source.",
+            "properties": {
+                "by": {
+                    "$ref": "#/$defs/Actor",
+                    "description": "Whether a human or an agent did the work."
+                },
+                "date": {
+                    "description": "When the work was done. Quote it in YAML.",
+                    "format": "date",
+                    "type": "string"
+                },
+                "model": {
+                    "description": "The model ID an agent ran on, such as claude-opus-5-5.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "orcid": {
+                    "description": "The human's ORCID iD, without the https://orcid.org/ prefix.",
+                    "pattern": "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "prompt": {
+                    "description": "The versioned role prompt an agent ran, such as extract@1.0.0.",
+                    "pattern": "^[a-z][a-z0-9_-]*@\\d+\\.\\d+\\.\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "role": {
+                    "$ref": "#/$defs/Role",
+                    "description": "The role the human or agent acted in."
+                },
+                "verdict": {
+                    "$ref": "#/$defs/Verdict",
+                    "description": "Whether the verifier agrees with the claim."
+                }
+            },
+            "required": [
+                "by",
+                "role",
+                "verdict",
+                "date"
+            ],
+            "title": "Verification",
+            "type": "object"
+        }
+    },
+    "$id": "https://w3id.org/axonarium/schema",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": false,
+    "description": "A specific, pinned version of a reference atlas. An atlas update creates a new record and a mapping file, never silent ID changes.",
+    "metamodel_version": "1.11.0",
+    "properties": {
+        "brainglobe_name": {
+            "description": "The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "extra": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Any"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
+        },
+        "id": {
+            "description": "The record's identifier.",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "type": "string"
+        },
+        "name": {
+            "description": "The entity's full name.",
+            "type": "string"
+        },
+        "species": {
+            "description": "The organism, as an NCBI Taxonomy ID such as NCBITaxon:10090.",
+            "pattern": "^NCBITaxon:\\d+$",
+            "type": "string"
+        },
+        "url": {
+            "description": "Where the atlas is published.",
+            "format": "uri",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "version": {
+            "description": "The atlas version, as its authors name it.",
+            "type": "string"
+        }
+    },
+    "required": [
+        "id",
+        "name",
+        "species",
+        "version"
+    ],
+    "title": "axonarium",
+    "type": "object",
+    "version": "0.1.0"
+}
+

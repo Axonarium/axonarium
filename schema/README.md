@@ -1,6 +1,8 @@
 # Schema
 
-`axonarium.yaml` is the [LinkML](https://linkml.io/) schema for everything in `data/`. It is the one definition the JSON Schema and SQL in `generated/` are produced from. Version 0.1.0 is sprint 0.2 of [docs/plan.md](../docs/plan.md); the design, including what is out of scope, is in [the sprint spec](../docs/specs/2026-10-02-sprint-0.2-schema.md).
+`axonarium.yaml` is the [LinkML](https://linkml.io/) schema for everything in `data/`. It is the one definition the JSON Schemas and SQL in `generated/` are produced from.
+
+To validate a single record file in an editor or another tool, use the schema for its class, such as `generated/json/ConnectivityClaim.schema.json`, and turn on format checking so dates are checked. `generated/axonarium.schema.json` describes a whole-database dump (`KnowledgeBase`) and accepts any single record file without checking it. `generated/axonarium.sql` is a reference mapping of the classes to PostgreSQL tables, not the production layout (sprint 0.4 designs that). Version 0.1.0 is sprint 0.2 of [docs/plan.md](../docs/plan.md); the design, including what is out of scope, is in [the sprint spec](../docs/specs/2026-10-02-sprint-0.2-schema.md).
 
 ## What it describes
 
@@ -56,6 +58,9 @@ Regenerate after changing the schema; a test fails until you do:
 
 ```bash
 uv run gen-json-schema schema/axonarium.yaml > schema/generated/axonarium.schema.json
+for c in ConnectivityClaim HomologyClaim Atlas Region NeuronType Source; do
+  uv run gen-json-schema --top-class $c --closed schema/axonarium.yaml > schema/generated/json/$c.schema.json
+done
 uv run gen-sqltables --dialect postgresql --autogenerate_index false --generate_abstract_class_ddl false schema/axonarium.yaml > schema/generated/axonarium.sql
 ```
 
