@@ -1,0 +1,8 @@
+id: waxholm-sd-rat-v4
+name: Waxholm Space atlas of the Sprague Dawley rat brain, version 4
+species: NCBITaxon:10116
+version: "4"
+url: https://www.nitrc.org/projects/whs-sd-atlas
+brainglobe_name: whs_sd_rat_39um
+extra:
+  brainglobe.atlas_version: "3.0"
