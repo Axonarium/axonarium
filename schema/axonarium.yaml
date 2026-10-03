@@ -496,7 +496,10 @@ slots:
   date:
     range: date
     required: true
-    description: When the work was done. Quote it in YAML.
+    pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+    description: >-
+      When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern
+      catches non-dates in validators that ignore JSON Schema "format".
   verdict:
     range: Verdict
     required: true

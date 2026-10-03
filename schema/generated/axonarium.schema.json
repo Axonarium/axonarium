@@ -571,8 +571,9 @@
                     "description": "Whether a human or an agent did the work."
                 },
                 "date": {
-                    "description": "When the work was done. Quote it in YAML.",
+                    "description": "When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern catches non-dates in validators that ignore JSON Schema \"format\".",
                     "format": "date",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                     "type": "string"
                 },
                 "model": {
@@ -1363,8 +1364,9 @@
                     "description": "Whether a human or an agent did the work."
                 },
                 "date": {
-                    "description": "When the work was done. Quote it in YAML.",
+                    "description": "When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern catches non-dates in validators that ignore JSON Schema \"format\".",
                     "format": "date",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                     "type": "string"
                 },
                 "model": {

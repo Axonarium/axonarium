@@ -183,3 +183,15 @@ def test_sql_generation_is_path_independent(tmp_path):
         shutil.copy(SCHEMA, copy)
         outputs.add(subprocess.run([*command, str(copy)], capture_output=True, text=True, check=True).stdout)
     assert len(outputs) == 1, "gen-sqltables output depends on where the schema file is"
+
+
+def test_dates_rejected_without_format_checking():
+    """Many validators treat JSON Schema "format" as a note; a non-date must still fail there."""
+    import json
+
+    import jsonschema
+
+    schema = json.loads((GENERATED / "json" / "ConnectivityClaim.schema.json").read_text(encoding="utf-8"))
+    validator = jsonschema.validators.validator_for(schema)(schema)  # no format checker
+    instance = load(SCHEMA_DIR / "examples" / "invalid" / "ConnectivityClaim-date-not-a-date.yaml")
+    assert any(list(e.absolute_path) == ["curation", "date"] for e in validator.iter_errors(instance))

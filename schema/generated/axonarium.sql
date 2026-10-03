@@ -64,7 +64,7 @@ COMMENT ON COLUMN "Curation".orcid IS 'The human''s ORCID iD, without the https:
 COMMENT ON COLUMN "Curation".role IS 'The role the human or agent acted in.';
 COMMENT ON COLUMN "Curation".model IS 'The model ID an agent ran on, such as claude-opus-5-5.';
 COMMENT ON COLUMN "Curation".prompt IS 'The versioned role prompt an agent ran, such as extract@1.0.0.';
-COMMENT ON COLUMN "Curation".date IS 'When the work was done. Quote it in YAML.';
+COMMENT ON COLUMN "Curation".date IS 'When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern catches non-dates in validators that ignore JSON Schema "format".';
 
 CREATE TABLE "Verification" (
 	id SERIAL NOT NULL,
@@ -84,7 +84,7 @@ COMMENT ON COLUMN "Verification".role IS 'The role the human or agent acted in.'
 COMMENT ON COLUMN "Verification".model IS 'The model ID an agent ran on, such as claude-opus-5-5.';
 COMMENT ON COLUMN "Verification".prompt IS 'The versioned role prompt an agent ran, such as extract@1.0.0.';
 COMMENT ON COLUMN "Verification".verdict IS 'Whether the verifier agrees with the claim.';
-COMMENT ON COLUMN "Verification".date IS 'When the work was done. Quote it in YAML.';
+COMMENT ON COLUMN "Verification".date IS 'When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern catches non-dates in validators that ignore JSON Schema "format".';
 
 CREATE TABLE "KnowledgeBase" (
 	id SERIAL NOT NULL,
