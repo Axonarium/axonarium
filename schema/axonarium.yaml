@@ -5,7 +5,7 @@ description: >-
   The data model of Axonarium, an open, cited map of how the brain and body
   are wired. The unit of knowledge is the claim: one statement from one source
   about one relationship in one species. See docs/plan.md, Part 1, "Data model".
-version: 0.1.0
+version: 0.2.0
 license: Apache-2.0
 see_also:
   - https://github.com/axonarium/axonarium
@@ -368,6 +368,22 @@ classes:
       id:
         pattern: "^(doi:10\\.\\d{4,9}/\\S+|pubmed:\\d+|pmc:PMC\\d+|arxiv:\\d{4}\\.\\d{4,5}(v\\d+)?)$"
 
+  RetractionLog:
+    description: >-
+      The log of deleted and retracted claims, kept in data/retractions.yaml.
+      Every deletion or retraction needs an entry, and the maintainer owns the
+      file, so such changes always get human review (ADR 0006).
+    slots:
+      - entries
+
+  RetractionEntry:
+    description: One deleted or retracted claim, and why.
+    slots:
+      - claim
+      - action
+      - reason
+      - curation
+
   KnowledgeBase:
     tree_root: true
     description: >-
@@ -639,6 +655,23 @@ slots:
     multivalued: true
     inlined_as_list: true
     description: Every cached source.
+  entries:
+    range: RetractionEntry
+    multivalued: true
+    inlined_as_list: true
+    required: true
+    description: The log's entries, oldest first. Entries are never edited or removed.
+  claim:
+    pattern: "^(clm|hom)-[0-9a-hjkmnp-tv-z]{10}$"
+    required: true
+    description: The ID of the deleted or retracted claim.
+  action:
+    range: RetractionAction
+    required: true
+    description: Whether the claim was deleted or retracted.
+  reason:
+    required: true
+    description: Why, in a sentence or two.
 
 enums:
   EntityType:
@@ -827,3 +860,11 @@ enums:
         description: A neuropeptide is the main signal.
       unknown:
         description: Not established.
+
+  RetractionAction:
+    description: What happened to a claim in the retractions log.
+    permissible_values:
+      deleted:
+        description: The claim's file was removed, for example as a duplicate or an error.
+      retracted:
+        description: The claim's status became retracted because its source was retracted.

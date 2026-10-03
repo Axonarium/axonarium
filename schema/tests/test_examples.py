@@ -46,7 +46,7 @@ def test_invalid_examples_fail_for_the_stated_reason(path):
 
 
 def test_example_ids_are_unique():
-    ids = [load(p)["id"] for p in VALID]
+    ids = [load(p)["id"] for p in VALID if "id" in load(p)]  # a RetractionLog has no ID
     assert len(ids) == len(set(ids)), sorted({i for i in ids if ids.count(i) > 1})
 
 
@@ -134,7 +134,7 @@ def test_example_citations_use_the_test_prefix():
 
 
 GENERATED = SCHEMA_DIR / "generated"
-RECORD_CLASSES = ["ConnectivityClaim", "HomologyClaim", "Atlas", "Region", "NeuronType", "Source"]
+RECORD_CLASSES = ["ConnectivityClaim", "HomologyClaim", "Atlas", "Region", "NeuronType", "Source", "RetractionLog"]
 GENERATORS = [
     (["gen-json-schema"], "axonarium.schema.json"),
     *[(["gen-json-schema", "--top-class", cls, "--closed"], f"json/{cls}.schema.json") for cls in RECORD_CLASSES],

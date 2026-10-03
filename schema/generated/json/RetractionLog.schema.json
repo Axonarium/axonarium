@@ -1472,70 +1472,19 @@
     "$id": "https://w3id.org/axonarium/schema",
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "additionalProperties": false,
-    "description": "A structure as defined in one pinned atlas version, mapped to UBERON.",
+    "description": "The log of deleted and retracted claims, kept in data/retractions.yaml. Every deletion or retraction needs an entry, and the maintainer owns the file, so such changes always get human review (ADR 0006).",
     "metamodel_version": "1.11.0",
     "properties": {
-        "acronym": {
-            "description": "The region's acronym in its atlas.",
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "atlas": {
-            "description": "The pinned atlas version the region belongs to.",
-            "type": "string"
-        },
-        "extra": {
-            "anyOf": [
-                {
-                    "$ref": "#/$defs/Any"
-                },
-                {
-                    "type": "null"
-                }
-            ],
-            "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
-        },
-        "id": {
-            "description": "The record's identifier.",
-            "pattern": "^(MBA|HBA):\\d+$",
-            "type": "string"
-        },
-        "name": {
-            "description": "The entity's full name.",
-            "type": "string"
-        },
-        "parent": {
-            "description": "The region one level up in the atlas hierarchy.",
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "synonyms": {
-            "description": "Other names for the entity.",
+        "entries": {
+            "description": "The log's entries, oldest first. Entries are never edited or removed.",
             "items": {
-                "type": "string"
+                "$ref": "#/$defs/RetractionEntry"
             },
-            "type": [
-                "array",
-                "null"
-            ]
-        },
-        "uberon": {
-            "description": "The matching UBERON term.",
-            "pattern": "^UBERON:\\d{7}$",
-            "type": [
-                "string",
-                "null"
-            ]
+            "type": "array"
         }
     },
     "required": [
-        "id",
-        "name",
-        "atlas"
+        "entries"
     ],
     "title": "axonarium",
     "type": "object",

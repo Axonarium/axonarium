@@ -12,6 +12,7 @@ CREATE TYPE "Role" AS ENUM ('curator', 'ingester', 'extractor', 'verifier', 'rec
 CREATE TYPE "Verdict" AS ENUM ('agree', 'disagree', 'unsure');
 CREATE TYPE "QuantityKind" AS ENUM ('connection_probability', 'synapse_count', 'conduction_delay', 'projection_density', 'fraction_of_labelled_neurons');
 CREATE TYPE "Transmitter" AS ENUM ('glutamate', 'gaba', 'acetylcholine', 'dopamine', 'serotonin', 'noradrenaline', 'neuropeptide', 'unknown');
+CREATE TYPE "RetractionAction" AS ENUM ('deleted', 'retracted');
 CREATE TYPE "HomologyBasis" AS ENUM ('connectivity', 'gene_expression', 'cytoarchitecture', 'development', 'function', 'expert_assertion');
 
 CREATE TABLE "Any" (
@@ -85,6 +86,12 @@ COMMENT ON COLUMN "Verification".model IS 'The model ID an agent ran on, such as
 COMMENT ON COLUMN "Verification".prompt IS 'The versioned role prompt an agent ran, such as extract@1.0.0.';
 COMMENT ON COLUMN "Verification".verdict IS 'Whether the verifier agrees with the claim.';
 COMMENT ON COLUMN "Verification".date IS 'When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern catches non-dates in validators that ignore JSON Schema "format".';
+
+CREATE TABLE "RetractionLog" (
+	id SERIAL NOT NULL,
+	PRIMARY KEY (id)
+);
+COMMENT ON TABLE "RetractionLog" IS 'The log of deleted and retracted claims, kept in data/retractions.yaml. Every deletion or retraction needs an entry, and the maintainer owns the file, so such changes always get human review (ADR 0006).';
 
 CREATE TABLE "KnowledgeBase" (
 	id SERIAL NOT NULL,
@@ -251,6 +258,24 @@ COMMENT ON COLUMN "Source".open_access IS 'Whether the full text is openly avail
 COMMENT ON COLUMN "Source".retracted IS 'Whether the paper has been retracted, per Crossref.';
 COMMENT ON COLUMN "Source"."KnowledgeBase_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "Source".extra_id IS 'Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here.';
+
+CREATE TABLE "RetractionEntry" (
+	id SERIAL NOT NULL,
+	claim TEXT NOT NULL,
+	action "RetractionAction" NOT NULL,
+	reason TEXT NOT NULL,
+	"RetractionLog_id" INTEGER,
+	curation_id INTEGER NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY("RetractionLog_id") REFERENCES "RetractionLog" (id),
+	FOREIGN KEY(curation_id) REFERENCES "Curation" (id)
+);
+COMMENT ON TABLE "RetractionEntry" IS 'One deleted or retracted claim, and why.';
+COMMENT ON COLUMN "RetractionEntry".claim IS 'The ID of the deleted or retracted claim.';
+COMMENT ON COLUMN "RetractionEntry".action IS 'Whether the claim was deleted or retracted.';
+COMMENT ON COLUMN "RetractionEntry".reason IS 'Why, in a sentence or two.';
+COMMENT ON COLUMN "RetractionEntry"."RetractionLog_id" IS 'Autocreated FK slot';
+COMMENT ON COLUMN "RetractionEntry".curation_id IS 'Who drafted or curated the claim.';
 
 CREATE TABLE "Measurement" (
 	id SERIAL NOT NULL,
