@@ -1,0 +1,31 @@
+id: clm-gny29mfsfx
+subject:
+  type: neuron_type
+  id: nt-v2hbfpmqzf
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-w0fxekq19n
+species: NCBITaxon:10090
+evidence_class: paired_recording
+result: present
+sign: inhibitory
+source:
+  doi: 10.5555/axonarium.example.013
+  locator: Fig. 4F
+paraphrase: >-
+  Illustrative example: paired recordings showed PKC-delta-expressing lateral central amygdala neurons inhibiting medial central amygdala output neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.1.0
+  date: "2026-10-02"
+verification:
+  by: agent
+  role: verifier
+  model: claude-fable-5-1
+  prompt: verify@0.1.0
+  verdict: agree
+  date: "2026-10-02"
+status: accepted

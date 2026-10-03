@@ -73,3 +73,61 @@ def test_references_resolve_within_examples():
     used_atlases |= {region["atlas"] for region in by_class.get("Region", [])}
     missing = {"neuron types": sorted(used_neuron_types - neuron_types), "atlases": sorted(used_atlases - atlases)}
     assert missing == {"neuron types": [], "atlases": []}, missing
+
+
+CLAIM_CLASSES = ("ConnectivityClaim", "HomologyClaim")
+MOUSE, RAT, HUMAN = "NCBITaxon:10090", "NCBITaxon:10116", "NCBITaxon:9606"
+
+
+def claims(cls: str) -> list[dict]:
+    return [load(path) for path in VALID if target_class(path) == cls]
+
+
+def enum_values(name: str) -> set[str]:
+    from linkml_runtime import SchemaView
+
+    return set(SchemaView(SCHEMA).get_enum(name).permissible_values)
+
+
+def test_at_least_20_example_claims():
+    count = sum(target_class(path) in CLAIM_CLASSES for path in VALID)
+    assert count >= 20, count
+
+
+def test_examples_cover_the_model():
+    connectivity, homology = claims("ConnectivityClaim"), claims("HomologyClaim")
+    measurements = [m for claim in connectivity for m in claim.get("measurements", [])]
+    gaps = []
+    for field, enum in [("predicate", "ConnectivityPredicate"), ("evidence_class", "EvidenceClass"),
+                        ("result", "Result"), ("sign", "Sign")]:
+        if missing := enum_values(enum) - {claim[field] for claim in connectivity}:
+            gaps.append(f"{field}: {sorted(missing)}")
+    if missing := enum_values("QuantityKind") - {m["quantity"] for m in measurements}:
+        gaps.append(f"quantity: {sorted(missing)}")
+    for keys in (("sd",), ("sem",), ("ci_low", "ci_high")):
+        if not any(all(k in m for k in keys) for m in measurements):
+            gaps.append(f"a measurement with {'/'.join(keys)}")
+    checks = {
+        "strength": any("strength" in c for c in connectivity),
+        "a rat claim between UBERON regions": any(
+            c["species"] == RAT and c["subject"]["id"].startswith("UBERON:") and c["object"]["id"].startswith("UBERON:")
+            for c in connectivity),
+        "two neuron-type claims": sum(c["subject"]["type"] == "neuron_type" for c in connectivity) >= 2,
+        "extra": any("extra" in c for c in connectivity),
+        "human curation": any(c["curation"]["by"] == "human" for c in connectivity),
+        "agent curation with verification": any(c["curation"]["by"] == "agent" and "verification" in c for c in connectivity),
+        "both correspondence values": {h["correspondence"] for h in homology} == enum_values("Correspondence"),
+        "all confidence levels": {h["confidence"] for h in homology} == enum_values("Confidence"),
+        "a mouse-rat homology": any({h["subject_species"], h["object_species"]} == {MOUSE, RAT} for h in homology),
+        "a mouse-human homology": any({h["subject_species"], h["object_species"]} == {MOUSE, HUMAN} for h in homology),
+        "prelimbic with anterior cingulate": any(
+            {h["subject"]["id"], h["object"]["id"]} == {"MBA:972", "UBERON:0009835"} for h in homology),
+    }
+    gaps += [name for name, ok in checks.items() if not ok]
+    assert gaps == [], gaps
+
+
+def test_example_citations_use_the_test_prefix():
+    not_test = [path.name for path in VALID
+                if target_class(path) in CLAIM_CLASSES and not load(path)["source"]["doi"].startswith("10.5555/")]
+    assert not_test == [], not_test
