@@ -9,7 +9,7 @@ from checks.http import Fetcher, LookupFailed
 OLS = "https://www.ebi.ac.uk/ols4/api/ontologies/{ontology}/terms?obo_id={curie}"
 ONTOLOGIES = {"UBERON": "uberon", "CL": "cl", "NCBITaxon": "ncbitaxon"}
 ALLEN = "https://api.brain-map.org/api/v2/data/Structure/query.json?criteria=%5Bid%24eq{number}%5D"
-ATLAS_GRAPHS = {"MBA": 1, "HBA": 10}  # Allen structure graphs: adult mouse, human
+ATLAS_GRAPHS = {"MBA": 1, "HBA": 10, "DHBA": 16}  # Allen structure graphs: adult mouse, adult human, Ding et al. 2016 human
 DOI_AGENCY = "https://doi.org/ra/{doi}"
 CROSSREF = "https://api.crossref.org/works/{doi}"
 DATACITE = "https://api.datacite.org/dois/{doi}"
@@ -46,7 +46,7 @@ def ontology_term(fetch: Fetcher, curie: str) -> Term:
 
 
 def atlas_structure(fetch: Fetcher, curie: str) -> Term:
-    """Whether an MBA or HBA ID is a structure in its Allen structure graph."""
+    """Whether an MBA, HBA or DHBA ID is a structure in its Allen structure graph."""
     prefix, number = curie.split(":")
     url = ALLEN.format(number=number)
     body = fetch.get_json(url)

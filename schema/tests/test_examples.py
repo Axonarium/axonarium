@@ -195,3 +195,12 @@ def test_dates_rejected_without_format_checking():
     validator = jsonschema.validators.validator_for(schema)(schema)  # no format checker
     instance = load(SCHEMA_DIR / "examples" / "invalid" / "ConnectivityClaim-date-not-a-date.yaml")
     assert any(list(e.absolute_path) == ["curation", "date"] for e in validator.iter_errors(instance))
+
+
+def test_dhba_regions_need_an_atlas():
+    claim = load(SCHEMA_DIR / "examples" / "valid" / "ConnectivityClaim-bla-to-ceam.yaml")
+    claim["species"] = "NCBITaxon:9606"
+    claim["object"] = {"type": "region", "id": "DHBA:10361", "atlas": "allen-human-2016"}
+    assert errors(validate(claim, SCHEMA, "ConnectivityClaim")) == []
+    claim["object"] = {"type": "region", "id": "DHBA:10361"}
+    assert errors(validate(claim, SCHEMA, "ConnectivityClaim"))

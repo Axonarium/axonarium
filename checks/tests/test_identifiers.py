@@ -2,7 +2,7 @@
 
 import pytest
 
-from checks.identifiers import curies_in, is_open_licence, source_file_name, source_key, spdx_from_url
+from checks.identifiers import canonical, curies_in, is_open_licence, source_file_name, source_key, spdx_from_url
 
 
 @pytest.mark.parametrize("source_id, name", [
@@ -45,6 +45,11 @@ def test_spdx_from_url(url, spdx):
 ])
 def test_is_open_licence(spdx, is_open):
     assert is_open_licence(spdx) is is_open
+
+
+def test_dhba_curies():
+    assert curies_in({"object": {"id": "DHBA:10361"}}) == {"DHBA:10361"}
+    assert canonical("curie", "DHBA:10361")
 
 
 def test_curies_in_skips_extra():

@@ -30,8 +30,8 @@ CREATE TABLE "EntityRef" (
 );
 COMMENT ON TABLE "EntityRef" IS 'A reference to a region or neuron type, used as the subject or object of a claim.';
 COMMENT ON COLUMN "EntityRef".type IS 'Whether the reference is to a region or a neuron type.';
-COMMENT ON COLUMN "EntityRef".id IS 'The entity''s ID: an atlas region (MBA, HBA), a UBERON term, a project neuron type (nt-...) or a Cell Ontology term.';
-COMMENT ON COLUMN "EntityRef".atlas IS 'The pinned atlas version an atlas region belongs to, such as allen-mouse-ccf-2017. Required for MBA and HBA IDs.';
+COMMENT ON COLUMN "EntityRef".id IS 'The entity''s ID: an atlas region (MBA, HBA, DHBA), a UBERON term, a project neuron type (nt-...) or a Cell Ontology term.';
+COMMENT ON COLUMN "EntityRef".atlas IS 'The pinned atlas version an atlas region belongs to, such as allen-mouse-ccf-2017. Required for MBA, HBA and DHBA IDs.';
 
 CREATE TABLE "Citation" (
 	id SERIAL NOT NULL,

@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
+import yaml
 
 from linkml.validator import validate
 
@@ -82,7 +83,7 @@ def test_manifest_counts(valid_tree, tmp_path):
     records, tables = build_rows(valid_tree)
     write_dumps(records, tables, tmp_path / "dist")
     manifest = json.loads((tmp_path / "dist" / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["schema_version"] == "0.2.1"
+    assert manifest["schema_version"] == yaml.safe_load(Path(SCHEMA).read_text(encoding="utf-8"))["version"]
     assert manifest["tables"] == {name: len(table) for name, table in tables.items()}
 
 
