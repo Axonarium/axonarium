@@ -5,6 +5,7 @@ from pathlib import Path
 import yaml
 
 from checks.findings import Finding, Record
+from checks.identifiers import source_file_name
 
 IGNORED = {Path("allowlist.yaml")}  # Reserved for sprint C.2.
 
@@ -62,6 +63,8 @@ def expected_file_name(cls: str, record_id: str) -> str | None:
         return f"{record_id}.yaml"
     if cls == "Region":
         return f"{record_id.replace(':', '_')}.yaml"
+    if cls == "Source" and ":" in record_id:
+        return source_file_name(record_id)
     return None
 
 

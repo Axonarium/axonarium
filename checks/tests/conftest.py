@@ -6,12 +6,14 @@ from pathlib import Path
 import pytest
 import yaml
 
+from checks.identifiers import source_file_name
+
 REPO = Path(__file__).resolve().parents[2]
 EXAMPLES = REPO / "schema" / "examples" / "valid"
 BROKEN = Path(__file__).parent / "fixtures" / "broken"
 
 
-def _data_path(cls: str, record: dict, example: Path) -> Path | None:
+def _data_path(cls: str, record: dict) -> Path | None:
     """Where an example belongs in data/, following the layout in data/README.md."""
     if cls == "ConnectivityClaim":
         return Path("claims", "examples", f"{record['id']}.yaml")
@@ -24,7 +26,7 @@ def _data_path(cls: str, record: dict, example: Path) -> Path | None:
     if cls == "NeuronType":
         return Path("entities", "neuron_types", f"{record['id']}.yaml")
     if cls == "Source":
-        return Path("sources", example.name.split("-", 1)[1])
+        return Path("sources", "doi", source_file_name(record["id"]))
     return None  # RetractionLog: the valid tree starts with an empty log
 
 
@@ -33,7 +35,7 @@ def valid_tree(tmp_path) -> Path:
     data = tmp_path / "data"
     for example in sorted(EXAMPLES.glob("*.yaml")):
         cls = example.name.split("-", 1)[0]
-        target = _data_path(cls, yaml.safe_load(example.read_text(encoding="utf-8")), example)
+        target = _data_path(cls, yaml.safe_load(example.read_text(encoding="utf-8")))
         if target:
             (data / target).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(example, data / target)

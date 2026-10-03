@@ -1,0 +1,57 @@
+"""Identifiers in records, the file names of source records, and licences."""
+
+import re
+
+CURIE = re.compile(r"^(UBERON|CL|NCBITaxon|MBA|HBA):\d+$")
+SAFE = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.()-")
+CC_LICENCE = re.compile(
+    r"^https?://(www\.)?creativecommons\.org/"
+    r"(licenses/(?P<code>by(-nc)?(-nd)?(-sa)?)/(?P<version>\d\.\d)(/(?P<jurisdiction>(?!legalcode|deed)[a-z]{2,}))?"
+    r"|publicdomain/zero/(?P<zero>1\.0))"
+    r"(/(legalcode(\.[a-z-]+)?|deed\.[a-z-]+))?/?$",
+    re.IGNORECASE,
+)
+OPEN_LICENCE = re.compile(r"^(CC0-1\.0|CC-BY-\d\.\d(-[A-Z]+)?)$")
+
+
+def curies_in(value) -> set[str]:
+    """Every string that is exactly an ontology or atlas CURIE, at any depth, outside `extra`."""
+    if isinstance(value, str):
+        return {value} if CURIE.match(value) else set()
+    if isinstance(value, dict):
+        return set().union(*(curies_in(v) for k, v in value.items() if k != "extra"))
+    if isinstance(value, list):
+        return set().union(*(curies_in(v) for v in value))
+    return set()
+
+
+def source_file_name(source_id: str) -> str:
+    """The file name of a source record: the scheme's `:` and every `/` as `_`, other unsafe characters %-encoded."""
+    scheme, rest = source_id.split(":", 1)
+    escaped = "".join(
+        c if c in SAFE else "_" if c == "/" else "".join(f"%{byte:02X}" for byte in c.encode("utf-8"))
+        for c in rest
+    )
+    return f"{scheme}_{escaped}.yaml"
+
+
+def spdx_from_url(url: str) -> str | None:
+    """The SPDX ID of a Creative Commons licence URL; None for any other URL."""
+    match = CC_LICENCE.match(url.strip())
+    if not match:
+        return None
+    if match["zero"]:
+        return "CC0-1.0"
+    spdx = f"CC-{match['code'].upper()}-{match['version']}"
+    return f"{spdx}-{match['jurisdiction'].upper()}" if match["jurisdiction"] else spdx
+
+
+def is_open_licence(spdx: str | None) -> bool:
+    """Whether verbatim excerpts may be taken from a source under this licence: CC0 or CC BY, nothing stricter."""
+    return isinstance(spdx, str) and bool(OPEN_LICENCE.match(spdx))
+
+
+def citation_of(data: dict) -> dict[str, str]:
+    """A claim's citation identifiers and locator that are strings; empty if it has no citation mapping."""
+    source = data.get("source")
+    return {k: v for k, v in source.items() if isinstance(v, str)} if isinstance(source, dict) else {}
