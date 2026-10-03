@@ -1,0 +1,72 @@
+name: Sprint card
+description: One unit of work from docs/plan.md, sized for one to a few agent sessions.
+title: "Sprint X.Y: "
+labels: [sprint]
+body:
+  - type: input
+    id: sprint-id
+    attributes:
+      label: Sprint ID
+      placeholder: "0.2"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+    validations:
+      required: true
+  - type: textarea
+    id: depends-on
+    attributes:
+      label: Depends on
+      description: Sprint cards that must be done first, as issue links, or "None".
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Inputs
+      description: Files, plan sections, ADRs and sources to read first.
+    validations:
+      required: false
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Deliverables
+    validations:
+      required: true
+  - type: textarea
+    id: done-when
+    attributes:
+      label: Done when
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Role
+      options:
+        - Builder
+        - Ingester
+        - Scout
+        - Extractor
+        - Verifier
+        - Reconciler
+        - Steward
+        - Triage
+        - Maintainer
+    validations:
+      required: true
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who
+      description: Who does the work, and whether a human reviews the result. Either way, the merge rules in AGENTS.md decide who merges.
+      options:
+        - Agent
+        - Agent + review
+        - Maintainer
+        - Maintainer + agent
+    validations:
+      required: true

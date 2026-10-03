@@ -1,0 +1,41 @@
+# Labels, synced to GitHub by .github/workflows/labels.yml.
+# Labels not listed here, such as GitHub's defaults, are kept.
+- name: phase-0
+  color: "1d76db"
+  description: "Phase 0: Foundations"
+- name: phase-1
+  color: "1d76db"
+  description: "Phase 1: Seed data"
+- name: phase-2
+  color: "1d76db"
+  description: "Phase 2: Amygdala module"
+- name: phase-3
+  color: "1d76db"
+  description: "Phase 3: Access layer"
+- name: phase-4
+  color: "1d76db"
+  description: "Phase 4: Modeling bridge"
+- name: phase-5
+  color: "1d76db"
+  description: "Phase 5: Publish and launch"
+- name: phase-6
+  color: "1d76db"
+  description: "Phase 6: Autopilot"
+- name: phase-7
+  color: "1d76db"
+  description: "Phase 7: Expansion modules"
+- name: sprint
+  color: "5319e7"
+  description: "A sprint card from docs/plan.md"
+- name: agent-ready
+  color: "0e8a16"
+  description: "Dependencies are met; an agent can pick this up"
+- name: needs-human
+  color: "d93f0b"
+  description: "The maintainer has to do or decide something"
+- name: blocked
+  color: "b60205"
+  description: "Waiting on another sprint or decision"
+- name: community-input
+  color: "006b75"
+  description: "Community-input track, sprints C.1 to C.5"

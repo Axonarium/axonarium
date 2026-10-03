@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: If you use Axonarium, please cite it using the metadata from this file.
+title: Axonarium
+abstract: >-
+  Axonarium is an open, AI-maintained map of how the brain is wired, where
+  every connection is backed by a cited source, tagged by species and method,
+  and exportable straight into simulations. It starts with the amygdala and is
+  built to grow across the whole brain and body, giving neuroscientists and AI
+  builders a trustworthy, machine-readable answer to how real circuits connect
+  across rat, mouse and human.
+type: software
+authors:
+  - given-names: Tyler
+    family-names: Banks
+repository-code: https://github.com/axonarium/axonarium
+license: Apache-2.0
+keywords:
+  - neuroscience
+  - neuroinformatics
+  - connectome
+  - amygdala
+  - knowledge graph
+  - LinkML
+  - SONATA
