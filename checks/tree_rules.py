@@ -1,8 +1,9 @@
-"""Rules that look across data files: IDs, references and atlas species."""
+"""Rules that look across data files: IDs, references, atlas species and cited sources."""
 
 from collections import defaultdict
 
 from checks.findings import Finding, Record
+from checks.identifiers import citation_of, is_open_licence
 
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
 
@@ -53,4 +54,27 @@ def check_tree(records: list[Record]) -> list[Finding]:
             if record.cls in CLAIMS and isinstance(species, str) and atlas in atlas_species and atlas_species[atlas] != species:
                 findings.append(Finding(str(record.path), "atlas-species",
                                         f"{ref_id} is in {atlas} ({atlas_species[atlas]}), but this side of the claim is {species}"))
+    return findings + _source_rules(records)
+
+
+def _source_rules(records: list[Record]) -> list[Finding]:
+    """Every cited DOI has a source record; claims on retracted papers are retracted; excerpts need an open licence."""
+    findings = []
+    sources = {r.data["id"].lower(): r.data for r in records if r.cls == "Source" and isinstance(r.data.get("id"), str)}
+    for record in records:
+        if record.cls not in CLAIMS:
+            continue
+        doi = citation_of(record.data).get("doi")
+        source = sources.get(f"doi:{doi.lower()}") if doi else None
+        if doi and source is None:
+            findings.append(Finding(str(record.path), "missing-source",
+                                    f"cites DOI {doi}, which has no record in sources/; run python -m checks sources"))
+        if source is not None and source.get("retracted") is True and record.data.get("status") != "retracted":
+            findings.append(Finding(str(record.path), "cites-retracted",
+                                    f"cites {doi}, which is retracted; set status: retracted and log it in retractions.yaml"))
+        if "excerpt" in record.data:
+            licence = source.get("license") if source is not None else None
+            if not is_open_licence(licence):
+                findings.append(Finding(str(record.path), "excerpt-licence",
+                                        f"has an excerpt, but its source's licence ({licence or 'none'}) isn't CC BY or CC0; use a paraphrase"))
     return findings

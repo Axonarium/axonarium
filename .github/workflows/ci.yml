@@ -14,7 +14,7 @@ concurrency:
 jobs:
   checks:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20  # Online checks of a large data pull request take minutes.
     permissions:
       contents: read
     steps:
@@ -36,3 +36,9 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: uv run --frozen python -m checks changes --base "origin/$BASE_REF"
+      - name: Identifiers and citations resolve
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        # The cache lives outside the checkout, so answers committed in a pull request are never read.
+        run: uv run --frozen python -m checks online --base "origin/$BASE_REF" --cache "$RUNNER_TEMP/checks-cache"

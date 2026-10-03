@@ -47,17 +47,33 @@ def _changed_paths(root: Path, base: str, data_rel: Path) -> list[Path]:
     return paths
 
 
-def check_changes(data_dir: Path, base: str) -> list[Finding]:
+def _repository(data_dir: Path, base: str) -> tuple[Path, Path, Path, str]:
+    """The data folder (resolved), the repository root, the data folder within it, and where the branch left `base`."""
     data_dir = data_dir.resolve()
     top = _git(data_dir, "rev-parse", "--show-toplevel")
     if top.returncode != 0:
         raise SystemExit(f"{data_dir} is not inside a git repository")
     root = Path(top.stdout.strip())
-    data_rel = data_dir.relative_to(root)
     merge_base = _git(root, "merge-base", base, "HEAD")
     if merge_base.returncode != 0:
         raise SystemExit(f"can't find where this branch left {base}: {merge_base.stderr.strip()}")
-    since = merge_base.stdout.strip()  # Changes that landed on the base after the branch started aren't ours.
+    # Changes that landed on the base after the branch started aren't the branch's.
+    return data_dir, root, data_dir.relative_to(root), merge_base.stdout.strip()
+
+
+def changed_since(data_dir: Path, base: str) -> set[Path]:
+    """Files under the data folder added or changed since the branch left `base`, committed or not; not deletions."""
+    data_dir, root, data_rel, since = _repository(data_dir, base)
+    tracked = _git(root, "diff", "-z", "--name-only", "--no-renames", "--diff-filter=d", since, "--", data_rel.as_posix())
+    untracked = _git(root, "ls-files", "-z", "--others", "--exclude-standard", "--", data_rel.as_posix())
+    for listing in (tracked, untracked):
+        if listing.returncode != 0:
+            raise SystemExit(f"git failed listing changed files: {listing.stderr.strip()}")
+    return {(root / name).resolve() for name in (tracked.stdout + untracked.stdout).split("\0") if name}
+
+
+def check_changes(data_dir: Path, base: str) -> list[Finding]:
+    data_dir, root, data_rel, since = _repository(data_dir, base)
 
     before = {}
     for path in _changed_paths(root, since, data_rel):

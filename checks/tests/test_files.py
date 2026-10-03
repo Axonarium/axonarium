@@ -74,3 +74,19 @@ def test_odd_input_is_reported_not_raised(valid_tree, case):
 def test_symlinks_are_reported(valid_tree):
     (valid_tree / "claims" / "examples" / "link.yaml").symlink_to("/nonexistent/clm.yaml")
     assert {f.rule for f in run_files(valid_tree)} == {"symlink"}
+
+
+def test_excerpt_without_doi(valid_tree):
+    path = valid_tree / "claims" / "examples" / "clm-pq22bk4dtz.yaml"
+    text = path.read_text(encoding="utf-8")
+    assert "  doi: 10.5555/axonarium.example.001\n" in text
+    path.write_text(text.replace("  doi: 10.5555/axonarium.example.001\n", '  pmid: "34001873"\n'), encoding="utf-8")
+    assert [f.rule for f in run_files(valid_tree)] == ["excerpt-licence"]
+
+
+def test_misnamed_source(valid_tree):
+    sources = valid_tree / "sources" / "doi"
+    (sources / "doi_10.5555_axonarium.example.001.yaml").rename(sources / "example-001.yaml")
+    findings = run_files(valid_tree)
+    assert [f.rule for f in findings] == ["file-name"]
+    assert "doi_10.5555_axonarium.example.001.yaml" in findings[0].message

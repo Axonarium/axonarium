@@ -1,0 +1,25 @@
+id: hom-c643x76f02
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+subject_species: NCBITaxon:10090
+object:
+  type: region
+  id: UBERON:0002883
+object_species: NCBITaxon:9606
+correspondence: equivalent
+confidence: medium
+basis: [cytoarchitecture]
+source:
+  arxiv: "2409.13740"
+  locator: Section 2
+paraphrase: >-
+  Test fixture for the online checks: its identifiers are real, but it is not a
+  curated claim.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-03"
+status: accepted
