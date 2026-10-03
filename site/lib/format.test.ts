@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { citationLinks, edgeFromParam, edgeHref, formatMeasurement, predicateLabel, speciesName, withParam } from "./format";
+import { citationLinks, citationParts, edgeFromParam, edgeHref, formatMeasurement, predicateLabel, speciesName, withParam } from "./format";
 
 describe("citationLinks", () => {
   it("links every identifier a citation carries, DOI first", () => {
@@ -77,5 +77,15 @@ describe("filter URLs", () => {
     );
     expect(withParam("/explore", params, "species", "")).toBe("/explore?predicate=projects_to");
     expect(withParam("/explore", new URLSearchParams("species=x"), "species", "")).toBe("/explore");
+  });
+});
+
+describe("citationParts", () => {
+  it("splits an atlas citation into its text and its link", () => {
+    expect(citationParts("Wang et al. 2020, https://doi.org/10.1016/j.cell.2020.04.007")).toEqual({
+      text: "Wang et al. 2020",
+      href: "https://doi.org/10.1016/j.cell.2020.04.007",
+    });
+    expect(citationParts("unpublished")).toEqual({ text: "unpublished", href: null });
   });
 });

@@ -83,3 +83,9 @@ export function withParam(pathname: string, params: URLSearchParams, name: strin
   const query = next.toString();
   return query ? `${pathname}?${query}` : pathname;
 }
+
+/** An atlas citation ("Authors year, https://…") as its text and its link, if it has one. */
+export function citationParts(citation: string): { text: string; href: string | null } {
+  const match = citation.match(/^(.*?)[,;]?\s*(https?:\/\/\S+)\s*$/);
+  return match ? { text: match[1].trim(), href: match[2] } : { text: citation, href: null };
+}

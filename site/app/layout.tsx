@@ -30,6 +30,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/explore" className="text-sm text-muted-foreground hover:text-foreground">
               Explore
             </Link>
+            <Link href="/atlases" className="text-sm text-muted-foreground hover:text-foreground">
+              Atlases
+            </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
               About
             </Link>
@@ -51,6 +54,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               ; sources keep their own terms
             </span>
             <span>Code: Apache-2.0</span>
+            <span>
+              Region names: Allen Institute atlases, via BrainGlobe;{" "}
+              <Link href="/atlases" className="hover:text-foreground">
+                cited on the Atlases page
+              </Link>
+            </span>
             <a href={REPO} className="hover:text-foreground">
               Source and data on GitHub
             </a>

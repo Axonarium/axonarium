@@ -9,7 +9,8 @@ import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { fetchAll } from "./pages";
-import type { ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
+import type { RegionName } from "./regions";
+import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
 
 const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength";
 
@@ -77,4 +78,20 @@ export async function getSource(id: string): Promise<Source | null> {
   const db = client();
   if (!db) return null;
   return rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle());
+}
+
+/** Every atlas region, by ID (about a thousand rows, cached with the page). */
+export async function getRegions(): Promise<Record<string, RegionName> | null> {
+  const db = client();
+  if (!db) return null;
+  const all = await fetchAll((from, to) =>
+    rows<RegionName[]>("regions", () => db.from("regions").select("id, acronym, name, atlas, uberon").order("id").range(from, to)),
+  );
+  return Object.fromEntries(all.map((region) => [region.id, region]));
+}
+
+export async function getAtlases(): Promise<Atlas[] | null> {
+  const db = client();
+  if (!db) return null;
+  return rows<Atlas[]>("atlases", () => db.from("atlases").select("id, name, species, version, url, brainglobe_name, citation").order("id"));
 }
