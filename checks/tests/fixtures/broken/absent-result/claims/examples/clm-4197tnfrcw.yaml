@@ -1,0 +1,26 @@
+id: clm-4197tnfrcw
+subject:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+strength: weak
+source:
+  doi: 10.5555/axonarium.example.010
+  locator: Fig. 2C
+paraphrase: >-
+  Illustrative example: no labelled terminals were found in prelimbic cortex after a medial central amygdala injection.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted

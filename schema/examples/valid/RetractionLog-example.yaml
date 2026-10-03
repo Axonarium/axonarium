@@ -1,0 +1,17 @@
+entries:
+  - claim: clm-fm6qfyqfye
+    action: deleted
+    reason: "Illustrative example: duplicate of clm-pq22bk4dtz."
+    curation:
+      by: human
+      orcid: 0000-0002-1825-0097
+      role: curator
+      date: "2026-10-03"
+  - claim: hom-yf36k44e09
+    action: retracted
+    reason: "Illustrative example: the source was retracted."
+    curation:
+      by: human
+      orcid: 0000-0002-1825-0097
+      role: curator
+      date: "2026-10-03"

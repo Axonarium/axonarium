@@ -108,4 +108,6 @@ Install [uv](https://docs.astral.sh/uv/), then run the checks CI runs:
 uvx pre-commit run --all-files
 ```
 
-The checks include linkml-lint and the schema tests, which run through uv. uv installs Python 3.13 and LinkML on first use.
+The checks include linkml-lint, the schema tests and the data checks, which run through uv. uv installs Python 3.13 and LinkML on first use.
+
+When you change `data/`, also run `uv run python -m checks changes --base origin/main`. Deleting or retracting a claim needs a new entry in `data/retractions.yaml`; see [data/README.md](data/README.md).

@@ -15,7 +15,8 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.1 Repo scaffold | Done |
 | 0.2 Schema v0.1 in LinkML | Done |
 | 1.1 License audit | Done |
-| 0.3 Validation CI, 0.4 Rebuild pipeline, 1.2 Atlas layer | Ready for an agent |
+| 0.3 Validation CI | Done |
+| 0.3b Online identifier checks, 0.4 Rebuild pipeline, 1.2 Atlas layer | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
 | 1.4 BAMS rat adapter | Blocked until BAMS grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)) |
@@ -32,6 +33,7 @@ Later phases get cards when they start.
 - Name: Axonarium ([ADR 0003](docs/decisions/0003-project-name.md)). Licences: Apache-2.0 for code and CC BY 4.0 for data ([ADR 0002](docs/decisions/0002-licensing.md)).
 - Identifiers: w3id.org base URI, and a type prefix plus 10 random characters for claims and neuron types ([ADR 0004](docs/decisions/0004-identifiers.md)).
 - Source reuse terms: copy, link or ask first, per source; Allen data is read at build time until the Allen Institute grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)).
+- Deletions and retractions: logged in data/retractions.yaml, which the maintainer owns ([ADR 0006](docs/decisions/0006-deletion-and-retraction-review.md)).
 
 ## Waiting on the maintainer
 

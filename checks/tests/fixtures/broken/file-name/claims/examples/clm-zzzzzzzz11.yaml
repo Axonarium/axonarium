@@ -1,0 +1,26 @@
+id: clm-zzzzzzzz00
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.5555/axonarium.example.002
+  locator: Fig. 2A
+paraphrase: >-
+  Illustrative example: tracer injected into the lateral amygdalar nucleus labelled dense terminals in the basolateral amygdalar nucleus.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted

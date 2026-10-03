@@ -1175,6 +1175,65 @@
             "title": "Result",
             "type": "string"
         },
+        "RetractionAction": {
+            "description": "What happened to a claim in the retractions log.",
+            "enum": [
+                "deleted",
+                "retracted",
+                "restored"
+            ],
+            "title": "RetractionAction",
+            "type": "string"
+        },
+        "RetractionEntry": {
+            "additionalProperties": false,
+            "description": "One deleted or retracted claim, and why.",
+            "properties": {
+                "action": {
+                    "$ref": "#/$defs/RetractionAction",
+                    "description": "Whether the claim was deleted, retracted or restored."
+                },
+                "claim": {
+                    "description": "The ID of the deleted or retracted claim.",
+                    "pattern": "^(clm|hom)-[0-9a-hjkmnp-tv-z]{10}$",
+                    "type": "string"
+                },
+                "curation": {
+                    "$ref": "#/$defs/Curation",
+                    "description": "Who drafted or curated the claim."
+                },
+                "reason": {
+                    "description": "Why, in a sentence or two.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "claim",
+                "action",
+                "reason",
+                "curation"
+            ],
+            "title": "RetractionEntry",
+            "type": "object"
+        },
+        "RetractionLog": {
+            "additionalProperties": false,
+            "description": "The log of deleted and retracted claims, kept in data/retractions.yaml. Every deletion or retraction needs an entry, and the maintainer owns the file, so such changes always get human review (ADR 0006).",
+            "properties": {
+                "entries": {
+                    "description": "The log's entries, oldest first. Entries are never edited or removed.",
+                    "items": {
+                        "$ref": "#/$defs/RetractionEntry"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "entries"
+            ],
+            "title": "RetractionLog",
+            "type": "object"
+        },
         "Role": {
             "description": "The roles in the agent operating model, plus human curators.",
             "enum": [
@@ -1481,6 +1540,6 @@
     ],
     "title": "axonarium",
     "type": "object",
-    "version": "0.1.0"
+    "version": "0.2.0"
 }
 

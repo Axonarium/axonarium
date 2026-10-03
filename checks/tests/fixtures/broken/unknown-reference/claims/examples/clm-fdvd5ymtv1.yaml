@@ -1,0 +1,30 @@
+id: clm-fdvd5ymtv1
+subject:
+  type: neuron_type
+  id: nt-hmvdte8t1h
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-zzzzzzzzzz
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+  - quantity: connection_probability
+    value: 0.6
+    unit: "1"
+    ci_low: 0.45
+    ci_high: 0.73
+    n: 30
+source:
+  doi: 10.5555/axonarium.example.012
+  locator: Fig. 7B
+paraphrase: >-
+  Illustrative example: light activation of glutamatergic basolateral neurons evoked excitatory currents in most somatostatin-expressing lateral central amygdala neurons tested.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted

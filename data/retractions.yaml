@@ -1,0 +1,4 @@
+# Every deleted or retracted claim needs an entry here, added in the same pull
+# request. Entries are never edited or removed. The maintainer owns this file
+# (.github/CODEOWNERS), so these changes always get human review: ADR 0006.
+entries: []
