@@ -1,6 +1,6 @@
 name: Deploy
 
-# Every merge to main rebuilds the live database from the files (design principle 2).
+# Every merge to main rebuilds the live database from the files (design principle 2), then deploys the site.
 # Never runs on pull requests, so no secret is ever exposed to one.
 on:
   push:
@@ -39,3 +39,31 @@ jobs:
             uv run --frozen alembic upgrade head
           fi
           uv run --frozen python -m build
+
+  site:
+    name: Deploy the site to Vercel
+    needs: database
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    permissions:
+      contents: read
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+      - name: Build and deploy (Vercel CLI, prebuilt)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx --yes vercel@62.2.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx --yes vercel@62.2.0 build --prod --token="$VERCEL_TOKEN"
+          npx --yes vercel@62.2.0 deploy --prebuilt --prod --token="$VERCEL_TOKEN"

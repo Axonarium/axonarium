@@ -89,6 +89,7 @@ What exists now:
 | `pyproject.toml`, `uv.lock` | The repo's Python tooling environment: Python 3.13 and LinkML |
 | `data/README.md` | Data licence, layout and the rules the checks apply |
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
+| `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)) |
 | `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
 
 Planned, from the plan's repository layout:
@@ -99,7 +100,6 @@ Planned, from the plan's repository layout:
 | `ingest/` | One adapter per external source |
 | `agents/roles/` | Role prompts |
 | `agents/evals/` | Gold set and eval harness (human-owned) |
-| `site/` | Next.js explorer |
 | `api/` | OpenAPI spec and MCP server |
 
 ## Before pushing

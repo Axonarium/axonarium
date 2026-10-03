@@ -1,0 +1,101 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { Citation } from "@/components/citation";
+import { DataUnavailable } from "@/components/data-unavailable";
+import { getClaim, getSource } from "@/lib/data";
+import { edgeHref, predicateLabel, speciesName } from "@/lib/format";
+
+export const revalidate = 300;
+
+export async function generateMetadata({ params }: PageProps<"/claims/[id]">): Promise<Metadata> {
+  return { title: `Claim ${(await params).id}` };
+}
+
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="grid gap-1 sm:grid-cols-[12rem_1fr]">
+      <dt className="text-sm text-muted-foreground">{label}</dt>
+      <dd>{children}</dd>
+    </div>
+  );
+}
+
+export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
+  const claim = await getClaim((await params).id);
+  if (!claim.ok) return <DataUnavailable reason={claim.reason} />;
+  if (!claim.data) notFound();
+  const c = claim.data;
+  const source = await getSource(c.source_key);
+  const s = source.ok ? source.data : null;
+  const edgeId = [c.subject_id, c.predicate, c.object_id, c.species].join("|");
+  return (
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <p className="font-mono text-sm text-muted-foreground">{c.id}</p>
+        <h1 className="text-3xl font-semibold tracking-tight">
+          <span className="font-mono">{c.subject_id}</span> {predicateLabel(c.predicate)}{" "}
+          <span className="font-mono">{c.object_id}</span>
+        </h1>
+        {c.status !== "retracted" && (
+          <Link href={edgeHref(edgeId)} className="text-sm underline underline-offset-4">
+            All claims for this connection
+          </Link>
+        )}
+      </header>
+      {c.status === "retracted" && (
+        <p role="note" className="rounded-lg border border-destructive/40 p-4 text-sm">
+          This claim is retracted: its source was retracted or the claim was withdrawn. It is kept for the record.
+        </p>
+      )}
+      <dl className="space-y-3">
+        <Row label="Species">{speciesName(c.species)}</Row>
+        <Row label="Result">{c.result}</Row>
+        <Row label="Method">{c.evidence_class.replaceAll("_", " ")}</Row>
+        <Row label="Sign">{c.sign}</Row>
+        {c.strength && <Row label="Strength">{c.strength}</Row>}
+        <Row label="Evidence">{c.paraphrase}</Row>
+        {c.excerpt && (
+          <Row label="Excerpt">
+            <blockquote className="border-l-2 pl-3 italic">{c.excerpt}</blockquote>
+          </Row>
+        )}
+        {c.measurements?.length ? (
+          <Row label="Measurements">
+            <ul className="space-y-1">
+              {c.measurements.map((m, i) => (
+                <li key={i} className="tabular-nums">
+                  {m.quantity.replaceAll("_", " ")}: {m.value} {m.unit === "1" ? "" : m.unit}
+                  {m.sd !== undefined && ` (SD ${m.sd})`}
+                  {m.n !== undefined && `, n = ${m.n}`}
+                </li>
+              ))}
+            </ul>
+          </Row>
+        ) : null}
+        <Row label="Source">
+          <div className="space-y-1">
+            {s?.title && <p>{s.title}</p>}
+            {s && (s.journal || s.year) && (
+              <p className="text-sm text-muted-foreground">{[s.journal, s.year].filter(Boolean).join(", ")}</p>
+            )}
+            <Citation cited={c} locator={c.locator} />
+            {s?.retracted && <p className="text-sm font-medium text-destructive">This paper has been retracted.</p>}
+            {s?.license && <p className="text-sm text-muted-foreground">Licence: {s.license}</p>}
+          </div>
+        </Row>
+        <Row label="Curated by">
+          {c.curation.by === "human" ? `a curator (ORCID ${c.curation.orcid})` : `an agent (${c.curation.model})`}, {c.curation.date}
+        </Row>
+        {c.verification && (
+          <Row label="Verified by">
+            {c.verification.by === "human" ? "a curator" : `an agent (${c.verification.model})`}: {c.verification.verdict},{" "}
+            {c.verification.date}
+          </Row>
+        )}
+        <Row label="Status">{c.status}</Row>
+      </dl>
+    </div>
+  );
+}
