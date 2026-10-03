@@ -131,3 +131,37 @@ def test_example_citations_use_the_test_prefix():
     not_test = [path.name for path in VALID
                 if target_class(path) in CLAIM_CLASSES and not load(path)["source"]["doi"].startswith("10.5555/")]
     assert not_test == [], not_test
+
+
+GENERATED = SCHEMA_DIR / "generated"
+GENERATORS = [
+    (["gen-json-schema"], "axonarium.schema.json"),
+    (["gen-sqltables", "--dialect", "postgresql"], "axonarium.sql"),
+]
+
+
+@pytest.mark.parametrize("command,name", GENERATORS, ids=[name for _, name in GENERATORS])
+def test_generated_file_is_current(command, name):
+    import subprocess
+
+    fresh = subprocess.run([*command, SCHEMA], capture_output=True, text=True, check=True).stdout
+    committed = (GENERATED / name).read_text(encoding="utf-8")
+    assert fresh == committed, f"schema/generated/{name} is stale; regenerate it (see schema/README.md)"
+
+
+def test_json_schema_agrees_with_linkml():
+    import json
+
+    import jsonschema
+
+    schema = json.loads((GENERATED / "axonarium.schema.json").read_text(encoding="utf-8"))
+    validator_class = jsonschema.validators.validator_for(schema)
+
+    def json_errors(path: Path) -> list[str]:
+        instance = json.loads(json.dumps(load(path), default=str))
+        root = {"$schema": schema.get("$schema"), "$defs": schema["$defs"], "$ref": f"#/$defs/{target_class(path)}"}
+        return [e.message for e in validator_class(root).iter_errors(instance)]
+
+    rejected_valid = {path.name: json_errors(path) for path in VALID if json_errors(path)}
+    accepted_invalid = [path.name for path in INVALID if not json_errors(path)]
+    assert rejected_valid == {} and accepted_invalid == [], (rejected_valid, accepted_invalid)

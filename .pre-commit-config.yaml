@@ -12,10 +12,15 @@ repos:
       - id: check-merge-conflict
         args: [--assume-in-merge]
       - id: check-yaml
+      # schema/generated/ must match its generator byte for byte (schema/tests
+      # checks that), so the whitespace fixers leave it alone.
       - id: end-of-file-fixer
+        exclude: ^schema/generated/
       - id: mixed-line-ending
+        exclude: ^schema/generated/
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: ^schema/generated/
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.38.2
     hooks:
@@ -42,4 +47,16 @@ repos:
         entry: uv lock --check
         language: system
         files: ^(pyproject\.toml|uv\.lock)$
+        pass_filenames: false
+      - id: linkml-lint
+        name: LinkML lint (schema/axonarium.yaml)
+        entry: uv run --frozen linkml-lint -c .linkmllint.yaml schema/axonarium.yaml
+        language: system
+        files: ^(schema/axonarium\.yaml|\.linkmllint\.yaml)$
+        pass_filenames: false
+      - id: schema-tests
+        name: Schema tests (examples, generated files)
+        entry: uv run --frozen pytest -q schema/tests
+        language: system
+        files: ^(schema/|pyproject\.toml|uv\.lock)
         pass_filenames: false
