@@ -18,6 +18,10 @@ def amygdala_loader():
     return AMYGDALA
 
 
+def no_claims(atlas, structure_ids, acronyms):
+    return []
+
+
 def fake_loader(ids=USED, amygdala="MBA:295", empty=()):
     def load(atlas, terms):
         assert terms == AMYGDALA
@@ -32,7 +36,8 @@ def fake_loader(ids=USED, amygdala="MBA:295", empty=()):
 
 def test_atlas_regions_reach_the_database_rows_not_the_dumps(valid_tree, tmp_path, capsys):
     out = tmp_path / "dist"
-    assert main(["--data", str(valid_tree), "--out", str(out)], atlas_loader=fake_loader(), amygdala_loader=amygdala_loader) == 0
+    assert main(["--data", str(valid_tree), "--out", str(out)], atlas_loader=fake_loader(), amygdala_loader=amygdala_loader,
+                connectivity_loader=no_claims) == 0
     printed = capsys.readouterr().out
     assert "allen-mouse-ccf-2017: 16 regions" in printed and "amygdala" in printed
     dumped = json.loads((out / "axonarium.json").read_text(encoding="utf-8"))

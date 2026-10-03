@@ -11,8 +11,9 @@ Options: `--data` (default `data`), `--out` (default `dist`), `--database` (defa
 
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
 2. **Atlases:** each atlas record with a BrainGlobe name is loaded at its pinned version (`ingest/atlases.py`), and its regions are mapped to UBERON by UBERON's bridges. The build stops if BrainGlobe serves another version, if data names a region its atlas lacks, or if an atlas resolves no amygdala region. Atlas regions go into the database, not the dumps ([ADR 0009](../docs/decisions/0009-atlas-layer.md)). `--no-atlases` skips this for offline work.
-3. **Dumps:** written to a fresh folder, then moved into place.
-4. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
+3. **Allen connectivity:** with the mouse atlas loaded, `ingest/allen_connectivity.py` makes region-level claims from wild-type amygdala injections in the Allen Mouse Brain Connectivity Atlas. They pass the same rules as committed claims, go into the database, and never into the repository or the dumps ([ADR 0010](../docs/decisions/0010-allen-connectivity.md)).
+4. **Dumps:** written to a fresh folder, then moved into place.
+5. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
 
 The tables are defined once, as SQLAlchemy tables in [tables.py](tables.py). Alembic migrations in [migrations/](migrations/) create them; the build never changes the schema. To change a table, edit `tables.py` and generate a migration (see [migrations/README](migrations/README)).
 

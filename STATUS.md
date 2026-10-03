@@ -20,12 +20,14 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.3c Retraction status for citations without a DOI | Done |
 | 0.4 Rebuild pipeline | Done |
 | 1.2 Atlas layer | Done |
+| 1.3 Allen mouse connectivity | Done: 1,419 build-time claims, 703 connections |
 | 3.3a Site shell on Vercel | Done: https://axonarium.vercel.app |
 | 0.3d Standard packages for the HTTP fetcher | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
 | 1.4 BAMS rat adapter | Blocked until BAMS grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)) |
-| 0.6, 1.3, 1.5 and 1.6 | Blocked on earlier sprints |
+| 0.6 and 1.6 | Blocked on earlier sprints |
+| 1.5 SCKAN adapter | Ready for an agent |
 
 Later phases get cards when they start.
 
@@ -41,6 +43,7 @@ Later phases get cards when they start.
 - Deletions and retractions: logged in data/retractions.yaml, which the maintainer owns ([ADR 0006](docs/decisions/0006-deletion-and-retraction-review.md)).
 - Online checks: identifiers and citations are looked up in their registries on every data pull request, failing closed; excerpts only from CC BY or CC0 papers ([ADR 0007](docs/decisions/0007-online-identifier-checks.md)).
 - Atlases: mouse (Allen CCFv3 2017), human (Allen 3D 2020) and rat (Waxholm v4), pinned and read from BrainGlobe at build time; regions mapped to UBERON by UBERON's bridges ([ADR 0009](docs/decisions/0009-atlas-layer.md)).
+- Allen mouse connectivity: region-level claims made at build time from wild-type amygdala injections, never committed or dumped ([ADR 0010](docs/decisions/0010-allen-connectivity.md)).
 - Serving database: read-shaped tables in Supabase, rebuilt from the files on every merge to main, read-only to the public ([ADR 0008](docs/decisions/0008-serving-database.md)).
 
 ## Waiting on the maintainer

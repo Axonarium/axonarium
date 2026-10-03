@@ -19,3 +19,4 @@ def no_network_atlases(monkeypatch):
     monkeypatch.setattr("ingest.atlases._open_brainglobe", refuse)
     monkeypatch.setattr("ingest.atlases._download", refuse)
     monkeypatch.setattr("ingest.atlases._get_json", refuse)
+    monkeypatch.setattr("ingest.allen_connectivity._get", refuse)
