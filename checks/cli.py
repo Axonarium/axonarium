@@ -6,6 +6,7 @@ from pathlib import Path
 from checks.file_rules import check_file
 from checks.findings import Finding
 from checks.loading import load_tree
+from checks.tree_rules import check_tree
 
 
 def run_files(data_dir: Path) -> list[Finding]:
@@ -13,6 +14,7 @@ def run_files(data_dir: Path) -> list[Finding]:
     records, findings = load_tree(data_dir)
     for record in records:
         findings += check_file(record)
+    findings += check_tree(records)
     return sorted(findings)
 
 
