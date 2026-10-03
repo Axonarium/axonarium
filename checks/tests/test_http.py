@@ -130,3 +130,11 @@ def test_not_found_not_cached(tmp_path):
 def test_corrupt_cache_entry_refetched(tmp_path):
     (tmp_path / f"{hashlib.sha256(URL.encode()).hexdigest()}.json").write_text("{not json")
     assert Clock().fetcher(Script({URL: [ok({"a": 3})]}), tmp_path).get_json(URL) == {"a": 3}
+
+
+def test_same_url_fetched_once_per_run():
+    script, clock = Script({URL: [ok({"a": 1})], NCBI + "1": [(404, {}, b"")]}), Clock()
+    fetcher = clock.fetcher(script)
+    assert [fetcher.get_json(URL), fetcher.get_json(URL)] == [{"a": 1}, {"a": 1}]
+    assert [fetcher.get_json(NCBI + "1"), fetcher.get_json(NCBI + "1")] == [None, None]
+    assert fetcher.requested == [URL, NCBI + "1"]

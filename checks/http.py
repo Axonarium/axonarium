@@ -60,9 +60,15 @@ class Fetcher:
         self.sleep, self.clock, self.wall = sleep, clock, wall
         self.requested: list[str] = []
         self._last: dict[str, float] = {}
+        self._answers: dict[str, Any] = {}  # This run's answers, so each URL is fetched once.
 
     def get_json(self, url: str) -> Any | None:
         """The parsed JSON of a 200 answer; None for 404 or 410; LookupFailed for anything else."""
+        if url not in self._answers:
+            self._answers[url] = self._get(url)
+        return self._answers[url]
+
+    def _get(self, url: str) -> Any | None:
         cached = self._cached(url)
         if cached is not _MISSING:
             return cached

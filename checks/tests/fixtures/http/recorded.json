@@ -27,6 +27,20 @@
    ]
   }
  },
+ "https://api.brain-map.org/api/v2/data/Structure/query.json?criteria=%5Bid%24eq536%5D": {
+  "status": 200,
+  "body": {
+   "success": true,
+   "msg": [
+    {
+     "id": 536,
+     "acronym": "CEA",
+     "name": "Central amygdalar nucleus",
+     "graph_id": 1
+    }
+   ]
+  }
+ },
  "https://api.brain-map.org/api/v2/data/Structure/query.json?criteria=%5Bid%24eq999999999%5D": {
   "status": 200,
   "body": {
@@ -198,6 +212,15 @@
    }
   }
  },
+ "https://doi.org/ra/10.1016/s0140-6736%2897%2911096-0": {
+  "status": 200,
+  "body": [
+   {
+    "DOI": "10.1016/s0140-6736(97)11096-0",
+    "RA": "Crossref"
+   }
+  ]
+ },
  "https://doi.org/ra/10.1038/s41467-021-22915-5": {
   "status": 200,
   "body": [
@@ -216,6 +239,15 @@
    }
   ]
  },
+ "https://doi.org/ra/10.48550/arXiv.2409.99999": {
+  "status": 200,
+  "body": [
+   {
+    "DOI": "10.48550/arXiv.2409.99999",
+    "status": "DOI does not exist"
+   }
+  ]
+ },
  "https://doi.org/ra/10.5555/axonarium.example.001": {
   "status": 200,
   "body": [
@@ -224,6 +256,88 @@
     "status": "DOI does not exist"
    }
   ]
+ },
+ "https://doi.org/ra/10.5555/axonarium.missing.001": {
+  "status": 200,
+  "body": [
+   {
+    "DOI": "10.5555/axonarium.missing.001",
+    "status": "DOI does not exist"
+   }
+  ]
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pmc&id=8129205&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "8129205"
+    ],
+    "8129205": {
+     "uid": "8129205",
+     "title": "Connectivity characterization of the mouse basolateral amygdalar complex.",
+     "articleids": [
+      {
+       "idtype": "pmid",
+       "value": "34001873"
+      },
+      {
+       "idtype": "pmcid",
+       "value": "PMC8129205"
+      },
+      {
+       "idtype": "doi",
+       "value": "10.1038/s41467-021-22915-5"
+      },
+      {
+       "idtype": "pii",
+       "value": "10.1038/s41467-021-22915-5"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=33986261&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "33986261"
+    ],
+    "33986261": {
+     "uid": "33986261",
+     "title": "Cellular connectomes as arbiters of local circuit models in the cerebral cortex.",
+     "articleids": [
+      {
+       "idtype": "pubmed",
+       "idtypen": 1,
+       "value": "33986261"
+      },
+      {
+       "idtype": "pmc",
+       "idtypen": 8,
+       "value": "PMC8119988"
+      },
+      {
+       "idtype": "pmcid",
+       "idtypen": 5,
+       "value": "pmc-id: PMC8119988;"
+      },
+      {
+       "idtype": "doi",
+       "idtypen": 3,
+       "value": "10.1038/s41467-021-22856-z"
+      },
+      {
+       "idtype": "pii",
+       "idtypen": 4,
+       "value": "10.1038/s41467-021-22856-z"
+      }
+     ]
+    }
+   }
+  }
  },
  "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=34001873&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
   "status": 200,
@@ -280,6 +394,21 @@
    }
   }
  },
+ "https://www.ebi.ac.uk/ols4/api/ontologies/cl/terms?obo_id=CL:0000399": {
+  "status": 200,
+  "body": {
+   "_embedded": {
+    "terms": [
+     {
+      "obo_id": "CL:0000399",
+      "label": "obsolete phloem element",
+      "is_obsolete": true,
+      "term_replaced_by": null
+     }
+    ]
+   }
+  }
+ },
  "https://www.ebi.ac.uk/ols4/api/ontologies/cl/terms?obo_id=CL:0000679": {
   "status": 200,
   "body": {
@@ -303,6 +432,21 @@
      {
       "obo_id": "NCBITaxon:10090",
       "label": "Mus musculus",
+      "is_obsolete": false,
+      "term_replaced_by": null
+     }
+    ]
+   }
+  }
+ },
+ "https://www.ebi.ac.uk/ols4/api/ontologies/ncbitaxon/terms?obo_id=NCBITaxon:9606": {
+  "status": 200,
+  "body": {
+   "_embedded": {
+    "terms": [
+     {
+      "obo_id": "NCBITaxon:9606",
+      "label": "Homo sapiens",
       "is_obsolete": false,
       "term_replaced_by": null
      }

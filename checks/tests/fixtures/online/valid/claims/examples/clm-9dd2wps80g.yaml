@@ -1,0 +1,28 @@
+id: clm-9dd2wps80g
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-021-22915-5
+  pmid: "34001873"
+  pmcid: PMC8129205
+  locator: Fig. 2
+paraphrase: >-
+  Test fixture for the online checks: its identifiers are real, but it is not a
+  curated claim.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-03"
+status: accepted
