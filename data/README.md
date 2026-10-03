@@ -14,7 +14,7 @@ Each record is one YAML file. Its folder decides its class in [the schema](../sc
 | --- | --- | --- |
 | `claims/<module>/` | Connectivity claims, by module such as `amygdala` | `<id>.yaml`, such as `clm-pq22bk4dtz.yaml` |
 | `homology/` | Cross-species homology claims | `<id>.yaml` |
-| `entities/atlases/` | Pinned atlas versions | `<id>.yaml` |
+| `entities/atlases/` | Pinned atlas versions: the BrainGlobe atlas, its data version in `extra.brainglobe.atlas_version`, and its citation. Their regions are read at build time, never committed ([ADR 0009](../docs/decisions/0009-atlas-layer.md)) | `<id>.yaml` |
 | `entities/regions/` | Regions | the ID with `:` as `_`, such as `MBA_295.yaml` |
 | `entities/neuron_types/` | Neuron types | `<id>.yaml` |
 | `sources/<scheme>/` | Paper metadata, one record per cited paper, keyed by its DOI, else PubMed ID, else PMC ID, else arXiv ID; written by `checks sources` from Crossref, DataCite or NCBI | the ID with `:` and `/` as `_`, other characters outside letters, digits and `.()-` %-encoded: `doi_10.1038_s41467-021-22915-5.yaml` |

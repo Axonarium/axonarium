@@ -89,6 +89,7 @@ What exists now:
 | `pyproject.toml`, `uv.lock` | The repo's Python tooling environment: Python 3.13 and LinkML |
 | `data/README.md` | Data licence, layout and the rules the checks apply |
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
+| `ingest/` | Adapters for external sources, run by the build: `atlases.py` reads BrainGlobe atlases and UBERON bridges |
 | `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)) |
 | `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
 
@@ -97,7 +98,6 @@ Planned, from the plan's repository layout:
 | Path | Will hold |
 | --- | --- |
 | `data/entities/`, `data/claims/`, `data/homology/`, `data/sources/` | Knowledge files (the folders appear with their first records) |
-| `ingest/` | One adapter per external source |
 | `agents/roles/` | Role prompts |
 | `agents/evals/` | Gold set and eval harness (human-owned) |
 | `api/` | OpenAPI spec and MCP server |

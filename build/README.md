@@ -10,8 +10,9 @@ AXONARIUM_DATABASE_URL=postgresql://… uv run python -m build   # …and load P
 Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines).
 
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
-2. **Dumps:** written to a fresh folder, then moved into place.
-3. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
+2. **Atlases:** each atlas record with a BrainGlobe name is loaded at its pinned version (`ingest/atlases.py`), and its regions are mapped to UBERON by UBERON's bridges. The build stops if BrainGlobe serves another version, if data names a region its atlas lacks, or if an atlas resolves no amygdala region. Atlas regions go into the database, not the dumps ([ADR 0009](../docs/decisions/0009-atlas-layer.md)). `--no-atlases` skips this for offline work.
+3. **Dumps:** written to a fresh folder, then moved into place.
+4. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
 
 The tables are defined once, as SQLAlchemy tables in [tables.py](tables.py). Alembic migrations in [migrations/](migrations/) create them; the build never changes the schema. To change a table, edit `tables.py` and generate a migration (see [migrations/README](migrations/README)).
 
