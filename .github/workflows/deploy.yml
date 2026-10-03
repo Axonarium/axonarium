@@ -29,11 +29,13 @@ jobs:
         with:
           version: "0.12.22"
           enable-cache: false
-      - name: Build and load
+      - name: Migrate, build and load
         env:
           AXONARIUM_DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
           if [ -z "$AXONARIUM_DATABASE_URL" ]; then
             echo "::notice::The SUPABASE_DB_URL secret isn't set, so only the dumps were built."
+          else
+            uv run --frozen alembic upgrade head
           fi
           uv run --frozen python -m build

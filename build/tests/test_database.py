@@ -1,4 +1,8 @@
-"""Loading Postgres: run against AXONARIUM_TEST_DATABASE_URL (a Postgres service in CI); skipped without it."""
+"""Loading Postgres: run against AXONARIUM_TEST_DATABASE_URL (a Postgres service in CI); skipped without it.
+
+The schema comes from supabase/migrations, applied by the Supabase CLI before these tests run
+(`npx supabase db push --db-url "$AXONARIUM_TEST_DATABASE_URL"`). The build only fills the tables.
+"""
 
 import copy
 import os
@@ -19,6 +23,12 @@ def query(sql: str, *params):
         return conn.execute(sql, params).fetchall()
 
 
+def execute(*statements: str) -> None:
+    with psycopg.connect(URL, autocommit=True) as conn:
+        for statement in statements:
+            conn.execute(statement)
+
+
 def counts() -> dict[str, int]:
     return {name: query(f"select count(*) from {name}")[0][0] for name in TABLES}
 
@@ -30,7 +40,7 @@ def tables(valid_tree):
     return rows(records)
 
 
-def test_load_into_empty_database(tables):
+def test_load_fills_the_tables(tables):
     load(URL, tables)
     assert counts() == {name: len(table) for name, table in tables.items()}
     subject, measurements, curation = query(
@@ -38,6 +48,13 @@ def test_load_into_empty_database(tables):
     assert subject == "MBA:295" and measurements[0]["value"] == 0.12 and curation["by"] == "agent"
     basis = query("select basis from homology_claims order by id limit 1")[0][0]
     assert isinstance(basis, list) and basis
+
+
+def test_load_never_changes_the_schema(tables):
+    identities = "select relname, oid from pg_class where relname = any(%s) order by relname"
+    before = query(identities, list(TABLES))
+    load(URL, tables)
+    assert query(identities, list(TABLES)) == before
 
 
 def test_reload_replaces(tables):
@@ -60,14 +77,43 @@ def test_failed_load_keeps_previous_data(tables):
 
 
 def test_other_tables_untouched(tables):
-    with psycopg.connect(URL) as conn:
-        conn.execute("drop table if exists unrelated")
-        conn.execute("create table unrelated (x integer)")
-        conn.execute("insert into unrelated values (1)")
+    execute("drop table if exists unrelated", "create table unrelated (x integer)", "insert into unrelated values (1)")
+    try:
+        load(URL, tables)
+        assert query("select x from unrelated") == [(1,)]
+    finally:
+        execute("drop table unrelated")
+
+
+def test_view_survives_load(tables):
+    execute("create or replace view strong_edges as select id from edges where strength = 'strong'")
+    try:
+        load(URL, tables)
+        assert query("select count(*) from pg_views where viewname = 'strong_edges'") == [(1,)]
+    finally:
+        execute("drop view strong_edges")
+
+
+def test_outside_foreign_key_fails_safely(tables):
     load(URL, tables)
-    assert query("select x from unrelated") == [(1,)]
-    with psycopg.connect(URL) as conn:
-        conn.execute("drop table unrelated")
+    before = counts()
+    execute("create table curated_notes (claim text references connectivity_claims (id))")
+    try:
+        with pytest.raises(LoadFailed):
+            load(URL, tables)
+        assert counts() == before
+        assert query("select count(*) from pg_constraint where conrelid = 'curated_notes'::regclass and contype = 'f'") == [(1,)]
+    finally:
+        execute("drop table curated_notes")
+
+
+def test_missing_migration_fails_clearly(tables):
+    execute("alter table edges rename column signs to signs_renamed")
+    try:
+        with pytest.raises(LoadFailed, match="alembic upgrade head"):
+            load(URL, tables)
+    finally:
+        execute("alter table edges rename column signs_renamed to signs")
 
 
 def test_awkward_text_loads(tables):
@@ -78,31 +124,19 @@ def test_awkward_text_loads(tables):
     assert counts()["sources"] == len(tables["sources"])
 
 
-def test_read_policies_when_anon_exists(tables):
-    with psycopg.connect(URL) as conn:
-        for role in ("anon", "authenticated"):
-            if not conn.execute("select 1 from pg_roles where rolname = %s", (role,)).fetchall():
-                conn.execute(f"create role {role} nologin")
-    load(URL, tables)
+def test_migration_gives_read_only_access(tables):
     policies = {row[0] for row in query("select tablename from pg_policies where cmd = 'SELECT' and 'anon' = any(roles)")}
     assert policies == set(TABLES)
-    assert query("select has_table_privilege('anon', 'connectivity_claims', 'INSERT')") == [(False,)]
-    assert query("select has_table_privilege('anon', 'connectivity_claims', 'SELECT')") == [(True,)]
+    for privilege, expected in (("SELECT", True), ("INSERT", False), ("UPDATE", False), ("DELETE", False),
+                                ("TRUNCATE", False), ("REFERENCES", False), ("TRIGGER", False)):
+        assert query("select has_table_privilege('anon', 'connectivity_claims', %s)", privilege) == [(expected,)], privilege
     assert all(query("select relrowsecurity from pg_class where relname = %s", name) == [(True,)] for name in TABLES)
 
 
-def test_failure_message_hides_password():
-    with pytest.raises(LoadFailed) as error:
-        load("postgresql://axonarium:hunter2-secret@127.0.0.1:1/nowhere?connect_timeout=2", {name: [] for name in TABLES})
-    assert "hunter2-secret" not in str(error.value)
+def test_migrations_match_tables(monkeypatch):
+    # Alembic compares build/tables.py with the migrated database; any difference means a missing migration.
+    from alembic import command
+    from alembic.config import Config
 
-
-def test_asks_rest_api_to_reload_schema(tables):
-    # Supabase's REST API caches table definitions; without this, rebuilt tables 404 for a while.
-    if "PGlite" in query("select version()")[0][0]:
-        pytest.skip("PGlite runs every connection in one session, so it can't deliver NOTIFY between them")
-    with psycopg.connect(URL, autocommit=True) as listener:
-        listener.execute("listen pgrst")
-        load(URL, tables)
-        payloads = [n.payload for n in listener.notifies(timeout=5, stop_after=1)]
-    assert payloads == ["reload schema"]
+    monkeypatch.setenv("AXONARIUM_DATABASE_URL", URL)
+    command.check(Config("alembic.ini"))

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import yaml
 
-from build.tables import TABLES
+from build.tables import columns
 from checks.findings import Record
 
 SCHEMA = Path(__file__).resolve().parents[1] / "schema" / "axonarium.yaml"
@@ -38,9 +38,9 @@ def _cell(value) -> str:
 def _csv(table: str, rows: list[dict]) -> str:
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
-    columns = [c for c, _ in TABLES[table]]
-    writer.writerow(columns)
-    writer.writerows([_cell(row[c]) for c in columns] for row in rows)
+    names = columns(table)
+    writer.writerow(names)
+    writer.writerows([_cell(row[c]) for c in names] for row in rows)
     return buffer.getvalue()
 
 

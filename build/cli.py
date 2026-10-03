@@ -11,6 +11,18 @@ from checks.cli import run_files
 from checks.loading import load_tree
 
 
+def _unsafe_out(out: Path, data: Path) -> str | None:
+    """Why the dumps folder must not be replaced, or None. Replacing it deletes everything in it."""
+    out, data, here = out.resolve(), data.resolve(), Path.cwd().resolve()
+    if out == here or out in here.parents:
+        return "it is the working folder or contains it"
+    if out == data or data in out.parents or out in data.parents:
+        return "it overlaps the data folder"
+    if out.exists() and (not out.is_dir() or (any(out.iterdir()) and not (out / "manifest.json").is_file())):
+        return "it holds files that aren't a previous build (no manifest.json)"
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m build",
                                      description="Rebuild the dumps and the database from the data files.")
@@ -19,6 +31,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--database", help="a Postgres URL to load (default: the AXONARIUM_DATABASE_URL environment variable)")
     args = parser.parse_args(argv)
 
+    unsafe = _unsafe_out(args.out, args.data)
+    if unsafe:
+        print(f"refusing to write dumps to {args.out}: {unsafe}")
+        return 1
     # A typo in --data must never load an empty database over the real one.
     if not (args.data / "retractions.yaml").is_file():
         print(f"{args.data} is not a data folder (no retractions.yaml); build stopped")

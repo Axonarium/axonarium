@@ -11,7 +11,16 @@ Options: `--data` (default `data`), `--out` (default `dist`), `--database` (defa
 
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
 2. **Dumps:** written to a fresh folder, then moved into place.
-3. **Database:** in one transaction, the tables below are dropped, recreated and filled, with read-only access for Supabase's public roles. A failed load changes nothing.
+3. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
+
+The tables are defined once, as SQLAlchemy tables in [tables.py](tables.py). Alembic migrations in [migrations/](migrations/) create them; the build never changes the schema. To change a table, edit `tables.py` and generate a migration (see [migrations/README](migrations/README)).
+
+For the database tests, point `AXONARIUM_TEST_DATABASE_URL` at a scratch Postgres and migrate it first:
+
+```bash
+AXONARIUM_DATABASE_URL="$AXONARIUM_TEST_DATABASE_URL" uv run alembic upgrade head
+uv run pytest build/tests
+```
 
 ## Dumps
 
@@ -36,5 +45,5 @@ Columns are declared in [tables.py](tables.py). Why these tables, and not LinkML
 
 ## Where it runs
 
-- **CI** rebuilds into an empty Postgres 17 on every pull request.
-- **Deploy** (`.github/workflows/deploy.yml`) rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret.
+- **CI** migrates and rebuilds an empty Postgres 17 on every pull request.
+- **Deploy** (`.github/workflows/deploy.yml`) migrates and rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret.

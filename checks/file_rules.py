@@ -99,6 +99,24 @@ def _non_finite(record: Record) -> list[Finding]:
             if isinstance(value, float) and not math.isfinite(value)]
 
 
+def _json_value(record: Record) -> list[Finding]:
+    """Data files hold only JSON values: no dates or other YAML types, text keys, and text the database can store."""
+    findings = []
+    for where, value in _walk(record.data):
+        if isinstance(value, dict) and not all(isinstance(key, str) for key in value):
+            findings.append(_finding(record, "json-value", f"{where} has a key that isn't text; quote it"))
+        elif isinstance(value, str) and "\0" in value:
+            findings.append(_finding(record, "json-value", f"{where} contains a NUL character"))
+        elif isinstance(value, str) and not value.isascii():
+            try:
+                value.encode("utf-8")
+            except UnicodeEncodeError:
+                findings.append(_finding(record, "json-value", f"{where} contains a character that isn't valid Unicode"))
+        elif not isinstance(value, (str, bool, int, float, dict, list, type(None))):
+            findings.append(_finding(record, "json-value", f"{where} is a {type(value).__name__}; quote it, such as \"2024-05-01\""))
+    return findings
+
+
 def _uncertainty(record: Record) -> list[Finding]:
     findings = []
     for i, m in _measurements(record):
@@ -189,7 +207,7 @@ def _neuron_type_region(record: Record) -> list[Finding]:
 
 
 # These assume the record's types are right, so they run only once the schema check passes.
-SEMANTIC_RULES = [_extra_mapping, _extra_key, _empty_text, _non_finite, _uncertainty, _unit, _absent_result,
+SEMANTIC_RULES = [_json_value, _extra_mapping, _extra_key, _empty_text, _non_finite, _uncertainty, _unit, _absent_result,
                   _role, _independent_verifier, _doi_case, _homology_pair, _neuron_type_region]
 
 
