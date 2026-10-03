@@ -35,3 +35,11 @@ repos:
     rev: v6.2.0
     hooks:
       - id: reuse
+  - repo: local
+    hooks:
+      - id: uv-lock
+        name: uv.lock matches pyproject.toml
+        entry: uv lock --check
+        language: system
+        files: ^(pyproject\.toml|uv\.lock)$
+        pass_filenames: false
