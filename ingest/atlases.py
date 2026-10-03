@@ -16,6 +16,19 @@ BASES = {"MBA": "https://purl.brain-bican.org/ontology/mbao/MBA_",
 BRIDGES = {"MBA": "http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-mba.owl",
            "DHBA": "http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-dhba.owl"}
 UBERON = "http://purl.obolibrary.org/obo/UBERON_"
+# The amygdala and the nuclei claims name (UBERON), used to show and check what each atlas resolves.
+AMYGDALA = {
+    "UBERON:0001876",  # amygdala
+    "UBERON:0006107",  # basolateral amygdaloid nuclear complex
+    "UBERON:0002886",  # lateral amygdaloid nucleus
+    "UBERON:0002887",  # basal amygdaloid nucleus
+    "UBERON:0002885",  # accessory basal amygdaloid nucleus
+    "UBERON:0002883",  # central amygdaloid nucleus
+    "UBERON:0002892",  # medial amygdaloid nucleus
+    "UBERON:0006108",  # corticomedial nuclear complex
+    "UBERON:0002890",  # anterior amygdaloid area
+    "UBERON:0002884",  # intercalated amygdaloid nuclei
+}
 # A region maps exactly when its equivalent class is a UBERON class restricted to the species.
 BRIDGE_QUERY = """
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
