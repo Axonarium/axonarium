@@ -83,6 +83,8 @@ What exists now:
 | `docs/plan.md` | The project plan, Parts 1–3 |
 | `docs/decisions/` | Architecture decision records (MADR) |
 | `docs/specs/`, `docs/plans/` | Design specs and implementation plans for sprints |
+| `schema/` | The LinkML schema (`axonarium.yaml`), its generated JSON Schema and SQL, examples and tests |
+| `pyproject.toml`, `uv.lock` | The repo's Python tooling environment: Python 3.13 and LinkML |
 | `data/README.md` | Data licence and layout |
 | `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
 
@@ -90,7 +92,6 @@ Planned, from the plan's repository layout:
 
 | Path | Will hold |
 | --- | --- |
-| `schema/` | LinkML schema, versioned |
 | `data/entities/`, `data/claims/`, `data/homology/`, `data/sources/` | Knowledge files |
 | `ingest/` | One adapter per external source |
 | `agents/roles/` | Role prompts |
@@ -106,3 +107,5 @@ Install [uv](https://docs.astral.sh/uv/), then run the checks CI runs:
 ```bash
 uvx pre-commit run --all-files
 ```
+
+The checks include linkml-lint and the schema tests, which run through uv. uv installs Python 3.13 and LinkML on first use.

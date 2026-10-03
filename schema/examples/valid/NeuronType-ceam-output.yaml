@@ -1,0 +1,8 @@
+id: nt-w0fxekq19n
+name: CEAm output neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba

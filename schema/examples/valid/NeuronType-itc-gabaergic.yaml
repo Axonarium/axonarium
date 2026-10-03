@@ -1,0 +1,9 @@
+id: nt-zsagxm3aw5
+name: Intercalated cell (ITC) GABAergic neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:1105
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers: [Foxp2]

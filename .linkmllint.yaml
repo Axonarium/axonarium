@@ -1,0 +1,12 @@
+# linkml-lint settings for schema/axonarium.yaml. Everything in "recommended"
+# applies, with two deliberate exceptions.
+extends: recommended
+rules:
+  standard_naming:
+    exclude:
+      - n  # Measurement sample size: the conventional scientific symbol.
+  canonical_prefixes:
+    # Compare against OBO only. MBA and HBA use BICAN's ontology PURLs on
+    # purpose (docs/decisions/0004-identifiers.md); OBO prefixes stay checked.
+    prefixmaps_contexts:
+      - obo
