@@ -2,7 +2,7 @@
 
 import pytest
 
-from checks.identifiers import curies_in, is_open_licence, source_file_name, spdx_from_url
+from checks.identifiers import curies_in, is_open_licence, source_file_name, source_key, spdx_from_url
 
 
 @pytest.mark.parametrize("source_id, name", [
@@ -55,3 +55,14 @@ def test_curies_in_skips_extra():
         "extra": {"lab.ref": "UBERON:0002883"},
     }
     assert curies_in(claim) == {"MBA:295", "NCBITaxon:10090"}
+
+
+@pytest.mark.parametrize("cited, key", [
+    ({"doi": "10.1038/S41467-021-22915-5", "pmid": "34001873", "arxiv": "2409.13740"}, "doi:10.1038/s41467-021-22915-5"),
+    ({"pmid": "34001873", "pmcid": "PMC8129205"}, "pubmed:34001873"),
+    ({"pmcid": "PMC8129205", "arxiv": "2409.13740"}, "pmc:PMC8129205"),
+    ({"arxiv": "2409.13740v2", "locator": "Fig. 1"}, "arxiv:2409.13740"),
+    ({"locator": "Fig. 1"}, None),
+])
+def test_source_key(cited, key):
+    assert source_key(cited) == key

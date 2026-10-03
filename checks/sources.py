@@ -1,4 +1,4 @@
-"""Source records: built from Crossref or DataCite metadata. Abstracts are never stored (ADR 0005)."""
+"""Source records: built from Crossref, DataCite or NCBI metadata. Abstracts are never stored (ADR 0005)."""
 
 import html
 import re
@@ -9,9 +9,9 @@ import yaml
 
 from checks.findings import Finding
 from checks.http import Fetcher, LookupFailed
-from checks.identifiers import canonical, citation_of, source_file_name, spdx_from_url
+from checks.identifiers import canonical_source_id, citation_of, source_file_name, source_key, spdx_from_url
 from checks.loading import load_tree
-from checks.lookups import CROSSREF, DATACITE, crossref_work, datacite_record, doi_agency
+from checks.lookups import CROSSREF, DATACITE, arxiv_doi, crossref_work, datacite_record, doi_agency, ncbi_summary, pubmed_ids_for_doi
 
 FIELDS = ("id", "title", "year", "journal", "license", "open_access", "retracted")
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
@@ -39,8 +39,8 @@ def _date(value) -> date | None:
         return None
 
 
-def _record(doi: str, **fields) -> dict:
-    fields["id"] = f"doi:{doi.lower()}"
+def _record(source_id: str, **fields) -> dict:
+    fields["id"] = source_id
     if isinstance(fields.get("license"), str) and fields["license"].startswith("CC"):
         fields["open_access"] = True
     return {k: fields[k] for k in FIELDS if fields.get(k) is not None}
@@ -58,7 +58,7 @@ def source_from_crossref(doi: str, message: dict, today: date) -> dict:
     issued = _date(message.get("issued"))
     updates = message.get("updated-by")
     return _record(
-        doi,
+        f"doi:{doi.lower()}",
         title=_text(_first(message.get("title"))),
         year=issued.year if issued else None,
         journal=_text(_first(message.get("container-title"))),
@@ -86,7 +86,7 @@ def source_from_datacite(doi: str, attributes: dict) -> dict:
         elif isinstance(rights.get("rightsUri"), str):
             licence = spdx_from_url(rights["rightsUri"])
     return _record(
-        doi,
+        f"doi:{doi.lower()}",
         title=_text(title.get("title")) if isinstance(title, dict) else None,
         year=int(year) if isinstance(year, int) or (isinstance(year, str) and year.isdigit()) else None,
         journal=_text(container.get("title")) or _text(publisher),
@@ -94,8 +94,57 @@ def source_from_datacite(doi: str, attributes: dict) -> dict:
     )
 
 
-def fetch_source(fetch: Fetcher, doi: str, today: date) -> dict | None:
-    """The source record for a DOI from its registration agency; None if the DOI doesn't exist."""
+def _ncbi(source_id: str, summary: dict) -> dict:
+    """Title, year and journal from an NCBI summary (PubMed or PubMed Central)."""
+    year = re.match(r"([0-9]{4})", summary.get("pubdate") or "")
+    return dict(title=_text(summary.get("title")), year=int(year[1]) if year else None,
+                journal=_text(summary.get("fulljournalname")) or _text(summary.get("source")))
+
+
+def pubmed_says_retracted(summary: dict) -> bool:
+    """Whether a PubMed summary lists the paper as a "Retracted Publication"."""
+    types = summary["pubtype"]
+    if not isinstance(types, list):  # An unexpected shape must not read as "not retracted".
+        raise TypeError("PubMed's pubtype is not a list")
+    return "Retracted Publication" in types
+
+
+def source_from_pubmed(pmid: str, summary: dict) -> dict:
+    return _record(f"pubmed:{pmid}", **_ncbi(pmid, summary), retracted=pubmed_says_retracted(summary))
+
+
+def _pubmed_retracted(fetch: Fetcher, doi: str) -> bool | None:
+    """Whether PubMed lists a paper with this DOI as retracted; None if PubMed has no record with it."""
+    summaries = [s for pmid in pubmed_ids_for_doi(fetch, doi) if (s := ncbi_summary(fetch, "pubmed", pmid)) is not None]
+    return any(pubmed_says_retracted(s) for s in summaries) if summaries else None
+
+
+def source_from_pmc(pmcid: str, summary: dict) -> dict:
+    return _record(f"pmc:{pmcid}", **_ncbi(pmcid, summary))  # PubMed Central has no retraction status.
+
+
+def fetch_source(fetch: Fetcher, source_id: str, today: date) -> dict | None:
+    """The source record for a source ID (doi:, pubmed:, pmc: or arxiv:); None if the paper doesn't exist."""
+    scheme, _, rest = source_id.partition(":")
+    if scheme == "pubmed":
+        summary = ncbi_summary(fetch, "pubmed", rest)
+        return source_from_pubmed(rest, summary) if summary is not None else None
+    if scheme == "pmc":
+        summary = ncbi_summary(fetch, "pmc", rest.removeprefix("PMC"))
+        return source_from_pmc(rest, summary) if summary is not None else None
+    if scheme == "arxiv":
+        attributes = datacite_record(fetch, arxiv_doi(rest))
+        return source_from_datacite(arxiv_doi(rest), attributes) | {"id": source_id} if attributes is not None else None
+    if scheme != "doi":
+        raise ValueError(f"unknown source scheme in {source_id!r}")
+    record = _doi_record(fetch, rest, today)
+    if record is not None and (pubmed := _pubmed_retracted(fetch, rest)) is not None:
+        record["retracted"] = record.get("retracted", False) or pubmed  # Crossref misses some retractions PubMed has.
+    return record
+
+
+def _doi_record(fetch: Fetcher, doi: str, today: date) -> dict | None:
+    """The record for a DOI from its registration agency; None if the DOI doesn't exist."""
     agency = doi_agency(fetch, doi)
     if agency is None:
         return None
@@ -109,7 +158,7 @@ def fetch_source(fetch: Fetcher, doi: str, today: date) -> dict | None:
         if attributes is None:
             raise LookupFailed(DATACITE.format(doi=doi), "doi.org names DataCite, but DataCite has no record")
         return source_from_datacite(doi, attributes)
-    return _record(doi)  # Other agencies: the DOI exists, and that is all the checks know.
+    return _record(f"doi:{doi.lower()}")  # Other agencies: the DOI exists, and that is all the checks know.
 
 
 def write_source(path: Path, record: dict) -> None:
@@ -119,43 +168,45 @@ def write_source(path: Path, record: dict) -> None:
     path.write_text(yaml.safe_dump(ordered, sort_keys=False, allow_unicode=True, width=1000), encoding="utf-8")
 
 
-def _fetch(fetch: Fetcher, doi: str, today: date, path: Path) -> tuple[dict | None, list[Finding]]:
+def _fetch(fetch: Fetcher, source_id: str, today: date, path: Path) -> tuple[dict | None, list[Finding]]:
     try:
-        record = fetch_source(fetch, doi, today)
+        record = fetch_source(fetch, source_id, today)
     except LookupFailed as error:
         return None, [Finding(str(path), "lookup-failed", f"lookup failed: {error}")]
     except (TypeError, AttributeError, KeyError, ValueError, IndexError) as error:  # A registry answer of an unexpected shape
-        return None, [Finding(str(path), "lookup-failed", f"lookup failed: unexpected answer for {doi} ({type(error).__name__}: {error})")]
+        return None, [Finding(str(path), "lookup-failed", f"lookup failed: unexpected answer for {source_id} ({type(error).__name__}: {error})")]
     if record is None:
-        return None, [Finding(str(path), "unknown-citation", f"DOI {doi} does not exist (doi.org)")]
+        return None, [Finding(str(path), "unknown-citation", f"{source_id} does not exist")]
     return record, []
 
 
 def fill_sources(data_dir: Path, fetch: Fetcher, today: date, refresh: bool = False) -> tuple[list[Path], list[Finding]]:
-    """Write a record for every cited DOI that has none; with refresh, also rewrite DOI records whose metadata changed."""
+    """Write a record for every cited source key that has none; with refresh, also rewrite records whose metadata changed."""
     records, _ = load_tree(data_dir)
     existing = {r.data["id"].lower(): r for r in records if r.cls == "Source" and isinstance(r.data.get("id"), str)}
     cited: dict[str, Path] = {}
     for record in records:
-        if record.cls in CLAIMS and (doi := citation_of(record.data).get("doi")):
-            cited.setdefault(doi.lower(), record.path)
+        if record.cls in CLAIMS and (key := source_key(citation_of(record.data))):
+            cited.setdefault(key, record.path)
     written, findings = [], []
-    for doi, claim_path in sorted(cited.items()):
-        if f"doi:{doi}" in existing:
+    for key, claim_path in sorted(cited.items()):
+        if key.lower() in existing:
             continue
-        if not canonical("doi", doi):
-            findings.append(Finding(str(claim_path), "unknown-citation", f"DOI {doi!r} is not in canonical form"))
+        if not canonical_source_id(key):
+            findings.append(Finding(str(claim_path), "unknown-citation", f"{key!r} is not in canonical form"))
             continue
-        fresh, found = _fetch(fetch, doi, today, claim_path)
+        fresh, found = _fetch(fetch, key, today, claim_path)
         findings += found
         if fresh is not None:
-            path = data_dir / "sources" / "doi" / source_file_name(fresh["id"])
+            path = data_dir / "sources" / key.partition(":")[0] / source_file_name(fresh["id"])
             write_source(path, fresh)
             written.append(path)
-    for source_id, record in sorted(existing.items()) if refresh else ():
-        if not source_id.startswith("doi:"):
+    for _, record in sorted(existing.items()) if refresh else ():
+        source_id = record.data["id"]
+        if not canonical_source_id(source_id):
+            findings.append(Finding(str(record.path), "unknown-citation", f"{source_id!r} is not in canonical form"))
             continue
-        fresh, found = _fetch(fetch, source_id.removeprefix("doi:"), today, record.path)
+        fresh, found = _fetch(fetch, source_id, today, record.path)
         findings += found
         if fresh is not None and "extra" in record.data:
             fresh["extra"] = record.data["extra"]

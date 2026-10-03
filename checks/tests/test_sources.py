@@ -10,7 +10,7 @@ import yaml
 from checks.cli import main, run_files
 from checks.http import Fetcher
 from checks.lookups import crossref_work, datacite_record
-from checks.sources import fill_sources, source_from_crossref, source_from_datacite
+from checks.sources import fetch_source, fill_sources, source_from_crossref, source_from_datacite, source_from_pubmed
 
 TODAY = date(2026, 10, 3)
 HINTIRYAN = "10.1038/s41467-021-22915-5"
@@ -140,3 +140,78 @@ def test_cli_refresh_ignores_cached_answers(tree, replay, tmp_path):
     (tree / WAKEFIELD_FILE).write_text(yaml.safe_dump(stale, sort_keys=False), encoding="utf-8")
     assert main(["sources", "--refresh", "--data", str(tree), "--cache", str(cache)], opener=replay) == 0
     assert yaml.safe_load((tree / WAKEFIELD_FILE).read_text(encoding="utf-8"))["retracted"] is True
+
+
+ARXIV_FILE = Path("sources", "arxiv", "arxiv_2409.13740.yaml")
+PUBMED_FILE = Path("sources", "pubmed", "pubmed_1023575.yaml")
+
+
+def test_pubmed_record(fetch):
+    record = fetch_source(fetch, "pubmed:1023575", TODAY)
+    assert record["id"] == "pubmed:1023575" and record["year"] == 1976 and record["retracted"] is False
+    assert record["title"] == "Olfactory and temporal projections to the amygdala." and "license" not in record
+
+
+def test_pubmed_retracted_record(fetch):
+    assert fetch_source(fetch, "pubmed:11134581", TODAY)["retracted"] is True
+
+
+def test_pmc_record(fetch):
+    record = fetch_source(fetch, "pmc:PMC8129205", TODAY)
+    assert record["id"] == "pmc:PMC8129205" and record["year"] == 2021 and record["journal"]
+    assert "retracted" not in record and "license" not in record
+
+
+def test_arxiv_record(fetch):
+    record = fetch_source(fetch, "arxiv:2409.13740", TODAY)
+    assert record["id"] == "arxiv:2409.13740" and record["license"] == "CC-BY-SA-4.0" and "retracted" not in record
+
+
+def test_pubmed_odd_pubdate():
+    record = source_from_pubmed("1", {"title": "T", "pubdate": "", "pubtype": ["Journal Article"]})
+    assert record == {"id": "pubmed:1", "title": "T", "retracted": False}
+
+
+def pmid_only_claim(data: Path, pmid: str) -> Path:
+    text = (data / "claims" / "examples" / "clm-9dd2wps80g.yaml").read_text(encoding="utf-8")
+    text = text.replace("clm-9dd2wps80g", "clm-2w33dsbbr3").replace(f"  doi: {HINTIRYAN}\n", "")
+    text = text.replace('  pmid: "34001873"\n', f'  pmid: "{pmid}"\n').replace("  pmcid: PMC8129205\n", "")
+    path = data / "claims" / "examples" / "clm-2w33dsbbr3.yaml"
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def test_fill_writes_pubmed_and_arxiv_records(tree, fetch):
+    expected = {f: (tree / f).read_text(encoding="utf-8") for f in (ARXIV_FILE, PUBMED_FILE)}
+    for f in expected:
+        (tree / f).unlink()
+    written, findings = fill_sources(tree, fetch, TODAY)
+    assert (sorted(written), findings) == (sorted([tree / ARXIV_FILE, tree / PUBMED_FILE]), [])
+    assert {f: (tree / f).read_text(encoding="utf-8") for f in expected} == expected
+    assert run_files(tree) == []
+
+
+def test_fill_unknown_pmid(tree, fetch):
+    claim = pmid_only_claim(tree, "99999999999")
+    written, findings = fill_sources(tree, fetch, TODAY)
+    assert [(f.path, f.rule) for f in findings] == [(str(claim), "unknown-citation")] and tree / PUBMED_FILE not in written
+
+
+def test_refresh_mixed_schemes(tree, fetch):
+    pmid_only_claim(tree, "1023575")
+    fill_sources(tree, fetch, TODAY)
+    stale = yaml.safe_load((tree / PUBMED_FILE).read_text(encoding="utf-8")) | {"retracted": True}
+    (tree / PUBMED_FILE).write_text(yaml.safe_dump(stale, sort_keys=False), encoding="utf-8")
+    written, findings = fill_sources(tree, fetch, TODAY, refresh=True)
+    assert (written, findings) == ([tree / PUBMED_FILE], [])
+
+
+def test_doi_record_retracted_per_pubmed(fetch):
+    # Crossref has no retraction for this paper; PubMed lists it as a "Retracted Publication".
+    record = fetch_source(fetch, "doi:10.1503/jpn.120073", TODAY)
+    assert record["retracted"] is True
+
+
+def test_doi_record_unknown_to_pubmed(fetch):
+    record = fetch_source(fetch, "doi:10.48550/arxiv.2409.13740", TODAY)
+    assert "retracted" not in record  # DataCite has no retraction data and PubMed doesn't index the preprint

@@ -12,7 +12,7 @@ from checks.change_rules import changed_since
 from checks.cli import main, run_files
 from checks.http import Fetcher
 from checks.loading import load_tree
-from checks.lookups import CROSSREF, OLS
+from checks.lookups import CROSSREF, NCBI, OLS
 from checks.online_rules import check_online, mismatched
 from checks.tests.conftest import overlay
 from checks.tests.test_changes import git
@@ -44,6 +44,8 @@ def test_online_broken_fixture(online_tree, fetch, fixture):
     overlay(online_tree, fixture)
     findings = online(online_tree, fetch)
     assert findings and {f.rule for f in findings} == {fixture.name}, [str(f) for f in findings]
+    # Every file in the overlay is caught, not just one of them.
+    assert {Path(f.path).relative_to(online_tree) for f in findings} == {p.relative_to(fixture) for p in fixture.rglob("*.yaml")}
 
 
 def test_lookup_failed(online_tree, replay):
@@ -157,3 +159,45 @@ def test_odd_registry_answers_are_reported_not_raised(online_tree, replay, url, 
 
     findings = online(online_tree, Fetcher(None, opener, sleep=lambda seconds: None))
     assert findings and {f.rule for f in findings} == {"lookup-failed"}, [str(f) for f in findings]
+
+
+def test_pmid_and_pmcid_without_doi(online_tree, replay):
+    # Neither record names a DOI, and the PMC record names the cited PMID: nothing to add.
+    claim = online_tree / "claims" / "examples" / "clm-2w33dsbbr3.yaml"
+    claim.write_text(claim.read_text(encoding="utf-8").replace('  pmid: "1023575"\n', '  pmid: "1023575"\n  pmcid: PMC1\n'), encoding="utf-8")
+    pmc = NCBI.format(db="pmc", uid="1")
+    summary = {"result": {"uids": ["1"], "1": {"uid": "1", "title": "T", "articleids": [{"idtype": "pmid", "value": "1023575"}]}}}
+
+    def opener(url, headers, timeout):
+        return (200, {}, json.dumps(summary).encode()) if url == pmc else replay(url, headers, timeout)
+
+    assert online(online_tree, Fetcher(None, opener, sleep=lambda seconds: None)) == []
+
+
+def test_scope_includes_pubmed_record(online_tree, fetch):
+    # The PubMed record is stale on main; a branch touching only the claim that cites it still checks it.
+    record = online_tree / "sources" / "pubmed" / "pubmed_1023575.yaml"
+    record.write_text(record.read_text(encoding="utf-8").replace("retracted: false", "retracted: true"), encoding="utf-8")
+    repo = online_tree.parent
+    git(repo, "init", "-q", "-b", "main")
+    git(repo, "add", "-A")
+    git(repo, "commit", "-q", "-m", "base")
+    claim = online_tree / "claims" / "examples" / "clm-2w33dsbbr3.yaml"
+    claim.write_text(claim.read_text(encoding="utf-8").replace("locator: Fig. 2", "locator: Fig. 3"), encoding="utf-8")
+    assert [(Path(f.path).name, f.rule) for f in scoped(online_tree, fetch)] == [("pubmed_1023575.yaml", "source-outdated")]
+
+
+def test_retracted_pmid_with_unrelated_doi(online_tree, fetch):
+    # A real DOI paired with a retracted paper's PMID (PubMed names no DOI for it, so nothing can mismatch).
+    claim = online_tree / "claims" / "examples" / "clm-9dd2wps80g.yaml"
+    text = claim.read_text(encoding="utf-8").replace('pmid: "34001873"', 'pmid: "11134581"').replace("  pmcid: PMC8129205\n", "")
+    claim.write_text(text, encoding="utf-8")
+    findings = [f for f in online(online_tree, fetch) if f.path == str(claim)]
+    assert [f.rule for f in findings] == ["cites-retracted"], [str(f) for f in findings]
+
+
+def test_crossref_miss_caught_through_pubmed(online_tree, fetch):
+    record = online_tree / "sources" / "doi" / "doi_10.1503_jpn.120073.yaml"
+    record.write_text("id: doi:10.1503/jpn.120073\nretracted: false\n", encoding="utf-8")
+    findings = [f for f in online(online_tree, fetch) if f.path == str(record)]
+    assert any(f.rule == "source-outdated" and "retracted: false" in f.message for f in findings), [str(f) for f in findings]

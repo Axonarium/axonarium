@@ -115,7 +115,7 @@ The checks include linkml-lint, the schema tests and the data checks, which run 
 When you change `data/`, also run:
 
 ```bash
-uv run python -m checks sources                       # a source record for every newly cited DOI
+uv run python -m checks sources                       # a source record for every newly cited paper
 uv run python -m checks online --base origin/main     # identifiers and citations exist in their registries
 uv run python -m checks changes --base origin/main    # deletions and retractions are logged
 ```

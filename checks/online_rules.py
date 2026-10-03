@@ -6,9 +6,9 @@ from pathlib import Path
 
 from checks.findings import Finding, Record
 from checks.http import Fetcher, LookupFailed
-from checks.identifiers import canonical, citation_of, curies_in
+from checks.identifiers import canonical, canonical_source_id, citation_of, curies_in, source_key
 from checks.lookups import ATLAS_GRAPHS, arxiv_doi, atlas_structure, doi_agency, ncbi_summary, ontology_term
-from checks.sources import fetch_source
+from checks.sources import fetch_source, pubmed_says_retracted
 
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
 ATLAS_NAMES = {"MBA": "mouse", "HBA": "human"}
@@ -16,11 +16,17 @@ KINDS = {"doi": "DOI", "pmid": "PubMed ID", "pmcid": "PubMed Central ID", "arxiv
 ODD_ANSWER = (TypeError, AttributeError, KeyError, ValueError, IndexError)  # A registry answer of an unexpected shape
 
 
-def mismatched(cited: str, summary: dict, idtype: str) -> str | None:
-    """The ID of type `idtype` an NCBI summary gives, if it differs (ignoring case) from the cited one."""
+def article_id(summary: dict, idtype: str) -> str | None:
+    """The ID of type `idtype` (such as "doi" or "pmid") an NCBI summary gives, if any."""
     ids = summary.get("articleids") if isinstance(summary.get("articleids"), list) else []
     other = next((a.get("value") for a in ids if isinstance(a, dict) and a.get("idtype") == idtype), None)
-    return other if isinstance(other, str) and other.lower() != cited.lower() else None
+    return other if isinstance(other, str) and other else None
+
+
+def mismatched(cited: str, summary: dict, idtype: str) -> str | None:
+    """The ID of type `idtype` an NCBI summary gives, if it differs (ignoring case) from the cited one."""
+    other = article_id(summary, idtype)
+    return other if other is not None and other.lower() != cited.lower() else None
 
 
 def _show(value) -> str:
@@ -87,8 +93,8 @@ class _Asker:
     def arxiv(self, path: str, arxiv: str) -> list[Finding]:
         return self.doi(path, arxiv_doi(arxiv), f"arXiv ID {arxiv} does not exist (doi.org has no {arxiv_doi(arxiv)})")
 
-    def citation(self, path: str, cited: dict[str, str]) -> list[Finding]:
-        findings, cited = [], dict(cited)
+    def citation(self, path: str, cited: dict[str, str], status=None) -> list[Finding]:
+        findings, given, cited = [], set(cited), dict(cited)
         for kind, label in KINDS.items():
             if kind in cited and not canonical(kind, cited[kind]):
                 findings.append(Finding(path, "unknown-citation", f"{label} {cited.pop(kind)!r} is not in canonical form"))
@@ -99,6 +105,10 @@ class _Asker:
             findings += found
             if summary and doi and (other := mismatched(doi, summary, "doi")):
                 findings.append(Finding(path, "citation-mismatch", f"PubMed {pmid} is {other}, not {doi}"))
+            if summary and "doi" not in given and (other := article_id(summary, "doi")):
+                findings.append(Finding(path, "citation-incomplete", f"PubMed {pmid} names DOI {other}; cite it too"))
+            if summary and status != "retracted":
+                findings += self._retracted_pmid(path, pmid, summary)
         if pmcid:
             found, summary = self.pmc(path, pmcid)
             findings += found
@@ -106,23 +116,31 @@ class _Asker:
                 findings.append(Finding(path, "citation-mismatch", f"PubMed Central {pmcid} is {other}, not {doi}"))
             if summary and pmid and (other := mismatched(pmid, summary, "pmid")):
                 findings.append(Finding(path, "citation-mismatch", f"PubMed Central {pmcid} is PubMed {other}, not {pmid}"))
+            if summary and "doi" not in given and (other := article_id(summary, "doi")):
+                findings.append(Finding(path, "citation-incomplete", f"PubMed Central {pmcid} names DOI {other}; cite it too"))
+            if summary and "pmid" not in given and (other := article_id(summary, "pmid")):
+                findings.append(Finding(path, "citation-incomplete", f"PubMed Central {pmcid} names PubMed ID {other}; cite it too"))
         if cited.get("arxiv"):
             findings += self.arxiv(path, cited["arxiv"])
         return findings
 
+    @staticmethod
+    def _retracted_pmid(path: str, pmid: str, summary: dict) -> list[Finding]:
+        """A cited PubMed ID that PubMed lists as retracted, whatever the claim's source record says."""
+        try:
+            retracted = pubmed_says_retracted(summary)
+        except (TypeError, KeyError) as error:
+            return [Finding(path, "lookup-failed", f"lookup failed: unexpected answer from NCBI for PubMed {pmid} ({error})")]
+        if retracted:
+            return [Finding(path, "cites-retracted", f"PubMed {pmid} is a retracted publication; set status: retracted and log it in retractions.yaml")]
+        return []
+
     def source(self, path: str, data: dict) -> list[Finding]:
-        scheme, _, rest = data["id"].partition(":")
-        kind = {"doi": "doi", "pubmed": "pmid", "pmc": "pmcid", "arxiv": "arxiv"}.get(scheme)
-        if kind is None or not canonical(kind, rest):
-            return [Finding(path, "unknown-citation", f"source ID {data['id']!r} is not in canonical form")]
-        if scheme == "pubmed":
-            return self.pubmed(path, rest)[0]
-        if scheme == "pmc":
-            return self.pmc(path, rest)[0]
-        if scheme == "arxiv":
-            return self.arxiv(path, rest)
-        findings, fresh = self._exists(path, ("source", rest.lower()), lambda: fetch_source(self.fetch, rest, self.today),
-                                       f"DOI {rest} does not exist (doi.org)")
+        source_id = data["id"]
+        if not canonical_source_id(source_id):
+            return [Finding(path, "unknown-citation", f"source ID {source_id!r} is not in canonical form")]
+        findings, fresh = self._exists(path, ("source", source_id.lower()), lambda: fetch_source(self.fetch, source_id, self.today),
+                                       f"{source_id} does not exist")
         for field in ("license", "retracted") if fresh else ():
             if data.get(field) != fresh.get(field):
                 findings.append(Finding(path, "source-outdated",
@@ -135,7 +153,7 @@ def check_online(records: list[Record], fetch: Fetcher, today: date, scope: set[
     """Online findings for the records in scope (all if None), plus the source records their claims cite."""
     selected = [r for r in records if scope is None or r.path.resolve() in scope]
     if scope is not None:
-        cited = {f"doi:{d.lower()}" for r in selected if r.cls in CLAIMS and (d := citation_of(r.data).get("doi"))}
+        cited = {k.lower() for r in selected if r.cls in CLAIMS and (k := source_key(citation_of(r.data)))}
         chosen = {r.path for r in selected}
         selected += [r for r in records if r.cls == "Source" and r.path not in chosen
                      and isinstance(r.data.get("id"), str) and r.data["id"].lower() in cited]
@@ -145,7 +163,7 @@ def check_online(records: list[Record], fetch: Fetcher, today: date, scope: set[
         for curie in sorted(curies_in(record.data)):
             findings += asker.term(path, curie)
         if record.cls in CLAIMS:
-            findings += asker.citation(path, citation_of(record.data))
+            findings += asker.citation(path, citation_of(record.data), record.data.get("status"))
         if record.cls == "Source" and isinstance(record.data.get("id"), str) and ":" in record.data["id"]:
             findings += asker.source(path, record.data)
     return sorted(set(findings))

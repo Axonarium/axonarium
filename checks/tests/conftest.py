@@ -72,9 +72,11 @@ def trim(url: str, body):
     if host == "api.datacite.org":
         attributes = _keep(body["data"]["attributes"], ("doi", "titles", "publicationYear", "publisher", "container", "rightsList"))
         return {"data": {"attributes": attributes}}
+    if host == "eutils.ncbi.nlm.nih.gov" and "esearchresult" in body:
+        return {"esearchresult": _keep(body["esearchresult"], ("count", "idlist", "ERROR"))}
     if host == "eutils.ncbi.nlm.nih.gov":
         result = body["result"]
-        return {"result": {"uids": result["uids"], **{u: _keep(result[u], ("uid", "title", "articleids", "error")) for u in result["uids"]}}}
+        return {"result": {"uids": result["uids"], **{u: _keep(result[u], ("uid", "title", "articleids", "error", "pubdate", "source", "fulljournalname", "pubtype")) for u in result["uids"]}}}
     return body  # doi.org answers are already small
 
 
