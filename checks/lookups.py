@@ -15,6 +15,8 @@ CROSSREF = "https://api.crossref.org/works/{doi}"
 DATACITE = "https://api.datacite.org/dois/{doi}"
 NCBI = ("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db={db}&id={uid}&retmode=json"
         "&tool=axonarium-checks&email=admin@axonarium.com")
+NCBI_SEARCH = ("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term={term}&retmode=json"
+               "&tool=axonarium-checks&email=admin@axonarium.com")
 
 
 @dataclass(frozen=True)
@@ -100,6 +102,17 @@ def ncbi_summary(fetch: Fetcher, db: str, uid: str) -> dict | None:
     if not isinstance(summary, dict):
         raise LookupFailed(url, "unexpected answer from NCBI")
     return None if "error" in summary else summary
+
+
+def pubmed_ids_for_doi(fetch: Fetcher, doi: str) -> list[str]:
+    """The PubMed IDs of records carrying this DOI (a paper, and sometimes its retraction notice); empty if none."""
+    url = NCBI_SEARCH.format(term=quote(f'"{doi}"[doi]', safe=""))
+    body = fetch.get_json(url)
+    result = body.get("esearchresult") if isinstance(body, dict) else None
+    ids = result.get("idlist") if isinstance(result, dict) and "ERROR" not in result else None
+    if not isinstance(ids, list) or not all(isinstance(i, str) for i in ids):
+        raise LookupFailed(url, "unexpected answer from NCBI")
+    return ids
 
 
 def arxiv_doi(arxiv_id: str) -> str:

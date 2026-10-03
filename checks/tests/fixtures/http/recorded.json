@@ -179,7 +179,75 @@
    }
   }
  },
+ "https://api.crossref.org/works/10.1503/jpn.120073": {
+  "status": 200,
+  "body": {
+   "message": {
+    "DOI": "10.1503/jpn.120073",
+    "type": "journal-article",
+    "title": [
+     "Altered affective, executive and sensorimotor resting state networks in patients with pediatric mania"
+    ],
+    "container-title": [
+     "Journal of Psychiatry and Neuroscience"
+    ],
+    "issued": {
+     "date-parts": [
+      [
+       2013,
+       7
+      ]
+     ]
+    },
+    "license": [
+     {
+      "start": {
+       "date-parts": [
+        [
+         2013,
+         7,
+         1
+        ]
+       ],
+       "date-time": "2013-07-01T00:00:00Z",
+       "timestamp": 1372636800000
+      },
+      "content-version": "tdm",
+      "delay-in-days": 0,
+      "URL": "http://www.nrcresearchpress.com/page/about/CorporateTextAndDataMining"
+     }
+    ]
+   }
+  }
+ },
  "https://api.datacite.org/dois/10.48550/arXiv.2409.13740": {
+  "status": 200,
+  "body": {
+   "data": {
+    "attributes": {
+     "doi": "10.48550/arxiv.2409.13740",
+     "titles": [
+      {
+       "title": "Language agents achieve superhuman synthesis of scientific knowledge"
+      }
+     ],
+     "publicationYear": 2024,
+     "publisher": "arXiv",
+     "container": {},
+     "rightsList": [
+      {
+       "rights": "Creative Commons Attribution Share Alike 4.0 International",
+       "rightsUri": "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
+       "schemeUri": "https://spdx.org/licenses/",
+       "rightsIdentifier": "cc-by-sa-4.0",
+       "rightsIdentifierScheme": "SPDX"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "https://api.datacite.org/dois/10.48550/arxiv.2409.13740": {
   "status": 200,
   "body": {
    "data": {
@@ -224,6 +292,15 @@
    }
   ]
  },
+ "https://doi.org/ra/10.1503/jpn.120073": {
+  "status": 200,
+  "body": [
+   {
+    "DOI": "10.1503/jpn.120073",
+    "RA": "Crossref"
+   }
+  ]
+ },
  "https://doi.org/ra/10.48550/arXiv.2409.13740": {
   "status": 200,
   "body": [
@@ -239,6 +316,15 @@
    {
     "DOI": "10.48550/arXiv.2409.99999",
     "status": "DOI does not exist"
+   }
+  ]
+ },
+ "https://doi.org/ra/10.48550/arxiv.2409.13740": {
+  "status": 200,
+  "body": [
+   {
+    "DOI": "10.48550/arxiv.2409.13740",
+    "RA": "DataCite"
    }
   ]
  },
@@ -259,6 +345,49 @@
     "status": "DOI does not exist"
    }
   ]
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%2210.1016%2Fs0140-6736%2897%2911096-0%22%5Bdoi%5D&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "esearchresult": {
+    "count": "1",
+    "idlist": [
+     "9500320"
+    ]
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%2210.1038%2Fs41467-021-22915-5%22%5Bdoi%5D&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "esearchresult": {
+    "count": "1",
+    "idlist": [
+     "34001873"
+    ]
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%2210.1503%2Fjpn.120073%22%5Bdoi%5D&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "esearchresult": {
+    "count": "2",
+    "idlist": [
+     "26524477",
+     "23735583"
+    ]
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=%2210.48550%2Farxiv.2409.13740%22%5Bdoi%5D&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "esearchresult": {
+    "count": "0",
+    "idlist": []
+   }
+  }
  },
  "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pmc&id=8129205&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
   "status": 200,
@@ -357,6 +486,98 @@
    }
   }
  },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=23735583&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "23735583"
+    ],
+    "23735583": {
+     "uid": "23735583",
+     "title": "Altered affective, executive and sensorimotor resting state networks in patients with pediatric mania.",
+     "articleids": [
+      {
+       "idtype": "pubmed",
+       "idtypen": 1,
+       "value": "23735583"
+      },
+      {
+       "idtype": "pmc",
+       "idtypen": 8,
+       "value": "PMC3692720"
+      },
+      {
+       "idtype": "pmcid",
+       "idtypen": 5,
+       "value": "pmc-id: PMC3692720;"
+      },
+      {
+       "idtype": "doi",
+       "idtypen": 3,
+       "value": "10.1503/jpn.120073"
+      },
+      {
+       "idtype": "pii",
+       "idtypen": 4,
+       "value": "10.1503/jpn.120073"
+      }
+     ],
+     "pubdate": "2013 Jul",
+     "source": "J Psychiatry Neurosci",
+     "fulljournalname": "Journal of psychiatry & neuroscience : JPN",
+     "pubtype": [
+      "Journal Article",
+      "Research Support, N.I.H., Extramural",
+      "Research Support, Non-U.S. Gov't",
+      "Retracted Publication"
+     ]
+    }
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=26524477&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "26524477"
+    ],
+    "26524477": {
+     "uid": "26524477",
+     "title": "Retraction: Altered affective, executive and sensorimotor resting state networks in patients with pediatric mania.",
+     "articleids": [
+      {
+       "idtype": "pubmed",
+       "idtypen": 1,
+       "value": "26524477"
+      },
+      {
+       "idtype": "pmc",
+       "idtypen": 8,
+       "value": "PMC4622639"
+      },
+      {
+       "idtype": "pmcid",
+       "idtypen": 5,
+       "value": "pmc-id: PMC4622639;"
+      },
+      {
+       "idtype": "pii",
+       "idtypen": 4,
+       "value": "10.1503/jpn.120073"
+      }
+     ],
+     "pubdate": "2015 Nov",
+     "source": "J Psychiatry Neurosci",
+     "fulljournalname": "Journal of psychiatry & neuroscience : JPN",
+     "pubtype": [
+      "Retraction Notice"
+     ]
+    }
+   }
+  }
+ },
  "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=33986261&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
   "status": 200,
   "body": {
@@ -447,6 +668,45 @@
      "pubtype": [
       "Journal Article",
       "Research Support, N.I.H., Extramural"
+     ]
+    }
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=9500320&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "9500320"
+    ],
+    "9500320": {
+     "uid": "9500320",
+     "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.",
+     "articleids": [
+      {
+       "idtype": "pubmed",
+       "idtypen": 1,
+       "value": "9500320"
+      },
+      {
+       "idtype": "doi",
+       "idtypen": 3,
+       "value": "10.1016/s0140-6736(97)11096-0"
+      },
+      {
+       "idtype": "pii",
+       "idtypen": 4,
+       "value": "S0140673697110960"
+      }
+     ],
+     "pubdate": "1998 Feb 28",
+     "source": "Lancet",
+     "fulljournalname": "Lancet (London, England)",
+     "pubtype": [
+      "Journal Article",
+      "Research Support, Non-U.S. Gov't",
+      "Retracted Publication"
      ]
     }
    }

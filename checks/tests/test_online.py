@@ -185,3 +185,19 @@ def test_scope_includes_pubmed_record(online_tree, fetch):
     claim = online_tree / "claims" / "examples" / "clm-2w33dsbbr3.yaml"
     claim.write_text(claim.read_text(encoding="utf-8").replace("locator: Fig. 2", "locator: Fig. 3"), encoding="utf-8")
     assert [(Path(f.path).name, f.rule) for f in scoped(online_tree, fetch)] == [("pubmed_1023575.yaml", "source-outdated")]
+
+
+def test_retracted_pmid_with_unrelated_doi(online_tree, fetch):
+    # A real DOI paired with a retracted paper's PMID (PubMed names no DOI for it, so nothing can mismatch).
+    claim = online_tree / "claims" / "examples" / "clm-9dd2wps80g.yaml"
+    text = claim.read_text(encoding="utf-8").replace('pmid: "34001873"', 'pmid: "11134581"').replace("  pmcid: PMC8129205\n", "")
+    claim.write_text(text, encoding="utf-8")
+    findings = [f for f in online(online_tree, fetch) if f.path == str(claim)]
+    assert [f.rule for f in findings] == ["cites-retracted"], [str(f) for f in findings]
+
+
+def test_crossref_miss_caught_through_pubmed(online_tree, fetch):
+    record = online_tree / "sources" / "doi" / "doi_10.1503_jpn.120073.yaml"
+    record.write_text("id: doi:10.1503/jpn.120073\nretracted: false\n", encoding="utf-8")
+    findings = [f for f in online(online_tree, fetch) if f.path == str(record)]
+    assert any(f.rule == "source-outdated" and "retracted: false" in f.message for f in findings), [str(f) for f in findings]

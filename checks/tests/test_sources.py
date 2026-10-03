@@ -204,3 +204,14 @@ def test_refresh_mixed_schemes(tree, fetch):
     (tree / PUBMED_FILE).write_text(yaml.safe_dump(stale, sort_keys=False), encoding="utf-8")
     written, findings = fill_sources(tree, fetch, TODAY, refresh=True)
     assert (written, findings) == ([tree / PUBMED_FILE], [])
+
+
+def test_doi_record_retracted_per_pubmed(fetch):
+    # Crossref has no retraction for this paper; PubMed lists it as a "Retracted Publication".
+    record = fetch_source(fetch, "doi:10.1503/jpn.120073", TODAY)
+    assert record["retracted"] is True
+
+
+def test_doi_record_unknown_to_pubmed(fetch):
+    record = fetch_source(fetch, "doi:10.48550/arxiv.2409.13740", TODAY)
+    assert "retracted" not in record  # DataCite has no retraction data and PubMed doesn't index the preprint

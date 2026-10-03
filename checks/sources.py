@@ -11,7 +11,7 @@ from checks.findings import Finding
 from checks.http import Fetcher, LookupFailed
 from checks.identifiers import canonical_source_id, citation_of, source_file_name, source_key, spdx_from_url
 from checks.loading import load_tree
-from checks.lookups import CROSSREF, DATACITE, arxiv_doi, crossref_work, datacite_record, doi_agency, ncbi_summary
+from checks.lookups import CROSSREF, DATACITE, arxiv_doi, crossref_work, datacite_record, doi_agency, ncbi_summary, pubmed_ids_for_doi
 
 FIELDS = ("id", "title", "year", "journal", "license", "open_access", "retracted")
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
@@ -101,11 +101,22 @@ def _ncbi(source_id: str, summary: dict) -> dict:
                 journal=_text(summary.get("fulljournalname")) or _text(summary.get("source")))
 
 
-def source_from_pubmed(pmid: str, summary: dict) -> dict:
+def pubmed_says_retracted(summary: dict) -> bool:
+    """Whether a PubMed summary lists the paper as a "Retracted Publication"."""
     types = summary["pubtype"]
     if not isinstance(types, list):  # An unexpected shape must not read as "not retracted".
         raise TypeError("PubMed's pubtype is not a list")
-    return _record(f"pubmed:{pmid}", **_ncbi(pmid, summary), retracted="Retracted Publication" in types)
+    return "Retracted Publication" in types
+
+
+def source_from_pubmed(pmid: str, summary: dict) -> dict:
+    return _record(f"pubmed:{pmid}", **_ncbi(pmid, summary), retracted=pubmed_says_retracted(summary))
+
+
+def _pubmed_retracted(fetch: Fetcher, doi: str) -> bool | None:
+    """Whether PubMed lists a paper with this DOI as retracted; None if PubMed has no record with it."""
+    summaries = [s for pmid in pubmed_ids_for_doi(fetch, doi) if (s := ncbi_summary(fetch, "pubmed", pmid)) is not None]
+    return any(pubmed_says_retracted(s) for s in summaries) if summaries else None
 
 
 def source_from_pmc(pmcid: str, summary: dict) -> dict:
@@ -126,7 +137,14 @@ def fetch_source(fetch: Fetcher, source_id: str, today: date) -> dict | None:
         return source_from_datacite(arxiv_doi(rest), attributes) | {"id": source_id} if attributes is not None else None
     if scheme != "doi":
         raise ValueError(f"unknown source scheme in {source_id!r}")
-    doi = rest
+    record = _doi_record(fetch, rest, today)
+    if record is not None and (pubmed := _pubmed_retracted(fetch, rest)) is not None:
+        record["retracted"] = record.get("retracted", False) or pubmed  # Crossref misses some retractions PubMed has.
+    return record
+
+
+def _doi_record(fetch: Fetcher, doi: str, today: date) -> dict | None:
+    """The record for a DOI from its registration agency; None if the DOI doesn't exist."""
     agency = doi_agency(fetch, doi)
     if agency is None:
         return None

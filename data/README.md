@@ -60,7 +60,7 @@ Each problem prints as `<path>: <rule-id>: <message>`.
 | `unknown-reference` | A neuron type or atlas that has no record here |
 | `atlas-species` | A claim's species doesn't match the atlas its regions come from |
 | `missing-source` | A claim's paper has no record in `sources/` |
-| `cites-retracted` | A claim cites a retracted paper but isn't itself `retracted` |
+| `cites-retracted` | A claim cites a retracted paper but isn't itself `retracted` (online too, when PubMed lists a cited PubMed ID as retracted) |
 | `excerpt-licence` | A claim has a verbatim excerpt, but its source isn't CC BY or CC0 |
 | `unknown-term`, `obsolete-term` | An ontology term or atlas structure doesn't exist, or is obsolete (online) |
 | `unknown-citation`, `citation-mismatch` | A DOI, PubMed, PubMed Central or arXiv ID doesn't exist, or the IDs of one citation name different papers (online) |
@@ -72,7 +72,7 @@ Each problem prints as `<path>: <rule-id>: <message>`.
 
 ## Retracted papers
 
-When a cited paper is retracted, `checks sources --refresh` marks its record `retracted: true` (from Crossref for DOIs, from PubMed for papers without one); each claim citing it must then be set to `status: retracted`, with a `retracted` entry in `retractions.yaml`. Claims are flagged, never silently deleted.
+When a cited paper is retracted, `checks sources --refresh` marks its record `retracted: true` (if Crossref or PubMed says so; PubMed Central and arXiv records carry no retraction status); each claim citing it must then be set to `status: retracted`, with a `retracted` entry in `retractions.yaml`. Claims are flagged, never silently deleted.
 
 ## Deleting or retracting a claim
 

@@ -8,7 +8,7 @@ from checks.findings import Finding, Record
 from checks.http import Fetcher, LookupFailed
 from checks.identifiers import canonical, canonical_source_id, citation_of, curies_in, source_key
 from checks.lookups import ATLAS_GRAPHS, arxiv_doi, atlas_structure, doi_agency, ncbi_summary, ontology_term
-from checks.sources import fetch_source
+from checks.sources import fetch_source, pubmed_says_retracted
 
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
 ATLAS_NAMES = {"MBA": "mouse", "HBA": "human"}
@@ -93,7 +93,7 @@ class _Asker:
     def arxiv(self, path: str, arxiv: str) -> list[Finding]:
         return self.doi(path, arxiv_doi(arxiv), f"arXiv ID {arxiv} does not exist (doi.org has no {arxiv_doi(arxiv)})")
 
-    def citation(self, path: str, cited: dict[str, str]) -> list[Finding]:
+    def citation(self, path: str, cited: dict[str, str], status=None) -> list[Finding]:
         findings, given, cited = [], set(cited), dict(cited)
         for kind, label in KINDS.items():
             if kind in cited and not canonical(kind, cited[kind]):
@@ -107,6 +107,8 @@ class _Asker:
                 findings.append(Finding(path, "citation-mismatch", f"PubMed {pmid} is {other}, not {doi}"))
             if summary and "doi" not in given and (other := article_id(summary, "doi")):
                 findings.append(Finding(path, "citation-incomplete", f"PubMed {pmid} names DOI {other}; cite it too"))
+            if summary and status != "retracted":
+                findings += self._retracted_pmid(path, pmid, summary)
         if pmcid:
             found, summary = self.pmc(path, pmcid)
             findings += found
@@ -121,6 +123,17 @@ class _Asker:
         if cited.get("arxiv"):
             findings += self.arxiv(path, cited["arxiv"])
         return findings
+
+    @staticmethod
+    def _retracted_pmid(path: str, pmid: str, summary: dict) -> list[Finding]:
+        """A cited PubMed ID that PubMed lists as retracted, whatever the claim's source record says."""
+        try:
+            retracted = pubmed_says_retracted(summary)
+        except (TypeError, KeyError) as error:
+            return [Finding(path, "lookup-failed", f"lookup failed: unexpected answer from NCBI for PubMed {pmid} ({error})")]
+        if retracted:
+            return [Finding(path, "cites-retracted", f"PubMed {pmid} is a retracted publication; set status: retracted and log it in retractions.yaml")]
+        return []
 
     def source(self, path: str, data: dict) -> list[Finding]:
         source_id = data["id"]
@@ -150,7 +163,7 @@ def check_online(records: list[Record], fetch: Fetcher, today: date, scope: set[
         for curie in sorted(curies_in(record.data)):
             findings += asker.term(path, curie)
         if record.cls in CLAIMS:
-            findings += asker.citation(path, citation_of(record.data))
+            findings += asker.citation(path, citation_of(record.data), record.data.get("status"))
         if record.cls == "Source" and isinstance(record.data.get("id"), str) and ":" in record.data["id"]:
             findings += asker.source(path, record.data)
     return sorted(set(findings))
