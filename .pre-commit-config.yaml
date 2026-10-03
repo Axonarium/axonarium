@@ -12,6 +12,8 @@ repos:
       - id: check-merge-conflict
         args: [--assume-in-merge]
       - id: check-yaml
+        # These two fixtures are deliberately unparseable (checks/tests).
+        exclude: ^checks/tests/fixtures/broken/(yaml-error|duplicate-key)/
       # schema/generated/ must match its generator byte for byte (schema/tests
       # checks that), so the whitespace fixers leave it alone.
       - id: end-of-file-fixer
