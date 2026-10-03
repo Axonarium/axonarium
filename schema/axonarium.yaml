@@ -174,6 +174,8 @@ classes:
           slot_conditions:
             atlas:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
 
   Citation:
     description: >-
@@ -190,18 +192,26 @@ classes:
         slot_conditions:
           doi:
             required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
       - description: Has a PubMed ID.
         slot_conditions:
           pmid:
             required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
       - description: Has a PubMed Central ID.
         slot_conditions:
           pmcid:
             required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
       - description: Has an arXiv ID.
         slot_conditions:
           arxiv:
             required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
 
   Curation:
     description: Who drafted or curated a claim, and how.
@@ -222,6 +232,8 @@ classes:
           slot_conditions:
             orcid:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
       - description: Agents record the model and prompt version they ran.
         preconditions:
           slot_conditions:
@@ -231,8 +243,12 @@ classes:
           slot_conditions:
             model:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
             prompt:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
 
   Verification:
     description: An independent check of a claim against its source.
@@ -254,6 +270,8 @@ classes:
           slot_conditions:
             orcid:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
       - description: Agents record the model and prompt version they ran.
         preconditions:
           slot_conditions:
@@ -263,8 +281,12 @@ classes:
           slot_conditions:
             model:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
             prompt:
               required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
 
   Measurement:
     description: >-

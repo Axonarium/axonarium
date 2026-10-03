@@ -84,7 +84,13 @@
             "anyOf": [
                 {
                     "properties": {
-                        "doi": {}
+                        "doi": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
                     },
                     "required": [
                         "doi"
@@ -92,7 +98,13 @@
                 },
                 {
                     "properties": {
-                        "pmid": {}
+                        "pmid": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
                     },
                     "required": [
                         "pmid"
@@ -100,7 +112,13 @@
                 },
                 {
                     "properties": {
-                        "pmcid": {}
+                        "pmcid": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
                     },
                     "required": [
                         "pmcid"
@@ -108,7 +126,13 @@
                 },
                 {
                     "properties": {
-                        "arxiv": {}
+                        "arxiv": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
                     },
                     "required": [
                         "arxiv"
@@ -492,7 +516,13 @@
                     },
                     "then": {
                         "properties": {
-                            "orcid": {}
+                            "orcid": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
                         },
                         "required": [
                             "orcid"
@@ -512,8 +542,20 @@
                     },
                     "then": {
                         "properties": {
-                            "model": {},
-                            "prompt": {}
+                            "model": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "prompt": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
                         },
                         "required": [
                             "model",
@@ -643,7 +685,13 @@
                     },
                     "then": {
                         "properties": {
-                            "atlas": {}
+                            "atlas": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
                         },
                         "required": [
                             "atlas"
@@ -1260,7 +1308,13 @@
                     },
                     "then": {
                         "properties": {
-                            "orcid": {}
+                            "orcid": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
                         },
                         "required": [
                             "orcid"
@@ -1280,8 +1334,20 @@
                     },
                     "then": {
                         "properties": {
-                            "model": {},
-                            "prompt": {}
+                            "model": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "prompt": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
                         },
                         "required": [
                             "model",
