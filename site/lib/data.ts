@@ -9,7 +9,7 @@ import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { fetchAll } from "./pages";
-import type { RegionName } from "./regions";
+import type { AtlasRegion, RegionName } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
 
 const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength";
@@ -80,18 +80,37 @@ export async function getSource(id: string): Promise<Source | null> {
   return rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle());
 }
 
-/** Every atlas region, by ID (about a thousand rows, cached with the page). */
-export async function getRegions(): Promise<Record<string, RegionName> | null> {
+/** The names of these atlas regions, by ID (IDs that aren't atlas regions are left out). */
+export async function getRegionNames(ids: string[]): Promise<Record<string, RegionName>> {
   const db = client();
-  if (!db) return null;
-  const all = await fetchAll((from, to) =>
-    rows<RegionName[]>("regions", () => db.from("regions").select("id, acronym, name, atlas, uberon").order("id").range(from, to)),
+  if (!db || ids.length === 0) return {};
+  const chunks = Array.from({ length: Math.ceil(ids.length / 200) }, (_, i) => ids.slice(i * 200, i * 200 + 200));
+  const found = await Promise.all(
+    chunks.map((chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name").in("id", chunk))),
   );
-  return Object.fromEntries(all.map((region) => [region.id, region]));
+  return Object.fromEntries(found.flat().map((region) => [region.id, region]));
 }
 
-export async function getAtlases(): Promise<Atlas[] | null> {
+/** Each atlas, with its number of regions and the regions UBERON places under the amygdala. */
+export async function getAtlases(): Promise<{ atlas: Atlas; regions: number; amygdala: AtlasRegion[] }[] | null> {
   const db = client();
   if (!db) return null;
-  return rows<Atlas[]>("atlases", () => db.from("atlases").select("id, name, species, version, url, brainglobe_name, citation").order("id"));
+  const atlases = await rows<Atlas[]>("atlases", () =>
+    db.from("atlases").select("id, name, species, version, url, brainglobe_name, citation").order("id"),
+  );
+  return Promise.all(
+    atlases.map(async (atlas) => ({
+      atlas,
+      regions: await countWhere(db, "regions", "atlas", atlas.id),
+      amygdala: await rows<AtlasRegion[]>("amygdala regions", () =>
+        db.from("regions").select("id, acronym, name, uberon, uberon_label").eq("atlas", atlas.id).eq("amygdala", true).order("id"),
+      ),
+    })),
+  );
+}
+
+async function countWhere(db: SupabaseClient, table: string, column: string, value: string): Promise<number> {
+  const { count: n, error } = await db.from(table).select("*", { count: "exact", head: true }).eq(column, value);
+  if (error) failed(`count ${table}`, error);
+  return n ?? 0;
 }

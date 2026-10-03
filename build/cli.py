@@ -10,7 +10,7 @@ from build.dumps import write_dumps
 from build.tables import rows
 from checks.cli import run_files
 from checks.loading import load_tree
-from ingest.atlases import load_atlas
+from ingest.atlases import amygdala_terms, load_atlas
 
 
 def _unsafe_out(out: Path, data: Path) -> str | None:
@@ -25,7 +25,7 @@ def _unsafe_out(out: Path, data: Path) -> str | None:
     return None
 
 
-def main(argv: list[str] | None = None, atlas_loader=None) -> int:
+def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m build",
                                      description="Rebuild the dumps and the database from the data files.")
     parser.add_argument("--data", type=Path, default=Path("data"), help="the data folder (default: data)")
@@ -34,6 +34,10 @@ def main(argv: list[str] | None = None, atlas_loader=None) -> int:
     parser.add_argument("--no-atlases", action="store_true", help="don't load atlas regions from BrainGlobe (offline work)")
     args = parser.parse_args(argv)
 
+    url = args.database or os.environ.get("AXONARIUM_DATABASE_URL")
+    if url and args.no_atlases:
+        print("refusing to load a database with --no-atlases: it would empty the atlas regions; build without a database")
+        return 1
     unsafe = _unsafe_out(args.out, args.data)
     if unsafe:
         print(f"refusing to write dumps to {args.out}: {unsafe}")
@@ -51,13 +55,19 @@ def main(argv: list[str] | None = None, atlas_loader=None) -> int:
     records, _ = load_tree(args.data)
     tables = rows(records)
     loaded: dict[str, list[dict]] = {}
-    if not args.no_atlases:
+    atlases = [r.data for r in records if r.cls == "Atlas" and r.data.get("brainglobe_name")]
+    if not args.no_atlases and atlases:
         loader = atlas_loader or load_atlas
-        for atlas in (r.data for r in records if r.cls == "Atlas" and r.data.get("brainglobe_name")):
+        try:
+            terms = (amygdala_loader or amygdala_terms)()
+        except Exception as error:  # OLS unreachable: the amygdala regions can't be identified.
+            print(f"loading the amygdala's UBERON terms from OLS failed: {error}; build stopped")
+            return 1
+        for atlas in atlases:
             try:
-                loaded[atlas["id"]] = loader(atlas)
-            except Exception as error:  # Network, BrainGlobe or a pin mismatch: the build can't vouch for regions.
-                print(f"atlas load failed for {atlas['id']}: {error}; build stopped (use --no-atlases to work offline)")
+                loaded[atlas["id"]] = loader(atlas, terms)
+            except Exception as error:  # BrainGlobe's S3, a UBERON bridge, or a pin: the build can't vouch for regions.
+                print(f"atlas load failed for {atlas['id']} (BrainGlobe or UBERON bridge): {error}; build stopped")
                 return 1
         problems = atlas_regions.unknown_regions(records, loaded)
         problems += [f"{atlas}: no amygdala regions; check the atlas and its UBERON bridge"
@@ -69,7 +79,6 @@ def main(argv: list[str] | None = None, atlas_loader=None) -> int:
             return 1
     write_dumps(records, tables, args.out)  # The files' records only: atlas-derived regions stay out of dumps.
     tables = atlas_regions.merge(tables, loaded)
-    url = args.database or os.environ.get("AXONARIUM_DATABASE_URL")
     if url:
         try:
             load(url, tables)

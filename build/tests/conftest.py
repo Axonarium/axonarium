@@ -18,3 +18,4 @@ def no_network_atlases(monkeypatch):
         raise AssertionError("a test tried to load a real atlas; pass --no-atlases or an atlas_loader")
     monkeypatch.setattr("ingest.atlases._open_brainglobe", refuse)
     monkeypatch.setattr("ingest.atlases._download", refuse)
+    monkeypatch.setattr("ingest.atlases._get_json", refuse)

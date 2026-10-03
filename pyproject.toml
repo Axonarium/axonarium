@@ -12,6 +12,8 @@ build = [
     "alembic==1.20.0",
     "brainglobe-atlasapi==3.0.2",
     "psycopg[binary]==3.3.6",
+    "rdflib==7.6.0",
+    "requests==2.34.2",
     "sqlalchemy==2.1.3",
 ]
 

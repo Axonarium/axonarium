@@ -1,8 +1,17 @@
 import type { Label } from "@/lib/regions";
 
-/** An entity as its acronym (with the full name on hover and for screen readers) and its ID. */
-export function RegionName({ label }: { label: Label }) {
+/**
+ * An entity as its acronym and ID, with its full name: visible in headings, and on hover and for screen readers
+ * in tables, where space is short.
+ */
+export function RegionName({ label, heading = false }: { label: Label; heading?: boolean }) {
   if (!label.long) return <span className="font-mono">{label.id}</span>;
+  if (heading)
+    return (
+      <span>
+        {label.short} <span className="font-normal text-muted-foreground">({label.long})</span>
+      </span>
+    );
   return (
     <span>
       <abbr title={label.long} className="no-underline">

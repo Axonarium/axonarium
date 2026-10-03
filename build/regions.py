@@ -3,7 +3,6 @@
 import re
 
 from checks.findings import Finding, Record
-from ingest.atlases import AMYGDALA
 
 REGION_ID = re.compile(r"^(MBA|HBA|DHBA):\d+$")
 
@@ -20,8 +19,8 @@ def _region_refs(record: Record) -> list[dict]:
 
 
 def unknown_regions(records: list[Record], regions: dict[str, list[dict]]) -> list[Finding]:
-    """References to atlas regions that the loaded atlas doesn't have."""
-    known = {atlas: {row["id"] for row in rows} for atlas, rows in regions.items() if rows}
+    """References to atlas regions that the loaded atlas doesn't have (an atlas loaded without regions has none)."""
+    known = {atlas: {row["id"] for row in rows} for atlas, rows in regions.items()}
     findings = []
     for record in records:
         for ref in _region_refs(record):
@@ -32,7 +31,7 @@ def unknown_regions(records: list[Record], regions: dict[str, list[dict]]) -> li
 
 
 def amygdala(rows: list[dict]) -> list[dict]:
-    return [row for row in rows if row["uberon"] in AMYGDALA]
+    return [row for row in rows if row["amygdala"]]
 
 
 def summary(atlas: str, rows: list[dict]) -> str:

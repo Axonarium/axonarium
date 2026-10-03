@@ -7,6 +7,7 @@ import psycopg
 import pytest
 
 from build.cli import main
+from build.tests.test_regions import amygdala_loader, fake_loader
 from checks.tests.conftest import BROKEN, overlay
 
 TEST_URL = os.environ.get("AXONARIUM_TEST_DATABASE_URL")
@@ -45,9 +46,12 @@ def test_not_a_data_folder(tmp_path, capsys):
     assert "not a data folder" in capsys.readouterr().out and not (tmp_path / "dist").exists()
 
 
-def test_database_url_not_printed(valid_tree, tmp_path, capsys):
+def test_database_url_not_printed(tmp_path, capsys):
+    data = tmp_path / "data"  # no atlas records, so nothing to load from BrainGlobe
+    data.mkdir()
+    (data / "retractions.yaml").write_text("entries: []\n", encoding="utf-8")
     url = "postgresql://axonarium:hunter2-secret@127.0.0.1:1/nowhere?connect_timeout=2"
-    assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist"), "--database", url, "--no-atlases"]) == 1
+    assert main(["--data", str(data), "--out", str(tmp_path / "dist"), "--database", url]) == 1
     captured = capsys.readouterr()
     assert "hunter2-secret" not in captured.out + captured.err and "rolled back" in captured.out
 
@@ -55,7 +59,7 @@ def test_database_url_not_printed(valid_tree, tmp_path, capsys):
 @pytest.mark.skipif(not TEST_URL, reason="needs AXONARIUM_TEST_DATABASE_URL")
 def test_database_from_environment(valid_tree, tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("AXONARIUM_DATABASE_URL", TEST_URL)
-    assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist"), "--no-atlases"]) == 0
+    assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist")], atlas_loader=fake_loader(), amygdala_loader=amygdala_loader) == 0
     assert "loaded the database" in capsys.readouterr().out
     with psycopg.connect(TEST_URL) as conn:
         assert conn.execute("select count(*) from connectivity_claims").fetchone()[0] > 0

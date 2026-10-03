@@ -52,4 +52,18 @@
             </owl:Class>
         </owl:equivalentClass>
     </owl:Class>
+    <!-- Not exact: restricted to a part of another structure, not to a species. -->
+    <owl:Class rdf:about="https://purl.brain-bican.org/ontology/mbao/MBA_4">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://purl.obolibrary.org/obo/UBERON_0000004"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.obolibrary.org/obo/BFO_0000050"/>
+                        <owl:someValuesFrom rdf:resource="http://purl.obolibrary.org/obo/UBERON_0000005"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
 </rdf:RDF>

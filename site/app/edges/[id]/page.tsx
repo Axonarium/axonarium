@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ClaimCard } from "@/components/claim-card";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { RegionName } from "@/components/region-name";
-import { getClaims, getEdge, getRegions } from "@/lib/data";
+import { getClaims, getEdge, getRegionNames } from "@/lib/data";
 import { regionLabel } from "@/lib/regions";
 import { edgeFromParam, predicateLabel, speciesName } from "@/lib/format";
 
@@ -24,14 +24,14 @@ export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
   const e = await getEdge(edgeFromParam((await params).id));
   if (e === undefined) return <DataUnavailable />;
   if (e === null) notFound();
-  const [claims, regions] = await Promise.all([getClaims(e.claim_ids), getRegions()]);
+  const [claims, regions] = await Promise.all([getClaims(e.claim_ids), getRegionNames([e.subject_id, e.object_id])]);
   return (
     <div className="space-y-8">
       <header className="space-y-2">
         <p className="text-sm text-muted-foreground">{speciesName(e.species)}</p>
         <h1 className="text-3xl font-semibold tracking-tight">
-          <RegionName label={regionLabel(e.subject_id, regions ?? {})} /> {predicateLabel(e.predicate)}{" "}
-          <RegionName label={regionLabel(e.object_id, regions ?? {})} />
+          <RegionName heading label={regionLabel(e.subject_id, regions)} /> {predicateLabel(e.predicate)}{" "}
+          <RegionName heading label={regionLabel(e.object_id, regions)} />
         </h1>
         <p className="text-muted-foreground">
           {e.n_claims} claim{e.n_claims === 1 ? "" : "s"}: {e.n_present} found, {e.n_absent} tested and absent,{" "}

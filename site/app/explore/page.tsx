@@ -3,16 +3,17 @@ import { Suspense } from "react";
 
 import { DataUnavailable } from "@/components/data-unavailable";
 import { EdgeTable } from "@/components/edge-table";
-import { getRegions, listEdges } from "@/lib/data";
+import { getRegionNames, listEdges } from "@/lib/data";
 import { regionLabel } from "@/lib/regions";
 
 export const revalidate = 300;
 export const metadata: Metadata = { title: "Explore" };
 
 export default async function Explore() {
-  const [edges, regions] = await Promise.all([listEdges(), getRegions()]);
-  const ids = new Set((edges ?? []).flatMap((e) => [e.subject_id, e.object_id]));
-  const labels = Object.fromEntries([...ids].map((id) => [id, regionLabel(id, regions ?? {})]));
+  const edges = await listEdges();
+  const ids = [...new Set((edges ?? []).flatMap((e) => [e.subject_id, e.object_id]))];
+  const regions = await getRegionNames(ids);
+  const labels = Object.fromEntries(ids.map((id) => [id, regionLabel(id, regions)]));
   return (
     <div className="space-y-6">
       <div className="space-y-2">

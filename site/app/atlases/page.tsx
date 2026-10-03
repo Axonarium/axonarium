@@ -3,9 +3,8 @@ import type { Metadata } from "next";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getAtlases, getRegions } from "@/lib/data";
+import { getAtlases } from "@/lib/data";
 import { citationParts, speciesName } from "@/lib/format";
-import { AMYGDALA, amygdalaRegions } from "@/lib/regions";
 
 export const revalidate = 300;
 export const metadata: Metadata = { title: "Atlases" };
@@ -15,9 +14,8 @@ function uberonHref(curie: string): string {
 }
 
 export default async function Atlases() {
-  const [atlases, regions] = await Promise.all([getAtlases(), getRegions()]);
-  if (atlases === null || regions === null) return <DataUnavailable />;
-  const all = Object.values(regions);
+  const atlases = await getAtlases();
+  if (atlases === null) return <DataUnavailable />;
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -27,12 +25,10 @@ export default async function Atlases() {
           <a href="https://brainglobe.info/" className="underline underline-offset-4">
             BrainGlobe
           </a>{" "}
-          at build time, and each region is mapped to UBERON by UBERON&apos;s own published bridge.
+          at build time; each region is mapped to UBERON by UBERON&apos;s own published bridge, and UBERON&apos;s hierarchy decides which belong to the amygdala.
         </p>
       </header>
-      {atlases.map((atlas) => {
-        const own = all.filter((r) => r.atlas === atlas.id);
-        const amygdala = amygdalaRegions(own);
+      {atlases.map(({ atlas, regions, amygdala }) => {
         const cite = atlas.citation ? citationParts(atlas.citation) : null;
         return (
           <Card key={atlas.id}>
@@ -41,7 +37,8 @@ export default async function Atlases() {
                 <h2>{atlas.name}</h2>
               </CardTitle>
               <CardDescription>
-                {speciesName(atlas.species)} · version {atlas.version} · {own.length.toLocaleString("en")} regions
+                {speciesName(atlas.species)} · version {atlas.version}
+                {regions > 0 && ` · ${regions.toLocaleString("en")} regions`}
                 {cite && (
                   <>
                     {" · Cite "}
@@ -75,17 +72,19 @@ export default async function Atlases() {
                         <TableCell className="font-mono">{region.id}</TableCell>
                         <TableCell>
                           <a href={uberonHref(region.uberon!)} className="underline underline-offset-4">
-                            {AMYGDALA.find((t) => t.uberon === region.uberon)?.label}
+                            {region.uberon_label ?? region.uberon}
                           </a>
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+              ) : regions > 0 ? (
+                <p className="text-sm text-muted-foreground">No region of this atlas maps to the amygdala in UBERON.</p>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  This atlas doesn&apos;t delineate the amygdala&apos;s nuclei, so claims about this species name UBERON
-                  terms instead of its regions.
+                  No regions of this atlas are loaded: it doesn&apos;t delineate the amygdala&apos;s nuclei, so claims
+                  about this species name UBERON terms instead.
                 </p>
               )}
             </CardContent>
