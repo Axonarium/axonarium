@@ -64,6 +64,19 @@ def canonical(kind: str, value: str) -> bool:
     return bool(CANONICAL[kind].fullmatch(value))
 
 
+def source_key(cited: dict[str, str]) -> str | None:
+    """The ID of the source record a citation needs: its DOI, else PubMed ID, else PMC ID, else arXiv ID (no version)."""
+    if cited.get("doi"):
+        return f"doi:{cited['doi'].lower()}"
+    if cited.get("pmid"):
+        return f"pubmed:{cited['pmid']}"
+    if cited.get("pmcid"):
+        return f"pmc:{cited['pmcid']}"
+    if cited.get("arxiv"):
+        return f"arxiv:{re.sub(r'v[0-9]+$', '', cited['arxiv'])}"
+    return None
+
+
 def citation_of(data: dict) -> dict[str, str]:
     """A claim's citation identifiers and locator that are strings; empty if it has no citation mapping."""
     source = data.get("source")

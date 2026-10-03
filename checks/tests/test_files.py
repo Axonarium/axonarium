@@ -4,8 +4,10 @@ import re
 import shutil
 
 import pytest
+import yaml
 
 from checks.cli import main, run_files
+from checks.identifiers import source_file_name
 from checks.tests.conftest import BROKEN, overlay
 
 FIXTURES = sorted(p for p in BROKEN.iterdir() if p.is_dir())
@@ -81,6 +83,7 @@ def test_excerpt_without_doi(valid_tree):
     text = path.read_text(encoding="utf-8")
     assert "  doi: 10.5555/axonarium.example.001\n" in text
     path.write_text(text.replace("  doi: 10.5555/axonarium.example.001\n", '  pmid: "34001873"\n'), encoding="utf-8")
+    write_source(valid_tree, "pubmed", {"id": "pubmed:34001873", "title": "A paper without a licence", "retracted": False})
     assert [f.rule for f in run_files(valid_tree)] == ["excerpt-licence"]
 
 
@@ -90,3 +93,28 @@ def test_misnamed_source(valid_tree):
     findings = run_files(valid_tree)
     assert [f.rule for f in findings] == ["file-name"]
     assert "doi_10.5555_axonarium.example.001.yaml" in findings[0].message
+
+
+def write_source(data, scheme: str, record: dict) -> None:
+    folder = data / "sources" / scheme
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / source_file_name(record["id"])).write_text(yaml.safe_dump(record, sort_keys=False), encoding="utf-8")
+
+
+def cite_pmid_only(data, pmid: str):
+    """The bla-to-ceam example, citing only a PubMed ID and without its excerpt."""
+    path = data / "claims" / "examples" / "clm-pq22bk4dtz.yaml"
+    text = path.read_text(encoding="utf-8").replace("  doi: 10.5555/axonarium.example.001\n", f'  pmid: "{pmid}"\n')
+    path.write_text("\n".join(line for line in text.splitlines() if not line.startswith("excerpt:")) + "\n", encoding="utf-8")
+
+
+def test_pmid_only_claim_needs_record(valid_tree):
+    cite_pmid_only(valid_tree, "1023575")
+    findings = run_files(valid_tree)
+    assert [f.rule for f in findings] == ["missing-source"] and "pubmed:1023575" in findings[0].message
+
+
+def test_retracted_paper_cited_by_pmid_only(valid_tree):
+    cite_pmid_only(valid_tree, "11134581")
+    write_source(valid_tree, "pubmed", {"id": "pubmed:11134581", "title": "A retracted paper", "retracted": True})
+    assert [f.rule for f in run_files(valid_tree)] == ["cites-retracted"]
