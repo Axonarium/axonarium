@@ -57,10 +57,10 @@ repos:
         files: ^(schema/axonarium\.yaml|\.linkmllint\.yaml)$
         pass_filenames: false
       - id: schema-tests
-        name: Schema and data-check tests
-        entry: uv run --frozen pytest -q schema/tests checks/tests
+        name: Schema, data-check and build tests
+        entry: uv run --frozen pytest -q schema/tests checks/tests build/tests
         language: system
-        files: ^(schema/|checks/|data/|pyproject\.toml|uv\.lock)
+        files: ^(schema/|checks/|build/|data/|pyproject\.toml|uv\.lock)
         pass_filenames: false
       - id: data-checks
         name: Data checks (python -m checks files)
