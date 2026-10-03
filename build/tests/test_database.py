@@ -140,3 +140,16 @@ def test_migrations_match_tables(monkeypatch):
 
     monkeypatch.setenv("AXONARIUM_DATABASE_URL", URL)
     command.check(Config("alembic.ini"))
+
+
+def test_every_public_table_has_row_level_security():
+    # Supabase's default privileges give its API roles full access to any new table in public, including
+    # Alembic's own alembic_version; row-level security without a policy for them is what keeps them out.
+    unprotected = query("select relname from pg_class c join pg_namespace n on n.oid = c.relnamespace "
+                        "where n.nspname = 'public' and c.relkind = 'r' and not c.relrowsecurity order by relname")
+    assert unprotected == []
+
+
+def test_api_roles_cannot_touch_alembic_version():
+    for privilege in ("SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"):
+        assert query("select has_table_privilege('anon', 'alembic_version', %s)", privilege) == [(False,)], privilege
