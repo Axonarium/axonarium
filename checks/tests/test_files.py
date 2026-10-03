@@ -55,6 +55,9 @@ ODD_INPUTS = {
     "list-quantity": (None, {"schema"}),
     "huge-int": (None, {"unit"}),
     "list-atlas": (None, {"schema"}),
+    "nul-character": (None, {"json-value"}),
+    "lone-surrogate": (None, {"json-value"}),
+    "number-key": (None, {"json-value"}),
 }
 
 
@@ -68,7 +71,10 @@ def test_odd_input_is_reported_not_raised(valid_tree, case):
         text = path.read_text()
         text = {"list-quantity": text.replace("quantity: projection_density", "quantity: [projection_density]"),
                 "huge-int": text.replace("value: 0.12", "value: " + "9" * 400),
-                "list-atlas": text.replace("  atlas: allen-mouse-ccf-2017\npredicate", "  atlas: [allen-mouse-ccf-2017]\npredicate")}[case]
+                "list-atlas": text.replace("  atlas: allen-mouse-ccf-2017\npredicate", "  atlas: [allen-mouse-ccf-2017]\npredicate"),
+                "nul-character": text.replace("locator: Fig. 3B", 'locator: "Fig. 3B\\0"'),
+                "lone-surrogate": text.replace("locator: Fig. 3B", 'locator: "Fig. 3B \\ud800"'),
+                "number-key": text.replace("    depth_um: 4300", "    depth_um: 4300\n    1: one")}[case]
         path.write_text(text, encoding="utf-8")
     assert {f.rule for f in run_files(valid_tree)} == expected
 

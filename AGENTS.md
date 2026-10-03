@@ -85,6 +85,7 @@ What exists now:
 | `docs/specs/`, `docs/plans/` | Design specs and implementation plans for sprints |
 | `schema/` | The LinkML schema (`axonarium.yaml`), its generated JSON Schema and SQL, examples and tests |
 | `checks/` | The data checks: `python -m checks files`, `changes`, `online` and `sources` |
+| `build/` | `python -m build`: dumps and the Supabase database, rebuilt from the files; `build/migrations/` holds the Alembic migrations ([build/README.md](build/README.md)) |
 | `pyproject.toml`, `uv.lock` | The repo's Python tooling environment: Python 3.13 and LinkML |
 | `data/README.md` | Data licence, layout and the rules the checks apply |
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
@@ -98,7 +99,6 @@ Planned, from the plan's repository layout:
 | `ingest/` | One adapter per external source |
 | `agents/roles/` | Role prompts |
 | `agents/evals/` | Gold set and eval harness (human-owned) |
-| `build/` | Builds Postgres tables, dumps and SONATA exports from the files |
 | `site/` | Next.js explorer |
 | `api/` | OpenAPI spec and MCP server |
 

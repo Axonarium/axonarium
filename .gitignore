@@ -22,3 +22,4 @@ __pycache__/
 # Node and Next.js
 node_modules/
 .next/
+dist/

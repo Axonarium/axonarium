@@ -17,6 +17,17 @@ jobs:
     timeout-minutes: 20  # Online checks of a large data pull request take minutes.
     permissions:
       contents: read
+    services:
+      postgres:  # An empty database for the rebuild and the build's database tests.
+        image: postgres:17@sha256:d74eeac9a635390a49bc21bd49fccd973de707e2a53a76ac49b552b8712ec46f
+        env:
+          POSTGRES_PASSWORD: postgres  # A throwaway CI database, reachable only from this job.
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      AXONARIUM_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -30,6 +41,13 @@ jobs:
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Migrate and rebuild an empty database
+        env:
+          AXONARIUM_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        run: |
+          uv run --frozen alembic upgrade head
+          uv run --frozen alembic check
+          uv run --frozen python -m build
       - run: uvx pre-commit@4.6.2 run --all-files --show-diff-on-failure
       - name: Deletions and retractions are logged
         if: github.event_name == 'pull_request'

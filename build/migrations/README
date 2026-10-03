@@ -1,0 +1,7 @@
+Alembic migrations for the serving tables (ADR 0008). The tables are defined in build/tables.py.
+
+Change a table: edit build/tables.py, then generate and review a migration against a database at the current head:
+
+    AXONARIUM_DATABASE_URL=postgresql://... uv run alembic revision --autogenerate -m "what changed"
+
+Apply: `uv run alembic upgrade head`. CI runs `alembic check`, which fails if build/tables.py and the migrations differ.

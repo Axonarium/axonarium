@@ -18,7 +18,8 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.3 Validation CI | Done |
 | 0.3b Online identifier checks | Done |
 | 0.3c Retraction status for citations without a DOI | Done |
-| 0.4 Rebuild pipeline, 1.2 Atlas layer | Ready for an agent |
+| 0.4 Rebuild pipeline | Done |
+| 1.2 Atlas layer | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
 | 1.4 BAMS rat adapter | Blocked until BAMS grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)) |
@@ -37,6 +38,7 @@ Later phases get cards when they start.
 - Source reuse terms: copy, link or ask first, per source; Allen data is read at build time until the Allen Institute grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)).
 - Deletions and retractions: logged in data/retractions.yaml, which the maintainer owns ([ADR 0006](docs/decisions/0006-deletion-and-retraction-review.md)).
 - Online checks: identifiers and citations are looked up in their registries on every data pull request, failing closed; excerpts only from CC BY or CC0 papers ([ADR 0007](docs/decisions/0007-online-identifier-checks.md)).
+- Serving database: read-shaped tables in Supabase, rebuilt from the files on every merge to main, read-only to the public ([ADR 0008](docs/decisions/0008-serving-database.md)).
 
 ## Waiting on the maintainer
 
@@ -48,7 +50,8 @@ Later phases get cards when they start.
 - [ ] Requiring 2FA in the GitHub organization.
 - [ ] A second organization owner.
 - [ ] Claiming the PyPI project name.
-- [ ] Pointing the domains at the repo with 302 redirects until the site exists.
+- [ ] Pointing the domains at the site on Vercel once it is deployed (sprint 3.3).
+- [ ] Rotating the Vercel token and the Supabase database password, which were pasted in chat, and re-setting them with `gh secret set` (`VERCEL_TOKEN`; `SUPABASE_DB_URL --env production`).
 - [ ] Registering https://w3id.org/axonarium/ with w3id.org (a pull request to its registry).
 - [ ] Asking the Allen Institute for written permission to redistribute region and connectivity data under CC BY 4.0 (ADR 0005).
 - [ ] Asking BAMS's maintainers for permission to reuse its connection reports (ADR 0005).
