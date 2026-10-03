@@ -182,14 +182,12 @@ def pmid_only_claim(data: Path, pmid: str) -> Path:
 
 
 def test_fill_writes_pubmed_and_arxiv_records(tree, fetch):
-    pmid_only_claim(tree, "1023575")
-    (tree / PUBMED_FILE).unlink(missing_ok=True)
-    expected_arxiv = (tree / ARXIV_FILE).read_text(encoding="utf-8")
-    (tree / ARXIV_FILE).unlink()
+    expected = {f: (tree / f).read_text(encoding="utf-8") for f in (ARXIV_FILE, PUBMED_FILE)}
+    for f in expected:
+        (tree / f).unlink()
     written, findings = fill_sources(tree, fetch, TODAY)
     assert (sorted(written), findings) == (sorted([tree / ARXIV_FILE, tree / PUBMED_FILE]), [])
-    assert (tree / ARXIV_FILE).read_text(encoding="utf-8") == expected_arxiv
-    assert yaml.safe_load((tree / PUBMED_FILE).read_text(encoding="utf-8"))["retracted"] is False
+    assert {f: (tree / f).read_text(encoding="utf-8") for f in expected} == expected
     assert run_files(tree) == []
 
 
