@@ -19,15 +19,21 @@ export interface Edge {
   claim_ids: string[];
 }
 
+/** The columns the explore table shows. */
+export type EdgeSummary = Pick<
+  Edge,
+  "id" | "subject_id" | "predicate" | "object_id" | "species" | "n_claims" | "n_present" | "n_absent" | "strength"
+>;
+
 export interface Measurement {
   quantity: string;
   value: number;
   unit: string;
-  sd?: number;
-  sem?: number;
-  ci_low?: number;
-  ci_high?: number;
-  n?: number;
+  sd?: number | null;
+  sem?: number | null;
+  ci_low?: number | null;
+  ci_high?: number | null;
+  n?: number | null;
 }
 
 export interface Curation {

@@ -5,9 +5,14 @@ import { notFound } from "next/navigation";
 import { Citation } from "@/components/citation";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { getClaim, getSource } from "@/lib/data";
-import { edgeHref, predicateLabel, speciesName } from "@/lib/format";
+import { edgeHref, formatMeasurement, predicateLabel, speciesName } from "@/lib/format";
 
 export const revalidate = 300;
+
+// Rendered on first visit, then cached and revalidated like the other pages (incremental static regeneration).
+export async function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({ params }: PageProps<"/claims/[id]">): Promise<Metadata> {
   return { title: `Claim ${(await params).id}` };
@@ -23,12 +28,10 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 }
 
 export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
-  const claim = await getClaim((await params).id);
-  if (!claim.ok) return <DataUnavailable reason={claim.reason} />;
-  if (!claim.data) notFound();
-  const c = claim.data;
-  const source = await getSource(c.source_key);
-  const s = source.ok ? source.data : null;
+  const c = await getClaim((await params).id);
+  if (c === undefined) return <DataUnavailable />;
+  if (c === null) notFound();
+  const s = await getSource(c.source_key);
   const edgeId = [c.subject_id, c.predicate, c.object_id, c.species].join("|");
   return (
     <div className="space-y-8">
@@ -66,9 +69,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
             <ul className="space-y-1">
               {c.measurements.map((m, i) => (
                 <li key={i} className="tabular-nums">
-                  {m.quantity.replaceAll("_", " ")}: {m.value} {m.unit === "1" ? "" : m.unit}
-                  {m.sd !== undefined && ` (SD ${m.sd})`}
-                  {m.n !== undefined && `, n = ${m.n}`}
+                  {formatMeasurement(m)}
                 </li>
               ))}
             </ul>

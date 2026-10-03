@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { edgeHref, predicateLabel, speciesName } from "@/lib/format";
-import type { Edge } from "@/lib/types";
+import { edgeHref, predicateLabel, speciesName, withParam } from "@/lib/format";
+import type { EdgeSummary } from "@/lib/types";
 
 function Filter({ name, label, values, format }: { name: string; label: string; values: string[]; format: (v: string) => string }) {
   const params = useSearchParams();
@@ -14,28 +15,22 @@ function Filter({ name, label, values, format }: { name: string; label: string; 
   return (
     <label className="flex items-center gap-2 text-sm">
       <span className="text-muted-foreground">{label}</span>
-      <select
-        className="rounded-md border bg-background px-2 py-1"
+      <NativeSelect
         value={params.get(name) ?? ""}
-        onChange={(event) => {
-          const next = new URLSearchParams(params);
-          if (event.target.value) next.set(name, event.target.value);
-          else next.delete(name);
-          router.replace(`${pathname}${next.size ? `?${next}` : ""}`, { scroll: false });
-        }}
+        onChange={(event) => router.replace(withParam(pathname, params, name, event.target.value), { scroll: false })}
       >
-        <option value="">All</option>
+        <NativeSelectOption value="">All</NativeSelectOption>
         {values.map((value) => (
-          <option key={value} value={value}>
+          <NativeSelectOption key={value} value={value}>
             {format(value)}
-          </option>
+          </NativeSelectOption>
         ))}
-      </select>
+      </NativeSelect>
     </label>
   );
 }
 
-export function EdgeTable({ edges }: { edges: Edge[] }) {
+export function EdgeTable({ edges }: { edges: EdgeSummary[] }) {
   const params = useSearchParams();
   const species = params.get("species");
   const predicate = params.get("predicate");

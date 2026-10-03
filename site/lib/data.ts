@@ -1,78 +1,80 @@
-// Read-only queries against the Supabase serving tables, with the public (publishable) key.
-// Every query returns a Result, so a page can say "data unavailable" instead of failing.
+// Read-only queries against the Supabase serving tables, with the public (publishable) key. Server only.
+//
+// A build without the Supabase variables (pull-request CI) gets null, and pages say the data isn't connected.
+// A configured database that fails throws, so Next.js keeps serving the last good page and shows app/error.tsx
+// only when it has none.
+
+import "server-only";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-import type { ConnectivityClaim, Counts, Edge, Source } from "./types";
+import { fetchAll } from "./pages";
+import type { ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
 
-export type Result<T> = { ok: true; data: T } | { ok: false; reason: string };
+const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength";
 
 function client(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  return url && key ? createClient(url, key, { auth: { persistSession: false } }) : null;
+  return url && key ? createClient(url, key, { auth: { persistSession: false }, db: { timeout: 10_000 } }) : null;
 }
 
-async function query<T>(run: (db: SupabaseClient) => PromiseLike<{ data: T | null; error: { message: string } | null }>): Promise<Result<T>> {
+function failed(what: string, error: { message: string }): never {
+  console.error(`Supabase query failed (${what}): ${error.message}`);
+  throw new Error("The database couldn't be read.");
+}
+
+async function rows<T>(what: string, run: () => PromiseLike<{ data: T | null; error: { message: string } | null }>): Promise<T> {
+  const { data, error } = await run();
+  if (error) failed(what, error);
+  return data as T;
+}
+
+async function count(db: SupabaseClient, table: string): Promise<number> {
+  const { count: n, error } = await db.from(table).select("*", { count: "exact", head: true });
+  if (error) failed(`count ${table}`, error);
+  return n ?? 0;
+}
+
+export async function getCounts(): Promise<Counts | null> {
   const db = client();
-  if (!db) return { ok: false, reason: "the database isn't configured for this build" };
-  try {
-    const { data, error } = await run(db);
-    if (error) return { ok: false, reason: error.message };
-    return { ok: true, data: data as T };
-  } catch (error) {
-    return { ok: false, reason: error instanceof Error ? error.message : "the database couldn't be reached" };
-  }
-}
-
-async function count(table: string): Promise<Result<number>> {
-  const db = client();
-  if (!db) return { ok: false, reason: "the database isn't configured for this build" };
-  try {
-    const { count: n, error } = await db.from(table).select("*", { count: "exact", head: true });
-    return error ? { ok: false, reason: error.message } : { ok: true, data: n ?? 0 };
-  } catch (error) {
-    return { ok: false, reason: error instanceof Error ? error.message : "the database couldn't be reached" };
-  }
-}
-
-export async function getCounts(): Promise<Result<Counts>> {
+  if (!db) return null;
   const [connectivity, homology, edges, sources, species] = await Promise.all([
-    count("connectivity_claims"),
-    count("homology_claims"),
-    count("edges"),
-    count("sources"),
-    query<{ species: string }[]>((db) => db.from("edges").select("species")),
+    count(db, "connectivity_claims"),
+    count(db, "homology_claims"),
+    count(db, "edges"),
+    count(db, "sources"),
+    fetchAll((from, to) => rows<{ species: string }[]>("edge species", () => db.from("edges").select("species").order("id").range(from, to))),
   ]);
-  for (const part of [connectivity, homology, edges, sources, species]) if (!part.ok) return part;
-  const value = <T,>(r: Result<T>) => (r as { ok: true; data: T }).data;
-  return {
-    ok: true,
-    data: {
-      claims: value(connectivity) + value(homology),
-      edges: value(edges),
-      sources: value(sources),
-      species: new Set(value(species).map((row) => row.species)).size,
-    },
-  };
+  return { claims: connectivity + homology, edges, sources, species: new Set(species.map((row) => row.species)).size };
 }
 
-export function listEdges(): Promise<Result<Edge[]>> {
-  return query<Edge[]>((db) => db.from("edges").select("*").order("id"));
+export async function listEdges(): Promise<EdgeSummary[] | null> {
+  const db = client();
+  if (!db) return null;
+  return fetchAll((from, to) => rows<EdgeSummary[]>("edges", () => db.from("edges").select(EDGE_SUMMARY).order("id").range(from, to)));
 }
 
-export async function getEdge(id: string): Promise<Result<Edge | null>> {
-  return query<Edge | null>((db) => db.from("edges").select("*").eq("id", id).maybeSingle());
+export async function getEdge(id: string): Promise<Edge | null | undefined> {
+  const db = client();
+  if (!db) return undefined;
+  return rows<Edge | null>("edge", () => db.from("edges").select("*").eq("id", id).maybeSingle());
 }
 
-export function getClaims(ids: string[]): Promise<Result<ConnectivityClaim[]>> {
-  return query<ConnectivityClaim[]>((db) => db.from("connectivity_claims").select("*").in("id", ids).order("id"));
+export async function getClaims(ids: string[]): Promise<ConnectivityClaim[]> {
+  const db = client();
+  if (!db) return [];
+  return rows<ConnectivityClaim[]>("claims", () => db.from("connectivity_claims").select("*").in("id", ids).order("id"));
 }
 
-export function getClaim(id: string): Promise<Result<ConnectivityClaim | null>> {
-  return query<ConnectivityClaim | null>((db) => db.from("connectivity_claims").select("*").eq("id", id).maybeSingle());
+export async function getClaim(id: string): Promise<ConnectivityClaim | null | undefined> {
+  const db = client();
+  if (!db) return undefined;
+  return rows<ConnectivityClaim | null>("claim", () => db.from("connectivity_claims").select("*").eq("id", id).maybeSingle());
 }
 
-export function getSource(id: string): Promise<Result<Source | null>> {
-  return query<Source | null>((db) => db.from("sources").select("*").eq("id", id).maybeSingle());
+export async function getSource(id: string): Promise<Source | null> {
+  const db = client();
+  if (!db) return null;
+  return rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle());
 }

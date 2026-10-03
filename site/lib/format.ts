@@ -48,3 +48,38 @@ export function edgeHref(id: string): string {
 export function edgeFromParam(segment: string): string {
   return segment.includes("%") ? decodeURIComponent(segment) : segment;
 }
+
+export interface MeasurementLike {
+  quantity: string;
+  value: number;
+  unit: string;
+  sd?: number | null;
+  sem?: number | null;
+  ci_low?: number | null;
+  ci_high?: number | null;
+  n?: number | null;
+}
+
+/** One measurement as text, with whatever uncertainty it reports ("1" is the unit of dimensionless quantities). */
+export function formatMeasurement(m: MeasurementLike): string {
+  const uncertainty = [
+    m.sd != null && `SD ${m.sd}`,
+    m.sem != null && `SEM ${m.sem}`,
+    m.ci_low != null && m.ci_high != null && `CI ${m.ci_low}–${m.ci_high}`,
+  ].filter(Boolean);
+  const unit = m.unit === "1" ? "" : ` ${m.unit}`;
+  return (
+    `${m.quantity.replaceAll("_", " ")}: ${m.value}${unit}` +
+    (uncertainty.length ? ` (${uncertainty.join("; ")})` : "") +
+    (m.n != null ? `, n = ${m.n}` : "")
+  );
+}
+
+/** The URL of a page with one search parameter set (or removed, when the value is empty), keeping the others. */
+export function withParam(pathname: string, params: URLSearchParams, name: string, value: string): string {
+  const next = new URLSearchParams(params);
+  if (value) next.set(name, value);
+  else next.delete(name);
+  const query = next.toString();
+  return query ? `${pathname}?${query}` : pathname;
+}

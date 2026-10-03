@@ -43,7 +43,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <footer className="border-t">
           <div className="mx-auto flex max-w-5xl flex-wrap gap-x-6 gap-y-2 px-4 py-6 text-sm text-muted-foreground">
-            <span>Data: CC BY 4.0</span>
+            <span>
+              Project-curated data:{" "}
+              <a href="https://creativecommons.org/licenses/by/4.0/" className="hover:text-foreground">
+                CC BY 4.0
+              </a>
+              ; sources keep their own terms
+            </span>
             <span>Code: Apache-2.0</span>
             <a href={REPO} className="hover:text-foreground">
               Source and data on GitHub

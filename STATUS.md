@@ -51,7 +51,7 @@ Later phases get cards when they start.
 - [ ] A second organization owner.
 - [ ] Claiming the PyPI project name.
 - [ ] Pointing the domains at the site on Vercel once it is deployed (sprint 3.3).
-- [ ] Rotating the Vercel token and the Supabase database password, which were pasted in chat, and re-setting them with `gh secret set` (`VERCEL_TOKEN`; `SUPABASE_DB_URL --env production`).
+- [ ] Rotating the Vercel token and the Supabase database password, which were pasted in chat, and setting the new values in the `production` environment, where only jobs on `main` can read them: `gh secret set VERCEL_TOKEN --env production --repo axonarium/axonarium` and `gh secret set SUPABASE_DB_URL --env production --repo axonarium/axonarium`. Then the repository-level `VERCEL_TOKEN` (readable by any workflow, pull requests included) gets deleted.
 - [ ] Registering https://w3id.org/axonarium/ with w3id.org (a pull request to its registry).
 - [ ] Asking the Allen Institute for written permission to redistribute region and connectivity data under CC BY 4.0 (ADR 0005).
 - [ ] Asking BAMS's maintainers for permission to reuse its connection reports (ADR 0005).

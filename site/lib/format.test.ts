@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { citationLinks, edgeFromParam, edgeHref, predicateLabel, speciesName } from "./format";
+import { citationLinks, edgeFromParam, edgeHref, formatMeasurement, predicateLabel, speciesName, withParam } from "./format";
 
 describe("citationLinks", () => {
   it("links every identifier a citation carries, DOI first", () => {
@@ -51,5 +51,31 @@ describe("edge URLs", () => {
 
   it("accepts a segment the framework already decoded", () => {
     expect(edgeFromParam(id)).toBe(id);
+  });
+});
+
+describe("measurements", () => {
+  it("leaves out uncertainty that is null or missing", () => {
+    expect(formatMeasurement({ quantity: "projection_density", value: 0.12, unit: "1", sd: null, n: null })).toBe(
+      "projection density: 0.12",
+    );
+  });
+
+  it("shows SD, SEM, the confidence interval and n", () => {
+    expect(
+      formatMeasurement({ quantity: "conduction_delay", value: 4.5, unit: "ms", sem: 0.3, ci_low: 3.9, ci_high: 5.1, n: 12 }),
+    ).toBe("conduction delay: 4.5 ms (SEM 0.3; CI 3.9–5.1), n = 12");
+    expect(formatMeasurement({ quantity: "synapse_count", value: 40, unit: "1", sd: 6 })).toBe("synapse count: 40 (SD 6)");
+  });
+});
+
+describe("filter URLs", () => {
+  it("sets, replaces and removes one parameter, keeping the others", () => {
+    const params = new URLSearchParams("species=NCBITaxon%3A10090&predicate=projects_to");
+    expect(withParam("/explore", params, "predicate", "synapses_onto")).toBe(
+      "/explore?species=NCBITaxon%3A10090&predicate=synapses_onto",
+    );
+    expect(withParam("/explore", params, "species", "")).toBe("/explore?predicate=projects_to");
+    expect(withParam("/explore", new URLSearchParams("species=x"), "species", "")).toBe("/explore");
   });
 });

@@ -8,16 +8,20 @@ import { edgeFromParam, predicateLabel, speciesName } from "@/lib/format";
 
 export const revalidate = 300;
 
+// Rendered on first visit, then cached and revalidated like the other pages (incremental static regeneration).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }: PageProps<"/edges/[id]">): Promise<Metadata> {
   const [subject, predicate, object] = edgeFromParam((await params).id).split("|");
   return { title: `${subject} ${predicateLabel(predicate ?? "")} ${object}` };
 }
 
 export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
-  const edge = await getEdge(edgeFromParam((await params).id));
-  if (!edge.ok) return <DataUnavailable reason={edge.reason} />;
-  if (!edge.data) notFound();
-  const e = edge.data;
+  const e = await getEdge(edgeFromParam((await params).id));
+  if (e === undefined) return <DataUnavailable />;
+  if (e === null) notFound();
   const claims = await getClaims(e.claim_ids);
   return (
     <div className="space-y-8">
@@ -38,7 +42,9 @@ export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
         <h2 id="claims" className="text-xl font-semibold">
           The claims behind it
         </h2>
-        {claims.ok ? claims.data.map((claim) => <ClaimCard key={claim.id} claim={claim} />) : <DataUnavailable reason={claims.reason} />}
+        {claims.map((claim) => (
+          <ClaimCard key={claim.id} claim={claim} />
+        ))}
       </section>
     </div>
   );

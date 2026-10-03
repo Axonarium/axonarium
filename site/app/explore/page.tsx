@@ -18,16 +18,16 @@ export default async function Explore() {
           Each row is computed from cited claims. Open a connection to see every claim behind it, with its source.
         </p>
       </div>
-      {!edges.ok ? (
-        <DataUnavailable reason={edges.reason} />
-      ) : edges.data.length === 0 ? (
+      {edges === null ? (
+        <DataUnavailable />
+      ) : edges.length === 0 ? (
         <p className="rounded-lg border border-dashed p-6 text-muted-foreground">
           No connections yet. The first ones arrive with the atlas and connectivity sprints; this page fills in as
           claims are merged.
         </p>
       ) : (
         <Suspense>
-          <EdgeTable edges={edges.data} />
+          <EdgeTable edges={edges} />
         </Suspense>
       )}
     </div>

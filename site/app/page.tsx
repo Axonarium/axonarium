@@ -39,14 +39,14 @@ export default async function Home() {
         <h2 id="numbers" className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
           In the knowledge base today
         </h2>
-        {counts.ok ? (
+        {counts ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {(
               [
-                ["Claims", counts.data.claims],
-                ["Connections", counts.data.edges],
-                ["Sources", counts.data.sources],
-                ["Species", counts.data.species],
+                ["Claims", counts.claims],
+                ["Connections", counts.edges],
+                ["Sources", counts.sources],
+                ["Species", counts.species],
               ] as const
             ).map(([label, value]) => (
               <Card key={label}>
@@ -58,9 +58,9 @@ export default async function Home() {
             ))}
           </div>
         ) : (
-          <DataUnavailable reason={counts.reason} />
+          <DataUnavailable />
         )}
-        {counts.ok && counts.data.claims === 0 && (
+        {counts && counts.claims === 0 && (
           <p className="text-sm text-muted-foreground">
             The checks, schema and build are in place; the first claims arrive with the atlas and connectivity
             sprints. Follow along on{" "}
