@@ -2,7 +2,7 @@
 
 import re
 
-CURIE = re.compile(r"^(UBERON|CL|NCBITaxon|MBA|HBA):\d+$")
+CURIE = re.compile(r"^(UBERON|CL|NCBITaxon|MBA|HBA|DHBA):\d+$")
 SAFE = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.()-")
 CC_LICENCE = re.compile(
     r"^https?://(www\.)?creativecommons\.org/"
@@ -14,7 +14,7 @@ CC_LICENCE = re.compile(
 OPEN_LICENCE = re.compile(r"^(CC0-1\.0|CC-BY-\d\.\d(-[A-Z]+)?)$")
 # The only forms the online checks look up: ASCII, no surrounding whitespace, no leading zeros.
 CANONICAL = {
-    "curie": re.compile(r"(UBERON|CL|NCBITaxon|MBA|HBA):[0-9]+"),
+    "curie": re.compile(r"(UBERON|CL|NCBITaxon|MBA|HBA|DHBA):[0-9]+"),
     "doi": re.compile(r"10\.[0-9]{4,9}/[!-~]+"),
     "pmid": re.compile(r"[1-9][0-9]*"),
     "pmcid": re.compile(r"PMC[1-9][0-9]*"),

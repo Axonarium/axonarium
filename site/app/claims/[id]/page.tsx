@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 
 import { Citation } from "@/components/citation";
 import { DataUnavailable } from "@/components/data-unavailable";
-import { getClaim, getSource } from "@/lib/data";
+import { RegionName } from "@/components/region-name";
+import { getClaim, getRegionNames, getSource } from "@/lib/data";
+import { regionLabel } from "@/lib/regions";
 import { edgeHref, formatMeasurement, predicateLabel, speciesName } from "@/lib/format";
 
 export const revalidate = 300;
@@ -31,15 +33,15 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
   const c = await getClaim((await params).id);
   if (c === undefined) return <DataUnavailable />;
   if (c === null) notFound();
-  const s = await getSource(c.source_key);
+  const [s, regions] = await Promise.all([getSource(c.source_key), getRegionNames([c.subject_id, c.object_id])]);
   const edgeId = [c.subject_id, c.predicate, c.object_id, c.species].join("|");
   return (
     <div className="space-y-8">
       <header className="space-y-2">
         <p className="font-mono text-sm text-muted-foreground">{c.id}</p>
         <h1 className="text-3xl font-semibold tracking-tight">
-          <span className="font-mono">{c.subject_id}</span> {predicateLabel(c.predicate)}{" "}
-          <span className="font-mono">{c.object_id}</span>
+          <RegionName heading label={regionLabel(c.subject_id, regions)} /> {predicateLabel(c.predicate)}{" "}
+          <RegionName heading label={regionLabel(c.object_id, regions)} />
         </h1>
         {c.status !== "retracted" && (
           <Link href={edgeHref(edgeId)} className="text-sm underline underline-offset-4">

@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { RegionName } from "@/components/region-name";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { edgeHref, predicateLabel, speciesName, withParam } from "@/lib/format";
+import type { Label } from "@/lib/regions";
 import type { EdgeSummary } from "@/lib/types";
 
 function Filter({ name, label, values, format }: { name: string; label: string; values: string[]; format: (v: string) => string }) {
@@ -30,7 +32,7 @@ function Filter({ name, label, values, format }: { name: string; label: string; 
   );
 }
 
-export function EdgeTable({ edges }: { edges: EdgeSummary[] }) {
+export function EdgeTable({ edges, labels }: { edges: EdgeSummary[]; labels: Record<string, Label> }) {
   const params = useSearchParams();
   const species = params.get("species");
   const predicate = params.get("predicate");
@@ -61,13 +63,17 @@ export function EdgeTable({ edges }: { edges: EdgeSummary[] }) {
         <TableBody>
           {shown.map((edge) => (
             <TableRow key={edge.id}>
-              <TableCell className="font-mono">{edge.subject_id}</TableCell>
+              <TableCell>
+                <RegionName label={labels[edge.subject_id]} />
+              </TableCell>
               <TableCell>
                 <Link href={edgeHref(edge.id)} className="underline underline-offset-4">
                   {predicateLabel(edge.predicate)}
                 </Link>
               </TableCell>
-              <TableCell className="font-mono">{edge.object_id}</TableCell>
+              <TableCell>
+                <RegionName label={labels[edge.object_id]} />
+              </TableCell>
               <TableCell>{speciesName(edge.species)}</TableCell>
               <TableCell className="text-right tabular-nums">{edge.n_claims}</TableCell>
               <TableCell className="tabular-nums">

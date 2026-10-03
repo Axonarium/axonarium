@@ -5,7 +5,7 @@ description: >-
   The data model of Axonarium, an open, cited map of how the brain and body
   are wired. The unit of knowledge is the claim: one statement from one source
   about one relationship in one species. See docs/plan.md, Part 1, "Data model".
-version: 0.2.1
+version: 0.3.0
 license: Apache-2.0
 see_also:
   - https://github.com/axonarium/axonarium
@@ -18,6 +18,7 @@ prefixes:
   CL: http://purl.obolibrary.org/obo/CL_
   MBA: https://purl.brain-bican.org/ontology/mbao/MBA_
   HBA: https://purl.brain-bican.org/ontology/hbao/HBA_
+  DHBA: https://purl.brain-bican.org/ontology/dhbao/DHBA_
   doi: https://doi.org/
   pubmed: https://pubmed.ncbi.nlm.nih.gov/
   pmc: http://europepmc.org/articles/
@@ -135,13 +136,13 @@ classes:
         range: uriorcurie
         required: true
         description: >-
-          The entity's ID: an atlas region (MBA, HBA), a UBERON term, a
+          The entity's ID: an atlas region (MBA, HBA, DHBA), a UBERON term, a
           project neuron type (nt-...) or a Cell Ontology term.
       atlas:
         pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
         description: >-
           The pinned atlas version an atlas region belongs to, such as
-          allen-mouse-ccf-2017. Required for MBA and HBA IDs.
+          allen-mouse-ccf-2017. Required for MBA, HBA and DHBA IDs.
     rules:
       - description: Region IDs come from a known atlas or from UBERON.
         preconditions:
@@ -152,7 +153,7 @@ classes:
           slot_conditions:
             id:
               any_of:
-                - pattern: "^(MBA|HBA):\\d+$"
+                - pattern: "^(MBA|HBA|DHBA):\\d+$"
                 - pattern: "^UBERON:\\d{7}$"
       - description: Neuron type IDs are project IDs or Cell Ontology terms.
         preconditions:
@@ -169,7 +170,7 @@ classes:
         preconditions:
           slot_conditions:
             id:
-              pattern: "^(MBA|HBA):"
+              pattern: "^(MBA|HBA|DHBA):"
         postconditions:
           slot_conditions:
             atlas:
@@ -313,6 +314,7 @@ classes:
       - version
       - url
       - brainglobe_name
+      - citation
       - extra
     slot_usage:
       id:
@@ -331,7 +333,7 @@ classes:
       - extra
     slot_usage:
       id:
-        pattern: "^(MBA|HBA):\\d+$"
+        pattern: "^(MBA|HBA|DHBA):\\d+$"
 
   NeuronType:
     description: >-
@@ -581,6 +583,8 @@ slots:
     description: Where the atlas is published.
   brainglobe_name:
     description: The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.
+  citation:
+    description: How the atlas's authors ask it to be cited, with a DOI where one exists.
   acronym:
     description: The region's acronym in its atlas.
   atlas:

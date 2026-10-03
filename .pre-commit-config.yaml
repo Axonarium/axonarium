@@ -58,9 +58,9 @@ repos:
         pass_filenames: false
       - id: schema-tests
         name: Schema, data-check and build tests
-        entry: uv run --frozen pytest -q schema/tests checks/tests build/tests
+        entry: uv run --frozen pytest -q schema/tests checks/tests build/tests ingest/tests
         language: system
-        files: ^(schema/|checks/|build/|data/|pyproject\.toml|uv\.lock)
+        files: ^(schema/|checks/|build/|ingest/|data/|pyproject\.toml|uv\.lock)
         pass_filenames: false
       - id: data-checks
         name: Data checks (python -m checks files)

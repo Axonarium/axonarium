@@ -94,3 +94,13 @@ export interface Counts {
   sources: number;
   species: number;
 }
+
+export interface Atlas {
+  id: string;
+  name: string;
+  species: string;
+  version: string;
+  url: string | null;
+  brainglobe_name: string | null;
+  citation: string | null;
+}

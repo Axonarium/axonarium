@@ -32,6 +32,13 @@
                         "null"
                     ]
                 },
+                "citation": {
+                    "description": "How the atlas's authors ask it to be cited, with a DOI where one exists.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "extra": {
                     "anyOf": [
                         {
@@ -631,7 +638,7 @@
                             "id": {
                                 "anyOf": [
                                     {
-                                        "pattern": "^(MBA|HBA):\\d+$"
+                                        "pattern": "^(MBA|HBA|DHBA):\\d+$"
                                     },
                                     {
                                         "pattern": "^UBERON:\\d{7}$"
@@ -677,7 +684,7 @@
                     "if": {
                         "properties": {
                             "id": {
-                                "pattern": "^(MBA|HBA):"
+                                "pattern": "^(MBA|HBA|DHBA):"
                             }
                         },
                         "required": [
@@ -703,7 +710,7 @@
             "description": "A reference to a region or neuron type, used as the subject or object of a claim.",
             "properties": {
                 "atlas": {
-                    "description": "The pinned atlas version an atlas region belongs to, such as allen-mouse-ccf-2017. Required for MBA and HBA IDs.",
+                    "description": "The pinned atlas version an atlas region belongs to, such as allen-mouse-ccf-2017. Required for MBA, HBA and DHBA IDs.",
                     "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
                     "type": [
                         "string",
@@ -711,7 +718,7 @@
                     ]
                 },
                 "id": {
-                    "description": "The entity's ID: an atlas region (MBA, HBA), a UBERON term, a project neuron type (nt-...) or a Cell Ontology term.",
+                    "description": "The entity's ID: an atlas region (MBA, HBA, DHBA), a UBERON term, a project neuron type (nt-...) or a Cell Ontology term.",
                     "type": "string"
                 },
                 "type": {
@@ -1124,7 +1131,7 @@
                 },
                 "id": {
                     "description": "The record's identifier.",
-                    "pattern": "^(MBA|HBA):\\d+$",
+                    "pattern": "^(MBA|HBA|DHBA):\\d+$",
                     "type": "string"
                 },
                 "name": {
@@ -1489,6 +1496,6 @@
     ],
     "title": "axonarium",
     "type": "object",
-    "version": "0.2.1"
+    "version": "0.3.0"
 }
 

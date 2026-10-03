@@ -32,13 +32,16 @@ def _citation_columns() -> list[Column]:
 atlases = Table(
     "atlases", metadata,
     Column("id", Text, primary_key=True), _text("name", True), _text("species", True), _text("version", True),
-    _text("url"), _text("brainglobe_name"), Column("extra", JSONB),
+    _text("url"), _text("brainglobe_name"), _text("citation"), Column("extra", JSONB),
 )
 regions = Table(
     "regions", metadata,
     Column("id", Text, primary_key=True), _text("name", True), _text("acronym"),
     Column("atlas", Text, ForeignKey("atlases.id"), nullable=False), _text("parent"), _text("uberon"),
     Column("synonyms", ARRAY(Text)), Column("extra", JSONB),
+    # Set by the build for atlas regions (ADR 0009): whether UBERON places the region's term under the amygdala,
+    # and that term's label.
+    Column("amygdala", Boolean), _text("uberon_label"),
 )
 neuron_types = Table(
     "neuron_types", metadata,

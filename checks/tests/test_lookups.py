@@ -25,6 +25,8 @@ def test_ontology_term(fetch, curie, term):
     ("HBA:4249", True),
     ("MBA:4249", False),  # a human structure, not in the mouse graph
     ("MBA:999999999", False),
+    ("DHBA:10361", True),  # amygdaloid complex, Allen graph 16 (the Ding et al. 2016 human atlas)
+    ("MBA:10361", False),
 ])
 def test_atlas_structure(fetch, curie, exists):
     assert atlas_structure(fetch, curie) == Term(exists)

@@ -1,0 +1,9 @@
+id: allen-human-3d-2020
+name: Allen Human Reference Atlas, 3D (2020), on the Ding et al. 2016 ontology
+species: NCBITaxon:9606
+version: 3D 2020, version 1
+url: http://download.alleninstitute.org/informatics-archive/allen_human_reference_atlas_3d_2020/version_1/
+brainglobe_name: allen_human_500um
+citation: Ding et al. 2016, https://doi.org/10.1002/cne.24080
+extra:
+  brainglobe.atlas_version: "3.1"

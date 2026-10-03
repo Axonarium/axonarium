@@ -11,7 +11,7 @@ from checks.lookups import ATLAS_GRAPHS, arxiv_doi, atlas_structure, doi_agency,
 from checks.sources import fetch_source, pubmed_says_retracted
 
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
-ATLAS_NAMES = {"MBA": "mouse", "HBA": "human"}
+ATLAS_NAMES = {"MBA": "mouse", "HBA": "human", "DHBA": "human (Ding et al. 2016)"}
 KINDS = {"doi": "DOI", "pmid": "PubMed ID", "pmcid": "PubMed Central ID", "arxiv": "arXiv ID"}
 ODD_ANSWER = (TypeError, AttributeError, KeyError, ValueError, IndexError)  # A registry answer of an unexpected shape
 

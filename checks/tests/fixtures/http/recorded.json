@@ -1,4 +1,16 @@
 {
+ "https://api.brain-map.org/api/v2/data/Structure/query.json?criteria=%5Bid%24eq10361%5D": {
+  "status": 200,
+  "body": {
+   "success": true,
+   "msg": [
+    {
+     "id": 10361,
+     "graph_id": 16
+    }
+   ]
+  }
+ },
  "https://api.brain-map.org/api/v2/data/Structure/query.json?criteria=%5Bid%24eq295%5D": {
   "status": 200,
   "body": {
