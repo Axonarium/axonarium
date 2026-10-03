@@ -5,7 +5,7 @@ description: >-
   The data model of Axonarium, an open, cited map of how the brain and body
   are wired. The unit of knowledge is the claim: one statement from one source
   about one relationship in one species. See docs/plan.md, Part 1, "Data model".
-version: 0.2.0
+version: 0.2.1
 license: Apache-2.0
 see_also:
   - https://github.com/axonarium/axonarium
@@ -353,8 +353,8 @@ classes:
 
   Source:
     description: >-
-      Cached metadata for a paper or preprint that claims cite. Filled from
-      Crossref and PubMed in Phase 1.
+      Cached metadata for a paper or preprint that claims cite, written by
+      `python -m checks sources` from Crossref, DataCite or NCBI.
     slots:
       - id
       - title
@@ -624,7 +624,7 @@ slots:
     description: Whether the full text is openly available.
   retracted:
     range: boolean
-    description: Whether the paper has been retracted, per Crossref.
+    description: Whether the paper has been retracted, per Crossref (for DOIs) or PubMed.
   connectivity_claims:
     range: ConnectivityClaim
     multivalued: true

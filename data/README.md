@@ -17,7 +17,7 @@ Each record is one YAML file. Its folder decides its class in [the schema](../sc
 | `entities/atlases/` | Pinned atlas versions | `<id>.yaml` |
 | `entities/regions/` | Regions | the ID with `:` as `_`, such as `MBA_295.yaml` |
 | `entities/neuron_types/` | Neuron types | `<id>.yaml` |
-| `sources/<scheme>/` | Paper metadata from Crossref or DataCite, one record per cited DOI, written by `checks sources` | the ID with `:` and `/` as `_`, other characters outside letters, digits and `.()-` %-encoded: `doi_10.1038_s41467-021-22915-5.yaml` |
+| `sources/<scheme>/` | Paper metadata, one record per cited paper, keyed by its DOI, else PubMed ID, else PMC ID, else arXiv ID; written by `checks sources` from Crossref, DataCite or NCBI | the ID with `:` and `/` as `_`, other characters outside letters, digits and `.()-` %-encoded: `doi_10.1038_s41467-021-22915-5.yaml` |
 | `retractions.yaml` | The log of deleted and retracted claims | fixed |
 | `allowlist.yaml` | Accepted evidence source types; human-owned (sprint C.2) | fixed |
 
@@ -28,7 +28,7 @@ Edges are computed from claims at build time and are never edited by hand.
 Run these before pushing a change to this folder; pre-commit and CI run them too.
 
 ```bash
-uv run python -m checks sources                     # write a source record for every newly cited DOI
+uv run python -m checks sources                     # write a source record for every newly cited paper
 uv run python -m checks files                       # every file here
 uv run python -m checks online --base origin/main   # look up what your branch changed (needs the network)
 uv run python -m checks changes --base origin/main  # what your branch deleted or retracted
@@ -59,11 +59,12 @@ Each problem prints as `<path>: <rule-id>: <message>`.
 | `duplicate-id` | Two files share an ID |
 | `unknown-reference` | A neuron type or atlas that has no record here |
 | `atlas-species` | A claim's species doesn't match the atlas its regions come from |
-| `missing-source` | A claim cites a DOI that has no record in `sources/` |
+| `missing-source` | A claim's paper has no record in `sources/` |
 | `cites-retracted` | A claim cites a retracted paper but isn't itself `retracted` |
 | `excerpt-licence` | A claim has a verbatim excerpt, but its source isn't CC BY or CC0 |
 | `unknown-term`, `obsolete-term` | An ontology term or atlas structure doesn't exist, or is obsolete (online) |
 | `unknown-citation`, `citation-mismatch` | A DOI, PubMed, PubMed Central or arXiv ID doesn't exist, or the IDs of one citation name different papers (online) |
+| `citation-incomplete` | A citation lacks the DOI or PubMed ID that its PubMed or PubMed Central record names; add it (online) |
 | `source-outdated` | A source record's licence or retraction status differs from its registry; run `checks sources --refresh` (online) |
 | `lookup-failed` | A registry couldn't be reached; re-run when it is back (online) |
 | `deletion-unlogged`, `retraction-unlogged`, `restoration-unlogged` | A claim was deleted, retracted, or restored from retraction without a new entry in `retractions.yaml` |
@@ -71,7 +72,7 @@ Each problem prints as `<path>: <rule-id>: <message>`.
 
 ## Retracted papers
 
-When a cited paper is retracted, `checks sources --refresh` marks its record `retracted: true`; each claim citing it must then be set to `status: retracted`, with a `retracted` entry in `retractions.yaml`. Claims are flagged, never silently deleted.
+When a cited paper is retracted, `checks sources --refresh` marks its record `retracted: true` (from Crossref for DOIs, from PubMed for papers without one); each claim citing it must then be set to `status: retracted`, with a `retracted` entry in `retractions.yaml`. Claims are flagged, never silently deleted.
 
 ## Deleting or retracting a claim
 

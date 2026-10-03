@@ -248,14 +248,14 @@ CREATE TABLE "Source" (
 	FOREIGN KEY("KnowledgeBase_id") REFERENCES "KnowledgeBase" (id),
 	FOREIGN KEY(extra_id) REFERENCES "Any" (id)
 );
-COMMENT ON TABLE "Source" IS 'Cached metadata for a paper or preprint that claims cite. Filled from Crossref and PubMed in Phase 1.';
+COMMENT ON TABLE "Source" IS 'Cached metadata for a paper or preprint that claims cite, written by `python -m checks sources` from Crossref, DataCite or NCBI.';
 COMMENT ON COLUMN "Source".id IS 'The record''s identifier.';
 COMMENT ON COLUMN "Source".title IS 'The paper''s title.';
 COMMENT ON COLUMN "Source".year IS 'The year of publication.';
 COMMENT ON COLUMN "Source".journal IS 'The journal or preprint server.';
 COMMENT ON COLUMN "Source".license IS 'The paper''s licence, as an SPDX ID where one exists.';
 COMMENT ON COLUMN "Source".open_access IS 'Whether the full text is openly available.';
-COMMENT ON COLUMN "Source".retracted IS 'Whether the paper has been retracted, per Crossref.';
+COMMENT ON COLUMN "Source".retracted IS 'Whether the paper has been retracted, per Crossref (for DOIs) or PubMed.';
 COMMENT ON COLUMN "Source"."KnowledgeBase_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "Source".extra_id IS 'Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here.';
 

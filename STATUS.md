@@ -17,6 +17,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 1.1 License audit | Done |
 | 0.3 Validation CI | Done |
 | 0.3b Online identifier checks | Done |
+| 0.3c Retraction status for citations without a DOI | Done |
 | 0.4 Rebuild pipeline, 1.2 Atlas layer | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
