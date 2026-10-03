@@ -1,0 +1,39 @@
+name: Deploy
+
+# Every merge to main rebuilds the live database from the files (design principle 2).
+# Never runs on pull requests, so no secret is ever exposed to one.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  database:
+    name: Rebuild the Supabase database
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production  # Its secrets are released only to jobs running on main.
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.12.22"
+          enable-cache: false
+      - name: Build and load
+        env:
+          AXONARIUM_DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$AXONARIUM_DATABASE_URL" ]; then
+            echo "::notice::The SUPABASE_DB_URL secret isn't set, so only the dumps were built."
+          fi
+          uv run --frozen python -m build

@@ -95,3 +95,14 @@ def test_failure_message_hides_password():
     with pytest.raises(LoadFailed) as error:
         load("postgresql://axonarium:hunter2-secret@127.0.0.1:1/nowhere?connect_timeout=2", {name: [] for name in TABLES})
     assert "hunter2-secret" not in str(error.value)
+
+
+def test_asks_rest_api_to_reload_schema(tables):
+    # Supabase's REST API caches table definitions; without this, rebuilt tables 404 for a while.
+    if "PGlite" in query("select version()")[0][0]:
+        pytest.skip("PGlite runs every connection in one session, so it can't deliver NOTIFY between them")
+    with psycopg.connect(URL, autocommit=True) as listener:
+        listener.execute("listen pgrst")
+        load(URL, tables)
+        payloads = [n.payload for n in listener.notifies(timeout=5, stop_after=1)]
+    assert payloads == ["reload schema"]

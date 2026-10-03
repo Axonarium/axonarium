@@ -50,5 +50,6 @@ def load(url: str, rows: dict[str, list[dict]]) -> None:
                     cur.execute(sql.SQL("create policy public_read on {} for select to {} using (true)").format(table, to))
                     cur.execute(sql.SQL("revoke insert, update, delete, truncate on {} from {}").format(table, to))
                     cur.execute(sql.SQL("grant select on {} to {}").format(table, to))
+            cur.execute("notify pgrst, 'reload schema'")  # Supabase's REST API caches table definitions; refresh it on commit.
     except psycopg.Error as error:
         raise LoadFailed(_redact(f"database load failed and was rolled back: {type(error).__name__}: {error}", url)) from None
