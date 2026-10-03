@@ -3,12 +3,18 @@
 import html
 import re
 from datetime import date
+from pathlib import Path
 
+import yaml
+
+from checks.findings import Finding
 from checks.http import Fetcher, LookupFailed
-from checks.identifiers import spdx_from_url
+from checks.identifiers import citation_of, source_file_name, spdx_from_url
+from checks.loading import load_tree
 from checks.lookups import CROSSREF, DATACITE, crossref_work, datacite_record, doi_agency
 
 FIELDS = ("id", "title", "year", "journal", "license", "open_access", "retracted")
+CLAIMS = ("ConnectivityClaim", "HomologyClaim")
 RETRACTING = {"retraction", "withdrawal", "removal"}  # Crossref update types that withdraw a paper
 TAGS = re.compile(r"<[^>]+>")
 
@@ -104,3 +110,51 @@ def fetch_source(fetch: Fetcher, doi: str, today: date) -> dict | None:
             raise LookupFailed(DATACITE.format(doi=doi), "doi.org names DataCite, but DataCite has no record")
         return source_from_datacite(doi, attributes)
     return _record(doi)  # Other agencies: the DOI exists, and that is all the checks know.
+
+
+def write_source(path: Path, record: dict) -> None:
+    """Write a source record with its fields in the usual order, then `extra`."""
+    ordered = {k: record[k] for k in (*FIELDS, "extra") if k in record}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(ordered, sort_keys=False, allow_unicode=True, width=1000), encoding="utf-8")
+
+
+def _fetch(fetch: Fetcher, doi: str, today: date, path: Path) -> tuple[dict | None, list[Finding]]:
+    try:
+        record = fetch_source(fetch, doi, today)
+    except LookupFailed as error:
+        return None, [Finding(str(path), "lookup-failed", f"lookup failed: {error}")]
+    if record is None:
+        return None, [Finding(str(path), "unknown-citation", f"DOI {doi} does not exist (doi.org)")]
+    return record, []
+
+
+def fill_sources(data_dir: Path, fetch: Fetcher, today: date, refresh: bool = False) -> tuple[list[Path], list[Finding]]:
+    """Write a record for every cited DOI that has none; with refresh, also rewrite DOI records whose metadata changed."""
+    records, _ = load_tree(data_dir)
+    existing = {r.data["id"].lower(): r for r in records if r.cls == "Source" and isinstance(r.data.get("id"), str)}
+    cited: dict[str, Path] = {}
+    for record in records:
+        if record.cls in CLAIMS and (doi := citation_of(record.data).get("doi")):
+            cited.setdefault(doi.lower(), record.path)
+    written, findings = [], []
+    for doi, claim_path in sorted(cited.items()):
+        if f"doi:{doi}" in existing:
+            continue
+        fresh, found = _fetch(fetch, doi, today, claim_path)
+        findings += found
+        if fresh is not None:
+            path = data_dir / "sources" / "doi" / source_file_name(fresh["id"])
+            write_source(path, fresh)
+            written.append(path)
+    for source_id, record in sorted(existing.items()) if refresh else ():
+        if not source_id.startswith("doi:"):
+            continue
+        fresh, found = _fetch(fetch, source_id.removeprefix("doi:"), today, record.path)
+        findings += found
+        if fresh is not None and "extra" in record.data:
+            fresh["extra"] = record.data["extra"]
+        if fresh is not None and fresh != record.data:
+            write_source(record.path, fresh)
+            written.append(record.path)
+    return written, sorted(findings)

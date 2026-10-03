@@ -10,6 +10,7 @@ from checks.findings import Finding
 from checks.http import Fetcher, Opener, default_opener
 from checks.loading import load_tree
 from checks.online_rules import check_online
+from checks.sources import fill_sources
 from checks.tree_rules import check_tree
 
 
@@ -34,16 +35,24 @@ def main(argv: list[str] | None = None, opener: Opener = default_opener) -> int:
     online.add_argument("--base", help="only check files changed since this git revision, such as origin/main")
     online.add_argument("--data", type=Path, default=Path("data"), help="the data folder (default: data)")
     online.add_argument("--cache", type=Path, default=Path(".cache/checks"), help="where to cache answers (default: .cache/checks)")
+    sources = commands.add_parser("sources", help="write a source record for every cited DOI that has none (needs the network)")
+    sources.add_argument("--refresh", action="store_true", help="also re-fetch existing DOI records and rewrite those that changed")
+    sources.add_argument("--data", type=Path, default=Path("data"), help="the data folder (default: data)")
+    sources.add_argument("--cache", type=Path, default=Path(".cache/checks"), help="where to cache answers (default: .cache/checks)")
     args = parser.parse_args(argv)
 
     if args.command == "files":
         findings = run_files(args.data)
     elif args.command == "changes":
         findings = check_changes(args.data, args.base)
-    else:
+    elif args.command == "online":
         records, _ = load_tree(args.data)
         scope = changed_since(args.data, args.base) if args.base else None
         findings = check_online(records, Fetcher(args.cache, opener), date.today(), scope)
+    else:
+        written, findings = fill_sources(args.data, Fetcher(args.cache, opener), date.today(), args.refresh)
+        for path in written:
+            print(f"wrote {path}")
     for finding in findings:
         print(finding)
     return 1 if findings else 0
