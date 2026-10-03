@@ -59,9 +59,18 @@ def is_open_licence(spdx: str | None) -> bool:
     return isinstance(spdx, str) and bool(OPEN_LICENCE.match(spdx))
 
 
+SCHEME_KINDS = {"doi": "doi", "pubmed": "pmid", "pmc": "pmcid", "arxiv": "arxiv"}  # source ID scheme -> identifier kind
+
+
 def canonical(kind: str, value: str) -> bool:
     """Whether an identifier is in the exact form its registry is asked for (see CANONICAL)."""
     return bool(CANONICAL[kind].fullmatch(value))
+
+
+def canonical_source_id(source_id: str) -> bool:
+    """Whether a source ID's scheme is known and the rest is in canonical form."""
+    scheme, _, rest = source_id.partition(":")
+    return scheme in SCHEME_KINDS and canonical(SCHEME_KINDS[scheme], rest)
 
 
 def source_key(cited: dict[str, str]) -> str | None:

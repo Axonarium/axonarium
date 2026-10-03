@@ -287,6 +287,71 @@
        "idtype": "pii",
        "value": "10.1038/s41467-021-22915-5"
       }
+     ],
+     "pubdate": "2021 May 17",
+     "source": "Nat Commun",
+     "fulljournalname": "Nature communications"
+    }
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=1023575&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "1023575"
+    ],
+    "1023575": {
+     "uid": "1023575",
+     "title": "Olfactory and temporal projections to the amygdala.",
+     "articleids": [
+      {
+       "idtype": "pubmed",
+       "idtypen": 1,
+       "value": "1023575"
+      }
+     ],
+     "pubdate": "1976",
+     "source": "Verh Anat Ges",
+     "fulljournalname": "Verhandlungen der Anatomischen Gesellschaft",
+     "pubtype": [
+      "Journal Article"
+     ]
+    }
+   }
+  }
+ },
+ "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=11134581&retmode=json&tool=axonarium-checks&email=admin@axonarium.com": {
+  "status": 200,
+  "body": {
+   "result": {
+    "uids": [
+     "11134581"
+    ],
+    "11134581": {
+     "uid": "11134581",
+     "title": "Regulation of interphotoreceptor retinoid-binding protein (IRBP) gene expression by cAMP in differentiated retinoblastoma cells.",
+     "articleids": [
+      {
+       "idtype": "pubmed",
+       "idtypen": 1,
+       "value": "11134581"
+      },
+      {
+       "idtype": "pii",
+       "idtypen": 4,
+       "value": "v6/a33"
+      }
+     ],
+     "pubdate": "2000 Dec 8",
+     "source": "Mol Vis",
+     "fulljournalname": "Molecular vision",
+     "pubtype": [
+      "Journal Article",
+      "Research Support, Non-U.S. Gov't",
+      "Research Support, U.S. Gov't, P.H.S.",
+      "Retracted Publication"
      ]
     }
    }
@@ -328,6 +393,12 @@
        "idtypen": 4,
        "value": "10.1038/s41467-021-22856-z"
       }
+     ],
+     "pubdate": "2021 May 13",
+     "source": "Nat Commun",
+     "fulljournalname": "Nature communications",
+     "pubtype": [
+      "Journal Article"
      ]
     }
    }
@@ -369,6 +440,13 @@
        "idtypen": 4,
        "value": "10.1038/s41467-021-22915-5"
       }
+     ],
+     "pubdate": "2021 May 17",
+     "source": "Nat Commun",
+     "fulljournalname": "Nature communications",
+     "pubtype": [
+      "Journal Article",
+      "Research Support, N.I.H., Extramural"
      ]
     }
    }

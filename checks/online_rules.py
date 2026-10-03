@@ -121,7 +121,7 @@ class _Asker:
             return self.pmc(path, rest)[0]
         if scheme == "arxiv":
             return self.arxiv(path, rest)
-        findings, fresh = self._exists(path, ("source", rest.lower()), lambda: fetch_source(self.fetch, rest, self.today),
+        findings, fresh = self._exists(path, ("source", rest.lower()), lambda: fetch_source(self.fetch, f"doi:{rest}", self.today),
                                        f"DOI {rest} does not exist (doi.org)")
         for field in ("license", "retracted") if fresh else ():
             if data.get(field) != fresh.get(field):
