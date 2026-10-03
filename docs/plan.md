@@ -433,7 +433,7 @@ The Supabase pause is a concrete example of why the static fallback matters: if 
 - Code under MIT or Apache-2.0; project-curated data under CC BY 4.0.
 - Ingested data keeps its upstream license, recorded per source (sprint 1.1). Non-commercial data (for example the Allen Brain Cell Atlas 10x single-cell data, CC BY-NC 4.0) is linked, not copied.
 - CITATION.cff in the repo; each release citable by DOI.
-- A Code of Conduct in the repo from the first commit.
+- No Code of Conduct: the maintainer decided against one on 2 October 2026.
 - Human contributors are identified by ORCID in curation records. Agents are credited as tools in methods, not as authors.
 - Privacy-respecting usage metrics from launch, and an RRID, so funders can see use (from the literature review).
 
@@ -921,14 +921,14 @@ Caveats:
 
 - Use a project email alias for every account (GitHub, Vercel, Supabase, domain registrar, LLM provider), not a personal address, so the project can be handed over.
 - Reserve the name everywhere at once: both domains, the GitHub organization, and the PyPI and npm package names.
-- Add the licence files (code: MIT or Apache-2.0; data: CC BY 4.0), a Code of Conduct and CITATION.cff.
+- Add the licence files (code: MIT or Apache-2.0; data: CC BY 4.0) and CITATION.cff.
 
 ### Order of operations
 
 1. [x] Create the project email alias. Done: admin@axonarium.com.
 2. [x] Buy axonarium.com and axonarium.org (confirm price; auto-renew on).
 3. [x] Create the GitHub organization; add a second owner when one is available. A second owner is still needed.
-4. [x] Create the public repo (Claude can scaffold licences, Code of Conduct, CITATION.cff, AGENTS.md and CODEOWNERS in sprint 0.1).
+4. [x] Create the public repo (Claude can scaffold licences, CITATION.cff, AGENTS.md and CODEOWNERS in sprint 0.1).
 5. [x] Connect GitHub to Claude in Settings → Connectors and grant the organization access. Not needed: Claude works through a local gh login.
 6. [ ] Create the Vercel Hobby account with the project email; link the project; add the three Vercel secrets for the GitHub Actions deploy.
 7. [ ] Create the Supabase project; store its keys as organization secrets.

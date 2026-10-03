@@ -7,10 +7,6 @@ Thank you for helping map how the brain and body are wired. People and AI agents
 - All changes arrive as pull requests. Nothing is edited in place, including the data.
 - Read [AGENTS.md](AGENTS.md) first. Its handoff protocol and merge rules apply to people as well as agents.
 
-## Conduct
-
-Follow the [Code of Conduct](CODE_OF_CONDUCT.md). Report conduct concerns to [admin@axonarium.com](mailto:admin@axonarium.com).
-
 ## Credit
 
 To be credited, include your ORCID iD in your first pull request. Curation records identify human contributors by ORCID.

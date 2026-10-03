@@ -24,7 +24,7 @@ Pre-alpha: the project is in Phase 0, Foundations. See [STATUS.md](STATUS.md).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Citing
 

@@ -22,7 +22,7 @@ Chosen option: "Apache-2.0", because it includes an explicit patent grant from e
 * Code, docs and everything else not listed below: Apache-2.0.
 * Project-curated data: CC BY 4.0.
 * Ingested data keeps its upstream licence, declared per path in [REUSE.toml](../../REUSE.toml). Non-commercial data is linked, not copied.
-* Two copied texts keep their own licences: the Code of Conduct (CC BY-SA 4.0) and the MADR template (CC0 1.0).
+* One copied text keeps its own licence: the MADR template (CC0 1.0).
 * `reuse lint` in CI fails if any file lacks a declared licence.
 
 ### Consequences
