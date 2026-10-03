@@ -4,7 +4,7 @@ import argparse
 from datetime import date
 from pathlib import Path
 
-from checks.change_rules import check_changes
+from checks.change_rules import changed_since, check_changes
 from checks.file_rules import check_file
 from checks.findings import Finding
 from checks.http import Fetcher, Opener, default_opener
@@ -42,7 +42,8 @@ def main(argv: list[str] | None = None, opener: Opener = default_opener) -> int:
         findings = check_changes(args.data, args.base)
     else:
         records, _ = load_tree(args.data)
-        findings = check_online(records, Fetcher(args.cache, opener), date.today())
+        scope = changed_since(args.data, args.base) if args.base else None
+        findings = check_online(records, Fetcher(args.cache, opener), date.today(), scope)
     for finding in findings:
         print(finding)
     return 1 if findings else 0
