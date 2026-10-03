@@ -32,6 +32,13 @@
                         "null"
                     ]
                 },
+                "citation": {
+                    "description": "How the atlas's authors ask it to be cited, with a DOI where one exists.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "extra": {
                     "anyOf": [
                         {

@@ -314,6 +314,7 @@ classes:
       - version
       - url
       - brainglobe_name
+      - citation
       - extra
     slot_usage:
       id:
@@ -582,6 +583,8 @@ slots:
     description: Where the atlas is published.
   brainglobe_name:
     description: The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.
+  citation:
+    description: How the atlas's authors ask it to be cited, with a DOI where one exists.
   acronym:
     description: The region's acronym in its atlas.
   atlas:

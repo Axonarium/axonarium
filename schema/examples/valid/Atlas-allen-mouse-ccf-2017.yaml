@@ -4,5 +4,6 @@ species: NCBITaxon:10090
 version: 3 (2017)
 url: https://atlas.brain-map.org/
 brainglobe_name: allen_mouse_25um
+citation: Wang et al. 2020, https://doi.org/10.1016/j.cell.2020.04.007
 extra:
   brainglobe.atlas_version: "3.1"

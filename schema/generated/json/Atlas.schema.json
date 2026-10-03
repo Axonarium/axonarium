@@ -32,6 +32,13 @@
                         "null"
                     ]
                 },
+                "citation": {
+                    "description": "How the atlas's authors ask it to be cited, with a DOI where one exists.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "extra": {
                     "anyOf": [
                         {
@@ -1478,6 +1485,13 @@
     "properties": {
         "brainglobe_name": {
             "description": "The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "citation": {
+            "description": "How the atlas's authors ask it to be cited, with a DOI where one exists.",
             "type": [
                 "string",
                 "null"

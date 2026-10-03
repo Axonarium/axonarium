@@ -194,6 +194,7 @@ CREATE TABLE "Atlas" (
 	version TEXT NOT NULL,
 	url TEXT,
 	brainglobe_name TEXT,
+	citation TEXT,
 	"KnowledgeBase_id" INTEGER,
 	extra_id INTEGER,
 	PRIMARY KEY (id),
@@ -207,6 +208,7 @@ COMMENT ON COLUMN "Atlas".species IS 'The organism, as an NCBI Taxonomy ID such 
 COMMENT ON COLUMN "Atlas".version IS 'The atlas version, as its authors name it.';
 COMMENT ON COLUMN "Atlas".url IS 'Where the atlas is published.';
 COMMENT ON COLUMN "Atlas".brainglobe_name IS 'The atlas''s name in the BrainGlobe Atlas API, such as allen_mouse_25um.';
+COMMENT ON COLUMN "Atlas".citation IS 'How the atlas''s authors ask it to be cited, with a DOI where one exists.';
 COMMENT ON COLUMN "Atlas"."KnowledgeBase_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "Atlas".extra_id IS 'Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here.';
 

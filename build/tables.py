@@ -32,7 +32,7 @@ def _citation_columns() -> list[Column]:
 atlases = Table(
     "atlases", metadata,
     Column("id", Text, primary_key=True), _text("name", True), _text("species", True), _text("version", True),
-    _text("url"), _text("brainglobe_name"), Column("extra", JSONB),
+    _text("url"), _text("brainglobe_name"), _text("citation"), Column("extra", JSONB),
 )
 regions = Table(
     "regions", metadata,
