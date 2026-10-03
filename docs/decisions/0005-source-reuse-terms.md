@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-10-03
 decision-makers: Tyler Banks
 consulted: Claude (research, sprint 1.1)
@@ -44,7 +44,7 @@ Referring to a source's identifiers (such as `MBA:295`) and citing its papers ne
 | [PubTator3](https://www.ncbi.nlm.nih.gov/research/pubtator3/) | Entity tagging | US Government work; the annotated text keeps its publishers' terms | Use annotations freely; the text follows the article's licence |
 | [WhiteText corpus](https://figshare.com/articles/dataset/New_WhiteText_Corpus/1400541) | Extraction benchmark | CC BY 4.0 | **Copy** into `agents/evals/` with credit |
 
-**Allen data needs a maintainer decision.** Its terms allow research and non-commercial use but not commercial redistribution, while project data is CC BY 4.0, which allows commercial reuse. Allen is the main v1 source for mouse regions (sprint 1.2) and region-level connectivity (sprint 1.3). Recommended, in order:
+**Allen data.** Its terms allow research and non-commercial use but not commercial redistribution, while project data is CC BY 4.0, which allows commercial reuse. Allen is the main v1 source for mouse regions (sprint 1.2) and region-level connectivity (sprint 1.3). The maintainer accepted this handling on 3 October 2026:
 
 1. The maintainer asks the Allen Institute for written permission to redistribute region names, hierarchy and derived region-level connectivity claims under CC BY 4.0, with citation per its policy.
 2. Until permission arrives, Allen-derived content is not committed. Adapters read it at build time; the live site and API, which are non-commercial, may serve it with the Allen citation; release dumps either leave it out or carry it in a separate file under the Allen terms.

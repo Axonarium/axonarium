@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 2 October 2026.
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 3 October 2026.
 
 ## Phase
 
@@ -14,10 +14,12 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | --- | --- |
 | 0.1 Repo scaffold | Done |
 | 0.2 Schema v0.1 in LinkML | Done |
-| 0.3 Validation CI, 0.4 Rebuild pipeline, 1.1 License audit, 1.2 Atlas layer | Ready for an agent |
+| 1.1 License audit | Done |
+| 0.3 Validation CI, 0.4 Rebuild pipeline, 1.2 Atlas layer | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
-| 0.6 and 1.3–1.6 | Blocked on earlier sprints |
+| 1.4 BAMS rat adapter | Blocked until BAMS grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)) |
+| 0.6, 1.3, 1.5 and 1.6 | Blocked on earlier sprints |
 
 Later phases get cards when they start.
 
@@ -29,6 +31,7 @@ Later phases get cards when they start.
 - Community input: identifier-only evidence for or against a claim, with an allowlist and three defensive layers.
 - Name: Axonarium ([ADR 0003](docs/decisions/0003-project-name.md)). Licences: Apache-2.0 for code and CC BY 4.0 for data ([ADR 0002](docs/decisions/0002-licensing.md)).
 - Identifiers: w3id.org base URI, and a type prefix plus 10 random characters for claims and neuron types ([ADR 0004](docs/decisions/0004-identifiers.md)).
+- Source reuse terms: copy, link or ask first, per source; Allen data is read at build time until the Allen Institute grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)).
 
 ## Waiting on the maintainer
 
@@ -42,6 +45,8 @@ Later phases get cards when they start.
 - [ ] Claiming the PyPI project name.
 - [ ] Pointing the domains at the repo with 302 redirects until the site exists.
 - [ ] Registering https://w3id.org/axonarium/ with w3id.org (a pull request to its registry).
+- [ ] Asking the Allen Institute for written permission to redistribute region and connectivity data under CC BY 4.0 (ADR 0005).
+- [ ] Asking BAMS's maintainers for permission to reuse its connection reports (ADR 0005).
 
 ## Setup
 
