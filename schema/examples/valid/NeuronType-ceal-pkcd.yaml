@@ -1,0 +1,9 @@
+id: nt-v2hbfpmqzf
+name: CEAl PKC-delta-expressing neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers: [Prkcd]

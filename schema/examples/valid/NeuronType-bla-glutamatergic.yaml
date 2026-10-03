@@ -1,0 +1,10 @@
+id: nt-hmvdte8t1h
+name: BLA glutamatergic principal neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers: [Slc17a7]
+cell_ontology: CL:0000679

@@ -1,0 +1,33 @@
+id: clm-ryzavag9jp
+subject:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: single_neuron_reconstruction
+result: present
+sign: unknown
+source:
+  doi: 10.5555/axonarium.example.005
+  locator: Fig. 5B
+paraphrase: >-
+  Illustrative example: reconstructed axons of neurons in the medial central amygdalar nucleus reached the periaqueductal gray.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.1.0
+  date: "2026-10-02"
+verification:
+  by: agent
+  role: verifier
+  model: claude-fable-5-1
+  prompt: verify@0.1.0
+  verdict: agree
+  date: "2026-10-02"
+status: accepted

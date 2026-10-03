@@ -1,0 +1,25 @@
+id: hom-yf36k44e09
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+subject_species: NCBITaxon:10090
+object:
+  type: region
+  id: UBERON:0002887
+object_species: NCBITaxon:10116
+correspondence: equivalent
+confidence: high
+basis: [connectivity, cytoarchitecture]
+source:
+  doi: 10.5555/axonarium.example.016
+  locator: Table 1
+paraphrase: >-
+  Illustrative example: the mouse basolateral amygdalar nucleus corresponds to
+  the rat basal amygdaloid nucleus in cytoarchitecture and connections.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted

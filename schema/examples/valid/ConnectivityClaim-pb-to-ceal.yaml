@@ -1,0 +1,25 @@
+id: clm-kxysx74b9k
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: modulatory
+source:
+  doi: 10.5555/axonarium.example.006
+  locator: Fig. 3E
+paraphrase: >-
+  Illustrative example: light activation of parabrachial terminals changed how lateral central amygdala neurons responded to input.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted

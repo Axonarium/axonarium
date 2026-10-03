@@ -1,0 +1,829 @@
+id: https://w3id.org/axonarium/schema
+name: axonarium
+title: Axonarium schema
+description: >-
+  The data model of Axonarium, an open, cited map of how the brain and body
+  are wired. The unit of knowledge is the claim: one statement from one source
+  about one relationship in one species. See docs/plan.md, Part 1, "Data model".
+version: 0.1.0
+license: Apache-2.0
+see_also:
+  - https://github.com/axonarium/axonarium
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  axonarium: https://w3id.org/axonarium/
+  NCBITaxon: http://purl.obolibrary.org/obo/NCBITaxon_
+  UBERON: http://purl.obolibrary.org/obo/UBERON_
+  CL: http://purl.obolibrary.org/obo/CL_
+  MBA: https://purl.brain-bican.org/ontology/mbao/MBA_
+  HBA: https://purl.brain-bican.org/ontology/hbao/HBA_
+  doi: https://doi.org/
+  pubmed: https://pubmed.ncbi.nlm.nih.gov/
+  pmc: http://europepmc.org/articles/
+  arxiv: https://arxiv.org/abs/
+  orcid: https://orcid.org/
+default_prefix: axonarium
+default_range: string
+imports:
+  - linkml:types
+
+classes:
+  Any:
+    class_uri: linkml:Any
+    description: Any JSON value. Used for the open-ended extra map.
+
+  Claim:
+    abstract: true
+    description: >-
+      One sourced statement about one relationship. Holds the fields every
+      kind of claim shares: where the evidence is, who curated and checked it,
+      and its status.
+    slots:
+      - id
+      - source
+      - paraphrase
+      - excerpt
+      - curation
+      - verification
+      - status
+      - extra
+
+  ConnectivityClaim:
+    is_a: Claim
+    description: >-
+      A claim that a region or neuron type connects to another in one species,
+      shown by one kind of evidence. Edges are computed from these claims at
+      build time and are never edited by hand.
+    slots:
+      - subject
+      - predicate
+      - object
+      - species
+      - evidence_class
+      - result
+      - sign
+      - strength
+      - measurements
+    slot_usage:
+      id:
+        pattern: "^clm-[0-9a-hjkmnp-tv-z]{10}$"
+    rules:
+      - description: Axonal projections are shown by tracing or reconstruction.
+        preconditions:
+          slot_conditions:
+            predicate:
+              equals_string: projects_to
+        postconditions:
+          slot_conditions:
+            evidence_class:
+              any_of:
+                - equals_string: anterograde_tracer
+                - equals_string: retrograde_tracer
+                - equals_string: single_neuron_reconstruction
+      - description: Synapses are shown by electron microscopy or transsynaptic tracing.
+        preconditions:
+          slot_conditions:
+            predicate:
+              equals_string: synapses_onto
+        postconditions:
+          slot_conditions:
+            evidence_class:
+              any_of:
+                - equals_string: electron_microscopy
+                - equals_string: transsynaptic_tracer
+      - description: Functional connections are shown by stimulation and recording.
+        preconditions:
+          slot_conditions:
+            predicate:
+              equals_string: functionally_connects_to
+        postconditions:
+          slot_conditions:
+            evidence_class:
+              any_of:
+                - equals_string: optogenetic_circuit_mapping
+                - equals_string: paired_recording
+                - equals_string: electrical_stimulation
+
+  HomologyClaim:
+    is_a: Claim
+    description: >-
+      A claim that a region or neuron type in one species corresponds to one in
+      another. Homology is a weighted, cited claim, never a merge of nodes.
+    slots:
+      - subject
+      - subject_species
+      - object
+      - object_species
+      - correspondence
+      - confidence
+      - basis
+    slot_usage:
+      id:
+        pattern: "^hom-[0-9a-hjkmnp-tv-z]{10}$"
+
+  EntityRef:
+    description: >-
+      A reference to a region or neuron type, used as the subject or object of
+      a claim.
+    attributes:
+      type:
+        range: EntityType
+        required: true
+        description: Whether the reference is to a region or a neuron type.
+      id:
+        range: uriorcurie
+        required: true
+        description: >-
+          The entity's ID: an atlas region (MBA, HBA), a UBERON term, a
+          project neuron type (nt-...) or a Cell Ontology term.
+      atlas:
+        pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+        description: >-
+          The pinned atlas version an atlas region belongs to, such as
+          allen-mouse-ccf-2017. Required for MBA and HBA IDs.
+    rules:
+      - description: Region IDs come from a known atlas or from UBERON.
+        preconditions:
+          slot_conditions:
+            type:
+              equals_string: region
+        postconditions:
+          slot_conditions:
+            id:
+              any_of:
+                - pattern: "^(MBA|HBA):\\d+$"
+                - pattern: "^UBERON:\\d{7}$"
+      - description: Neuron type IDs are project IDs or Cell Ontology terms.
+        preconditions:
+          slot_conditions:
+            type:
+              equals_string: neuron_type
+        postconditions:
+          slot_conditions:
+            id:
+              any_of:
+                - pattern: "^nt-[0-9a-hjkmnp-tv-z]{10}$"
+                - pattern: "^CL:\\d{7}$"
+      - description: Atlas regions name their pinned atlas version.
+        preconditions:
+          slot_conditions:
+            id:
+              pattern: "^(MBA|HBA):"
+        postconditions:
+          slot_conditions:
+            atlas:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+
+  Citation:
+    description: >-
+      Where a claim's evidence is: one paper or preprint, and the figure,
+      table or section within it.
+    slots:
+      - doi
+      - pmid
+      - pmcid
+      - arxiv
+      - locator
+    any_of:
+      - description: Has a DOI.
+        slot_conditions:
+          doi:
+            required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
+      - description: Has a PubMed ID.
+        slot_conditions:
+          pmid:
+            required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
+      - description: Has a PubMed Central ID.
+        slot_conditions:
+          pmcid:
+            required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
+      - description: Has an arXiv ID.
+        slot_conditions:
+          arxiv:
+            required: true
+            any_of:  # A present-but-null value doesn't count.
+              - range: string
+
+  Curation:
+    description: Who drafted or curated a claim, and how.
+    slots:
+      - by
+      - orcid
+      - role
+      - model
+      - prompt
+      - date
+    rules:
+      - description: Human curators are identified by ORCID.
+        preconditions:
+          slot_conditions:
+            by:
+              equals_string: human
+        postconditions:
+          slot_conditions:
+            orcid:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+      - description: Agents record the model and prompt version they ran.
+        preconditions:
+          slot_conditions:
+            by:
+              equals_string: agent
+        postconditions:
+          slot_conditions:
+            model:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+            prompt:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+
+  Verification:
+    description: An independent check of a claim against its source.
+    slots:
+      - by
+      - orcid
+      - role
+      - model
+      - prompt
+      - verdict
+      - date
+    rules:
+      - description: Human verifiers are identified by ORCID.
+        preconditions:
+          slot_conditions:
+            by:
+              equals_string: human
+        postconditions:
+          slot_conditions:
+            orcid:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+      - description: Agents record the model and prompt version they ran.
+        preconditions:
+          slot_conditions:
+            by:
+              equals_string: agent
+        postconditions:
+          slot_conditions:
+            model:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+            prompt:
+              required: true
+              any_of:  # A present-but-null value doesn't count.
+                - range: string
+
+  Measurement:
+    description: >-
+      A quantity reported for a connection, with its unit and uncertainty. A
+      missing field means unknown; nothing has a default.
+    slots:
+      - quantity
+      - value
+      - unit
+      - sd
+      - sem
+      - ci_low
+      - ci_high
+      - n
+
+  Atlas:
+    description: >-
+      A specific, pinned version of a reference atlas. An atlas update creates
+      a new record and a mapping file, never silent ID changes.
+    slots:
+      - id
+      - name
+      - species
+      - version
+      - url
+      - brainglobe_name
+      - extra
+    slot_usage:
+      id:
+        pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+
+  Region:
+    description: A structure as defined in one pinned atlas version, mapped to UBERON.
+    slots:
+      - id
+      - name
+      - acronym
+      - atlas
+      - parent
+      - uberon
+      - synonyms
+      - extra
+    slot_usage:
+      id:
+        pattern: "^(MBA|HBA):\\d+$"
+
+  NeuronType:
+    description: >-
+      A population of neurons with a shared location, transmitter and markers.
+      Mapped to the Cell Ontology where a term exists.
+    slots:
+      - id
+      - name
+      - species
+      - region
+      - transmitter
+      - markers
+      - cell_ontology
+      - synonyms
+      - extra
+    slot_usage:
+      id:
+        pattern: "^nt-[0-9a-hjkmnp-tv-z]{10}$"
+
+  Source:
+    description: >-
+      Cached metadata for a paper or preprint that claims cite. Filled from
+      Crossref and PubMed in Phase 1.
+    slots:
+      - id
+      - title
+      - year
+      - journal
+      - license
+      - open_access
+      - retracted
+      - extra
+    slot_usage:
+      id:
+        pattern: "^(doi:10\\.\\d{4,9}/\\S+|pubmed:\\d+|pmc:PMC\\d+|arxiv:\\d{4}\\.\\d{4,5}(v\\d+)?)$"
+
+  KnowledgeBase:
+    tree_root: true
+    description: >-
+      Every record in one container, as written to dumps. Files in data/ hold
+      one record each.
+    slots:
+      - connectivity_claims
+      - homology_claims
+      - atlases
+      - regions
+      - neuron_types
+      - sources
+
+slots:
+  id:
+    identifier: true
+    required: true
+    description: The record's identifier.
+  source:
+    range: Citation
+    inlined: true
+    required: true
+    description: Where the evidence for the claim is.
+  paraphrase:
+    required: true
+    description: >-
+      The evidence summarised in the curator's own words. Copyright-safe:
+      verbatim text belongs in excerpt, and only from openly licensed papers.
+  excerpt:
+    pattern: "^[\\s\\S]{1,300}$"
+    description: >-
+      A short verbatim quotation, at most 300 characters, taken only from an
+      openly licensed paper.
+  curation:
+    range: Curation
+    inlined: true
+    required: true
+    description: Who drafted or curated the claim.
+  verification:
+    range: Verification
+    inlined: true
+    description: The independent check of the claim, if one was made.
+  status:
+    range: ClaimStatus
+    required: true
+    description: Where the claim is in its life cycle.
+  extra:
+    range: Any
+    description: >-
+      Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to
+      any JSON value. Core facts always have typed fields and never live only
+      here.
+  subject:
+    range: EntityRef
+    inlined: true
+    required: true
+    description: The region or neuron type the relationship starts from.
+  object:
+    range: EntityRef
+    inlined: true
+    required: true
+    description: The region or neuron type the relationship ends at.
+  predicate:
+    range: ConnectivityPredicate
+    required: true
+    description: The kind of connection claimed.
+  species:
+    pattern: "^NCBITaxon:\\d+$"
+    required: true
+    description: The organism, as an NCBI Taxonomy ID such as NCBITaxon:10090.
+  evidence_class:
+    range: EvidenceClass
+    required: true
+    description: The method that produced the evidence.
+  result:
+    range: Result
+    required: true
+    description: >-
+      What the evidence showed. "absent" means tested and not found, which is
+      different from no claim at all.
+  sign:
+    range: Sign
+    required: true
+    description: >-
+      The effect of the connection. Required, so that "unknown" is stated
+      deliberately.
+  strength:
+    range: OrdinalStrength
+    description: The connection's strength on an ordinal scale, if reported.
+  measurements:
+    range: Measurement
+    multivalued: true
+    inlined_as_list: true
+    description: Quantities reported for the connection.
+  doi:
+    pattern: "^10\\.\\d{4,9}/\\S+$"
+    description: The paper's DOI, without the https://doi.org/ prefix.
+  pmid:
+    pattern: "^\\d+$"
+    description: The paper's PubMed ID. Quote it in YAML.
+  pmcid:
+    pattern: "^PMC\\d+$"
+    description: The paper's PubMed Central ID, such as PMC1234567.
+  arxiv:
+    pattern: "^\\d{4}\\.\\d{4,5}(v\\d+)?$"
+    description: The preprint's arXiv ID, such as 2409.13740.
+  locator:
+    required: true
+    description: Where in the source the evidence is, such as "Fig. 3B".
+  by:
+    range: Actor
+    required: true
+    description: Whether a human or an agent did the work.
+  orcid:
+    pattern: "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$"
+    description: The human's ORCID iD, without the https://orcid.org/ prefix.
+  role:
+    range: Role
+    required: true
+    description: The role the human or agent acted in.
+  model:
+    description: The model ID an agent ran on, such as claude-opus-5-5.
+  prompt:
+    pattern: "^[a-z][a-z0-9_-]*@\\d+\\.\\d+\\.\\d+$"
+    description: The versioned role prompt an agent ran, such as extract@1.0.0.
+  date:
+    range: date
+    required: true
+    pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+    description: >-
+      When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern
+      catches non-dates in validators that ignore JSON Schema "format".
+  verdict:
+    range: Verdict
+    required: true
+    description: Whether the verifier agrees with the claim.
+  quantity:
+    range: QuantityKind
+    required: true
+    description: What was measured.
+  value:
+    range: float
+    required: true
+    description: The measured value, in unit.
+  unit:
+    required: true
+    description: The UCUM unit code, such as ms, or "1" for a dimensionless value.
+  sd:
+    range: float
+    description: Standard deviation.
+  sem:
+    range: float
+    description: Standard error of the mean.
+  ci_low:
+    range: float
+    description: Lower bound of the 95% confidence interval.
+  ci_high:
+    range: float
+    description: Upper bound of the 95% confidence interval.
+  n:
+    range: integer
+    minimum_value: 1
+    description: Sample size behind the measurement.
+
+  subject_species:
+    pattern: "^NCBITaxon:\\d+$"
+    required: true
+    description: The organism of the homology claim's subject.
+  object_species:
+    pattern: "^NCBITaxon:\\d+$"
+    required: true
+    description: The organism of the homology claim's object.
+  correspondence:
+    range: Correspondence
+    required: true
+    description: How fully the two entities correspond.
+  confidence:
+    range: Confidence
+    required: true
+    description: How strong the evidence for the correspondence is.
+  basis:
+    range: HomologyBasis
+    multivalued: true
+    required: true
+    minimum_cardinality: 1
+    description: The kinds of evidence the correspondence rests on.
+  name:
+    required: true
+    description: The entity's full name.
+  version:
+    required: true
+    description: The atlas version, as its authors name it.
+  url:
+    range: uri
+    description: Where the atlas is published.
+  brainglobe_name:
+    description: The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.
+  acronym:
+    description: The region's acronym in its atlas.
+  atlas:
+    range: Atlas
+    required: true
+    description: The pinned atlas version the region belongs to.
+  parent:
+    range: Region
+    description: The region one level up in the atlas hierarchy.
+  uberon:
+    pattern: "^UBERON:\\d{7}$"
+    description: The matching UBERON term.
+  synonyms:
+    multivalued: true
+    description: Other names for the entity.
+  region:
+    range: EntityRef
+    inlined: true
+    required: true
+    description: Where the neuron type's cell bodies are.
+  transmitter:
+    range: Transmitter
+    description: The neuron type's main neurotransmitter.
+  markers:
+    multivalued: true
+    description: Gene symbols that identify the neuron type, such as Sst.
+  cell_ontology:
+    pattern: "^CL:\\d{7}$"
+    description: The matching Cell Ontology term.
+  title:
+    description: The paper's title.
+  year:
+    range: integer
+    description: The year of publication.
+  journal:
+    description: The journal or preprint server.
+  license:
+    description: The paper's licence, as an SPDX ID where one exists.
+  open_access:
+    range: boolean
+    description: Whether the full text is openly available.
+  retracted:
+    range: boolean
+    description: Whether the paper has been retracted, per Crossref.
+  connectivity_claims:
+    range: ConnectivityClaim
+    multivalued: true
+    inlined_as_list: true
+    description: Every connectivity claim.
+  homology_claims:
+    range: HomologyClaim
+    multivalued: true
+    inlined_as_list: true
+    description: Every homology claim.
+  atlases:
+    range: Atlas
+    multivalued: true
+    inlined_as_list: true
+    description: Every pinned atlas version.
+  regions:
+    range: Region
+    multivalued: true
+    inlined_as_list: true
+    description: Every region.
+  neuron_types:
+    range: NeuronType
+    multivalued: true
+    inlined_as_list: true
+    description: Every neuron type.
+  sources:
+    range: Source
+    multivalued: true
+    inlined_as_list: true
+    description: Every cached source.
+
+enums:
+  EntityType:
+    description: The kinds of entity a claim can connect.
+    permissible_values:
+      region:
+        description: An anatomical region.
+      neuron_type:
+        description: A population of neurons with a shared identity.
+
+  ConnectivityPredicate:
+    description: >-
+      The kinds of connection a claim can state. Each allows only its own
+      evidence classes, so anatomical and functional evidence never share an
+      edge type.
+    permissible_values:
+      projects_to:
+        description: The subject's axons reach the object. Anatomical.
+      synapses_onto:
+        description: The subject makes synapses onto the object. Anatomical.
+      functionally_connects_to:
+        description: Activating the subject changes activity in the object. Functional.
+
+  EvidenceClass:
+    description: The methods that produce connectivity evidence.
+    permissible_values:
+      anterograde_tracer:
+        description: A tracer carried from cell bodies to axon terminals.
+      retrograde_tracer:
+        description: A tracer carried from axon terminals back to cell bodies.
+      single_neuron_reconstruction:
+        description: Complete axon reconstructions of individual neurons.
+      electron_microscopy:
+        description: Synapses identified by electron microscopy.
+      transsynaptic_tracer:
+        description: A tracer that crosses synapses, such as modified rabies virus.
+      optogenetic_circuit_mapping:
+        description: Light activation of the subject while recording the object.
+      paired_recording:
+        description: Simultaneous recordings from connected neurons.
+      electrical_stimulation:
+        description: Electrical stimulation of the subject while recording the object.
+
+  Result:
+    description: What a test of a connection showed.
+    permissible_values:
+      present:
+        description: The connection was found.
+      absent:
+        description: The connection was tested for and not found.
+      ambiguous:
+        description: The evidence does not settle the question.
+
+  Sign:
+    description: The effect a connection has on its target.
+    permissible_values:
+      excitatory:
+        description: Raises the target's activity.
+      inhibitory:
+        description: Lowers the target's activity.
+      modulatory:
+        description: Changes how the target responds, rather than driving it.
+      unknown:
+        description: The source does not establish the sign.
+
+  OrdinalStrength:
+    description: Connection strength on an ordinal scale.
+    permissible_values:
+      weak:
+        description: Weak.
+      moderate:
+        description: Moderate.
+      strong:
+        description: Strong.
+
+  QuantityKind:
+    description: The quantities a measurement can report.
+    permissible_values:
+      connection_probability:
+        description: Fraction of tested pairs that were connected. Unit 1.
+      synapse_count:
+        description: Number of synapses. Unit 1.
+      conduction_delay:
+        description: Time from stimulus to response. Unit ms.
+      projection_density:
+        description: Labelled axon density in the target, normalised. Unit 1.
+      fraction_of_labelled_neurons:
+        description: Share of labelled neurons found in a region. Unit 1.
+
+  ClaimStatus:
+    description: Where a claim is in its life cycle.
+    permissible_values:
+      proposed:
+        description: Drafted and awaiting checks or review.
+      accepted:
+        description: Passed checks and the merge rules.
+      disputed:
+        description: Triage found real evidence against it; both sides stay visible.
+      retracted:
+        description: Its source was retracted. Kept and flagged, not deleted.
+
+  Actor:
+    description: Who did a piece of work.
+    permissible_values:
+      human:
+        description: A person, identified by ORCID.
+      agent:
+        description: An AI agent, identified by model and prompt version.
+
+  Role:
+    description: The roles in the agent operating model, plus human curators.
+    permissible_values:
+      curator:
+        description: A human curator.
+      ingester:
+        description: Loads claims from a structured source.
+      extractor:
+        description: Drafts claims from a paper.
+      verifier:
+        description: Checks claims against their source.
+      reconciler:
+        description: Flags contradictions, duplicates and homology gaps.
+      triage:
+        description: Routes community submissions.
+
+  Verdict:
+    description: A verifier's conclusion.
+    permissible_values:
+      agree:
+        description: The source supports the claim.
+      disagree:
+        description: The source does not support the claim.
+      unsure:
+        description: The verifier cannot tell.
+
+  Correspondence:
+    description: How fully two entities in different species correspond.
+    permissible_values:
+      equivalent:
+        description: The entities correspond as wholes.
+      partial:
+        description: The entities overlap, or one corresponds to part of the other.
+
+  Confidence:
+    description: How strong the evidence for a homology is.
+    permissible_values:
+      high:
+        description: Several independent kinds of evidence agree.
+      medium:
+        description: Supported, with gaps or some disagreement.
+      low:
+        description: Proposed, with little direct evidence.
+
+  HomologyBasis:
+    description: The kinds of evidence a homology rests on.
+    permissible_values:
+      connectivity:
+        description: Similar inputs and outputs.
+      gene_expression:
+        description: Similar gene expression.
+      cytoarchitecture:
+        description: Similar cell layout and density.
+      development:
+        description: A shared developmental origin.
+      function:
+        description: Similar roles in behaviour or physiology.
+      expert_assertion:
+        description: Stated by experts without direct comparison.
+
+  Transmitter:
+    description: A neuron type's main neurotransmitter.
+    permissible_values:
+      glutamate:
+        description: Glutamate.
+      gaba:
+        description: GABA.
+      acetylcholine:
+        description: Acetylcholine.
+      dopamine:
+        description: Dopamine.
+      serotonin:
+        description: Serotonin.
+      noradrenaline:
+        description: Noradrenaline.
+      neuropeptide:
+        description: A neuropeptide is the main signal.
+      unknown:
+        description: Not established.

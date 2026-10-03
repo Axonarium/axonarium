@@ -13,10 +13,11 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | Sprint | State |
 | --- | --- |
 | 0.1 Repo scaffold | Done |
-| 0.2 Schema v0.1 in LinkML | Ready for an agent |
-| 1.1 License audit | Ready for an agent |
+| 0.2 Schema v0.1 in LinkML | Done |
+| 0.3 Validation CI, 0.4 Rebuild pipeline, 1.1 License audit, 1.2 Atlas layer | Ready for an agent |
+| 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
-| 0.3–0.6 and 1.2–1.6 | Blocked on earlier sprints |
+| 0.6 and 1.3–1.6 | Blocked on earlier sprints |
 
 Later phases get cards when they start.
 
@@ -27,6 +28,7 @@ Later phases get cards when they start.
 - The nine design principles in [docs/plan.md](docs/plan.md), including "adopt, don't invent".
 - Community input: identifier-only evidence for or against a claim, with an allowlist and three defensive layers.
 - Name: Axonarium ([ADR 0003](docs/decisions/0003-project-name.md)). Licences: Apache-2.0 for code and CC BY 4.0 for data ([ADR 0002](docs/decisions/0002-licensing.md)).
+- Identifiers: w3id.org base URI, and a type prefix plus 10 random characters for claims and neuron types ([ADR 0004](docs/decisions/0004-identifiers.md)).
 
 ## Waiting on the maintainer
 
@@ -39,6 +41,7 @@ Later phases get cards when they start.
 - [ ] A second organization owner.
 - [ ] Claiming the PyPI project name.
 - [ ] Pointing the domains at the repo with 302 redirects until the site exists.
+- [ ] Registering https://w3id.org/axonarium/ with w3id.org (a pull request to its registry).
 
 ## Setup
 

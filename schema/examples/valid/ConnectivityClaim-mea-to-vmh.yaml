@@ -1,0 +1,25 @@
+id: clm-aq692ekd62
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.5555/axonarium.example.008
+  locator: Fig. 6A
+paraphrase: >-
+  Illustrative example: tracer injected into the medial amygdalar nucleus labelled terminals in the ventromedial hypothalamic nucleus.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: proposed

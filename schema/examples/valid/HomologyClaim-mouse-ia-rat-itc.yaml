@@ -1,0 +1,24 @@
+id: hom-q0jeyp75dt
+subject:
+  type: region
+  id: MBA:1105
+  atlas: allen-mouse-ccf-2017
+subject_species: NCBITaxon:10090
+object:
+  type: region
+  id: UBERON:0002884
+object_species: NCBITaxon:10116
+correspondence: equivalent
+confidence: high
+basis: [development, gene_expression]
+source:
+  doi: 10.5555/axonarium.example.020
+  locator: Fig. 2
+paraphrase: >-
+  Illustrative example: the mouse intercalated amygdalar nucleus corresponds to the rat intercalated amygdaloid nuclei in developmental origin and gene expression.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted

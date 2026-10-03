@@ -1,0 +1,28 @@
+id: clm-hj57w945cc
+subject:
+  type: neuron_type
+  id: nt-zsagxm3aw5
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-w0fxekq19n
+species: NCBITaxon:10090
+evidence_class: electron_microscopy
+result: present
+sign: inhibitory
+measurements:
+  - quantity: synapse_count
+    value: 42
+    unit: "1"
+    n: 2
+source:
+  doi: 10.5555/axonarium.example.014
+  locator: Fig. 8C
+paraphrase: >-
+  Illustrative example: electron microscopy found symmetric synapses from intercalated cell axons onto medial central amygdala output neurons.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted
