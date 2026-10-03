@@ -105,6 +105,23 @@ classes:
                 - equals_string: paired_recording
                 - equals_string: electrical_stimulation
 
+  HomologyClaim:
+    is_a: Claim
+    description: >-
+      A claim that a region or neuron type in one species corresponds to one in
+      another. Homology is a weighted, cited claim, never a merge of nodes.
+    slots:
+      - subject
+      - subject_species
+      - object
+      - object_species
+      - correspondence
+      - confidence
+      - basis
+    slot_usage:
+      id:
+        pattern: "^hom-[0-9a-hjkmnp-tv-z]{10}$"
+
   EntityRef:
     description: >-
       A reference to a region or neuron type, used as the subject or object of
@@ -263,6 +280,85 @@ classes:
       - ci_high
       - n
 
+  Atlas:
+    description: >-
+      A specific, pinned version of a reference atlas. An atlas update creates
+      a new record and a mapping file, never silent ID changes.
+    slots:
+      - id
+      - name
+      - species
+      - version
+      - url
+      - brainglobe_name
+      - extra
+    slot_usage:
+      id:
+        pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+
+  Region:
+    description: A structure as defined in one pinned atlas version, mapped to UBERON.
+    slots:
+      - id
+      - name
+      - acronym
+      - atlas
+      - parent
+      - uberon
+      - synonyms
+      - extra
+    slot_usage:
+      id:
+        pattern: "^(MBA|HBA):\\d+$"
+
+  NeuronType:
+    description: >-
+      A population of neurons with a shared location, transmitter and markers.
+      Mapped to the Cell Ontology where a term exists.
+    slots:
+      - id
+      - name
+      - species
+      - region
+      - transmitter
+      - markers
+      - cell_ontology
+      - synonyms
+      - extra
+    slot_usage:
+      id:
+        pattern: "^nt-[0-9a-hjkmnp-tv-z]{10}$"
+
+  Source:
+    description: >-
+      Cached metadata for a paper or preprint that claims cite. Filled from
+      Crossref and PubMed in Phase 1.
+    slots:
+      - id
+      - title
+      - year
+      - journal
+      - license
+      - open_access
+      - retracted
+      - extra
+    slot_usage:
+      id:
+        pattern: "^(doi:10\\.\\d{4,9}/\\S+|pubmed:\\d+|pmc:PMC\\d+|arxiv:\\d{4}\\.\\d{4,5}(v\\d+)?)$"
+
+  KnowledgeBase:
+    tree_root: true
+    description: >-
+      Every record in one container, as written to dumps. Files in data/ hold
+      one record each.
+    slots:
+      - connectivity_claims
+      - homology_claims
+      - atlases
+      - regions
+      - neuron_types
+      - sources
+
 slots:
   id:
     identifier: true
@@ -411,6 +507,114 @@ slots:
     minimum_value: 1
     description: Sample size behind the measurement.
 
+  subject_species:
+    pattern: "^NCBITaxon:\\d+$"
+    required: true
+    description: The organism of the homology claim's subject.
+  object_species:
+    pattern: "^NCBITaxon:\\d+$"
+    required: true
+    description: The organism of the homology claim's object.
+  correspondence:
+    range: Correspondence
+    required: true
+    description: How fully the two entities correspond.
+  confidence:
+    range: Confidence
+    required: true
+    description: How strong the evidence for the correspondence is.
+  basis:
+    range: HomologyBasis
+    multivalued: true
+    required: true
+    minimum_cardinality: 1
+    description: The kinds of evidence the correspondence rests on.
+  name:
+    required: true
+    description: The entity's full name.
+  version:
+    required: true
+    description: The atlas version, as its authors name it.
+  url:
+    range: uri
+    description: Where the atlas is published.
+  brainglobe_name:
+    description: The atlas's name in the BrainGlobe Atlas API, such as allen_mouse_25um.
+  acronym:
+    description: The region's acronym in its atlas.
+  atlas:
+    range: Atlas
+    required: true
+    description: The pinned atlas version the region belongs to.
+  parent:
+    range: Region
+    description: The region one level up in the atlas hierarchy.
+  uberon:
+    pattern: "^UBERON:\\d{7}$"
+    description: The matching UBERON term.
+  synonyms:
+    multivalued: true
+    description: Other names for the entity.
+  region:
+    range: EntityRef
+    inlined: true
+    required: true
+    description: Where the neuron type's cell bodies are.
+  transmitter:
+    range: Transmitter
+    description: The neuron type's main neurotransmitter.
+  markers:
+    multivalued: true
+    description: Gene symbols that identify the neuron type, such as Sst.
+  cell_ontology:
+    pattern: "^CL:\\d{7}$"
+    description: The matching Cell Ontology term.
+  title:
+    description: The paper's title.
+  year:
+    range: integer
+    description: The year of publication.
+  journal:
+    description: The journal or preprint server.
+  license:
+    description: The paper's licence, as an SPDX ID where one exists.
+  open_access:
+    range: boolean
+    description: Whether the full text is openly available.
+  retracted:
+    range: boolean
+    description: Whether the paper has been retracted, per Crossref.
+  connectivity_claims:
+    range: ConnectivityClaim
+    multivalued: true
+    inlined_as_list: true
+    description: Every connectivity claim.
+  homology_claims:
+    range: HomologyClaim
+    multivalued: true
+    inlined_as_list: true
+    description: Every homology claim.
+  atlases:
+    range: Atlas
+    multivalued: true
+    inlined_as_list: true
+    description: Every pinned atlas version.
+  regions:
+    range: Region
+    multivalued: true
+    inlined_as_list: true
+    description: Every region.
+  neuron_types:
+    range: NeuronType
+    multivalued: true
+    inlined_as_list: true
+    description: Every neuron type.
+  sources:
+    range: Source
+    multivalued: true
+    inlined_as_list: true
+    description: Every cached source.
+
 enums:
   EntityType:
     description: The kinds of entity a claim can connect.
@@ -544,3 +748,57 @@ enums:
         description: The source does not support the claim.
       unsure:
         description: The verifier cannot tell.
+
+  Correspondence:
+    description: How fully two entities in different species correspond.
+    permissible_values:
+      equivalent:
+        description: The entities correspond as wholes.
+      partial:
+        description: The entities overlap, or one corresponds to part of the other.
+
+  Confidence:
+    description: How strong the evidence for a homology is.
+    permissible_values:
+      high:
+        description: Several independent kinds of evidence agree.
+      medium:
+        description: Supported, with gaps or some disagreement.
+      low:
+        description: Proposed, with little direct evidence.
+
+  HomologyBasis:
+    description: The kinds of evidence a homology rests on.
+    permissible_values:
+      connectivity:
+        description: Similar inputs and outputs.
+      gene_expression:
+        description: Similar gene expression.
+      cytoarchitecture:
+        description: Similar cell layout and density.
+      development:
+        description: A shared developmental origin.
+      function:
+        description: Similar roles in behaviour or physiology.
+      expert_assertion:
+        description: Stated by experts without direct comparison.
+
+  Transmitter:
+    description: A neuron type's main neurotransmitter.
+    permissible_values:
+      glutamate:
+        description: Glutamate.
+      gaba:
+        description: GABA.
+      acetylcholine:
+        description: Acetylcholine.
+      dopamine:
+        description: Dopamine.
+      serotonin:
+        description: Serotonin.
+      noradrenaline:
+        description: Noradrenaline.
+      neuropeptide:
+        description: A neuropeptide is the main signal.
+      unknown:
+        description: Not established.

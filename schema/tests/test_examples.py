@@ -57,3 +57,19 @@ def test_excerpt_limit():
     claim["excerpt"] = "x" * 301
     messages = errors(validate(claim, SCHEMA, "ConnectivityClaim"))
     assert any(m.endswith("in /excerpt") for m in messages), messages
+
+
+def test_references_resolve_within_examples():
+    by_class = {}
+    for path in VALID:
+        by_class.setdefault(target_class(path), []).append(load(path))
+    refs = [ref for cls in ("ConnectivityClaim", "HomologyClaim") for claim in by_class.get(cls, [])
+            for ref in (claim["subject"], claim["object"])]
+    refs += [neuron_type["region"] for neuron_type in by_class.get("NeuronType", [])]
+    neuron_types = {neuron_type["id"] for neuron_type in by_class.get("NeuronType", [])}
+    atlases = {atlas["id"] for atlas in by_class.get("Atlas", [])}
+    used_neuron_types = {ref["id"] for ref in refs if str(ref["id"]).startswith("nt-")}
+    used_atlases = {ref["atlas"] for ref in refs if "atlas" in ref}
+    used_atlases |= {region["atlas"] for region in by_class.get("Region", [])}
+    missing = {"neuron types": sorted(used_neuron_types - neuron_types), "atlases": sorted(used_atlases - atlases)}
+    assert missing == {"neuron types": [], "atlases": []}, missing

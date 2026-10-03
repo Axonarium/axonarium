@@ -1,0 +1,24 @@
+id: hom-xe64yvnsab
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+subject_species: NCBITaxon:10090
+object:
+  type: region
+  id: UBERON:0009835
+object_species: NCBITaxon:9606
+correspondence: partial
+confidence: medium
+basis: [connectivity, function]
+source:
+  doi: 10.5555/axonarium.example.018
+  locator: Fig. 2
+paraphrase: >-
+  Illustrative example: mouse prelimbic cortex corresponds in part to human anterior cingulate cortex, based on connections with the amygdala and roles in fear expression.
+curation:
+  by: human
+  orcid: 0000-0002-1825-0097
+  role: curator
+  date: "2026-10-02"
+status: accepted
