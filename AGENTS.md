@@ -84,15 +84,17 @@ What exists now:
 | `docs/decisions/` | Architecture decision records (MADR) |
 | `docs/specs/`, `docs/plans/` | Design specs and implementation plans for sprints |
 | `schema/` | The LinkML schema (`axonarium.yaml`), its generated JSON Schema and SQL, examples and tests |
+| `checks/` | The data checks: `python -m checks files`, `changes`, `online` and `sources` |
 | `pyproject.toml`, `uv.lock` | The repo's Python tooling environment: Python 3.13 and LinkML |
-| `data/README.md` | Data licence and layout |
+| `data/README.md` | Data licence, layout and the rules the checks apply |
+| `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
 | `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
 
 Planned, from the plan's repository layout:
 
 | Path | Will hold |
 | --- | --- |
-| `data/entities/`, `data/claims/`, `data/homology/`, `data/sources/` | Knowledge files |
+| `data/entities/`, `data/claims/`, `data/homology/`, `data/sources/` | Knowledge files (the folders appear with their first records) |
 | `ingest/` | One adapter per external source |
 | `agents/roles/` | Role prompts |
 | `agents/evals/` | Gold set and eval harness (human-owned) |
@@ -110,4 +112,12 @@ uvx pre-commit run --all-files
 
 The checks include linkml-lint, the schema tests and the data checks, which run through uv. uv installs Python 3.13 and LinkML on first use.
 
-When you change `data/`, also run `uv run python -m checks changes --base origin/main`. Deleting or retracting a claim needs a new entry in `data/retractions.yaml`; see [data/README.md](data/README.md).
+When you change `data/`, also run:
+
+```bash
+uv run python -m checks sources                       # a source record for every newly cited DOI
+uv run python -m checks online --base origin/main     # identifiers and citations exist in their registries
+uv run python -m checks changes --base origin/main    # deletions and retractions are logged
+```
+
+Deleting or retracting a claim needs a new entry in `data/retractions.yaml`; see [data/README.md](data/README.md). Never hand-edit a source record's `license` or `retracted`: CI compares them with the registries.
