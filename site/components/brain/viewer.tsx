@@ -18,6 +18,7 @@ import {
   type BrainEdge,
   type BrainIndex,
   type BrainRegion,
+  byDensity,
   type Direction,
   directed,
   hubOf,
@@ -153,10 +154,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
     return Object.fromEntries(ids.map((id, i) => [id, PALETTE[i % PALETTE.length]]));
   }, [regions]);
   const shown = useMemo(
-    () =>
-      drawable
-        .filter((e) => (source === ALL || hubOf(e, direction) === source) && (e.density ?? 0) >= threshold)
-        .sort((a, b) => (b.density ?? 0) - (a.density ?? 0)),
+    () => byDensity(drawable.filter((e) => source === ALL || hubOf(e, direction) === source), threshold),
     [drawable, direction, source, threshold],
   );
   const other = (e: BrainEdge) => (direction === "outputs" ? e.target : e.source);
@@ -410,7 +408,8 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
 
         <p className="text-xs text-muted-foreground">
           Outputs come from tracer injected into the amygdala; inputs from injections elsewhere that label it.
-          Arc width: the strongest projection density among a connection&apos;s claims. Dashed: every claim is
+          Arc width: the strongest projection density among a connection&apos;s claims; connections that state no
+          density are drawn thinnest and listed last, whatever the minimum. Dashed: every claim is
           proposed, because most of the tracer landed outside the named region. Densities pool both hemispheres;
           3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.
         </p>
