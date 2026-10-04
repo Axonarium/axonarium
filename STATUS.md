@@ -23,6 +23,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 1.3 Allen mouse connectivity | Done: 1,276 build-time claims (612 accepted), 666 connections |
 | 3.3a Site shell on Vercel | Done: https://axonarium.vercel.app |
 | 3.3b 3D brain view | Done: `/brain`, the mouse amygdala's projections over BrainGlobe meshes |
+| 3.3c Network view | Done: a linked force-directed graph on `/brain` |
 | 0.3d Standard packages for the HTTP fetcher | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |
@@ -57,7 +58,6 @@ Later phases get cards when they start.
 - [ ] Requiring 2FA in the GitHub organization.
 - [ ] A second organization owner.
 - [ ] Claiming the PyPI project name.
-- [ ] DNS for axonarium.com on Cloudflare: Vercel has the domain (workflow `Vercel domains`); the records it expects are A `@` 216.198.79.1 and 64.29.17.1, and CNAME `www` cbb69b92bcbce343.vercel-dns-017.com, DNS only.
 - [ ] Rotating the Vercel token and the Supabase database password, which were pasted in chat, and setting the new values in the `production` environment, where only jobs on `main` can read them: `gh secret set VERCEL_TOKEN --env production --repo axonarium/axonarium` and `gh secret set SUPABASE_DB_URL --env production --repo axonarium/axonarium`. Then the repository-level `VERCEL_TOKEN` (readable by any workflow, pull requests included) gets deleted.
 - [ ] Registering https://w3id.org/axonarium/ with w3id.org (a pull request to its registry).
 - [ ] Asking the Allen Institute for written permission to redistribute region and connectivity data under CC BY 4.0 (ADR 0005).
@@ -70,7 +70,7 @@ From plan Part 3.5:
 | Step | State |
 | --- | --- |
 | Project email alias | Done: admin@axonarium.com |
-| Domains | Done: axonarium.com and axonarium.org |
+| Domains | Done: axonarium.com and axonarium.org; https://axonarium.com serves the site |
 | GitHub organization and repo | Done; a second owner is needed |
 | Vercel | Done: team and project `axonarium`, deployed from GitHub Actions |
 | Supabase | Not started; needed for the live API in Phase 3 |

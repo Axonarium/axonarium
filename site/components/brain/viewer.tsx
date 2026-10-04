@@ -5,6 +5,7 @@
 
 import { Html, OrbitControls, QuadraticBezierLine, useGLTF } from "@react-three/drei";
 import { Canvas, type ThreeEvent, useThree } from "@react-three/fiber";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
@@ -15,6 +16,8 @@ import { arcMidpoint, arcWidth, type BrainEdge, type BrainIndex, type BrainRegio
 const PALETTE = ["#f97316", "#22d3ee", "#a78bfa", "#f43f5e", "#84cc16", "#facc15", "#38bdf8", "#e879f9", "#34d399", "#fb7185"];
 const THRESHOLDS = [0.01, 0.05, 0.1, 0.2];
 const ALL = "all";
+// The network view loads only when chosen.
+const Network = dynamic(() => import("./network"), { ssr: false });
 const CAMERA: [number, number, number] = [19, 9, -9];
 
 /** Moves the camera back on narrow screens, so the whole brain stays in view. */
@@ -87,6 +90,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
   const [threshold, setThreshold] = useState(0.05);
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [view, setView] = useState<"3d" | "network">("3d");
 
   useEffect(() => {
     fetch(`${base}/index.json`)
@@ -113,6 +117,11 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
   const targets = [...new Set(shown.map((e) => e.target))].filter((id) => !sources.includes(id) || source !== ALL);
   const focus = selected ?? hovered;
   const focusEdges = focus ? shown.filter((e) => e.target === focus || e.source === focus) : [];
+  // Clicking an injected region shows only its connections; clicking a target selects it.
+  const choose = (id: string | null) => {
+    if (id && sources.includes(id) && id !== source) return (setSource(id), setSelected(null));
+    setSelected(id === selected ? null : id);
+  };
 
   if (index === "missing") {
     return (
@@ -132,6 +141,33 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
       <div className="relative h-[min(60vh,110vw)] min-h-[320px] overflow-hidden rounded-xl border bg-[#0b1020] lg:h-[62vh]">
         {index === null && <p className="absolute inset-0 grid place-items-center text-sm text-white/60">Loading the atlas…</p>}
         {index && (
+          <div role="group" aria-label="View" className="absolute top-3 left-3 z-10 flex rounded-full bg-white/10 p-0.5 text-xs backdrop-blur">
+            {(["3d", "network"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                aria-pressed={view === v}
+                onClick={() => setView(v)}
+                className="rounded-full px-3 py-1 text-white/70 transition-colors hover:text-white aria-pressed:bg-white aria-pressed:text-slate-900"
+              >
+                {v === "3d" ? "3D" : "Network"}
+              </button>
+            ))}
+          </div>
+        )}
+        {index && view === "network" && (
+          <Network
+            shown={shown}
+            regions={regions}
+            injected={sources}
+            colors={colors}
+            strongest={strongest}
+            focus={focus}
+            onSelect={choose}
+            onHover={setHovered}
+          />
+        )}
+        {index && view === "3d" && (
           <Canvas
             camera={{ position: CAMERA, fov: 35, near: 0.1, far: 200 }}
             dpr={[1, 2]}
@@ -274,7 +310,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
         <p className="text-xs text-muted-foreground">
           Arc width: the strongest projection density among a connection&apos;s claims. Dashed: every claim is
           proposed, because most of the tracer landed outside the named region. Densities pool both hemispheres;
-          arcs are drawn on the right, where Allen injects. Drag to rotate, scroll to zoom, click a dot or a row.
+          3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.
         </p>
       </aside>
     </div>

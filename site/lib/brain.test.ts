@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arcMidpoint, arcWidth, brainEdges } from "./brain";
+import { arcMidpoint, arcWidth, brainEdges, networkData } from "./brain";
 
 const edge = (id: string, subject: string, object: string) => ({ id, subject_id: subject, object_id: object });
 const claim = (subject: string, object: string, density: number | null, status = "accepted") => ({
@@ -46,5 +46,32 @@ describe("arcs", () => {
   it("are wider for denser projections, and thin without a density", () => {
     expect(arcWidth(1, 1)).toBeGreaterThan(arcWidth(0.1, 1));
     expect(arcWidth(null, 1)).toBe(arcWidth(0, 1));
+  });
+});
+
+describe("networkData", () => {
+  const region = (acronym: string) => ({ acronym, name: acronym, file: "", centroid: [0, 0, 0] as [number, number, number] });
+  const regions = { "MBA:295": region("BLA"), "MBA:536": region("CEA"), "MBA:672": region("CP") };
+  const shown = [
+    { id: "e1", source: "MBA:295", target: "MBA:672", density: 0.5, claims: 1, accepted: 1 },
+    { id: "e2", source: "MBA:295", target: "MBA:536", density: 0.2, claims: 1, accepted: 0 },
+    { id: "e3", source: "MBA:536", target: "MBA:672", density: 0.1, claims: 1, accepted: 1 },
+  ];
+
+  it("makes one node per region, marking injected regions and counting inputs", () => {
+    const { nodes } = networkData(shown, regions, ["MBA:295", "MBA:536"]);
+    expect(nodes).toEqual([
+      { id: "MBA:295", acronym: "BLA", name: "BLA", injected: true, inputs: 0 },
+      { id: "MBA:536", acronym: "CEA", name: "CEA", injected: true, inputs: 1 },
+      { id: "MBA:672", acronym: "CP", name: "CP", injected: false, inputs: 2 },
+    ]);
+  });
+
+  it("makes fresh link objects for each call, since the graph library rewrites them", () => {
+    const first = networkData(shown, regions, ["MBA:295"]);
+    const second = networkData(shown, regions, ["MBA:295"]);
+    expect(first.links).toEqual(second.links);
+    expect(first.links[0]).not.toBe(second.links[0]);
+    expect(first.links[0]).toEqual({ id: "e1", source: "MBA:295", target: "MBA:672", from: "MBA:295", density: 0.5, accepted: 1 });
   });
 });

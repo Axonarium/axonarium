@@ -8,7 +8,7 @@ import { getBrainEdges } from "@/lib/data";
 export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Brain",
-  description: "The mouse amygdala's projections in 3D, from cited tracer experiments.",
+  description: "The mouse amygdala's projections in 3D and as a network, from cited tracer experiments.",
 };
 
 const ATLAS = "allen-mouse-ccf-2017";
@@ -18,9 +18,9 @@ export default async function Brain() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight">The mouse amygdala, in 3D</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Where the mouse amygdala projects</h1>
         <p className="max-w-3xl text-muted-foreground">
-          Where the amygdala sends its axons, from anterograde tracer injections in the Allen Mouse Brain Connectivity
+          In 3D or as a network: where the amygdala sends its axons, from anterograde tracer injections in the Allen Mouse Brain Connectivity
           Atlas. Each arc is a connection made from cited claims; open one to see the experiments behind it. Region
           meshes: Allen Mouse Brain Common Coordinate Framework, via BrainGlobe.
         </p>
