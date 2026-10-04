@@ -25,7 +25,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 1.5 SCKAN adapter ([#12](https://github.com/axonarium/axonarium/issues/12)) | Moved to Phase 7a, the vagal gut–brain module (maintainer, 4 October 2026) |
 | 1.6 Reconciliation report ([#13](https://github.com/axonarium/axonarium/issues/13)) | Done ([#58](https://github.com/axonarium/axonarium/pull/58)): Allen and the literature; CI publishes the report with every run |
 | 2.1 Amygdala inventory ([#59](https://github.com/axonarium/axonarium/issues/59)) | Drafted ([#60](https://github.com/axonarium/axonarium/pull/60)): 26 neuron types and the region naming traps; its open questions wait on the maintainer |
-| 2.2 Literature corpus ([#61](https://github.com/axonarium/axonarium/issues/61)) | Done ([#62](https://github.com/axonarium/axonarium/pull/62)): the first Scout run found 2,079 papers, in review as [#68](https://github.com/axonarium/axonarium/pull/68) |
+| 2.2 Literature corpus ([#61](https://github.com/axonarium/axonarium/issues/61)) | Done ([#62](https://github.com/axonarium/axonarium/pull/62)): the first Scout run's 2,079 papers are in `corpus/manifest.csv` ([#68](https://github.com/axonarium/axonarium/pull/68)) |
 | 2.3–2.6 Extraction, verification, audit, homology | Not started: extraction waits on 0.6 and 2.2 |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract and reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
@@ -69,7 +69,7 @@ Later phases get cards when they start.
 - [#57](https://github.com/axonarium/axonarium/pull/57) 3.3: the site answers from a snapshot of the database when Supabase can't.
 - [#58](https://github.com/axonarium/axonarium/pull/58) 1.6: the reconciliation report, in every CI run's summary.
 - [#60](https://github.com/axonarium/axonarium/pull/60) 2.1: the amygdala inventory draft.
-- [#62](https://github.com/axonarium/axonarium/pull/62) 2.2: the literature scout and the Scout workflow. Its first run found 2,079 papers: [#68](https://github.com/axonarium/axonarium/pull/68).
+- [#62](https://github.com/axonarium/axonarium/pull/62) 2.2: the literature scout and the Scout workflow. Its first run found 2,079 papers: [#68](https://github.com/axonarium/axonarium/pull/68), after [#69](https://github.com/axonarium/axonarium/pull/69) let the manifest grow past pre-commit's 500 KB limit.
 - [#63](https://github.com/axonarium/axonarium/pull/63) 0.6: the eval harness. It works with any provider, plus a first extractor prompt.
 - [#65](https://github.com/axonarium/axonarium/pull/65) C.1: the community inbox and identifier vetting.
 - [#67](https://github.com/axonarium/axonarium/pull/67): agents merge the pull requests the maintainer names (ADR 0022).
@@ -82,13 +82,13 @@ Later phases get cards when they start.
 - This session's sandbox couldn't reach Crossref, NCBI, OLS, Europe PMC or the Allen API. Every identifier in the inventory and the extractor prompt was checked against UBERON's, the Cell Ontology's and BICAN's MBA sources from GitHub instead. CI's online checks looked them up again.
 - Allen's "BLA" is the whole basolateral nucleus, while Paxinos's "BLA" is its anterior part. Many behavioural papers mean the whole basolateral complex. The extractor's normaliser must handle all three (spec for 2.1).
 - The plan's anonymous insert into the inbox would have let anyone bypass Turnstile with the public key, so the inbox is closed to the public API instead (ADR 0021).
+- The first manifest (713 KB) tripped pre-commit's 500 KB limit for added files; the manifest is now exempt ([#69](https://github.com/axonarium/axonarium/pull/69)).
 - The first corpus holds 188 preprints and one retraction notice. It's a reading queue, so they stay; the allowlist and retraction checks apply when claims are extracted.
 
-**Next step:** merge the corpus ([#68](https://github.com/axonarium/axonarium/pull/68)), enable Zenodo and run **Release**, and curate gold v1. With gold v1 and an API key, score two models (0.6) and start extraction (2.3) on the corpus's open-access papers.
+**Next step:** enable Zenodo and run **Release**, and curate gold v1. With gold v1 and an API key, score two models (0.6) and start extraction (2.3) on the corpus's open-access papers.
 
 ## Waiting on the maintainer
 
-- [ ] Review the first corpus, [#68](https://github.com/axonarium/axonarium/pull/68).
 - [ ] Gold-set curation (sprint 0.5): the maintainer alone, or with a second curator? Its format is in `agents/evals/README.md`.
 - [ ] An LLM API key with a spending cap (`ANTHROPIC_API_KEY`, and `OPENAI_API_KEY` for a second model family), for the eval harness and extraction.
 - [ ] Zenodo: switch on `axonarium/axonarium` in Zenodo's GitHub settings, run **Release**, then add the concept DOI to `README.md`, `CITATION.cff` and `SUCCESSION.md` (ADR 0016). Also whether `CITATION.cff` should list CC BY 4.0 beside Apache-2.0.
