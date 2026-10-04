@@ -11,8 +11,7 @@ from build.dumps import write_dumps
 from build.tables import rows
 from checks.cli import run_files
 from checks.loading import load_tree
-from ingest.allen_connectivity import load_claims
-from ingest.atlases import amygdala_terms, load_atlas
+from ingest.network import loaders
 
 
 def _unsafe_out(out: Path, data: Path) -> str | None:
@@ -36,6 +35,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
     parser.add_argument("--database", help="a Postgres URL to load (default: the AXONARIUM_DATABASE_URL environment variable)")
     parser.add_argument("--no-atlases", action="store_true", help="don't load atlas regions from BrainGlobe (offline work)")
     parser.add_argument("--meshes", type=Path, help="also write glTF meshes of the connected regions here, for the site")
+    parser.add_argument("--http-cache", type=Path, help="keep API answers here for seven days, so reruns (CI) don't depend on them")
     args = parser.parse_args(argv)
 
     url = args.database or os.environ.get("AXONARIUM_DATABASE_URL")
@@ -60,19 +60,21 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
         print(f"build stopped: {len(findings)} finding(s) above; nothing was written")
         return 1
     records, _ = load_tree(args.data)
+    network = loaders(args.http_cache)  # OLS, UBERON's bridges and the Allen API, through one retried session
+    amygdala_loader, atlas_loader = amygdala_loader or network[0], atlas_loader or network[1]
+    connectivity_loader = connectivity_loader or network[2]
     tables = rows(records)
     loaded: dict[str, list[dict]] = {}
     atlases = [r.data for r in records if r.cls == "Atlas" and r.data.get("brainglobe_name")]
     if not args.no_atlases and atlases:
-        loader = atlas_loader or load_atlas
         try:
-            terms = (amygdala_loader or amygdala_terms)()
+            terms = amygdala_loader()
         except Exception as error:  # OLS unreachable: the amygdala regions can't be identified.
             print(f"loading the amygdala's UBERON terms from OLS failed: {error}; build stopped")
             return 1
         for atlas in atlases:
             try:
-                loaded[atlas["id"]] = loader(atlas, terms)
+                loaded[atlas["id"]] = atlas_loader(atlas, terms)
             except Exception as error:  # BrainGlobe's S3, a UBERON bridge, or a pin: the build can't vouch for regions.
                 print(f"atlas load failed for {atlas['id']} (BrainGlobe or UBERON bridge): {error}; build stopped")
                 return 1
@@ -87,7 +89,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
     generated = []
     if loaded:
         try:
-            generated = connectivity.allen_records(loaded, connectivity_loader or load_claims)
+            generated = connectivity.allen_records(loaded, connectivity_loader)
         except Exception as error:  # The Allen API: the build can't vouch for the claims.
             print(f"Allen connectivity load failed: {error}; build stopped")
             return 1

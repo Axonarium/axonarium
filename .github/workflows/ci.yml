@@ -41,13 +41,20 @@ jobs:
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:  # The build's API answers (seven days) and BrainGlobe's atlases, so an outage doesn't block merging.
+          path: |
+            .cache/build
+            ~/.brainglobe
+          key: build-http-${{ github.run_id }}
+          restore-keys: build-http-
       - name: Migrate and rebuild an empty database
         env:
           AXONARIUM_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
         run: |
           uv run --frozen alembic upgrade head
           uv run --frozen alembic check
-          uv run --frozen python -m build
+          uv run --frozen python -m build --http-cache .cache/build
       - run: uvx pre-commit@4.6.2 run --all-files --show-diff-on-failure
       - name: Deletions and retractions are logged
         if: github.event_name == 'pull_request'
