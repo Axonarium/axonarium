@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -12,6 +13,32 @@ export default function About() {
         Axonarium is an open, evidence-graded knowledge base of neural connectivity. Every connection is an aggregate of
         cited claims, each tagged with species, method and confidence. It starts with the rodent amygdala and its human
         homologues, and grows one circuit at a time toward whole-brain and brain–body coverage.
+      </p>
+      <h2>What is in it today</h2>
+      <p>
+        The mouse amygdala&apos;s connections at the level of brain regions, from the{" "}
+        <a href="https://connectivity.brain-map.org/">Allen Mouse Brain Connectivity Atlas</a> (
+        <a href="https://doi.org/10.1038/nature13186">Oh et al. 2014</a>): every target of anterograde tracer
+        injected into an amygdala nucleus of a wild-type mouse, and every amygdala nucleus that injections elsewhere
+        label. Each experiment and target is one claim, with its projection density. See them on the{" "}
+        <Link href="/brain">3D brain and network</Link>, in the <Link href="/explore">connection table</Link>, or
+        region by region. Regions come from the Allen mouse and human atlases via BrainGlobe, mapped to UBERON (
+        <Link href="/atlases">Atlases</Link>).
+      </p>
+      <h2>Reading the evidence</h2>
+      <p>
+        A connection is never typed by hand: it is computed from its claims, and opens them. A claim is{" "}
+        <em>accepted</em> when at least half of the injected tracer was in the region it names, and{" "}
+        <em>proposed</em> when most of it spread elsewhere; regions that received tracer themselves are never
+        counted as targets. Densities pool both hemispheres. Claims from the Allen atlas are made when the site is
+        built and shown here with their citation, but are not redistributed in the downloadable data, following the
+        Allen Institute&apos;s terms.
+      </p>
+      <h2>What comes next</h2>
+      <p>
+        Rat connectivity, human homology, cell-type-specific connections, and claims from the published literature,
+        drafted by AI agents and checked by independent verifier agents and human audit. Progress is tracked in the{" "}
+        <a href={`${REPO}/blob/main/STATUS.md`}>status page</a> and the sprint cards on GitHub.
       </p>
       <h2>How it is built</h2>
       <p>
