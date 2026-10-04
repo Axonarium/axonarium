@@ -191,3 +191,46 @@ export async function getRegionIndex(): Promise<IndexedRegion[] | null> {
   const names = await getRegionNames([...new Set(edges.flatMap((e) => [e.subject_id, e.object_id]))]);
   return regionIndex(edges, names);
 }
+
+/** Letters, digits, spaces, hyphens, apostrophes and dots only: safe inside a PostgREST `or` filter. */
+const searchable = (q: string) => q.replace(/[^\p{L}\p{N} .'-]/gu, "").trim().slice(0, 100);
+
+/** A page of atlas regions (read API), by ID, optionally matching part of a name or acronym. */
+export async function listRegions(f: { q?: string | null; atlas?: string | null; amygdala?: boolean | null; limit: number; offset: number }) {
+  const db = client();
+  if (!db) return null;
+  let query = db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala", { count: "exact" });
+  const q = f.q ? searchable(f.q) : "";
+  if (q) query = query.or(`acronym.ilike.*${q}*,name.ilike.*${q}*`);
+  if (f.atlas) query = query.eq("atlas", f.atlas);
+  if (f.amygdala !== null && f.amygdala !== undefined) query = query.eq("amygdala", f.amygdala);
+  const { data, count: total, error } = await query.order("id").range(f.offset, f.offset + f.limit - 1);
+  if (error) failed("regions page", error);
+  return { items: (data ?? []) as RegionDetail[], total: total ?? 0 };
+}
+
+/** A page of connections (read API), strongest projection density first. */
+export async function listConnections(f: {
+  subject?: string | null;
+  object?: string | null;
+  species?: string | null;
+  predicate?: string | null;
+  minDensity?: number | null;
+  limit: number;
+  offset: number;
+}) {
+  const db = client();
+  if (!db) return null;
+  let query = db.from("edges").select("*", { count: "exact" });
+  if (f.subject) query = query.eq("subject_id", f.subject);
+  if (f.object) query = query.eq("object_id", f.object);
+  if (f.species) query = query.eq("species", f.species);
+  if (f.predicate) query = query.eq("predicate", f.predicate);
+  if (f.minDensity !== null && f.minDensity !== undefined) query = query.gte("density", f.minDensity);
+  const { data, count: total, error } = await query
+    .order("density", { ascending: false, nullsFirst: false })
+    .order("id")
+    .range(f.offset, f.offset + f.limit - 1);
+  if (error) failed("connections page", error);
+  return { items: (data ?? []) as Edge[], total: total ?? 0 };
+}

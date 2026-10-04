@@ -72,6 +72,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <a href={REPO} className="hover:text-foreground">
               Source and data on GitHub
             </a>
+            <a href={`${REPO}/blob/main/api/README.md`} className="hover:text-foreground">
+              API
+            </a>
           </div>
         </footer>
       </body>

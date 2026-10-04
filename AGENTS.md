@@ -90,7 +90,8 @@ What exists now:
 | `data/README.md` | Data licence, layout and the rules the checks apply |
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
 | `ingest/` | Adapters for external sources, run by the build: `atlases.py` reads BrainGlobe atlases and UBERON bridges |
-| `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)) |
+| `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)); it also serves the read API |
+| `api/` | The read API's documentation ([api/README.md](api/README.md)); the MCP server will live here |
 | `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
 
 Planned, from the plan's repository layout:
@@ -100,7 +101,6 @@ Planned, from the plan's repository layout:
 | `data/entities/`, `data/claims/`, `data/homology/`, `data/sources/` | Knowledge files (the folders appear with their first records) |
 | `agents/roles/` | Role prompts |
 | `agents/evals/` | Gold set and eval harness (human-owned) |
-| `api/` | OpenAPI spec and MCP server |
 
 ## Before pushing
 

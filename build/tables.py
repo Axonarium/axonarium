@@ -8,6 +8,7 @@ from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, MetaData, Ta
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 
 from build.edges import compute_edges
+from build.terms import terms_of
 from checks.findings import Record
 from checks.identifiers import citation_of, source_key
 
@@ -26,7 +27,7 @@ def _citation_columns() -> list[Column]:
     return [Column("source_key", Text, ForeignKey("sources.id"), nullable=False), _text("doi"), _text("pmid"),
             _text("pmcid"), _text("arxiv"), _text("locator", True), _text("paraphrase", True), _text("excerpt"),
             Column("curation", JSONB, nullable=False), Column("verification", JSONB), _text("status", True),
-            Column("extra", JSONB)]
+            Column("extra", JSONB), _text("terms", True)]  # reuse terms, set by the build (build/terms.py)
 
 
 atlases = Table(
@@ -73,7 +74,7 @@ edges = Table(
     *[Column(n, Integer, nullable=False) for n in ("n_claims", "n_present", "n_absent", "n_ambiguous", "n_disputed")],
     Column("evidence_classes", ARRAY(Text), nullable=False), _text("strength"),
     Column("signs", ARRAY(Text), nullable=False), Column("claim_ids", ARRAY(Text), nullable=False),
-    Column("density", Float),
+    Column("density", Float), Column("terms", ARRAY(Text), nullable=False),
 )
 retractions = Table(
     "retractions", metadata,
@@ -128,7 +129,7 @@ def _row(table: str, data: dict) -> dict:
         data = {**data, **_flat_side(data["region"], "region")}
     elif table in ("connectivity_claims", "homology_claims"):
         data = {**data, **_flat_side(data["subject"], "subject"), **_flat_side(data["object"], "object"),
-                **_flat_citation(data)}
+                **_flat_citation(data), "terms": terms_of(data)}
     return {column: data.get(column) for column in columns(table)}
 
 

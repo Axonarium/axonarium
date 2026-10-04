@@ -19,6 +19,8 @@ export interface Edge {
   claim_ids: string[];
   /** The strongest projection density among the claims that found the connection. */
   density: number | null;
+  /** The reuse terms of its claims (build/terms.py). */
+  terms: string[];
 }
 
 /** The columns the explore table shows. */
@@ -78,6 +80,8 @@ export interface ConnectivityClaim {
   verification: Verification | null;
   status: string;
   extra: Record<string, unknown> | null;
+  /** Under which terms the claim may be reused: "cc-by-4.0" or "allen-institute" (build/terms.py). */
+  terms: string;
 }
 
 export interface Source {
