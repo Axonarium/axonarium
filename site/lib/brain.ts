@@ -68,3 +68,44 @@ export function arcMidpoint(a: Point, b: Point): Point {
 export function arcWidth(density: number | null, strongest: number): number {
   return 0.75 + 4 * Math.sqrt(Math.max(0, density ?? 0) / (strongest || 1));
 }
+
+export interface NetworkNode {
+  id: string;
+  acronym: string;
+  name: string;
+  /** An amygdala region with injections. */
+  injected: boolean;
+  /** Connections shown into this region. */
+  inputs: number;
+}
+
+export interface NetworkLink {
+  id: string;
+  source: string;
+  target: string;
+  /** The injected region, kept as an ID: the graph library replaces `source` with the node object. */
+  from: string;
+  density: number | null;
+  accepted: number;
+}
+
+/** The network view's graph: a node per region, sorted by ID, and a fresh link per connection. */
+export function networkData(shown: BrainEdge[], regions: Record<string, BrainRegion>, injected: string[]) {
+  const inputs = new Map<string, number>();
+  for (const edge of shown) {
+    inputs.set(edge.source, inputs.get(edge.source) ?? 0);
+    inputs.set(edge.target, (inputs.get(edge.target) ?? 0) + 1);
+  }
+  const nodes: NetworkNode[] = [...inputs.entries()]
+    .sort(([a], [b]) => a.localeCompare(b, "en", { numeric: true }))
+    .map(([id, n]) => ({ id, acronym: regions[id].acronym, name: regions[id].name, injected: injected.includes(id), inputs: n }));
+  const links: NetworkLink[] = shown.map((e) => ({
+    id: e.id,
+    source: e.source,
+    target: e.target,
+    from: e.source,
+    density: e.density,
+    accepted: e.accepted,
+  }));
+  return { nodes, links };
+}

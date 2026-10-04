@@ -24,6 +24,7 @@ Chosen option: "glTF at deploy time, React Three Fiber", the plan's own building
 * **Coordinates:** millimetres from the centre of the atlas volume, x towards the animal's right, y up, z posterior: a right-handed frame for three.js, so triangle winding is reversed to keep normals outward. Arcs meet a region at the centre of its right-hemisphere surface, where Allen injects.
 * **Deploy:** the database job writes the meshes and passes them to the site job as a one-day workflow artifact; the site job puts them in `site/public/brain/` before `vercel build`. They are served with the site, credited in its footer, and never committed or dumped.
 * **Page:** `/brain`, a client-only component (`next/dynamic` with `ssr: false`) using three, `@react-three/fiber` and `@react-three/drei`. Arcs run from each injected amygdala region to its targets, wider for denser projections and dashed when every claim is `proposed`; each opens its evidence. A side list holds the same connections for keyboard and screen-reader use, and the Explore table remains the 2D equivalent.
+* **Network view:** a toggle on the same page swaps the 3D scene for a force-directed graph of the same connections (`react-force-graph-2d`, the plan's network library), loaded only when chosen. Both views share the injected region, density filter and selection, so choosing a region in one highlights it in the other (plan: linked views).
 
 ### Consequences
 
