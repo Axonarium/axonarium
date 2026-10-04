@@ -7,8 +7,6 @@ import yaml
 from checks.findings import Finding, Record
 from checks.identifiers import source_file_name
 
-IGNORED = {Path("allowlist.yaml")}  # Reserved for sprint C.2.
-
 
 class DuplicateKeyError(yaml.YAMLError):
     pass
@@ -42,6 +40,8 @@ def class_for(rel_path: Path) -> str | None:
         return None
     if parts == ("retractions.yaml",):
         return "RetractionLog"
+    if parts == ("allowlist.yaml",):
+        return "Allowlist"
     if parts[0] == "claims" and len(parts) >= 2:
         return "ConnectivityClaim"
     if parts[0] == "homology" and len(parts) >= 2:
@@ -78,8 +78,6 @@ def load_tree(data_dir: Path) -> tuple[list[Record], list[Finding]]:
         if not (path.is_file() and path.suffix in (".yaml", ".yml")):
             continue
         rel = path.relative_to(data_dir)
-        if rel in IGNORED:
-            continue
         cls = class_for(rel)
         if cls is None:
             findings.append(Finding(str(path), "unknown-location", "not in a data folder; see data/README.md"))

@@ -68,6 +68,8 @@ def _data_path(cls: str, record: dict) -> Path | None:
         return Path("entities", "neuron_types", f"{record['id']}.yaml")
     if cls == "Source":
         return Path("sources", "doi", source_file_name(record["id"]))
+    if cls == "Allowlist":
+        return Path("allowlist.yaml")
     return None  # RetractionLog: the valid tree starts with an empty log
 
 
@@ -102,9 +104,11 @@ def trim(url: str, body):
     if host == "api.brain-map.org":
         return {"success": body.get("success"), "msg": [_keep(m, ("id", "graph_id")) for m in body.get("msg", [])]}
     if host == "api.crossref.org":
-        return {"message": _keep(body["message"], ("DOI", "type", "title", "container-title", "issued", "license", "updated-by"))}
+        return {"message": _keep(body["message"], ("DOI", "type", "subtype", "institution", "title", "container-title", "issued",
+                                                   "license", "updated-by"))}
     if host == "api.datacite.org":
-        attributes = _keep(body["data"]["attributes"], ("doi", "titles", "publicationYear", "publisher", "container", "rightsList"))
+        attributes = _keep(body["data"]["attributes"], ("doi", "types", "titles", "publicationYear", "publisher", "container",
+                                                        "rightsList"))
         return {"data": {"attributes": attributes}}
     if host == "eutils.ncbi.nlm.nih.gov" and "esearchresult" in body:
         return {"esearchresult": _keep(body["esearchresult"], ("count", "idlist", "ERROR"))}
