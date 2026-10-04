@@ -31,7 +31,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
 | 3.3 Explorer v1 | Done: site shell, 3D brain, network view, region pages, and the static fallback ([#57](https://github.com/axonarium/axonarium/pull/57)) |
 | 3.4 MCP server | Done: `api/mcp`, four read-only tools over the API ([ADR 0014](docs/decisions/0014-mcp-server.md)) |
-| 3.5 Visual design pass | Not started; needs the maintainer's eye |
+| 3.5 Visual design pass ([#74](https://github.com/axonarium/axonarium/issues/74)) | Accessibility and performance budgets in CI ([#75](https://github.com/axonarium/axonarium/pull/75), [ADR 0025](docs/decisions/0025-site-budgets.md)). The look (tokens, motion), path animation, gap mode and figure export are next; the look needs the maintainer's eye |
 | 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | On hold until there is more data (maintainer, 4 October 2026); its design starts from scratch then |
 | C.1 Inbox and identifier vetting ([#64](https://github.com/axonarium/axonarium/issues/64)) | Done ([#65](https://github.com/axonarium/axonarium/pull/65)): the inbox table, closed to the public API, and identifier vetting |
 | C.2 Allowlist ([#14](https://github.com/axonarium/axonarium/issues/14)) | Done ([#54](https://github.com/axonarium/axonarium/pull/54)) |
@@ -61,6 +61,7 @@ Later phases get cards when they start.
 - Agents merge pull requests only when the maintainer, in that agent's own session, tells them to, once CI passes ([ADR 0022](docs/decisions/0022-agents-merge-when-told.md)).
 - Hidden text: every paper passes a screen before a model reads it. Invisible characters and hidden markup are stripped, and Protect AI's prompt-injection classifier (LLM Guard's default, PhantomLint's suspicion test) scores each paragraph. A flagged paper never reaches a model ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)).
 - Evidence buttons: Turnstile is checked on the server, and the rate limits (5 an hour and 20 a day per submitter, 500 a day overall) are enforced in the database by a keyed hash of the address, cleared after a day ([ADR 0024](docs/decisions/0024-evidence-buttons.md)).
+- Site budgets: axe-core (WCAG 2.1 AA, no violations) on every page type at phone and desktop sizes, and Lighthouse on a mid-range phone, in CI on real data ([ADR 0025](docs/decisions/0025-site-budgets.md)).
 
 ## Handoff (4 October 2026, second session)
 
