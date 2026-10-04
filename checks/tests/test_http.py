@@ -166,6 +166,34 @@ def test_host_given_up_after_an_outage(httpserver, sleeps):
     assert fetcher.get_json(f"http://localhost:{httpserver.port}/item/1") == {"ok": True}  # other hosts still asked
 
 
+def _outage(httpserver, fetcher, path="/item/1"):
+    """The fetcher's host fails every attempt at one URL, so the fetcher gives up on it for the run."""
+    answer(httpserver, *[json_response("", 503)] * 4, path=path)
+    with pytest.raises(LookupFailed, match="after 4 attempts"):
+        fetcher.get_json(httpserver.url_for(path))
+
+
+def test_cached_answers_still_served_from_a_host_that_is_down(httpserver, sleeps, tmp_path):
+    answer(httpserver, json_response('{"cached": true}'), path="/item/2")
+    Fetcher(tmp_path).get_json(httpserver.url_for("/item/2"))
+    fetcher = Fetcher(tmp_path)
+    _outage(httpserver, fetcher)
+    asked = len(httpserver.log)
+    assert fetcher.get_json(httpserver.url_for("/item/2")) == {"cached": True}
+    with pytest.raises(LookupFailed, match="unavailable earlier"):
+        fetcher.get_json(httpserver.url_for("/item/3"))  # not cached: the host isn't asked again
+    assert len(httpserver.log) == asked
+
+
+def test_cache_not_read_from_a_down_host_when_disabled(httpserver, sleeps, tmp_path):
+    answer(httpserver, json_response('{"cached": true}'), path="/item/2")
+    Fetcher(tmp_path).get_json(httpserver.url_for("/item/2"))
+    fetcher = Fetcher(tmp_path, read_cache=False)
+    _outage(httpserver, fetcher)
+    with pytest.raises(LookupFailed, match="unavailable earlier"):
+        fetcher.get_json(httpserver.url_for("/item/2"))
+
+
 def test_client_errors_do_not_mark_a_host_down(httpserver, url):
     answer(httpserver, json_response("", 400))
     httpserver.expect_request("/item/2").respond_with_json({"ok": True})
