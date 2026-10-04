@@ -136,3 +136,49 @@ export async function getBrainEdges(atlas: string): Promise<BrainEdge[] | null> 
   ]);
   return brainEdges(edges, claims).filter((edge) => edge.claims > 0);
 }
+
+export interface RegionDetail extends AtlasRegion {
+  atlas: string;
+  parent: string | null;
+  amygdala: boolean;
+}
+
+export interface RegionPage {
+  region: RegionDetail;
+  children: RegionName[];
+  outputs: BrainEdge[];
+  inputs: BrainEdge[];
+  /** Names of the parent and every connected region. */
+  names: Record<string, RegionName>;
+}
+
+/** An atlas region with its subregions and its connections both ways, each with its strongest density. */
+export async function getRegion(id: string): Promise<RegionPage | null | undefined> {
+  const db = client();
+  if (!db) return undefined;
+  const region = await rows<RegionDetail | null>("region", () =>
+    db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala").eq("id", id).maybeSingle(),
+  );
+  if (!region) return null;
+  const connected = (end: "subject_id" | "object_id") =>
+    Promise.all([
+      fetchAll((from, to) =>
+        rows<Pick<Edge, "id" | "subject_id" | "object_id">[]>("region edges", () =>
+          db.from("edges").select("id, subject_id, object_id").eq(end, id).gt("n_present", 0).order("id").range(from, to),
+        ),
+      ),
+      fetchAll((from, to) =>
+        rows<BrainClaim[]>("region claims", () =>
+          db.from("connectivity_claims").select("subject_id, object_id, status, measurements").eq(end, id)
+            .eq("result", "present").neq("status", "retracted").order("id").range(from, to),
+        ),
+      ),
+    ]).then(([edges, claims]) => brainEdges(edges, claims).sort((a, b) => (b.density ?? 0) - (a.density ?? 0)));
+  const [children, outputs, inputs] = await Promise.all([
+    rows<RegionName[]>("subregions", () => db.from("regions").select("id, acronym, name").eq("parent", id).order("id")),
+    connected("subject_id"),
+    connected("object_id"),
+  ]);
+  const ids = [region.parent, ...outputs.map((e) => e.target), ...inputs.map((e) => e.source)].filter((x): x is string => !!x);
+  return { region, children, outputs, inputs, names: await getRegionNames([...new Set(ids)]) };
+}
