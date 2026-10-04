@@ -134,3 +134,19 @@ export function networkData(
   }));
   return { nodes, links };
 }
+
+/** How /brain?region=<id> opens: on an amygdala region's outputs, or its inputs if it has no injections; any
+ * other region selected in the direction it appears in; null if no drawn connection names it. */
+export function linkedView(
+  edges: BrainEdge[],
+  regions: Record<string, BrainRegion>,
+  id: string,
+): { direction: Direction; source?: string; selected?: string } | null {
+  const outputs = directed(edges, regions, "outputs");
+  const inputs = directed(edges, regions, "inputs");
+  if (outputs.some((e) => e.source === id)) return { direction: "outputs", source: id };
+  if (inputs.some((e) => e.target === id)) return { direction: "inputs", source: id };
+  if (outputs.some((e) => e.target === id)) return { direction: "outputs", selected: id };
+  if (inputs.some((e) => e.source === id)) return { direction: "inputs", selected: id };
+  return null;
+}

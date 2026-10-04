@@ -56,6 +56,13 @@ def session(cache_dir: Path | None, transport: BaseAdapter | None = None,
     return s
 
 
+def forget(s: requests.Session, url: str) -> None:
+    """Drop the cached answer for a URL whose 200 the caller couldn't use (not JSON, or an API's own failure),
+    so it isn't served again for seven days."""
+    if isinstance(s, CachedSession):
+        s.cache.delete(urls=[url])
+
+
 class Fetcher:
     """Fetches JSON once per URL per run, and stops asking a host after it fails every attempt."""
 
@@ -97,6 +104,7 @@ class Fetcher:
             try:
                 return response.json()
             except ValueError:
+                forget(self.session, url)
                 raise LookupFailed(url, "the response isn't JSON") from None
         if status in (404, 410):
             return None

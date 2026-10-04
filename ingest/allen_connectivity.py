@@ -14,6 +14,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from checks.http import forget
+
 API = "https://api.brain-map.org/api/v2/data/query.json?criteria={criteria}&num_rows={num_rows}&start_row={start_row}"
 PROJECTION_PRODUCT = 5  # Mouse Connectivity: Projection
 SUMMARY_STRUCTURES = 167587189  # "Brain – Summary Structures", the 316 targets Allen's own analyses use
@@ -43,10 +45,15 @@ def _session() -> requests.Session:
 def _get(criteria: str, num_rows: int = PAGE, session: requests.Session | None = None, start_row: int = 0) -> list[dict]:
     """The rows an Allen API RMA query returns; an unsuccessful query is an error."""
     url = API.format(criteria=quote(criteria, safe="[]$:,'()="), num_rows=num_rows, start_row=start_row)
-    response = (session or _session()).get(url, timeout=120)
+    session = session or _session()
+    response = session.get(url, timeout=120)
     response.raise_for_status()
-    body = response.json()
+    try:
+        body = response.json()
+    except ValueError:
+        body = {"msg": "the response isn't JSON"}
     if not body.get("success"):
+        forget(session, url)  # The API answers failures with HTTP 200; never keep one in a cache.
         raise RuntimeError(f"Allen API query failed: {str(body.get('msg'))[:200]}")
     return body["msg"]
 

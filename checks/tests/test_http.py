@@ -179,3 +179,11 @@ def test_invalid_url_not_retried(sleeps):
     with pytest.raises(LookupFailed, match="InvalidURL"):
         Fetcher().get_json("http:///item/1")  # no host
     assert sleeps.slept == []
+
+
+def test_unusable_answer_not_cached(httpserver, url, tmp_path):
+    # A 200 that isn't JSON (an error page) must not be served from the cache for the next seven days.
+    answer(httpserver, Response("<html>", content_type="text/html"), json_response('{"a": 1}'))
+    with pytest.raises(LookupFailed, match="JSON"):
+        Fetcher(tmp_path).get_json(url)
+    assert Fetcher(tmp_path).get_json(url) == {"a": 1} and len(httpserver.log) == 2

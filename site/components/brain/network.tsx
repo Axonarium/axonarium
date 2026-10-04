@@ -48,10 +48,13 @@ export default function Network({ shown, regions, injected, hub, colors, stronge
     return () => observer.disconnect();
   }, []);
 
+  // The graph mounts once the box has a size, so the forces are set then too, not only when the data changes.
+  const ready = size.width > 0;
   useEffect(() => {
     graph.current?.d3Force("charge")?.strength(-140);
     graph.current?.d3Force("link")?.distance(45);
-  }, [data]);
+    graph.current?.d3ReheatSimulation();
+  }, [data, ready]);
 
   const radius = (node: Node) => (node.injected ? 7 : 2.5 + Math.sqrt(node.inputs) * 1.6);
   const lit = (id: string) => !neighbours || neighbours.has(id);

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from requests.adapters import BaseAdapter
 
-from checks.http import session
+from checks.http import forget, session
 from ingest.allen_connectivity import PAGE, _get, load_claims
 from ingest.atlases import amygdala_terms, load_atlas
 
@@ -24,6 +24,13 @@ def loaders(cache_dir: Path | None = None, transport: BaseAdapter | None = None)
     def allen(criteria: str, num_rows: int = PAGE, start_row: int = 0) -> list[dict]:
         return _get(criteria, num_rows, http, start_row)
 
-    return (partial(amygdala_terms, lambda url: fetch(url, 60).json()),
+    def fetch_json(url: str):
+        try:
+            return fetch(url, 60).json()
+        except ValueError:
+            forget(http, url)
+            raise
+
+    return (partial(amygdala_terms, fetch_json),
             lambda atlas, terms: load_atlas(atlas, terms, fetch=lambda url: fetch(url).content),
             lambda atlas, structure_ids, acronyms: load_claims(atlas, structure_ids, acronyms, get=allen))

@@ -4,15 +4,25 @@
 // amygdala region to each target. Loaded only in the browser (components/brain/brain-view.tsx).
 
 import { Html, OrbitControls, QuadraticBezierLine, useGLTF } from "@react-three/drei";
-import { Canvas, type ThreeEvent, useThree } from "@react-three/fiber";
+import { Canvas, type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, type ReactNode, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { regionHref } from "@/lib/format";
-import { arcMidpoint, arcWidth, type BrainEdge, type BrainIndex, type BrainRegion, type Direction, directed, hubOf } from "@/lib/brain";
+import {
+  arcMidpoint,
+  arcWidth,
+  type BrainEdge,
+  type BrainIndex,
+  type BrainRegion,
+  type Direction,
+  directed,
+  hubOf,
+  linkedView,
+} from "@/lib/brain";
 
 const PALETTE = [
   "#f97316", "#22d3ee", "#a78bfa", "#f43f5e", "#84cc16", "#facc15", "#38bdf8", "#e879f9", "#34d399", "#fb7185", "#a3e635", "#fbbf24",
@@ -29,8 +39,19 @@ function FitCamera() {
   useEffect(() => {
     const scale = Math.max(1, 1.3 / (size.width / size.height));
     camera.position.set(CAMERA[0] * scale, CAMERA[1] * scale, CAMERA[2] * scale);
+    camera.lookAt(0, 0, 0);
   }, [camera, size.width, size.height]);
   return null;
+}
+
+/** Turns its contents slowly: the compact view's motion, without orbit controls, which would take over touch
+ * scrolling on phones. */
+function Spin({ children }: { children: ReactNode }) {
+  const group = useRef<THREE.Group>(null);
+  useFrame((_, delta) => {
+    if (group.current) group.current.rotation.y += delta * 0.15;
+  });
+  return <group ref={group}>{children}</group>;
 }
 
 function useGeometry(url: string): THREE.BufferGeometry | null {
@@ -107,14 +128,12 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
         (found: BrainIndex | "missing") => {
           setIndex(found);
           if (!linked || found === "missing") return;
-          if (found.regions[linked]?.amygdala) return setSource(linked);
-          const outputs = directed(edges, found.regions, "outputs");
-          const inputs = directed(edges, found.regions, "inputs");
-          if (outputs.some((e) => e.target === linked) || inputs.some((e) => e.source === linked)) {
-            if (!outputs.some((e) => e.target === linked)) setDirection("inputs");
-            setSelected(linked);
-            setThreshold(0.01);
-          }
+          const view = linkedView(edges, found.regions, linked);
+          if (!view) return;
+          setDirection(view.direction);
+          if (view.source) setSource(view.source);
+          if (view.selected) setSelected(view.selected);
+          setThreshold(0.01); // so all of the region's connections show
         },
         () => setIndex("missing"),
       );
@@ -146,6 +165,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   const strongest = shown.reduce((max, e) => Math.max(max, e.density ?? 0), 0);
   const targets = [...new Set(shown.map(other))].filter((id) => !sources.includes(id) || source !== ALL);
   const focus = selected ?? hovered;
+  const Turn = compact ? Spin : Fragment;
   const focusEdges = focus ? shown.filter((e) => e.target === focus || e.source === focus) : [];
   // Clicking an injected region shows only its connections; clicking a target selects it.
   const choose = (id: string | null) => {
@@ -221,6 +241,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
             <ambientLight intensity={0.7} />
             <directionalLight position={[10, 15, -5]} intensity={1.6} />
             <directionalLight position={[-10, -5, 10]} intensity={0.5} />
+            <Turn>
             <Suspense fallback={null}>
               <RegionMesh url={`${base}/${index.root}`} color="#9fb3d1" opacity={0.08} />
             </Suspense>
@@ -282,15 +303,17 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
                 }
               />
             )}
-            <OrbitControls
-              makeDefault
-              enableDamping
-              enableZoom={!compact}
-              autoRotate={focus === null}
-              autoRotateSpeed={compact ? 0.8 : 0.4}
-              minDistance={6}
-              maxDistance={60}
-            />
+            </Turn>
+            {!compact && (
+              <OrbitControls
+                makeDefault
+                enableDamping
+                autoRotate={focus === null}
+                autoRotateSpeed={0.4}
+                minDistance={6}
+                maxDistance={60}
+              />
+            )}
           </Canvas>
         )}
       </div>
