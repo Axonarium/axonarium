@@ -60,7 +60,7 @@ repos:
         name: Schema, data-check and build tests
         entry: uv run --frozen pytest -q schema/tests checks/tests build/tests ingest/tests
         language: system
-        files: ^(schema/|checks/|build/|ingest/|data/|pyproject\.toml|uv\.lock)
+        files: ^(schema/|checks/|build/|ingest/|data/|corpus/|pyproject\.toml|uv\.lock)
         pass_filenames: false
       - id: mcp-tests
         name: MCP server tests
