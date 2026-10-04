@@ -38,6 +38,7 @@ export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
           {e.n_ambiguous} ambiguous{e.n_disputed ? `, ${e.n_disputed} disputed` : ""}. Evidence:{" "}
           {e.evidence_classes.map((c) => c.replaceAll("_", " ")).join(", ")}.
           {e.strength && ` Strongest reported: ${e.strength}.`}
+          {e.density !== null && ` Strongest projection density: ${e.density.toFixed(3)}.`}
         </p>
       </header>
       <section aria-labelledby="claims" className="space-y-3">

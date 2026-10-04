@@ -41,7 +41,7 @@ uv run pytest build/tests
 | --- | --- |
 | `atlases`, `regions`, `neuron_types`, `sources` | Record of that class |
 | `connectivity_claims`, `homology_claims` | Claim; subject, object and citation flattened into columns, nested parts as JSONB |
-| `edges` | Subject, predicate, object and species, aggregated from claims that aren't retracted: counts by result, evidence classes, strongest strength, signs and claim IDs |
+| `edges` | Subject, predicate, object and species, aggregated from claims that aren't retracted: counts by result, evidence classes, strongest strength, strongest projection density, signs and claim IDs |
 | `retractions` | Log entry, by position |
 
 Columns are declared in [tables.py](tables.py). Why these tables, and not LinkML's generated SQL: [ADR 0008](../docs/decisions/0008-serving-database.md).

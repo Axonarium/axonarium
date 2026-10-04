@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { RegionName } from "@/components/region-name";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { edgeHref, predicateLabel, speciesName, withParam } from "@/lib/format";
+import { edgeHref, predicateLabel, speciesName, strongestFirst, withParam } from "@/lib/format";
 import type { Label } from "@/lib/regions";
 import type { EdgeSummary } from "@/lib/types";
 
@@ -36,7 +36,9 @@ export function EdgeTable({ edges, labels }: { edges: EdgeSummary[]; labels: Rec
   const params = useSearchParams();
   const species = params.get("species");
   const predicate = params.get("predicate");
-  const shown = edges.filter((e) => (!species || e.species === species) && (!predicate || e.predicate === predicate));
+  const shown = edges
+    .filter((e) => (!species || e.species === species) && (!predicate || e.predicate === predicate))
+    .sort(strongestFirst);
   const distinct = (key: "species" | "predicate") => [...new Set(edges.map((e) => e[key]))].sort();
 
   return (
@@ -58,6 +60,7 @@ export function EdgeTable({ edges, labels }: { edges: EdgeSummary[]; labels: Rec
             <TableHead className="text-right">Claims</TableHead>
             <TableHead>Found / tested absent</TableHead>
             <TableHead>Strength</TableHead>
+            <TableHead className="text-right">Density</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -80,6 +83,7 @@ export function EdgeTable({ edges, labels }: { edges: EdgeSummary[]; labels: Rec
                 {edge.n_present} / {edge.n_absent}
               </TableCell>
               <TableCell>{edge.strength ?? "—"}</TableCell>
+              <TableCell className="text-right tabular-nums">{edge.density?.toFixed(3) ?? "—"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

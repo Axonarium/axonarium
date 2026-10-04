@@ -13,7 +13,7 @@ import { fetchAll } from "./pages";
 import type { AtlasRegion, RegionName } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
 
-const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength";
+const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength, density";
 
 function client(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

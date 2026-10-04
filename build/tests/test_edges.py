@@ -7,12 +7,14 @@ from checks.loading import load_tree
 
 
 def claim(claim_id, result="present", evidence="anterograde_tracer", status="accepted", strength=None, sign="unknown",
-          subject="MBA:295", obj="MBA:559", species="NCBITaxon:10090"):
+          subject="MBA:295", obj="MBA:559", species="NCBITaxon:10090", density=None):
     data = {"id": claim_id, "subject": {"type": "region", "id": subject}, "predicate": "projects_to",
             "object": {"type": "region", "id": obj}, "species": species, "evidence_class": evidence,
             "result": result, "sign": sign, "status": status}
     if strength:
         data["strength"] = strength
+    if density is not None:
+        data["measurements"] = [{"quantity": "projection_density", "value": density, "unit": "1"}]
     from checks.findings import Record
     return Record(Path(f"{claim_id}.yaml"), "ConnectivityClaim", data)
 
@@ -24,7 +26,7 @@ def test_edges_aggregate_claims():
         "subject_id": "MBA:295", "subject_type": "region", "predicate": "projects_to",
         "object_id": "MBA:559", "object_type": "region", "species": "NCBITaxon:10090",
         "n_claims": 3, "n_present": 2, "n_absent": 1, "n_ambiguous": 0, "n_disputed": 0,
-        "evidence_classes": ["anterograde_tracer", "retrograde_tracer"], "strength": None,
+        "evidence_classes": ["anterograde_tracer", "retrograde_tracer"], "strength": None, "density": None,
         "signs": ["unknown"], "claim_ids": ["clm-a", "clm-b", "clm-c"],
     }]
 
@@ -52,3 +54,9 @@ def test_valid_tree_edges(valid_tree):
     edges = compute_edges(records)
     assert len(edges) == len(keys) and sum(e["n_claims"] for e in edges) == len(claims)
     assert [e["id"] for e in edges] == sorted(e["id"] for e in edges)
+
+
+def test_strongest_density_among_present():
+    edges = compute_edges([claim("clm-a", density=0.2), claim("clm-b", density=0.5, status="proposed"),
+                           claim("clm-c", result="absent", density=0.9), claim("clm-d")])
+    assert edges[0]["density"] == 0.5  # proposed claims count; absent results don't
