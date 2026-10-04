@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 
 import { Citation } from "@/components/citation";
 import { DataUnavailable } from "@/components/data-unavailable";
+import { Evidence } from "@/components/evidence";
 import { RegionName } from "@/components/region-name";
 import { getClaim, getRegionNames, getSource } from "@/lib/data";
+import { inboxConfig } from "@/lib/inbox";
 import { regionLabel } from "@/lib/regions";
 import { edgeHref, formatMeasurement, predicateLabel, speciesName } from "@/lib/format";
 
@@ -35,6 +37,8 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
   if (c === null) notFound();
   const [s, regions] = await Promise.all([getSource(c.source_key), getRegionNames([c.subject_id, c.object_id])]);
   const edgeId = [c.subject_id, c.predicate, c.object_id, c.species].join("|");
+  // The buttons appear once submissions are open: Turnstile's keys and the Supabase secret key set (ADR 0024).
+  const siteKey = inboxConfig() && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -102,6 +106,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
         )}
         <Row label="Status">{c.status}</Row>
       </dl>
+      {siteKey && c.status !== "retracted" && <Evidence claimId={c.id} siteKey={siteKey} />}
     </div>
   );
 }

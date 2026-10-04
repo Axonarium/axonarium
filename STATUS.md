@@ -35,7 +35,8 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | On hold until there is more data (maintainer, 4 October 2026); its design starts from scratch then |
 | C.1 Inbox and identifier vetting ([#64](https://github.com/axonarium/axonarium/issues/64)) | Done ([#65](https://github.com/axonarium/axonarium/pull/65)): the inbox table, closed to the public API, and identifier vetting |
 | C.2 Allowlist ([#14](https://github.com/axonarium/axonarium/issues/14)) | Done ([#54](https://github.com/axonarium/axonarium/pull/54)) |
-| C.3–C.4 Submission buttons, triage | Not started: C.3 needs Turnstile keys; C.4 waits on 2.4 |
+| C.3 Evidence buttons ([#72](https://github.com/axonarium/axonarium/issues/72)) | Built ([#73](https://github.com/axonarium/axonarium/pull/73)): Supports and Contradicts on each claim page, with Turnstile and rate limits ([ADR 0024](docs/decisions/0024-evidence-buttons.md)). Hidden until the maintainer sets the keys |
+| C.4 Triage | Not started: waits on 2.4 |
 | C.5 Hidden-text screen ([#70](https://github.com/axonarium/axonarium/issues/70)) | Done ([#71](https://github.com/axonarium/axonarium/pull/71)): every paper is screened before a model reads it, and a flagged one never is ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)) |
 
 Later phases get cards when they start.
@@ -59,6 +60,7 @@ Later phases get cards when they start.
 - The amygdala inventory is drafted by an agent for the maintainer's review: neuron types and synonyms authored by the project, regions referenced by ID only (maintainer, 4 October 2026).
 - Agents merge pull requests only when the maintainer, in that agent's own session, tells them to, once CI passes ([ADR 0022](docs/decisions/0022-agents-merge-when-told.md)).
 - Hidden text: every paper passes a screen before a model reads it. Invisible characters and hidden markup are stripped, and Protect AI's prompt-injection classifier (LLM Guard's default, PhantomLint's suspicion test) scores each paragraph. A flagged paper never reaches a model ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)).
+- Evidence buttons: Turnstile is checked on the server, and the rate limits (5 an hour and 20 a day per submitter, 500 a day overall) are enforced in the database by a keyed hash of the address, cleared after a day ([ADR 0024](docs/decisions/0024-evidence-buttons.md)).
 
 ## Handoff (4 October 2026, second session)
 
@@ -78,7 +80,7 @@ Later phases get cards when they start.
 
 **Prepared for the maintainer, outside the repository:** the w3id.org registration (`ids/axonarium/.htaccess`, passing the registry's checker and tested on a local Apache), permission emails to the Allen Institute and BAMS, and a preliminary trademark search (no "Axonarium" mark found on the web; the official databases are still to search).
 
-**Not done:** the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); the visual design pass (3.5); the submission buttons and triage (C.3, C.4); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
+**Not done:** the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); the visual design pass (3.5); triage (C.4); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
 
 **Surprises:**
 - This session's sandbox couldn't reach Crossref, NCBI, OLS, Europe PMC or the Allen API. Every identifier in the inventory and the extractor prompt was checked against UBERON's, the Cell Ontology's and BICAN's MBA sources from GitHub instead. CI's online checks looked them up again.
@@ -97,7 +99,7 @@ Later phases get cards when they start.
 - [ ] Whether to annotate `corpus/` as CC0-1.0 in `REUSE.toml` (ADR 0019). Later Scout runs: run it from the Actions tab and open a pull request from the branch it pushes.
 - [ ] The inventory draft's open questions (spec for 2.1): where the lexicon lives, whether neuron types cite papers, how Cre-line experiments map to them.
 - [ ] Whether low-density Allen inputs, possibly fibres of passage, need a higher threshold (ADR 0010). The reconciliation report in CI's run summary gives the numbers.
-- [ ] Cloudflare Turnstile keys for the submission buttons (sprint C.3), and whether the site writes to the inbox with the Supabase secret key or a dedicated role (ADR 0021).
+- [ ] Opening submissions (sprint C.3, ADR 0024): create a Turnstile widget for axonarium.com in Cloudflare; set its site key as the GitHub variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (production environment), and its secret key and Supabase's secret key as `TURNSTILE_SECRET_KEY` and `SUPABASE_SECRET_KEY` in Vercel (production, sensitive). Then send one paper from a phone. A dedicated database role instead of the secret key stays open (ADR 0021).
 - [ ] Whether visitors can suggest papers that have no matching claim yet.
 - [ ] The remaining open decisions in [docs/plan.md](docs/plan.md), Part 1.
 - [ ] A trademark search before announcing: search the USPTO, WIPO and EUIPO databases for "axonarium" in classes 9, 41 and 42. The web search found none.

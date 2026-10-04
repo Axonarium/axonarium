@@ -186,3 +186,62 @@ def test_the_inbox_refuses_malformed_rows(values):
 
 def test_the_build_never_dumps_or_loads_the_inbox():
     assert "submissions" not in TABLES
+
+
+# Submitting (sprint C.3, ADR 0024): the site's server calls submit_evidence(), which applies the rate limits.
+
+A, B = "a" * 32, "b" * 32
+
+
+def submit(client: str, claim: str = "clm-pq22bk4dtz") -> str:
+    [(result,)] = query("select public.submit_evidence(%s, 'supports', '10.1038/x', %s)", claim, client)
+    return result["status"]
+
+
+@pytest.fixture
+def empty_inbox():
+    execute("delete from submissions")
+    yield
+    execute("delete from submissions")
+
+
+def test_a_submitter_gets_five_an_hour_and_others_are_unaffected(empty_inbox):
+    assert [submit(A) for _ in range(6)] == ["received"] * 5 + ["rate-limited"]
+    assert submit(B) == "received"
+    assert query("select count(*), count(distinct id) from submissions where client = %s", A) == [(5, 5)]
+
+
+def test_a_submitter_gets_twenty_a_day(empty_inbox):
+    execute(f"insert into submissions (claim, stance, identifier, client, submitted_at) select 'clm-pq22bk4dtz', 'supports', "
+            f"'10.1038/x', '{A}', now() - interval '2 hours' from generate_series(1, 20)")
+    assert submit(A) == "rate-limited"
+
+
+def test_everyone_together_gets_five_hundred_a_day(empty_inbox):
+    execute("insert into submissions (claim, stance, identifier) select 'clm-pq22bk4dtz', 'supports', '10.1038/x' "
+            "from generate_series(1, 500)")
+    assert submit(A) == "busy"
+
+
+def test_hashes_are_cleared_after_a_day(empty_inbox):
+    execute(f"insert into submissions (claim, stance, identifier, client, submitted_at) values "
+            f"('clm-pq22bk4dtz', 'supports', '10.1038/x', '{A}', now() - interval '25 hours')")
+    assert submit(B) == "received"
+    assert query("select client from submissions order by submitted_at") == [(None,), (B,)]
+
+
+@pytest.mark.parametrize("client", [None, "not-a-hash", "A" * 32])
+def test_a_submission_needs_the_submitters_hash(empty_inbox, client):
+    with pytest.raises(psycopg.errors.CheckViolation):
+        submit(client)
+
+
+def test_a_malformed_submission_is_refused_by_the_table(empty_inbox):
+    with pytest.raises(psycopg.errors.CheckViolation):
+        submit(A, claim="clm-1")
+
+
+def test_only_the_secret_key_may_submit():
+    signature = "public.submit_evidence(text, text, text, text)"
+    for role, allowed in (("anon", False), ("authenticated", False), ("service_role", True)):
+        assert query("select has_function_privilege(%s, %s, 'execute')", role, signature) == [(allowed,)], role

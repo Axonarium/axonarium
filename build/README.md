@@ -47,7 +47,7 @@ uv run pytest build/tests
 | `connectivity_claims`, `homology_claims` | Claim; subject, object and citation flattened into columns, nested parts as JSONB |
 | `edges` | Subject, predicate, object and species, aggregated from claims that aren't retracted: counts by result, evidence classes, strongest strength, strongest projection density, signs and claim IDs |
 | `retractions` | Log entry, by position |
-| `submissions` | The community inbox: a visitor's identifier for or against a claim ([ADR 0021](../docs/decisions/0021-community-inbox.md)). Closed to the public API, and never loaded, emptied or dumped by the build |
+| `submissions` | The community inbox: a visitor's identifier for or against a claim ([ADR 0021](../docs/decisions/0021-community-inbox.md)). Closed to the public API, and never loaded, emptied or dumped by the build. Rows arrive only through `submit_evidence()`, which applies the rate limits and only the secret key may call ([ADR 0024](../docs/decisions/0024-evidence-buttons.md)) |
 
 Claims carry `terms` (`cc-by-4.0`, or `allen-institute` for claims made from the Allen atlas; `build/terms.py`), and each edge lists its claims' terms, so the API can state what may be reused ([ADR 0013](../docs/decisions/0013-read-api.md)).
 

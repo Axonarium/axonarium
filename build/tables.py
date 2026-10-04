@@ -4,7 +4,8 @@ These definitions are the only description of the database schema: Alembic gener
 build/migrations from them, and CI's `alembic check` fails if the two ever differ.
 """
 
-from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, Float, ForeignKey, Integer, MetaData, Table, Text, Uuid, func, text
+from sqlalchemy import (Boolean, CheckConstraint, Column, DateTime, Float, ForeignKey, Index, Integer, MetaData, Table, Text, Uuid,
+                        func, text)
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 
 from build.edges import compute_edges
@@ -93,10 +94,13 @@ submissions = Table(
     Column("status", Text, nullable=False, server_default="received"),
     _text("source_id"), _text("reason"),  # set by triage: the canonical source ID, and why it was closed
     Column("closed_at", DateTime(timezone=True)),
+    _text("client"),  # a keyed hash of the submitter's address, for the rate limits; cleared after a day (ADR 0024)
     CheckConstraint(r"claim ~ '^(clm|hom)-[0-9a-hjkmnp-tv-z]{10}$'", name="submissions_claim"),
+    CheckConstraint(r"client ~ '^[0-9a-f]{32}$'", name="submissions_client"),
     CheckConstraint("stance in ('supports', 'contradicts')", name="submissions_stance"),
     CheckConstraint("char_length(identifier) between 1 and 300", name="submissions_identifier"),
     CheckConstraint("status in ('received', 'closed')", name="submissions_status"),
+    Index("submissions_by_client", "client", "submitted_at"), Index("submissions_by_time", "submitted_at"),
 )
 OPERATIONAL = {"submissions"}  # tables the build never touches
 
