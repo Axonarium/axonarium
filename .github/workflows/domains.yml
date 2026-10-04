@@ -1,0 +1,46 @@
+name: Vercel domains
+
+# Run by hand: attaches the custom domains to the Vercel project and prints the DNS records Vercel expects.
+# Idempotent: a domain the project already has is left as it is.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  domains:
+    name: Attach the domains
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: production  # Its secrets are released only to jobs running on main.
+    permissions: {}
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      TEAM: ${{ secrets.VERCEL_ORG_ID }}
+      PROJECT: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Attach axonarium.com, and www.axonarium.com redirecting to it
+        run: |
+          api() {
+            curl -sS -o response.json -w '%{http_code}' -X "$1" "https://api.vercel.com$2?teamId=$TEAM" \
+              -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" ${3:+--data "$3"}
+          }
+          for body in '{"name":"axonarium.com"}' \
+                      '{"name":"www.axonarium.com","redirect":"axonarium.com","redirectStatusCode":308}'; do
+            status=$(api POST "/v10/projects/$PROJECT/domains" "$body")
+            echo "POST $body -> $status"
+            case "$status" in
+              200) ;;
+              409) echo "already attached" ;;
+              *) jq . response.json; exit 1 ;;
+            esac
+          done
+      - name: Print the DNS records Vercel expects
+        run: |
+          for domain in axonarium.com www.axonarium.com; do
+            echo "== $domain"
+            curl -sS "https://api.vercel.com/v9/projects/$PROJECT/domains/$domain?teamId=$TEAM" \
+              -H "Authorization: Bearer $VERCEL_TOKEN" | jq '{name, verified, redirect, verification}'
+            curl -sS "https://api.vercel.com/v6/domains/$domain/config?teamId=$TEAM" \
+              -H "Authorization: Bearer $VERCEL_TOKEN" | jq '{misconfigured, recommendedIPv4, recommendedCNAME}'
+          done
