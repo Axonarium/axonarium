@@ -104,6 +104,64 @@ jobs:
           AXONARIUM_SCREEN_MODEL: "1"
         run: uv run --frozen pytest -q -p no:cacheprovider screen/tests/test_model.py
 
+  budgets:  # The site's accessibility and performance budgets, on real data (sprint 3.5, ADR 0025).
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      # Data comes from the snapshot (Supabase's URL refuses at once), and Cloudflare's test keys open the evidence
+      # form, so its accessibility is checked too. None of these is a secret.
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:9
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: none
+      SUPABASE_SECRET_KEY: none
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+      TURNSTILE_SECRET_KEY: 1x0000000000000000000000000000000AA
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.12.22"
+          enable-cache: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:  # The checks job's API answers and atlases, so the snapshot and meshes match what it built.
+          path: |
+            .cache/build
+            ~/.brainglobe
+          key: build-http-${{ github.run_id }}
+          restore-keys: build-http-
+      - name: The snapshot and meshes the deploy would make
+        run: uv run --frozen python -m build --http-cache .cache/build --meshes site/public/brain --snapshot site/snapshot/snapshot.json
+      - name: Build the site
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+      - name: Accessibility (axe-core, every page type, phone and desktop)
+        working-directory: site
+        run: |
+          npx playwright install --with-deps chromium
+          npm run e2e
+      - name: Performance (Lighthouse CI, a mid-range phone)
+        working-directory: site
+        run: npx --yes @lhci/cli@0.15.1 autorun --config=lighthouserc.cjs
+      - name: Keep the reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: budgets
+          path: |
+            site/.lighthouseci/
+            site/playwright-report/
+            site/test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
   site:
     runs-on: ubuntu-latest
     timeout-minutes: 15

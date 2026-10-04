@@ -43,3 +43,8 @@ next-env.d.ts
 
 # The deploy's snapshot of the database: Allen-derived rows, never committed (ADR 0005, ADR 0017)
 /snapshot/
+
+# Playwright's and Lighthouse CI's output (ADR 0025)
+/test-results/
+/playwright-report/
+/.lighthouseci/

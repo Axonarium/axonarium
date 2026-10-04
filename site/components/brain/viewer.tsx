@@ -25,6 +25,8 @@ import {
   linkedView,
 } from "@/lib/brain";
 
+import { CANVAS } from "./sizes";
+
 const PALETTE = [
   "#f97316", "#22d3ee", "#a78bfa", "#f43f5e", "#84cc16", "#facc15", "#38bdf8", "#e879f9", "#34d399", "#fb7185", "#a3e635", "#fbbf24",
 ];
@@ -124,7 +126,8 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
 
   useEffect(() => {
     fetch(`${base}/index.json`)
-      .then((response) => (response.ok ? response.json() : "missing"))
+      // An unread body keeps the request open, so a missing index's body is cancelled.
+      .then((response) => (response.ok ? response.json() : response.body?.cancel().then(() => "missing" as const) ?? "missing"))
       .then(
         (found: BrainIndex | "missing") => {
           setIndex(found);
@@ -171,24 +174,26 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
     setSelected(id === selected ? null : id);
   };
 
+  const canvasBox = compact ? CANVAS.compact : CANVAS.full; // the loading placeholder's size (brain-view.tsx)
+
   if (index === "missing") {
     return (
-      <p role="status" className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-        This build has no brain meshes. They&apos;re made by the deploy build (<code>python -m build --meshes</code>);
-        the connections are on the{" "}
-        <Link href="/explore" className="underline underline-offset-4">
-          Explore
-        </Link>{" "}
-        page.
-      </p>
+      <div className={`grid place-items-center rounded-xl border border-dashed p-6 ${canvasBox}`}>
+        <p role="status" className="max-w-md text-sm text-muted-foreground">
+          This build has no brain meshes. They&apos;re made by the deploy build (<code>python -m build --meshes</code>);
+          the connections are on the{" "}
+          <Link href="/explore" className="underline underline-offset-4">
+            Explore
+          </Link>{" "}
+          page.
+        </p>
+      </div>
     );
   }
 
   return (
     <div className={compact ? "" : "grid gap-4 lg:grid-cols-[1fr_19rem]"}>
-      <div
-        className={`relative overflow-hidden rounded-xl border bg-[#0b1020] ${compact ? "h-[min(52vh,95vw)] min-h-[300px]" : "h-[min(60vh,110vw)] min-h-[320px] lg:h-[62vh]"}`}
-      >
+      <div className={`relative overflow-hidden rounded-xl border bg-[#0b1020] ${canvasBox}`}>
         {index === null && <p className="absolute inset-0 grid place-items-center text-sm text-white/60">Loading the atlas…</p>}
         {compact && index && (
           <Link
