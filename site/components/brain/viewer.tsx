@@ -235,6 +235,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
           <Canvas
             camera={{ position: CAMERA, fov: 35, near: 0.1, far: 200 }}
             dpr={[1, 2]}
+            role="img"
             aria-label="3D view of the mouse brain with the amygdala's projections"
             onPointerMissed={() => setSelected(null)}
             fallback={<p className="p-4 text-sm text-white/70">This browser can&apos;t show 3D. The table on Explore has every connection.</p>}

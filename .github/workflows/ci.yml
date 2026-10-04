@@ -148,6 +148,7 @@ jobs:
           npx playwright install --with-deps chromium
           npm run e2e
       - name: Performance (Lighthouse CI, a mid-range phone)
+        if: ${{ !cancelled() }}  # measured even when accessibility fails, so one run reports both
         working-directory: site
         run: npx --yes @lhci/cli@0.15.1 autorun --config=lighthouserc.cjs
       - name: Keep the reports

@@ -30,7 +30,9 @@ const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n
 function client(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  return url && key ? createClient(url, key, { auth: { persistSession: false }, db: { timeout: 10_000 } }) : null;
+  // No retries: when Supabase can't answer, the snapshot answers at once, rather than after postgrest-js's three
+  // retries with backoff (several seconds a query).
+  return url && key ? createClient(url, key, { auth: { persistSession: false }, db: { timeout: 10_000, retry: false } }) : null;
 }
 
 function failed(what: string, error: { message: string }): never {
