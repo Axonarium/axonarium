@@ -7,13 +7,15 @@ import { Html, OrbitControls, QuadraticBezierLine, useGLTF } from "@react-three/
 import { Canvas, type ThreeEvent, useThree } from "@react-three/fiber";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
-import { arcMidpoint, arcWidth, type BrainEdge, type BrainIndex, type BrainRegion } from "@/lib/brain";
+import { arcMidpoint, arcWidth, type BrainEdge, type BrainIndex, type BrainRegion, type Direction, directed, hubOf } from "@/lib/brain";
 
-const PALETTE = ["#f97316", "#22d3ee", "#a78bfa", "#f43f5e", "#84cc16", "#facc15", "#38bdf8", "#e879f9", "#34d399", "#fb7185"];
+const PALETTE = [
+  "#f97316", "#22d3ee", "#a78bfa", "#f43f5e", "#84cc16", "#facc15", "#38bdf8", "#e879f9", "#34d399", "#fb7185", "#a3e635", "#fbbf24",
+];
 const THRESHOLDS = [0.01, 0.05, 0.1, 0.2];
 const ALL = "all";
 // The network view loads only when chosen.
@@ -91,6 +93,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [view, setView] = useState<"3d" | "network">("3d");
+  const [direction, setDirection] = useState<Direction>("outputs");
 
   // /brain?region=<id> (from a region's page) opens on that region. The viewer only runs in the browser.
   const [linked] = useState(() => new URLSearchParams(window.location.search).get("region"));
@@ -102,9 +105,11 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
         (found: BrainIndex | "missing") => {
           setIndex(found);
           if (!linked || found === "missing") return;
-          const drawn = edges.filter((e) => found.regions[e.source] && found.regions[e.target]);
-          if (drawn.some((e) => e.source === linked)) setSource(linked);
-          else if (drawn.some((e) => e.target === linked)) {
+          if (found.regions[linked]?.amygdala) return setSource(linked);
+          const outputs = directed(edges, found.regions, "outputs");
+          const inputs = directed(edges, found.regions, "inputs");
+          if (outputs.some((e) => e.target === linked) || inputs.some((e) => e.source === linked)) {
+            if (!outputs.some((e) => e.target === linked)) setDirection("inputs");
             setSelected(linked);
             setThreshold(0.01);
           }
@@ -114,22 +119,30 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
   }, [base, edges, linked]);
 
   const regions = useMemo<Record<string, BrainRegion>>(() => (index && index !== "missing" ? index.regions : {}), [index]);
-  const drawable = useMemo(() => edges.filter((e) => regions[e.source] && regions[e.target]), [edges, regions]);
+  // `sources` are the amygdala regions at the amygdala end of the chosen direction's connections.
+  const drawable = useMemo(() => directed(edges, regions, direction), [edges, regions, direction]);
   const sources = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const edge of drawable) counts.set(edge.source, (counts.get(edge.source) ?? 0) + 1);
+    for (const edge of drawable) counts.set(hubOf(edge, direction), (counts.get(hubOf(edge, direction)) ?? 0) + 1);
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([id]) => id);
-  }, [drawable]);
-  const colors = useMemo(() => Object.fromEntries(sources.map((id, i) => [id, PALETTE[i % PALETTE.length]])), [sources]);
+  }, [drawable, direction]);
+  // One colour per amygdala region, the same in both directions.
+  const colors = useMemo(() => {
+    const ids = Object.keys(regions).filter((id) => regions[id].amygdala).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+    return Object.fromEntries(ids.map((id, i) => [id, PALETTE[i % PALETTE.length]]));
+  }, [regions]);
   const shown = useMemo(
     () =>
       drawable
-        .filter((e) => (source === ALL || e.source === source) && (e.density ?? 0) >= threshold)
+        .filter((e) => (source === ALL || hubOf(e, direction) === source) && (e.density ?? 0) >= threshold)
         .sort((a, b) => (b.density ?? 0) - (a.density ?? 0)),
-    [drawable, source, threshold],
+    [drawable, direction, source, threshold],
   );
+  const other = (e: BrainEdge) => (direction === "outputs" ? e.target : e.source);
+  // Stable between renders, so the network keeps its layout while the pointer moves.
+  const hub = useCallback((e: BrainEdge) => hubOf(e, direction), [direction]);
   const strongest = shown.reduce((max, e) => Math.max(max, e.density ?? 0), 0);
-  const targets = [...new Set(shown.map((e) => e.target))].filter((id) => !sources.includes(id) || source !== ALL);
+  const targets = [...new Set(shown.map(other))].filter((id) => !sources.includes(id) || source !== ALL);
   const focus = selected ?? hovered;
   const focusEdges = focus ? shown.filter((e) => e.target === focus || e.source === focus) : [];
   // Clicking an injected region shows only its connections; clicking a target selects it.
@@ -175,6 +188,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
             shown={shown}
             regions={regions}
             injected={sources}
+            hub={hub}
             colors={colors}
             strongest={strongest}
             focus={focus}
@@ -224,7 +238,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
                   start={start}
                   end={end}
                   mid={arcMidpoint(start, end)}
-                  color={colors[edge.source]}
+                  color={colors[hubOf(edge, direction)]}
                   lineWidth={arcWidth(edge.density, strongest)}
                   dashed={edge.accepted === 0}
                   dashSize={0.25}
@@ -262,8 +276,21 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
       </div>
 
       <aside className="space-y-4 text-sm">
+        <div role="group" aria-label="Direction" className="grid grid-cols-2 rounded-lg border p-0.5 text-xs">
+          {(["outputs", "inputs"] as const).map((d) => (
+            <button
+              key={d}
+              type="button"
+              aria-pressed={direction === d}
+              onClick={() => (setDirection(d), setSource(ALL), setSelected(null))}
+              className="rounded-md px-2 py-1.5 text-muted-foreground transition-colors aria-pressed:bg-foreground aria-pressed:text-background"
+            >
+              {d === "outputs" ? "Where it projects" : "What projects to it"}
+            </button>
+          ))}
+        </div>
         <div className="space-y-2">
-          <h2 className="font-medium">Injected region</h2>
+          <h2 className="font-medium">Amygdala region</h2>
           <div className="flex flex-wrap gap-1.5">
             {[ALL, ...sources].map((id) => (
               <button
@@ -272,7 +299,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
                 aria-pressed={source === id}
                 onClick={() => (setSource(id), setSelected(null))}
                 className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-muted"
-                title={id === ALL ? "Every amygdala injection" : regions[id]?.name}
+                title={id === ALL ? "Every amygdala region" : regions[id]?.name}
               >
                 {id !== ALL && <span className="size-2.5 rounded-full" style={{ background: colors[id] }} />}
                 {id === ALL ? "All" : regions[id]?.acronym}
@@ -301,14 +328,14 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
             {shown.slice(0, 40).map((edge) => (
               <li key={edge.id}>
                 <div
-                  className={`flex items-center gap-2 rounded-md px-2 py-1 ${selected === edge.target ? "bg-muted" : "hover:bg-muted/60"}`}
+                  className={`flex items-center gap-2 rounded-md px-2 py-1 ${selected === other(edge) ? "bg-muted" : "hover:bg-muted/60"}`}
                 >
-                  <span className="size-2 shrink-0 rounded-full" style={{ background: colors[edge.source] }} />
+                  <span className="size-2 shrink-0 rounded-full" style={{ background: colors[hubOf(edge, direction)] }} />
                   <button
                     type="button"
                     className="min-w-0 flex-1 truncate text-left"
                     title={`${regions[edge.source].name} → ${regions[edge.target].name}`}
-                    onClick={() => setSelected(selected === edge.target ? null : edge.target)}
+                    onClick={() => setSelected(selected === other(edge) ? null : other(edge))}
                   >
                     {regions[edge.source].acronym} → <span className="font-medium">{regions[edge.target].acronym}</span>
                   </button>
@@ -323,6 +350,7 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
         </div>
 
         <p className="text-xs text-muted-foreground">
+          Outputs come from tracer injected into the amygdala; inputs from injections elsewhere that label it.
           Arc width: the strongest projection density among a connection&apos;s claims. Dashed: every claim is
           proposed, because most of the tracer landed outside the named region. Densities pool both hemispheres;
           3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.

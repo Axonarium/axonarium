@@ -4,22 +4,24 @@ from pathlib import Path
 
 from checks.file_rules import check_file
 from checks.findings import Record
-from ingest.allen_connectivity import build_claims, claim_id, experiments, load_claims
+from ingest.allen_connectivity import build_claims, claim_id, experiments, load_claims, paged
 
 ATLAS = "allen-mouse-ccf-2017"
-ACRONYMS = {295: "BLA", 536: "CEA", 131: "LA", 997: "root"}
+ACRONYMS = {295: "BLA", 536: "CEA", 131: "LA", 972: "PL", 997: "root"}
 
 
-def experiment(eid, structure, lines=()):
+def experiment(eid, structure, lines=(), injections=1):
     return {"id": eid, "specimen": {"donor": {"transgenic_lines": [{"name": n} for n in lines]},
-                                    "stereotaxic_injections": [{"primary_injection_structure": {"id": structure, "acronym": ACRONYMS[structure]}}]}}
+                                    "stereotaxic_injections": [{"primary_injection_structure": {"id": structure}}] * injections}}
 
 
 def fake_get(answers):
     asked = []
 
-    def get(criteria, num_rows=2000):
+    def get(criteria, num_rows=2000, start_row=0):
         asked.append(criteria)
+        if start_row:
+            return []
         for key, value in answers.items():
             if key in criteria:
                 return value
@@ -29,10 +31,21 @@ def fake_get(answers):
 
 
 ANSWERS = {
-    "model::SectionDataSet": [experiment(1, 295), experiment(2, 295, ["Slc32a1-IRES-Cre"])],
-    "structure_sets": [{"id": 536}, {"id": 131}, {"id": 295}],
-    "section_data_set_id$eq1],[is_injection$eqtrue]": [{"structure_id": 295, "projection_volume": 0.06},
-                                                       {"structure_id": 131, "projection_volume": 0.04}],
+    # 1: BLA injection (outputs); 2: a Cre line; 3: PL injection (inputs); 4: two injections; 5: outside the atlas.
+    "model::SectionDataSet": [experiment(1, 295), experiment(2, 295, ["Slc32a1-IRES-Cre"]), experiment(3, 972),
+                              experiment(4, 972, injections=2), experiment(5, 12345)],
+    "structure_sets": [{"id": 536}, {"id": 131}, {"id": 295}, {"id": 972}],
+    "[is_injection$eqtrue]": [{"section_data_set_id": 1, "structure_id": 997, "projection_volume": 0.1},
+                              {"section_data_set_id": 1, "structure_id": 295, "projection_volume": 0.06},
+                              {"section_data_set_id": 1, "structure_id": 131, "projection_volume": 0.04},
+                              {"section_data_set_id": 3, "structure_id": 997, "projection_volume": 0.2},
+                              {"section_data_set_id": 3, "structure_id": 972, "projection_volume": 0.2}],
+    # Inputs: projections into amygdala structures from every experiment; only wild-type ones not injected in
+    # the amygdala are used.
+    "[projection_density$ge": [{"section_data_set_id": 3, "structure_id": 295, "projection_density": 0.05},
+                               {"section_data_set_id": 3, "structure_id": 536, "projection_density": 0.001},
+                               {"section_data_set_id": 2, "structure_id": 536, "projection_density": 0.4},
+                               {"section_data_set_id": 1, "structure_id": 536, "projection_density": 0.2}],
     "section_data_set_id$eq1],[is_injection$eqfalse]": [{"structure_id": 536, "projection_density": 0.2},
                                  {"structure_id": 131, "projection_density": 0.004},
                                  {"structure_id": 295, "projection_density": 0.9},
@@ -40,13 +53,33 @@ ANSWERS = {
 }
 
 
-def test_wild_type_only():
-    found = experiments(fake_get(ANSWERS), [295])
-    assert [e["id"] for e in found] == [1]
+def test_wild_type_single_injections_only():
+    found = experiments(fake_get(ANSWERS))
+    assert found == [{"id": 1, "injection": 295}, {"id": 3, "injection": 972}, {"id": 5, "injection": 12345}]
+
+
+def test_paged_reads_every_page_in_a_stable_order():
+    rows = list(range(5))
+    asked = []
+
+    def get(criteria, num_rows, start_row=0):
+        asked.append(criteria)
+        return rows[start_row:start_row + num_rows]
+    assert paged(get, "model::X,rma::criteria,[a$eq1]", page=2) == rows
+    assert all(c.endswith(",rma::options[order$eq'id']") for c in asked) and len(asked) == 3
+
+
+def test_inputs_to_the_amygdala():
+    claims = load_claims(ATLAS, [295, 536, 131], ACRONYMS, get=fake_get(ANSWERS))
+    pairs = [(c["subject"]["id"], c["object"]["id"]) for c in claims]
+    # PL -> BLA from experiment 3; its weak CEA density and the Cre line's are left out.
+    assert ("MBA:972", "MBA:295") in pairs and ("MBA:972", "MBA:536") not in pairs
+    pl = next(c for c in claims if c["subject"]["id"] == "MBA:972")
+    assert pl["extra"] == {"allen.experiment": 3, "allen.injection_share": 1.0} and pl["status"] == "accepted"
 
 
 def test_targets():
-    claims = load_claims(ATLAS, [295], ACRONYMS, get=fake_get(ANSWERS))
+    claims = [c for c in load_claims(ATLAS, [295], ACRONYMS, get=fake_get(ANSWERS)) if c["subject"]["id"] == "MBA:295"]
     # CEA only: LA is below 0.01, BLA is the injection structure, root isn't a summary structure.
     assert [(c["subject"]["id"], c["object"]["id"]) for c in claims] == [("MBA:295", "MBA:536")]
     claim = claims[0]
