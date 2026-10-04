@@ -16,7 +16,7 @@ This file lists every account the project depends on, who holds it, and how to h
 
 ## Not created yet
 
-Vercel (site), Supabase (database and API), an LLM provider (API key with a spending cap) and Zenodo (release DOIs). Add a row for each when it is created.
+An LLM provider (API key with a spending cap) and Zenodo (release DOIs). Add a row for each when it is created, and rows for Vercel (site) and Supabase (database and API), which exist but aren't listed yet: their holders, second holders and renewal terms are the maintainer's to record.
 
 ## Handing over an account
 

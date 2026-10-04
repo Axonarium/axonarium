@@ -85,22 +85,25 @@ What exists now:
 | `docs/specs/`, `docs/plans/` | Design specs and implementation plans for sprints |
 | `schema/` | The LinkML schema (`axonarium.yaml`), its generated JSON Schema and SQL, examples and tests |
 | `checks/` | The data checks: `python -m checks files`, `changes`, `online` and `sources` |
-| `build/` | `python -m build`: dumps and the Supabase database, rebuilt from the files; `build/migrations/` holds the Alembic migrations ([build/README.md](build/README.md)) |
+| `build/` | `python -m build`: dumps, the Supabase database, the site's snapshot and the reconciliation report, rebuilt from the files; `python -m build.release` packages a release; `build/migrations/` holds the Alembic migrations ([build/README.md](build/README.md)) |
 | `pyproject.toml`, `uv.lock` | The repo's Python tooling environment: Python 3.13 and LinkML |
 | `data/README.md` | Data licence, layout and the rules the checks apply |
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
-| `ingest/` | Adapters for external sources, run by the build: `atlases.py` reads BrainGlobe atlases and UBERON bridges |
+| `data/allowlist.yaml` | The kinds of source claims may cite (maintainer-owned; ADR 0015) |
+| `data/entities/`, `data/sources/` | Pinned atlases, neuron types and the cited papers' records |
+| `ingest/` | Adapters for external sources: `atlases.py` (BrainGlobe atlases and UBERON bridges) and `allen_connectivity.py`, run by the build; `scout.py`, the literature scout |
+| `corpus/` | The scout's saved literature queries and the corpus manifest (ADR 0019) |
+| `agents/` | Role prompts (`agents/roles/`) and the eval harness with the gold set (`agents/evals/`, human-owned; ADR 0020); its own uv project |
 | `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)); it also serves the read API |
 | `api/` | The read API's documentation ([api/README.md](api/README.md)) and the MCP server (`api/mcp`) |
-| `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
+| `.github/` | CI, the deploy, the release and the scout workflows, Dependabot, code owners, sprint-card form, labels |
 
 Planned, from the plan's repository layout:
 
 | Path | Will hold |
 | --- | --- |
-| `data/entities/`, `data/claims/`, `data/homology/`, `data/sources/` | Knowledge files (the folders appear with their first records) |
-| `agents/roles/` | Role prompts |
-| `agents/evals/` | Gold set and eval harness (human-owned) |
+| `data/claims/`, `data/homology/` | Claims (the folders appear with their first records) |
+| `agents/evals/gold/v1/` | Gold v1, curated by the maintainer (sprint 0.5) |
 
 ## Before pushing
 
