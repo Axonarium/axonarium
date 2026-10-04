@@ -35,6 +35,10 @@ uv run pytest build/tests
 | `edges.graphml` | The edge graph |
 | `manifest.json` | Schema version and row counts |
 
+## Reconciliation report
+
+`--report DIR` also writes the reconciliation report (sprint 1.6, [ADR 0018](../docs/decisions/0018-reconciliation-report.md)): where sources agree, conflict or are silent about each connection, how the amygdala's outputs and inputs hold up at higher projection density thresholds, and which amygdala regions no claim names. It writes `reconciliation.json`, `.md` and `.svg`. Conflicts are listed, never resolved. CI writes it on every run, shows it in the run's summary and keeps it as the `reconciliation` artifact; it holds Allen-derived numbers, so it is never committed.
+
 ## Tables
 
 | Table | One row per |
