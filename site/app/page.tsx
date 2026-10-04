@@ -1,11 +1,14 @@
 import Link from "next/link";
 
+import { BrainView } from "@/components/brain/brain-view";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCounts } from "@/lib/data";
+import { getBrainEdges, getCounts } from "@/lib/data";
 
 export const revalidate = 300;
+
+const ATLAS = "allen-mouse-ccf-2017";
 
 const STEPS = [
   ["Claims", "One statement from one paper about one connection in one species, with the figure or table it comes from."],
@@ -14,7 +17,7 @@ const STEPS = [
 ] as const;
 
 export default async function Home() {
-  const counts = await getCounts();
+  const [counts, edges] = await Promise.all([getCounts(), getBrainEdges(ATLAS)]);
   return (
     <div className="space-y-14">
       <section className="space-y-5">
@@ -37,6 +40,12 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+
+      {edges && edges.length > 0 && (
+        <section aria-label="The mouse amygdala's projections in 3D">
+          <BrainView edges={edges} base={`/brain/${ATLAS}`} compact />
+        </section>
+      )}
 
       <section aria-labelledby="numbers" className="space-y-4">
         <h2 id="numbers" className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
