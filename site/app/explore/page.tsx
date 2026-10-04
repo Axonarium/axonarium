@@ -19,7 +19,7 @@ export default async function Explore() {
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">Connections</h1>
         <p className="max-w-2xl text-muted-foreground">
-          Each row is computed from cited claims. Open a connection to see every claim behind it, with its source.
+          Each row is computed from cited claims, strongest projection density first. Open a connection to see every claim behind it, with its source.
         </p>
       </div>
       {edges === null ? (

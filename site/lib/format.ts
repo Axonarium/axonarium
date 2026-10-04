@@ -44,6 +44,11 @@ export function edgeHref(id: string): string {
   return `/edges/${encodeURIComponent(id)}`;
 }
 
+/** Sort order for connections: the strongest projection density first, those without one last, then by ID. */
+export function strongestFirst(a: { id: string; density: number | null }, b: { id: string; density: number | null }): number {
+  return (b.density ?? -1) - (a.density ?? -1) || a.id.localeCompare(b.id);
+}
+
 /** The page of an atlas region. */
 export function regionHref(id: string): string {
   return `/regions/${encodeURIComponent(id)}`;

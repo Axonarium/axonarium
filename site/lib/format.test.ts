@@ -9,6 +9,7 @@ import {
   predicateLabel,
   regionHref,
   speciesName,
+  strongestFirst,
   withParam,
 } from "./format";
 
@@ -105,5 +106,12 @@ describe("region URLs", () => {
     expect(regionHref("MBA:295")).toBe("/regions/MBA%3A295");
     expect(edgeFromParam("MBA%3A295")).toBe("MBA:295");
     expect(edgeFromParam("MBA:295")).toBe("MBA:295");
+  });
+});
+
+describe("strongestFirst", () => {
+  it("puts the densest connections first and those without a density last", () => {
+    const edges = [{ id: "c", density: null }, { id: "b", density: 0.1 }, { id: "a", density: 0.5 }, { id: "d", density: 0.1 }];
+    expect(edges.sort(strongestFirst).map((e) => e.id)).toEqual(["a", "b", "d", "c"]);
   });
 });

@@ -4,7 +4,7 @@ These definitions are the only description of the database schema: Alembic gener
 build/migrations from them, and CI's `alembic check` fails if the two ever differ.
 """
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, MetaData, Table, Text
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, MetaData, Table, Text
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 
 from build.edges import compute_edges
@@ -73,6 +73,7 @@ edges = Table(
     *[Column(n, Integer, nullable=False) for n in ("n_claims", "n_present", "n_absent", "n_ambiguous", "n_disputed")],
     Column("evidence_classes", ARRAY(Text), nullable=False), _text("strength"),
     Column("signs", ARRAY(Text), nullable=False), Column("claim_ids", ARRAY(Text), nullable=False),
+    Column("density", Float),
 )
 retractions = Table(
     "retractions", metadata,

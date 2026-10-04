@@ -19,6 +19,8 @@ def compute_edges(records: list[Record]) -> list[dict]:
         first = claims[0]
         results = [c["result"] for c in claims]
         present = [c.get("strength") for c in claims if c["result"] == "present" and c.get("strength") in STRENGTHS]
+        densities = [m["value"] for c in claims if c["result"] == "present" for m in c.get("measurements") or []
+                     if m["quantity"] == "projection_density"]
         edges.append({
             "id": key,
             "subject_id": first["subject"]["id"],
@@ -34,6 +36,7 @@ def compute_edges(records: list[Record]) -> list[dict]:
             "n_disputed": sum(c.get("status") == "disputed" for c in claims),
             "evidence_classes": sorted({c["evidence_class"] for c in claims}),
             "strength": max(present, key=STRENGTHS.index) if present else None,
+            "density": max(densities) if densities else None,  # the strongest projection density found
             "signs": sorted({c["sign"] for c in claims}),
             "claim_ids": sorted(c["id"] for c in claims),
         })

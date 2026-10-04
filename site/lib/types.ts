@@ -17,12 +17,14 @@ export interface Edge {
   strength: string | null;
   signs: string[];
   claim_ids: string[];
+  /** The strongest projection density among the claims that found the connection. */
+  density: number | null;
 }
 
 /** The columns the explore table shows. */
 export type EdgeSummary = Pick<
   Edge,
-  "id" | "subject_id" | "predicate" | "object_id" | "species" | "n_claims" | "n_present" | "n_absent" | "strength"
+  "id" | "subject_id" | "predicate" | "object_id" | "species" | "n_claims" | "n_present" | "n_absent" | "strength" | "density"
 >;
 
 export interface Measurement {
