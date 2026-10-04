@@ -20,7 +20,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.3c Retraction status for citations without a DOI | Done |
 | 0.4 Rebuild pipeline | Done |
 | 1.2 Atlas layer | Done |
-| 1.3 Allen mouse connectivity | Done: 1,419 build-time claims, 703 connections |
+| 1.3 Allen mouse connectivity | Done: 1,276 build-time claims (612 accepted), 666 connections |
 | 3.3a Site shell on Vercel | Done: https://axonarium.vercel.app |
 | 0.3d Standard packages for the HTTP fetcher | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
