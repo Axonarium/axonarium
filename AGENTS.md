@@ -93,7 +93,7 @@ What exists now:
 | `data/entities/`, `data/sources/` | Pinned atlases, neuron types and the cited papers' records |
 | `ingest/` | Adapters for external sources: `atlases.py` (BrainGlobe atlases and UBERON bridges) and `allen_connectivity.py`, run by the build; `scout.py`, the literature scout |
 | `corpus/` | The scout's saved literature queries and the corpus manifest (ADR 0019) |
-| `agents/` | Role prompts (`agents/roles/`) and the eval harness with the gold set (`agents/evals/`, human-owned; ADR 0020); its own uv project |
+| `agents/` | Role prompts (`agents/roles/`), the eval harness with the gold set (`agents/evals/`, human-owned; ADR 0020) and the hidden-text screen every paper passes before a model reads it (`agents/screen/`; ADR 0023); its own uv project |
 | `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)); it also serves the read API |
 | `api/` | The read API's documentation ([api/README.md](api/README.md)) and the MCP server (`api/mcp`) |
 | `.github/` | CI, the deploy, the release and the scout workflows, Dependabot, code owners, sprint-card form, labels |

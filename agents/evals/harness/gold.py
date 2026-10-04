@@ -4,11 +4,13 @@
     <gold set>/papers/<name>.yaml
         source: {doi: ..., pmid: ..., pmcid: ...}
         text: {file: texts/<name>.txt}    # committed: synthetic or CC BY/CC0 text only (ADR 0005)
+           or {jats: texts/<name>.xml}    # committed JATS, likewise
            or {europe_pmc: PMC1234567}    # open-access full text, fetched at run time and cached, never committed
         claims: [GoldClaim, ...]          # every claim the paper makes, absent results included
+
+Every text passes the hidden-text screen (sprint C.5) before a model may read it.
 """
 
-import xml.etree.ElementTree as ET
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,6 +19,8 @@ from urllib.request import Request, urlopen
 import yaml
 
 from evals.harness.models import GoldClaim
+from screen import Screened, screen_jats, screen_text
+from screen.injection import Classifier
 
 FULL_TEXT = "https://www.ebi.ac.uk/europepmc/webservices/rest/{pmcid}/fullTextXML"
 CACHE = Path(__file__).resolve().parents[3] / ".cache" / "papers"
@@ -58,25 +62,16 @@ def _download(url: str) -> bytes:
         return response.read()
 
 
-def jats_text(xml: bytes) -> str:
-    """A JATS article's title, abstract and body as plain text, one paragraph or heading per line."""
-    root = ET.fromstring(xml)
-    blocks = []
-    for element in root.iter():
-        if element.tag in ("article-title", "title", "p", "caption"):
-            text = " ".join("".join(element.itertext()).split())
-            if text:
-                blocks.append(text)
-    return "\n".join(blocks)
-
-
-def text(gold: GoldSet, paper: Paper, download: Callable[[str], bytes] = _download, cache: Path = CACHE) -> str:
-    """The paper's text, from its committed file or Europe PMC's open-access full text (cached)."""
+def text(gold: GoldSet, paper: Paper, classify: Classifier, download: Callable[[str], bytes] = _download,
+         cache: Path = CACHE) -> Screened:
+    """The paper's screened text, from its committed file or Europe PMC's open-access full text (cached as fetched)."""
     if "file" in paper.text_spec:
-        return (gold.path / paper.text_spec["file"]).read_text(encoding="utf-8")
+        return screen_text((gold.path / paper.text_spec["file"]).read_text(encoding="utf-8"), classify)
+    if "jats" in paper.text_spec:
+        return screen_jats((gold.path / paper.text_spec["jats"]).read_bytes(), classify)
     pmcid = paper.text_spec["europe_pmc"]
-    cached = cache / f"{pmcid}.txt"
+    cached = cache / f"{pmcid}.xml"
     if not cached.exists():
         cached.parent.mkdir(parents=True, exist_ok=True)
-        cached.write_text(jats_text(download(FULL_TEXT.format(pmcid=pmcid))), encoding="utf-8")
-    return cached.read_text(encoding="utf-8")
+        cached.write_bytes(download(FULL_TEXT.format(pmcid=pmcid)))
+    return screen_jats(cached.read_bytes(), classify)

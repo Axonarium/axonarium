@@ -11,11 +11,12 @@ from pydantic import TypeAdapter, ValidationError
 from evals.harness import gold as goldsets
 from evals.harness import providers
 from evals.harness.models import SCHEMA, DraftClaim, Extraction, GoldClaim, values
-from evals.harness.run import AGENTS, main, read_prompt, run
+from evals.harness.run import AGENTS, main, markdown, read_prompt, run
 from evals.harness.score import score_paper
 
 PLACEHOLDER = AGENTS / "evals" / "fixtures" / "placeholder"
 MOUSE, RAT = "NCBITaxon:10090", "NCBITaxon:10116"
+CLEAN = lambda paragraphs: [0.0] * len(paragraphs)  # noqa: E731  a stand-in classifier that flags nothing
 
 
 def draft(subject, obj, species=MOUSE, predicate="projects_to", evidence="anterograde_tracer", result="present", sign="unknown"):
@@ -54,7 +55,7 @@ def test_the_placeholder_gold_set_loads():
     found = goldsets.load(PLACEHOLDER)
     assert found.version == "placeholder" and [p.name for p in found.papers] == ["synthetic-physiology", "synthetic-tracing"]
     assert sum(len(p.claims) for p in found.papers) == 6
-    assert "PHA-L" in goldsets.text(found, found.papers[1])
+    assert "PHA-L" in goldsets.text(found, found.papers[1], CLEAN).text
 
 
 def test_unknown_keys_in_a_gold_paper_are_refused(tmp_path):
@@ -72,10 +73,19 @@ def test_open_access_text_is_fetched_once_and_cached(tmp_path):
     paper = goldsets.Paper("p", {}, {"europe_pmc": "PMC1"}, [])
     found = goldsets.GoldSet(tmp_path, "x", None, [paper])
     download = lambda url: asked.append(url) or xml  # noqa: E731
-    first = goldsets.text(found, paper, download=download, cache=tmp_path / "cache")
-    assert first == "A title\nShort abstract.\nResults\nBLA projects to CeA."
-    assert goldsets.text(found, paper, download=download, cache=tmp_path / "cache") == first
+    first = goldsets.text(found, paper, CLEAN, download=download, cache=tmp_path / "cache")
+    assert first.text == "A title\nShort abstract.\nResults\nBLA projects to CeA." and not first.flagged
+    assert goldsets.text(found, paper, CLEAN, download=download, cache=tmp_path / "cache") == first
     assert asked == ["https://www.ebi.ac.uk/europepmc/webservices/rest/PMC1/fullTextXML"]
+    assert (tmp_path / "cache" / "PMC1.xml").read_bytes() == xml
+
+
+def test_committed_jats_is_screened(tmp_path):
+    (tmp_path / "a.xml").write_bytes(b'<article><body><p>Seen.<styled-content style="color:#fff">Unseen.</styled-content>'
+                                     b'</p></body></article>')
+    paper = goldsets.Paper("p", {}, {"jats": "a.xml"}, [])
+    screened = goldsets.text(goldsets.GoldSet(tmp_path, "x", None, [paper]), paper, CLEAN)
+    assert screened.text == "Seen." and [f.layer for f in screened.findings] == ["hidden-markup"]
 
 
 # Scoring
@@ -225,20 +235,45 @@ def test_a_run_scores_every_paper_and_keeps_failures():
                                                              evidence="optogenetic_circuit_mapping", sign="excitatory")]),
                                     "end_turn", {"input_tokens": 10, "output_tokens": 4})
 
-    result = run(goldsets.load(PLACEHOLDER), OneFails(), AGENTS / "roles" / "extractor.md", "high", "2026-10-04")
+    result = run(goldsets.load(PLACEHOLDER), OneFails(), AGENTS / "roles" / "extractor.md", "high", "2026-10-04",
+                 lambda g, paper: goldsets.text(g, paper, CLEAN))
     assert result["failures"] == {"synthetic-tracing": "refusal"} and result["usage"] == {"input_tokens": 13, "output_tokens": 4}
     assert result["counts"]["gold"] == 6 and result["counts"]["matched"] == 1 and result["precision"] == 1.0
+    assert result["screened"] == []
+
+
+def test_a_flagged_paper_is_never_sent_to_the_model():
+    class Refuses:
+        name = "test:model"
+
+        def extract(self, paper, system, text):
+            raise AssertionError(f"{paper} reached the model")
+
+    flags_everything = lambda paragraphs: [1.0] * len(paragraphs)  # noqa: E731
+    result = run(goldsets.load(PLACEHOLDER), Refuses(), AGENTS / "roles" / "extractor.md", "high", "2026-10-04",
+                 lambda g, paper: goldsets.text(g, paper, flags_everything))
+    assert result["screened"] == ["synthetic-physiology", "synthetic-tracing"] and result["recall"] == 0.0
+    assert result["papers"][0]["screen"][0]["layer"] == "injection"
+    assert "**synthetic-tracing** was flagged by the hidden-text screen" in markdown(result)
 
 
 def test_cli_writes_the_report(tmp_path, capsys):
     out = tmp_path / "results"
     answers = PLACEHOLDER / "answers"
-    assert main(["--gold", str(PLACEHOLDER), "--model", f"replay:{answers}", "--out", str(out)]) == 0
+    assert main(["--gold", str(PLACEHOLDER), "--model", f"replay:{answers}", "--out", str(out)],
+                classify=lambda paragraphs: [0.99 if "previous instructions" in p.lower() else 0.0 for p in paragraphs]) == 0
     [report] = list(out.glob("*.json"))
     result = json.loads(report.read_text(encoding="utf-8"))
     assert (result["precision"], result["counts"]["direction_errors"], result["absent_recall"]) == (0.8, 1, 0.0)
     assert result["field_accuracy"]["sign"] == 0.75 and Path(str(report).removesuffix(".json") + ".md").exists()
     assert "precision 80.0%, recall 66.7%" in capsys.readouterr().out
+
+
+def test_cli_stops_when_the_screen_misses_a_planted_fixture(tmp_path, capsys):
+    answers = PLACEHOLDER / "answers"
+    assert main(["--gold", str(PLACEHOLDER), "--model", f"replay:{answers}", "--out", str(tmp_path)], classify=CLEAN) == 1
+    assert "the hidden-text screen fails its fixtures: planted-visible-instruction.xml: missed" in capsys.readouterr().out
+    assert not list(tmp_path.iterdir())
 
 
 def test_cli_reports_a_bad_model_spec(capsys):

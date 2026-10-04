@@ -77,6 +77,33 @@ jobs:
         # The cache lives outside the checkout, so answers committed in a pull request are never read.
         run: uv run --frozen python -m checks online --base "origin/$BASE_REF" --cache "$RUNNER_TEMP/checks-cache"
 
+  screen:  # The hidden-text screen's real classifier on its planted and clean fixtures (sprint C.5, ADR 0023).
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: agents
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.12.22"
+          enable-cache: false
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:  # The pinned model (about 740 MB); injection.py holds its revision.
+          path: ~/.cache/huggingface/hub
+          key: screen-model-${{ hashFiles('agents/screen/injection.py') }}
+      - name: The real classifier passes the screen's fixtures
+        env:
+          AXONARIUM_SCREEN_MODEL: "1"
+        run: uv run --frozen pytest -q -p no:cacheprovider screen/tests/test_model.py
+
   site:
     runs-on: ubuntu-latest
     timeout-minutes: 15
