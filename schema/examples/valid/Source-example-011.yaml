@@ -2,6 +2,7 @@ id: doi:10.5555/axonarium.example.011
 title: Illustrative example source 011 (not a real paper)
 year: 2026
 journal: Axonarium examples
+kind: journal_article
 license: CC-BY-NC-4.0
 open_access: true
 retracted: false

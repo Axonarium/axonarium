@@ -141,7 +141,7 @@ class _Asker:
             return [Finding(path, "unknown-citation", f"source ID {source_id!r} is not in canonical form")]
         findings, fresh = self._exists(path, ("source", source_id.lower()), lambda: fetch_source(self.fetch, source_id, self.today),
                                        f"{source_id} does not exist")
-        for field in ("license", "retracted") if fresh else ():
+        for field in ("kind", "journal", "license", "retracted") if fresh else ():  # what the allowlist and rules trust
             if data.get(field) != fresh.get(field):
                 findings.append(Finding(path, "source-outdated",
                                         f"source record says {field}: {_show(data.get(field))}, but its registry now gives "

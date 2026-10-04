@@ -1,5 +1,35 @@
 {
     "$defs": {
+        "AcceptedSource": {
+            "additionalProperties": false,
+            "description": "One kind of source the allowlist accepts, optionally only from named venues, such as preprints from bioRxiv.",
+            "properties": {
+                "kind": {
+                    "$ref": "#/$defs/SourceKind",
+                    "description": "What kind of publication the source is, as its registry types it (Crossref, DataCite or PubMed)."
+                },
+                "reason": {
+                    "description": "Why, in a sentence or two.",
+                    "type": "string"
+                },
+                "venues": {
+                    "description": "The journals or preprint servers accepted, as source records name them. Without it, every venue of the kind is accepted.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "kind",
+                "reason"
+            ],
+            "title": "AcceptedSource",
+            "type": "object"
+        },
         "Actor": {
             "description": "Who did a piece of work.",
             "enum": [
@@ -8,6 +38,24 @@
             ],
             "title": "Actor",
             "type": "string"
+        },
+        "Allowlist": {
+            "additionalProperties": false,
+            "description": "The kinds of source a claim may cite, kept in data/allowlist.yaml. Any other kind is refused. The maintainer owns the file, so changes always get human review (plan Part 3.3, Layer 2; ADR 0015).",
+            "properties": {
+                "accepted": {
+                    "description": "The kinds of source accepted.",
+                    "items": {
+                        "$ref": "#/$defs/AcceptedSource"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "accepted"
+            ],
+            "title": "Allowlist",
+            "type": "object"
         },
         "Any": {
             "additionalProperties": true,
@@ -1292,6 +1340,10 @@
                         "null"
                     ]
                 },
+                "kind": {
+                    "$ref": "#/$defs/SourceKind",
+                    "description": "What kind of publication the source is, as its registry types it (Crossref, DataCite or PubMed)."
+                },
                 "license": {
                     "description": "The paper's licence, as an SPDX ID where one exists.",
                     "type": [
@@ -1329,10 +1381,22 @@
                 }
             },
             "required": [
-                "id"
+                "id",
+                "kind"
             ],
             "title": "Source",
             "type": "object"
+        },
+        "SourceKind": {
+            "description": "The kinds of publication a source can be.",
+            "enum": [
+                "journal_article",
+                "preprint",
+                "dataset",
+                "other"
+            ],
+            "title": "SourceKind",
+            "type": "string"
         },
         "Transmitter": {
             "description": "A neuron type's main neurotransmitter.",
@@ -1543,6 +1607,6 @@
     ],
     "title": "axonarium",
     "type": "object",
-    "version": "0.3.0"
+    "version": "0.4.0"
 }
 

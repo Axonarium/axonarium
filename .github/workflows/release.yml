@@ -1,0 +1,59 @@
+name: Release
+
+# A release (ADR 0016): rebuild everything from the files into an empty database, as CI does, then publish the dumps
+# as a GitHub release. Zenodo's GitHub integration archives every published release and gives it a DOI.
+# Run it from the Actions tab, on main, with a version such as v2026.10.0.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version, vYYYY.MM.N (such as v2026.10.0)
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write  # to create the release and its tag
+    services:
+      postgres:  # An empty database: a release proves a full rebuild from empty still passes.
+        image: postgres:17@sha256:d74eeac9a635390a49bc21bd49fccd973de707e2a53a76ac49b552b8712ec46f
+        env:
+          POSTGRES_PASSWORD: postgres  # A throwaway database, reachable only from this job.
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.12.22"
+          enable-cache: false
+      - name: Rebuild from empty
+        env:
+          AXONARIUM_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+        run: |
+          uv run --frozen alembic upgrade head
+          uv run --frozen python -m build --out dist
+      - name: Package the dumps
+        run: uv run --frozen python -m build.release "$VERSION" --commit "$GITHUB_SHA" --dist dist --out release
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$VERSION" release/axonarium-*-dumps.zip release/SHA256SUMS \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Axonarium $VERSION" --notes-file release/NOTES.md

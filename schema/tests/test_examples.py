@@ -134,7 +134,7 @@ def test_example_citations_use_the_test_prefix():
 
 
 GENERATED = SCHEMA_DIR / "generated"
-RECORD_CLASSES = ["ConnectivityClaim", "HomologyClaim", "Atlas", "Region", "NeuronType", "Source", "RetractionLog"]
+RECORD_CLASSES = ["ConnectivityClaim", "HomologyClaim", "Atlas", "Region", "NeuronType", "Source", "RetractionLog", "Allowlist"]
 GENERATORS = [
     (["gen-json-schema"], "axonarium.schema.json"),
     *[(["gen-json-schema", "--top-class", cls, "--closed"], f"json/{cls}.schema.json") for cls in RECORD_CLASSES],
