@@ -1,0 +1,11 @@
+id: nt-jnbfnmpzh7
+name: Rat central amygdala medial division output neurons
+species: NCBITaxon:10116
+region:
+  type: region
+  id: UBERON:0002883
+transmitter: gaba
+cell_ontology: CL:0000617
+synonyms:
+- rat CeM output neurons
+- rat CeM projection neurons

@@ -1,0 +1,13 @@
+id: nt-v3bbhjmhj0
+name: BLA neurogliaform cells
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Npy
+cell_ontology: CL:0000693
+synonyms:
+- BLA NPY+ neurogliaform cells
