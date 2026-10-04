@@ -12,3 +12,6 @@
 
 # Deleting or retracting a claim needs an entry here, so it always needs the maintainer (ADR 0006).
 /data/retractions.yaml @tjbanks
+
+# Which kinds of source claims may cite: human-owned, like the gold set (plan Part 3.3, ADR 0015).
+/data/allowlist.yaml @tjbanks

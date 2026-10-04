@@ -201,3 +201,13 @@ def test_crossref_miss_caught_through_pubmed(online_tree, fetch):
     record.write_text("id: doi:10.1503/jpn.120073\nretracted: false\n", encoding="utf-8")
     findings = [f for f in online(online_tree, fetch) if f.path == str(record)]
     assert any(f.rule == "source-outdated" and "retracted: false" in f.message for f in findings), [str(f) for f in findings]
+
+
+@pytest.mark.parametrize("field,edited", [("kind", "preprint"), ("journal", "bioRxiv")])
+def test_source_kind_and_venue_compared_with_registry(online_tree, fetch, field, edited):
+    # The allowlist trusts a record's kind and journal (ADR 0015), so a hand edit of either is caught.
+    record = online_tree / "sources" / "doi" / "doi_10.1038_s41467-021-22915-5.yaml"
+    data = yaml.safe_load(record.read_text(encoding="utf-8")) | {field: edited}
+    record.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+    findings = [f for f in online(online_tree, fetch) if f.path == str(record)]
+    assert [f.rule for f in findings] == ["source-outdated"] and f"{field}: {edited}" in findings[0].message, findings

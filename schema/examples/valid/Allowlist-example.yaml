@@ -1,0 +1,7 @@
+accepted:
+  - kind: journal_article
+    reason: "Illustrative example: articles in journals."
+  - kind: preprint
+    venues:
+      - bioRxiv
+    reason: "Illustrative example: preprints from one server."

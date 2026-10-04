@@ -1,0 +1,8 @@
+# expect: 'kind' is a required property
+id: doi:10.5555/axonarium.example.099
+title: Illustrative example source 099 (not a real paper)
+year: 2026
+journal: Axonarium examples
+license: CC-BY-4.0
+open_access: true
+retracted: false
