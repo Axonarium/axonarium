@@ -102,8 +102,10 @@ describe("the read API's shapes", () => {
     });
     expect(detail.outputs[0]).toEqual({ connection: edge.id, region: { id: "MBA:672", acronym: "CP", name: "Caudoputamen" }, density: 0.42, claims: 2, accepted: 1 });
     expect(conforms("RegionDetail", detail)).toBe(true);
-    const source: Source = { id: "doi:10.1038/nature13186", title: "A mesoscale connectome of the mouse brain", year: 2014, journal: "Nature", license: null, open_access: false, retracted: false };
+    const source: Source = { id: "doi:10.1038/nature13186", title: "A mesoscale connectome of the mouse brain", year: 2014, journal: "Nature", kind: "journal_article", license: null, open_access: false, retracted: false };
+    expect(toSource(source).kind).toBe("journal_article");
     expect(conforms("Source", toSource(source))).toBe(true);
+    expect(() => conforms("Source", { ...toSource(source), kind: "blog" })).toThrow(/allowed values/);
   });
 });
 

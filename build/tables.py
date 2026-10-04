@@ -52,8 +52,8 @@ neuron_types = Table(
 )
 sources = Table(
     "sources", metadata,
-    Column("id", Text, primary_key=True), _text("title"), Column("year", Integer), _text("journal"), _text("license"),
-    Column("open_access", Boolean), Column("retracted", Boolean), Column("extra", JSONB),
+    Column("id", Text, primary_key=True), _text("title"), Column("year", Integer), _text("journal"), _text("kind", True),
+    _text("license"), Column("open_access", Boolean), Column("retracted", Boolean), Column("extra", JSONB),
 )
 connectivity_claims = Table(
     "connectivity_claims", metadata,

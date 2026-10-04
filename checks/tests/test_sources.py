@@ -11,7 +11,8 @@ from checks.cli import main, run_files
 from checks.tests.conftest import OpenerAdapter
 from checks.http import Fetcher
 from checks.lookups import crossref_work, datacite_record
-from checks.sources import fetch_source, fill_sources, source_from_crossref, source_from_datacite, source_from_pubmed
+from checks.sources import (fetch_source, fill_sources, source_from_crossref, source_from_datacite, source_from_pmc,
+                             source_from_pubmed)
 
 TODAY = date(2026, 10, 3)
 HINTIRYAN = "10.1038/s41467-021-22915-5"
@@ -25,6 +26,7 @@ def test_crossref_open_paper(fetch):
         "title": "Connectivity characterization of the mouse basolateral amygdalar complex",
         "year": 2021,
         "journal": "Nature Communications",
+        "kind": "journal_article",
         "license": "CC-BY-4.0",
         "open_access": True,
         "retracted": False,
@@ -40,8 +42,58 @@ def test_crossref_retracted_paper(fetch):
 def test_datacite_preprint(fetch):
     record = source_from_datacite(PAPERQA2, datacite_record(fetch, PAPERQA2))
     assert record["id"] == "doi:10.48550/arxiv.2409.13740"
-    assert record["license"] == "CC-BY-SA-4.0" and record["open_access"] is True and record["journal"] == "arXiv"
-    assert "retracted" not in record
+    assert record["license"] == "CC-BY-SA-4.0" and record["open_access"] is True
+    assert record["journal"] == "arXiv" and record["kind"] == "preprint" and "retracted" not in record
+
+
+@pytest.mark.parametrize("message,kind,journal", [
+    ({"type": "journal-article", "container-title": ["Neuron"]}, "journal_article", "Neuron"),
+    ({"type": "posted-content", "subtype": "preprint", "institution": [{"name": "bioRxiv"}],
+      "publisher": "Cold Spring Harbor Laboratory"}, "preprint", "bioRxiv"),
+    ({"type": "posted-content", "subtype": "preprint", "institution": [{"name": "medRxiv"}]}, "preprint", "medRxiv"),
+    ({"type": "posted-content", "subtype": "working_paper", "institution": [{"name": "SSRN"}]}, "other", None),
+    ({"type": "dataset"}, "dataset", None),
+    ({"type": "book-chapter", "container-title": ["A Book"]}, "other", "A Book"),
+    ({}, "other", None),
+])
+def test_crossref_kind(message, kind, journal):
+    record = source_from_crossref("10.5555/x", message, TODAY)
+    assert record["kind"] == kind and record.get("journal") == journal
+
+
+@pytest.mark.parametrize("doi,attributes,kind,journal", [
+    ("10.48550/arXiv.1234.56789", {"publisher": "arXiv"}, "preprint", "arXiv"),  # arXiv is a preprint server
+    ("10.5281/zenodo.1", {"types": {"resourceTypeGeneral": "Dataset"}, "publisher": "Zenodo"}, "dataset", "Zenodo"),
+    ("10.5555/y", {"types": {"resourceTypeGeneral": "JournalArticle"}, "container": {"title": "J"}}, "journal_article", "J"),
+    ("10.5555/z", {"types": {"resourceTypeGeneral": "Preprint"}, "publisher": {"name": "OSF Preprints"}}, "preprint",
+     "OSF Preprints"),
+    ("10.5555/w", {"types": {"resourceTypeGeneral": "Text"}}, "other", None),
+])
+def test_datacite_kind(doi, attributes, kind, journal):
+    record = source_from_datacite(doi, attributes)
+    assert record["kind"] == kind and record.get("journal") == journal
+
+
+@pytest.mark.parametrize("pubtype,source,full,kind,journal", [
+    (["Journal Article"], "J Neurosci", "The Journal of neuroscience", "journal_article", "The Journal of neuroscience"),
+    (["Review"], "Neuron", "Neuron", "journal_article", "Neuron"),
+    (["Preprint"], "bioRxiv", "bioRxiv : the preprint server for biology", "preprint", "bioRxiv"),
+    (["Preprint"], "Res Sq", "Research square", "preprint", "Research Square"),
+    (["Letter"], "Nature", "Nature", "other", "Nature"),
+])
+def test_pubmed_kind(pubtype, source, full, kind, journal):
+    record = source_from_pubmed("1", {"title": "T", "pubdate": "2020", "source": source, "fulljournalname": full,
+                                      "pubtype": pubtype})
+    assert record["kind"] == kind and record["journal"] == journal
+
+
+@pytest.mark.parametrize("source,full,kind,journal", [
+    ("Nat Commun", "Nature communications", "journal_article", "Nature communications"),
+    ("bioRxiv", "bioRxiv : the preprint server for biology", "preprint", "bioRxiv"),
+])
+def test_pmc_kind(source, full, kind, journal):
+    record = source_from_pmc("PMC1", {"title": "T", "pubdate": "2020", "source": source, "fulljournalname": full})
+    assert record["kind"] == kind and record["journal"] == journal
 
 
 def test_crossref_licence_not_yet_started():
@@ -95,7 +147,7 @@ def test_refresh_updates_and_keeps_extra(tree, fetch):
     assert (written, findings) == ([tree / WAKEFIELD_FILE], [])
     refreshed = yaml.safe_load((tree / WAKEFIELD_FILE).read_text(encoding="utf-8"))
     assert refreshed["retracted"] is True and refreshed["extra"] == {"lab.note": "kept"}
-    assert list(refreshed) == ["id", "title", "year", "journal", "retracted", "extra"]
+    assert list(refreshed) == ["id", "title", "year", "journal", "kind", "retracted", "extra"]
     assert (tree / HINTIRYAN_FILE).stat().st_mtime_ns == hintiryan_before
 
 
@@ -170,7 +222,7 @@ def test_arxiv_record(fetch):
 
 def test_pubmed_odd_pubdate():
     record = source_from_pubmed("1", {"title": "T", "pubdate": "", "pubtype": ["Journal Article"]})
-    assert record == {"id": "pubmed:1", "title": "T", "retracted": False}
+    assert record == {"id": "pubmed:1", "title": "T", "kind": "journal_article", "retracted": False}
 
 
 def pmid_only_claim(data: Path, pmid: str) -> Path:

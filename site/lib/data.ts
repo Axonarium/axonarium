@@ -1,18 +1,29 @@
 // Read-only queries against the Supabase serving tables, with the public (publishable) key. Server only.
 //
-// A build without the Supabase variables (pull-request CI) gets null, and pages say the data isn't connected.
-// A configured database that fails throws, so Next.js keeps serving the last good page and shows app/error.tsx
-// only when it has none.
+// When the database can't answer (paused, down, or not configured), each query is answered from the snapshot of
+// the database that the deploy bundles with the site (Tier 1, ADR 0017). The snapshot holds exactly what the
+// deploy loaded into the database, so the answers are the same.
+//
+// A build with neither (pull-request CI) gets null, and pages say the data isn't connected. A configured database
+// that fails without a snapshot throws, so Next.js keeps serving the last good page and shows app/error.tsx only
+// when it has none.
 
 import "server-only";
+
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { type BrainClaim, type BrainEdge, brainEdges } from "./brain";
+import * as offline from "./offline";
+import type { RegionDetail, RegionPage, Tables } from "./offline";
 import { fetchAll } from "./pages";
 import { type IndexedRegion, regionIndex } from "./region-index";
 import type { AtlasRegion, RegionName } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
+
+export type { RegionDetail, RegionPage } from "./offline";
 
 const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength, density";
 
@@ -27,6 +38,35 @@ function failed(what: string, error: { message: string }): never {
   throw new Error("The database couldn't be read.");
 }
 
+// The deploy writes it with `python -m build --snapshot site/snapshot/snapshot.json`; next.config.ts bundles it.
+const SNAPSHOT = path.join(process.cwd(), "snapshot", "snapshot.json");
+let snapshot: Promise<Tables | null> | undefined;
+
+function loadSnapshot(): Promise<Tables | null> {
+  snapshot ??= readFile(SNAPSHOT, "utf8").then(
+    (text) => (JSON.parse(text) as { tables: Tables }).tables,
+    () => null, // No snapshot: a pull request's build, or local development.
+  );
+  return snapshot;
+}
+
+/** The database's answer; the snapshot's when the database fails or isn't configured; `none` with neither. */
+async function read<T, N = null>(live: (db: SupabaseClient) => Promise<T>, fallback: (tables: Tables) => T, none: N): Promise<T | N> {
+  const db = client();
+  if (db) {
+    try {
+      return await live(db);
+    } catch (error) {
+      const tables = await loadSnapshot();
+      if (!tables) throw error;
+      console.error("Answering from the snapshot instead.");
+      return fallback(tables);
+    }
+  }
+  const tables = await loadSnapshot();
+  return tables ? fallback(tables) : none;
+}
+
 async function rows<T>(what: string, run: () => PromiseLike<{ data: T | null; error: { message: string } | null }>): Promise<T> {
   const { data, error } = await run();
   if (error) failed(what, error);
@@ -39,76 +79,83 @@ async function count(db: SupabaseClient, table: string): Promise<number> {
   return n ?? 0;
 }
 
-export async function getCounts(): Promise<Counts | null> {
-  const db = client();
-  if (!db) return null;
-  const [connectivity, homology, edges, sources, species] = await Promise.all([
-    count(db, "connectivity_claims"),
-    count(db, "homology_claims"),
-    count(db, "edges"),
-    count(db, "sources"),
-    fetchAll((from, to) => rows<{ species: string }[]>("edge species", () => db.from("edges").select("species").order("id").range(from, to))),
-  ]);
-  return { claims: connectivity + homology, edges, sources, species: new Set(species.map((row) => row.species)).size };
+export function getCounts(): Promise<Counts | null> {
+  return read(async (db) => {
+    const [connectivity, homology, edges, sources, species] = await Promise.all([
+      count(db, "connectivity_claims"),
+      count(db, "homology_claims"),
+      count(db, "edges"),
+      count(db, "sources"),
+      fetchAll((from, to) => rows<{ species: string }[]>("edge species", () => db.from("edges").select("species").order("id").range(from, to))),
+    ]);
+    return { claims: connectivity + homology, edges, sources, species: new Set(species.map((row) => row.species)).size };
+  }, offline.counts, null);
 }
 
-export async function listEdges(): Promise<EdgeSummary[] | null> {
-  const db = client();
-  if (!db) return null;
-  return fetchAll((from, to) => rows<EdgeSummary[]>("edges", () => db.from("edges").select(EDGE_SUMMARY).order("id").range(from, to)));
+export function listEdges(): Promise<EdgeSummary[] | null> {
+  return read(
+    (db) => fetchAll((from, to) => rows<EdgeSummary[]>("edges", () => db.from("edges").select(EDGE_SUMMARY).order("id").range(from, to))),
+    offline.edges,
+    null,
+  );
 }
 
-export async function getEdge(id: string): Promise<Edge | null | undefined> {
-  const db = client();
-  if (!db) return undefined;
-  return rows<Edge | null>("edge", () => db.from("edges").select("*").eq("id", id).maybeSingle());
+export function getEdge(id: string): Promise<Edge | null | undefined> {
+  return read((db) => rows<Edge | null>("edge", () => db.from("edges").select("*").eq("id", id).maybeSingle()), (t) => offline.edge(t, id), undefined);
 }
 
-export async function getClaims(ids: string[]): Promise<ConnectivityClaim[]> {
-  const db = client();
-  if (!db) return [];
-  return rows<ConnectivityClaim[]>("claims", () => db.from("connectivity_claims").select("*").in("id", ids).order("id"));
+export function getClaims(ids: string[]): Promise<ConnectivityClaim[]> {
+  return read(
+    (db) => rows<ConnectivityClaim[]>("claims", () => db.from("connectivity_claims").select("*").in("id", ids).order("id")),
+    (t) => offline.claims(t, ids),
+    [],
+  );
 }
 
-export async function getClaim(id: string): Promise<ConnectivityClaim | null | undefined> {
-  const db = client();
-  if (!db) return undefined;
-  return rows<ConnectivityClaim | null>("claim", () => db.from("connectivity_claims").select("*").eq("id", id).maybeSingle());
+export function getClaim(id: string): Promise<ConnectivityClaim | null | undefined> {
+  return read(
+    (db) => rows<ConnectivityClaim | null>("claim", () => db.from("connectivity_claims").select("*").eq("id", id).maybeSingle()),
+    (t) => offline.claim(t, id),
+    undefined,
+  );
 }
 
-export async function getSource(id: string): Promise<Source | null> {
-  const db = client();
-  if (!db) return null;
-  return rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle());
+export function getSource(id: string): Promise<Source | null> {
+  return read((db) => rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle()), (t) => offline.source(t, id), null);
 }
 
 /** The names of these atlas regions, by ID (IDs that aren't atlas regions are left out). */
 export async function getRegionNames(ids: string[]): Promise<Record<string, RegionName>> {
-  const db = client();
-  if (!db || ids.length === 0) return {};
-  const chunks = Array.from({ length: Math.ceil(ids.length / 200) }, (_, i) => ids.slice(i * 200, i * 200 + 200));
-  const found = await Promise.all(
-    chunks.map((chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk))),
+  if (ids.length === 0) return {};
+  return read(
+    async (db) => {
+      const chunks = Array.from({ length: Math.ceil(ids.length / 200) }, (_, i) => ids.slice(i * 200, i * 200 + 200));
+      const found = await Promise.all(
+        chunks.map((chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk))),
+      );
+      return Object.fromEntries(found.flat().map((region) => [region.id, region]));
+    },
+    (t) => offline.regionNames(t, ids),
+    {},
   );
-  return Object.fromEntries(found.flat().map((region) => [region.id, region]));
 }
 
 /** Each atlas, with its number of regions and the regions UBERON places under the amygdala. */
-export async function getAtlases(): Promise<{ atlas: Atlas; regions: number; amygdala: AtlasRegion[] }[] | null> {
-  const db = client();
-  if (!db) return null;
-  const atlases = await rows<Atlas[]>("atlases", () =>
-    db.from("atlases").select("id, name, species, version, url, brainglobe_name, citation").order("id"),
-  );
-  return Promise.all(
-    atlases.map(async (atlas) => ({
-      atlas,
-      regions: await countWhere(db, "regions", "atlas", atlas.id),
-      amygdala: await rows<AtlasRegion[]>("amygdala regions", () =>
-        db.from("regions").select("id, acronym, name, uberon, uberon_label").eq("atlas", atlas.id).eq("amygdala", true).order("id"),
-      ),
-    })),
-  );
+export function getAtlases(): Promise<{ atlas: Atlas; regions: number; amygdala: AtlasRegion[] }[] | null> {
+  return read(async (db) => {
+    const atlases = await rows<Atlas[]>("atlases", () =>
+      db.from("atlases").select("id, name, species, version, url, brainglobe_name, citation").order("id"),
+    );
+    return Promise.all(
+      atlases.map(async (atlas) => ({
+        atlas,
+        regions: await countWhere(db, "regions", "atlas", atlas.id),
+        amygdala: await rows<AtlasRegion[]>("amygdala regions", () =>
+          db.from("regions").select("id, acronym, name, uberon, uberon_label").eq("atlas", atlas.id).eq("amygdala", true).order("id"),
+        ),
+      })),
+    );
+  }, offline.atlases, null);
 }
 
 async function countWhere(db: SupabaseClient, table: string, column: string, value: string): Promise<number> {
@@ -118,9 +165,11 @@ async function countWhere(db: SupabaseClient, table: string, column: string, val
 }
 
 /** Region-to-region connections in one atlas, with their strongest projection density, for the 3D view. */
-export async function getBrainEdges(atlas: string): Promise<BrainEdge[] | null> {
-  const db = client();
-  if (!db) return null;
+export function getBrainEdges(atlas: string): Promise<BrainEdge[] | null> {
+  return read((db) => liveBrainEdges(db, atlas), (t) => offline.brain(t, atlas), null);
+}
+
+async function liveBrainEdges(db: SupabaseClient, atlas: string): Promise<BrainEdge[]> {
   const [edges, claims] = await Promise.all([
     fetchAll((from, to) =>
       rows<Pick<Edge, "id" | "subject_id" | "object_id">[]>("brain edges", () =>
@@ -138,25 +187,12 @@ export async function getBrainEdges(atlas: string): Promise<BrainEdge[] | null> 
   return brainEdges(edges, claims).filter((edge) => edge.claims > 0);
 }
 
-export interface RegionDetail extends AtlasRegion {
-  atlas: string;
-  parent: string | null;
-  amygdala: boolean;
-}
-
-export interface RegionPage {
-  region: RegionDetail;
-  children: RegionName[];
-  outputs: BrainEdge[];
-  inputs: BrainEdge[];
-  /** Names of the parent and every connected region. */
-  names: Record<string, RegionName>;
-}
-
 /** An atlas region with its subregions and its connections both ways, each with its strongest density. */
-export async function getRegion(id: string): Promise<RegionPage | null | undefined> {
-  const db = client();
-  if (!db) return undefined;
+export function getRegion(id: string): Promise<RegionPage | null | undefined> {
+  return read((db) => liveRegion(db, id), (t) => offline.region(t, id), undefined);
+}
+
+async function liveRegion(db: SupabaseClient, id: string): Promise<RegionPage | null> {
   const region = await rows<RegionDetail | null>("region", () =>
     db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala").eq("id", id).maybeSingle(),
   );
@@ -192,15 +228,16 @@ export async function getRegionIndex(): Promise<IndexedRegion[] | null> {
   return regionIndex(edges, names);
 }
 
-/** Letters, digits, spaces, hyphens, apostrophes and dots only: safe inside a PostgREST `or` filter. */
-const searchable = (q: string) => q.replace(/[^\p{L}\p{N} .'-]/gu, "").trim().slice(0, 100);
+type RegionsFilter = { q?: string | null; atlas?: string | null; amygdala?: boolean | null; limit: number; offset: number };
 
 /** A page of atlas regions (read API), by ID, optionally matching part of a name or acronym. */
-export async function listRegions(f: { q?: string | null; atlas?: string | null; amygdala?: boolean | null; limit: number; offset: number }) {
-  const db = client();
-  if (!db) return null;
+export function listRegions(f: RegionsFilter): Promise<{ items: RegionDetail[]; total: number } | null> {
+  return read((db) => liveRegions(db, f), (t) => offline.regionsPage(t, f), null);
+}
+
+async function liveRegions(db: SupabaseClient, f: RegionsFilter) {
   let query = db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala", { count: "exact" });
-  const q = f.q ? searchable(f.q) : "";
+  const q = f.q ? offline.searchable(f.q) : "";
   if (q) query = query.or(`acronym.ilike.*${q}*,name.ilike.*${q}*`);
   if (f.atlas) query = query.eq("atlas", f.atlas);
   if (f.amygdala !== null && f.amygdala !== undefined) query = query.eq("amygdala", f.amygdala);
@@ -209,8 +246,7 @@ export async function listRegions(f: { q?: string | null; atlas?: string | null;
   return { items: (data ?? []) as RegionDetail[], total: total ?? 0 };
 }
 
-/** A page of connections (read API), strongest projection density first. */
-export async function listConnections(f: {
+type ConnectionsFilter = {
   subject?: string | null;
   object?: string | null;
   species?: string | null;
@@ -218,9 +254,14 @@ export async function listConnections(f: {
   minDensity?: number | null;
   limit: number;
   offset: number;
-}) {
-  const db = client();
-  if (!db) return null;
+};
+
+/** A page of connections (read API), strongest projection density first. */
+export function listConnections(f: ConnectionsFilter): Promise<{ items: Edge[]; total: number } | null> {
+  return read((db) => liveConnections(db, f), (t) => offline.connectionsPage(t, f), null);
+}
+
+async function liveConnections(db: SupabaseClient, f: ConnectionsFilter) {
   let query = db.from("edges").select("*", { count: "exact" });
   if (f.subject) query = query.eq("subject_id", f.subject);
   if (f.object) query = query.eq("object_id", f.object);
