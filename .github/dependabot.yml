@@ -51,3 +51,5 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: typescript  # typescript-eslint doesn't support TypeScript 7 yet.
         update-types: ["version-update:semver-major"]
+      - dependency-name: eslint  # eslint-config-next's React rules break on ESLint 10 (getFilename was removed).
+        update-types: ["version-update:semver-major"]
