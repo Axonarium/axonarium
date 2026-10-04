@@ -26,7 +26,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 3.3c Network view | Done: a linked force-directed graph on `/brain` |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract, reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.4 MCP server | Done: `api/mcp`, four read-only tools over the API ([ADR 0014](docs/decisions/0014-mcp-server.md)) |
-| 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | In design: a spec for review comes first |
+| 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | On hold until there is more data (maintainer, 4 October 2026); the first form will be a bmtk PopNet population model |
 | 3.3d Region pages | Done: `/regions`, a filterable index, and `/regions/<id>`, each region's inputs and outputs with evidence |
 | 0.3d Standard packages for the HTTP fetcher | Done: requests-cache, urllib3 Retry and requests-ratelimiter ([ADR 0012](docs/decisions/0012-http-packages.md)) |
 | 0.5 Gold set | Waiting on the maintainer |
@@ -59,14 +59,14 @@ Later phases get cards when they start.
 **Not done:**
 - The minors deferred by the final review of #29–#42: the 3D and network views hide connections without a density (all current ones have one), and the online checks refuse cached answers from a host that failed earlier in the same run.
 - 1.5 SCKAN waits on a schema decision (below).
-- 4.1 SONATA export is in design.
+- 4.1 SONATA export is on hold until there is more data.
 
 **Surprises:**
 - BrainGlobe labels the Allen mouse atlas "asr", but Allen's own data puts the right hemisphere at large z. The meshes follow Allen (ADR 0011).
 - The Allen API reports failed queries as HTTP 200, so the caches drop any answer that doesn't validate (ADR 0012).
 - Dependabot holds TypeScript and ESLint majors until typescript-eslint and eslint-config-next support them.
 
-**Next step:** 4.1 SONATA export for bmtk, design first (the spec needs the maintainer's modeling input), then the 2.2 literature corpus.
+**Next step:** more data: the 2.2 literature corpus (the start of extraction), and SCKAN once its evidence class is decided. The SONATA export (4.1) follows once there is more to export.
 
 ## Waiting on the maintainer
 
