@@ -34,5 +34,11 @@ updates:
     cooldown:
       default-days: 7
     groups:
-      npm:
+      npm:  # Minor and patch updates together; each major update gets its own pull request.
         patterns: ["*"]
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "@types/node"  # Match the runtime: the site runs on Node 24 (Vercel, CI).
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript  # typescript-eslint doesn't support TypeScript 7 yet.
+        update-types: ["version-update:semver-major"]
