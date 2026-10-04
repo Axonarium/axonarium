@@ -62,6 +62,12 @@ repos:
         language: system
         files: ^(schema/|checks/|build/|ingest/|data/|pyproject\.toml|uv\.lock)
         pass_filenames: false
+      - id: mcp-tests
+        name: MCP server tests
+        entry: uv run --frozen --directory api/mcp pytest -q -p no:cacheprovider
+        language: system
+        files: ^api/mcp/
+        pass_filenames: false
       - id: data-checks
         name: Data checks (python -m checks files)
         entry: uv run --frozen python -m checks files

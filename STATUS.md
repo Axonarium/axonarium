@@ -25,6 +25,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 3.3b 3D brain view | Done: `/brain`, the mouse amygdala's projections over BrainGlobe meshes |
 | 3.3c Network view | Done: a linked force-directed graph on `/brain` |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract, reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
+| 3.4 MCP server | Done: `api/mcp`, four read-only tools over the API ([ADR 0014](docs/decisions/0014-mcp-server.md)) |
 | 3.3d Region pages | Done: `/regions`, a filterable index, and `/regions/<id>`, each region's inputs and outputs with evidence |
 | 0.3d Standard packages for the HTTP fetcher | Done: requests-cache, urllib3 Retry and requests-ratelimiter ([ADR 0012](docs/decisions/0012-http-packages.md)) |
 | 0.5 Gold set | Waiting on the maintainer |

@@ -27,6 +27,15 @@ updates:
     groups:
       uv:
         patterns: ["*"]
+  - package-ecosystem: uv
+    directory: /api/mcp
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      mcp:
+        patterns: ["*"]
   - package-ecosystem: npm
     directory: /site
     schedule:

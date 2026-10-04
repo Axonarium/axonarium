@@ -22,6 +22,6 @@ curl 'https://axonarium.com/api/v1/regions/MBA%3A131'
 
 Every claim carries `terms`. Claims in this repository are **CC BY 4.0**. Claims made from the Allen Mouse Brain Connectivity Atlas carry the **Allen Institute's terms of use**: non-commercial use, citing Oh et al. 2014 (doi:10.1038/nature13186) and the atlas; they are not part of the downloadable dumps. Each connection lists the terms of its claims.
 
-## Coming next
+## MCP server
 
-An MCP server (sprint 3.4) will let AI agents answer pathway questions from this API, with citations.
+[api/mcp](mcp/) is an MCP server over this API, so AI agents can answer pathway questions with citations.
