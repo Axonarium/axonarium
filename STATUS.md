@@ -35,7 +35,8 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | On hold until there is more data (maintainer, 4 October 2026); its design starts from scratch then |
 | C.1 Inbox and identifier vetting ([#64](https://github.com/axonarium/axonarium/issues/64)) | Done ([#65](https://github.com/axonarium/axonarium/pull/65)): the inbox table, closed to the public API, and identifier vetting |
 | C.2 Allowlist ([#14](https://github.com/axonarium/axonarium/issues/14)) | Done ([#54](https://github.com/axonarium/axonarium/pull/54)) |
-| C.3–C.5 Submission buttons, triage, hidden-text stripping | Not started: C.3 needs Turnstile keys; C.4 waits on 2.4; C.5 on extraction reading full text |
+| C.3–C.4 Submission buttons, triage | Not started: C.3 needs Turnstile keys; C.4 waits on 2.4 |
+| C.5 Hidden-text screen ([#70](https://github.com/axonarium/axonarium/issues/70)) | Done ([#71](https://github.com/axonarium/axonarium/pull/71)): every paper is screened before a model reads it, and a flagged one never is ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)) |
 
 Later phases get cards when they start.
 
@@ -57,6 +58,7 @@ Later phases get cards when they start.
 - The eval harness is built ahead of gold v1 and scores models from several providers, so extractor and verifier can come from different families (maintainer, 4 October 2026; [ADR 0020](docs/decisions/0020-eval-harness.md)).
 - The amygdala inventory is drafted by an agent for the maintainer's review: neuron types and synonyms authored by the project, regions referenced by ID only (maintainer, 4 October 2026).
 - Agents merge pull requests only when the maintainer, in that agent's own session, tells them to, once CI passes ([ADR 0022](docs/decisions/0022-agents-merge-when-told.md)).
+- Hidden text: every paper passes a screen before a model reads it. Invisible characters and hidden markup are stripped, and Protect AI's prompt-injection classifier (LLM Guard's default, PhantomLint's suspicion test) scores each paragraph. A flagged paper never reaches a model ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)).
 
 ## Handoff (4 October 2026, second session)
 
@@ -76,7 +78,7 @@ Later phases get cards when they start.
 
 **Prepared for the maintainer, outside the repository:** the w3id.org registration (`ids/axonarium/.htaccess`, passing the registry's checker and tested on a local Apache), permission emails to the Allen Institute and BAMS, and a preliminary trademark search (no "Axonarium" mark found on the web; the official databases are still to search).
 
-**Not done:** the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); the visual design pass (3.5); the submission buttons and triage (C.3, C.4); hidden-text stripping (C.5); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
+**Not done:** the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); the visual design pass (3.5); the submission buttons and triage (C.3, C.4); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
 
 **Surprises:**
 - This session's sandbox couldn't reach Crossref, NCBI, OLS, Europe PMC or the Allen API. Every identifier in the inventory and the extractor prompt was checked against UBERON's, the Cell Ontology's and BICAN's MBA sources from GitHub instead. CI's online checks looked them up again.

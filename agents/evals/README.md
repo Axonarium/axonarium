@@ -42,12 +42,12 @@ The plan's proposed bar is precision and field accuracy of at least 0.90 to run 
 ```
 gold.yaml              version, frozen (date), curators, notes
 papers/<name>.yaml     one paper: its source, where its text is, and every claim it makes
-texts/<name>.txt       a paper's text, only for synthetic or CC BY / CC0 papers (ADR 0005)
+texts/<name>.txt       a paper's text, only for synthetic or CC BY / CC0 papers (ADR 0005); or .xml for JATS
 ```
 
 ```yaml
 source: {doi: 10.1038/s41467-021-22915-5, pmcid: PMC8129205}
-text: {europe_pmc: PMC8129205}        # or {file: texts/<name>.txt}
+text: {europe_pmc: PMC8129205}        # or {file: texts/<name>.txt}, or {jats: texts/<name>.xml}
 claims:
   - subject: {type: region, id: "MBA:295"}
     predicate: projects_to
@@ -60,3 +60,5 @@ claims:
 ```
 
 Open-access text is fetched from Europe PMC when a run needs it and cached in `.cache/papers/`, never committed. `evals/fixtures/placeholder/` is a synthetic stand-in that exercises the harness until gold v1 exists.
+
+Every text passes the hidden-text screen first ([ADR 0023](../../docs/decisions/0023-hidden-text-screen.md)). A run starts by checking the screen against its planted fixtures (`screen/fixtures/`) and stops if one gets through. A gold paper the screen flags is never sent to the model. The report lists it as `screened`, with what was found, and its claims count as missed.
