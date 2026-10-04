@@ -74,13 +74,15 @@ def test_right_centroid_uses_the_right_hemisphere():
 
 def test_export_atlas_writes_meshes_and_index(tmp_path):
     atlas = FakeAtlas({"root": cube(CENTER, 8000), 295: cube(CENTER + [500, 2000, -2000]), 536: None})
-    index = export_atlas(ATLAS, ["MBA:295", "MBA:536"], tmp_path, open_atlas=lambda name, version: atlas)
+    index = export_atlas(ATLAS, ["MBA:295", "MBA:536"], tmp_path, open_atlas=lambda name, version: atlas,
+                         amygdala={"MBA:295"})
     folder = tmp_path / "allen-mouse-ccf-2017"
     assert json.loads((folder / "index.json").read_text(encoding="utf-8")) == index
     assert index["root"] == "root.glb" and (folder / "root.glb").is_file()
     assert list(index["regions"]) == ["MBA:295"]  # 536 has no mesh in the atlas, so it isn't drawn
     region = index["regions"]["MBA:295"]
     assert region["file"] == "295.glb" and region["acronym"] == "S295" and region["name"] == "Structure 295"
+    assert region["amygdala"] is True
     assert region["centroid"] == pytest.approx([2, -2, 0.5])
     loaded = trimesh.load(folder / "295.glb", force="mesh")
     assert len(loaded.faces) == 12 and loaded.volume == pytest.approx(1.0)
@@ -114,6 +116,7 @@ def test_build_writes_meshes_for_connections(valid_tree, tmp_path, capsys):
                 mesh_opener=lambda name, version: atlas) == 0
     index = json.loads((brain / "allen-mouse-ccf-2017" / "index.json").read_text(encoding="utf-8"))
     assert "MBA:295" in index["regions"] and len(index["regions"]) > 1 and "meshes:" in capsys.readouterr().out
+    assert index["regions"]["MBA:295"]["amygdala"] and not index["regions"]["MBA:131"]["amygdala"]
 
 
 def test_meshes_need_the_atlases(valid_tree, tmp_path, capsys):

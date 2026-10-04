@@ -20,7 +20,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.3c Retraction status for citations without a DOI | Done |
 | 0.4 Rebuild pipeline | Done |
 | 1.2 Atlas layer | Done |
-| 1.3 Allen mouse connectivity | Done: 1,276 build-time claims (612 accepted), 666 connections |
+| 1.3 Allen mouse connectivity | Done: 2,053 build-time claims (717 accepted), 1,039 connections, the amygdala's outputs and inputs |
 | 3.3a Site shell on Vercel | Done: https://axonarium.vercel.app |
 | 3.3b 3D brain view | Done: `/brain`, the mouse amygdala's projections over BrainGlobe meshes |
 | 3.3c Network view | Done: a linked force-directed graph on `/brain` |

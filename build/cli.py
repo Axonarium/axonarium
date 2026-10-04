@@ -104,7 +104,10 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
         for atlas_id, region_ids in meshes.regions_to_draw(records + generated, loaded).items():
             atlas = next(a for a in atlases if a["id"] == atlas_id)
             try:
-                index = meshes.export_atlas(atlas, region_ids, args.meshes, **({"open_atlas": mesh_opener} if mesh_opener else {}))
+                prefix = loaded[atlas_id][0]["id"].split(":")[0]
+                amygdala = {f"{prefix}:{n}" for n in connectivity.amygdala_structures(loaded[atlas_id])}
+                index = meshes.export_atlas(atlas, region_ids, args.meshes, amygdala=amygdala,
+                                            **({"open_atlas": mesh_opener} if mesh_opener else {}))
             except Exception as error:  # BrainGlobe's S3 or a pin: the site would show a brain without its regions.
                 print(f"mesh export failed for {atlas_id}: {error}; build stopped")
                 return 1

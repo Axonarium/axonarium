@@ -16,10 +16,11 @@ const TARGET = "#cbd5e1";
 // After the first layout tick the library has swapped link ends for node objects.
 const endId = (end: unknown) => String(end && typeof end === "object" ? (end as { id?: unknown }).id : end);
 
-export default function Network({ shown, regions, injected, colors, strongest, focus, onSelect, onHover }: {
+export default function Network({ shown, regions, injected, hub, colors, strongest, focus, onSelect, onHover }: {
   shown: BrainEdge[];
   regions: Record<string, BrainRegion>;
   injected: string[];
+  hub: (edge: BrainEdge) => string;
   colors: Record<string, string>;
   strongest: number;
   focus: string | null;
@@ -29,7 +30,7 @@ export default function Network({ shown, regions, injected, colors, strongest, f
   const box = useRef<HTMLDivElement>(null);
   const graph = useRef<ForceGraphMethods<Node, Link> | undefined>(undefined);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const data = useMemo(() => networkData(shown, regions, injected), [shown, regions, injected]);
+  const data = useMemo(() => networkData(shown, regions, injected, hub), [shown, regions, injected, hub]);
   const neighbours = useMemo(() => {
     if (!focus) return null;
     const found = new Set([focus]);

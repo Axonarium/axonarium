@@ -21,6 +21,8 @@ export interface BrainRegion {
   name: string;
   file: string;
   centroid: Point;
+  /** In the amygdala, or one of its subdivisions (from UBERON; ADR 0009). */
+  amygdala?: boolean;
 }
 
 /** index.json of one atlas's meshes. */
@@ -83,14 +85,37 @@ export interface NetworkLink {
   id: string;
   source: string;
   target: string;
-  /** The injected region, kept as an ID: the graph library replaces `source` with the node object. */
+  /** The amygdala end, kept as an ID: the graph library replaces `source` and `target` with node objects. */
   from: string;
   density: number | null;
   accepted: number;
 }
 
+export type Direction = "outputs" | "inputs";
+
+/** The amygdala end of a connection: its source among the outputs, its target among the inputs. */
+export function hubOf(edge: BrainEdge, direction: Direction): string {
+  return direction === "outputs" ? edge.source : edge.target;
+}
+
+/** The amygdala's outputs (from one of its regions) or its inputs (into one, from outside it), among the drawn
+ * regions. Connections within the amygdala are outputs. */
+export function directed(edges: BrainEdge[], regions: Record<string, BrainRegion>, direction: Direction): BrainEdge[] {
+  return edges.filter((e) => {
+    const source = regions[e.source];
+    const target = regions[e.target];
+    if (!source || !target) return false;
+    return direction === "outputs" ? !!source.amygdala : !!target.amygdala && !source.amygdala;
+  });
+}
+
 /** The network view's graph: a node per region, sorted by ID, and a fresh link per connection. */
-export function networkData(shown: BrainEdge[], regions: Record<string, BrainRegion>, injected: string[]) {
+export function networkData(
+  shown: BrainEdge[],
+  regions: Record<string, BrainRegion>,
+  injected: string[],
+  hub: (edge: BrainEdge) => string = (edge) => edge.source,
+) {
   const inputs = new Map<string, number>();
   for (const edge of shown) {
     inputs.set(edge.source, inputs.get(edge.source) ?? 0);
@@ -103,7 +128,7 @@ export function networkData(shown: BrainEdge[], regions: Record<string, BrainReg
     id: e.id,
     source: e.source,
     target: e.target,
-    from: e.source,
+    from: hub(e),
     density: e.density,
     accepted: e.accepted,
   }));
