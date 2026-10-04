@@ -67,6 +67,21 @@ def _graphml(rows: dict[str, list[dict]]) -> str:
     return ET.tostring(root, encoding="unicode", xml_declaration=True) + "\n"
 
 
+def _schema_version() -> str:
+    return str(yaml.safe_load(SCHEMA.read_text(encoding="utf-8"))["version"])
+
+
+def write_snapshot(rows: dict[str, list[dict]], target: Path) -> None:
+    """Every row the database gets, as one JSON file, so the site can answer from it when the database can't
+    (ADR 0017). It holds Allen-derived rows, so it goes to the site's server only: never committed, dumped or public."""
+    target = Path(target)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    fresh = target.with_name(f".{target.name}.tmp")
+    fresh.write_text(json.dumps({"schema_version": _schema_version(), "tables": rows}, ensure_ascii=False,
+                                separators=(",", ":")), encoding="utf-8")
+    fresh.replace(target)
+
+
 def write_dumps(records: list[Record], rows: dict[str, list[dict]], out: Path) -> None:
     """Write every dump into a fresh folder, then put it in place of `out`."""
     kb = {slot: sorted((r.data for r in records if r.cls == cls), key=lambda d: d["id"]) for cls, slot in KB_SLOTS.items()}
@@ -75,7 +90,7 @@ def write_dumps(records: list[Record], rows: dict[str, list[dict]], out: Path) -
         "axonarium.json": _json(kb),
         "retractions.json": _json(log),
         "edges.graphml": _graphml(rows),
-        "manifest.json": _json({"schema_version": str(yaml.safe_load(SCHEMA.read_text(encoding="utf-8"))["version"]),
+        "manifest.json": _json({"schema_version": _schema_version(),
                                 "tables": {name: len(table) for name, table in rows.items()}}),
         **{f"{name}.csv": _csv(name, table) for name, table in rows.items()},
     }

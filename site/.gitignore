@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /public/brain/
+
+# The deploy's snapshot of the database: Allen-derived rows, never committed (ADR 0005, ADR 0017)
+/snapshot/
