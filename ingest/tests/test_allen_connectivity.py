@@ -31,7 +31,9 @@ def fake_get(answers):
 ANSWERS = {
     "model::SectionDataSet": [experiment(1, 295), experiment(2, 295, ["Slc32a1-IRES-Cre"])],
     "structure_sets": [{"id": 536}, {"id": 131}, {"id": 295}],
-    "section_data_set_id$eq1]": [{"structure_id": 536, "projection_density": 0.2},
+    "section_data_set_id$eq1],[is_injection$eqtrue]": [{"structure_id": 295, "projection_volume": 0.06},
+                                                       {"structure_id": 131, "projection_volume": 0.04}],
+    "section_data_set_id$eq1],[is_injection$eqfalse]": [{"structure_id": 536, "projection_density": 0.2},
                                  {"structure_id": 131, "projection_density": 0.004},
                                  {"structure_id": 295, "projection_density": 0.9},
                                  {"structure_id": 997, "projection_density": 0.5}],
@@ -50,7 +52,8 @@ def test_targets():
     claim = claims[0]
     assert claim["measurements"] == [{"quantity": "projection_density", "value": 0.2, "unit": "1"}]
     assert claim["source"] == {"doi": "10.1038/nature13186", "locator": "Allen Mouse Brain Connectivity Atlas, experiment 1"}
-    assert claim["curation"]["role"] == "ingester" and claim["status"] == "accepted" and claim["extra"] == {"allen.experiment": 1}
+    assert claim["curation"]["role"] == "ingester" and claim["status"] == "accepted"
+    assert claim["extra"] == {"allen.experiment": 1, "allen.injection_share": 0.6} and "60% of the injection in BLA" in claim["paraphrase"]
 
 
 def test_claims_pass_the_checks():
@@ -74,12 +77,26 @@ def test_no_amygdala_structures_no_queries():
 
 
 def test_build_claims_is_pure():
-    claims = build_claims(ATLAS, [{"id": 1, "injection": 295}], {536}, {1: [{"structure_id": 536, "projection_density": 0.0123456789}]}, ACRONYMS)
+    claims = build_claims(ATLAS, [{"id": 1, "injection": 295, "share": 0.6, "injected": {295}}], {536},
+                          {1: [{"structure_id": 536, "projection_density": 0.0123456789}]}, ACRONYMS)
     assert claims[0]["measurements"][0]["value"] == 0.012346 and "BLA" in claims[0]["paraphrase"] and "CEA" in claims[0]["paraphrase"]
 
 
 def test_targets_outside_the_pinned_atlas_skipped():
     # Allen's summary-structure list has a few structures the pinned atlas (2017 annotation) lacks.
-    claims = build_claims(ATLAS, [{"id": 1, "injection": 295}], {536, 460}, {1: [{"structure_id": 460, "projection_density": 0.3},
+    claims = build_claims(ATLAS, [{"id": 1, "injection": 295, "share": 0.6, "injected": {295}}], {536, 460}, {1: [{"structure_id": 460, "projection_density": 0.3},
                                                                                     {"structure_id": 536, "projection_density": 0.2}]}, ACRONYMS)
     assert [c["object"]["id"] for c in claims] == ["MBA:536"]
+
+
+def test_targets_that_received_tracer_skipped():
+    # Spill-over: tracer injected into a neighbour labels it at the injection site, not by projection.
+    claims = build_claims(ATLAS, [{"id": 1, "injection": 295, "share": 0.6, "injected": {295, 536}}], {536, 131},
+                          {1: [{"structure_id": 536, "projection_density": 0.3}, {"structure_id": 131, "projection_density": 0.2}]}, ACRONYMS)
+    assert [c["object"]["id"] for c in claims] == ["MBA:131"]
+
+
+def test_mostly_off_target_injections_are_proposed():
+    claims = build_claims(ATLAS, [{"id": 1, "injection": 295, "share": 0.3, "injected": {295}}], {536},
+                          {1: [{"structure_id": 536, "projection_density": 0.3}]}, ACRONYMS)
+    assert claims[0]["status"] == "proposed" and "30% of the injection in BLA" in claims[0]["paraphrase"]

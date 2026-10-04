@@ -17,11 +17,12 @@ API = "https://api.brain-map.org/api/v2/data/query.json?criteria={criteria}&num_
 PROJECTION_PRODUCT = 5  # Mouse Connectivity: Projection
 SUMMARY_STRUCTURES = 167587189  # "Brain – Summary Structures", the 316 targets Allen's own analyses use
 DENSITY_MIN = 0.01
+SHARE_MIN = 0.5  # Below this share of the injection in the primary structure, claims are proposed, not accepted.
 SOURCE = {"doi": "10.1038/nature13186"}  # Oh et al. 2014, "A mesoscale connectome of the mouse brain"
 # Ingesters are agents without a language model: `model` says so, and `prompt` is the adapter's versioned procedure.
 # Bump the version whenever the adapter's output changes; it and the date keep reruns identical (ADR 0010).
 MODEL = "deterministic-adapter"
-PROCEDURE = "allen-connectivity@1.0.0"
+PROCEDURE = "allen-connectivity@1.1.0"
 ADAPTER_DATE = "2026-10-03"
 CROCKFORD = "0123456789abcdefghjkmnpqrstvwxyz"
 USER_AGENT = {"User-Agent": "axonarium-build (https://github.com/axonarium/axonarium)"}
@@ -70,6 +71,15 @@ def summary_structures(get: Callable) -> set[int]:
     return {row["id"] for row in get(f"model::Structure,rma::criteria,structure_sets[id$eq{SUMMARY_STRUCTURES}]", 2000)}
 
 
+def injection(get: Callable, experiment: int, summary: set[int], primary: int) -> tuple[float, set[int]]:
+    """The primary structure's share of the injected volume, and every summary structure that received tracer."""
+    rows = get(f"model::ProjectionStructureUnionize,rma::criteria,[section_data_set_id$eq{experiment}],"
+               "[is_injection$eqtrue],[hemisphere_id$eq3]", 2000)
+    volumes = {r["structure_id"]: r["projection_volume"] for r in rows if r["structure_id"] in summary and r["projection_volume"] > 0}
+    total = sum(volumes.values())
+    return (volumes.get(primary, 0) / total if total else 0.0), set(volumes)
+
+
 def projections(get: Callable, experiment: int) -> list[dict]:
     """Projection density per structure, both hemispheres, outside the injection site."""
     return get(f"model::ProjectionStructureUnionize,rma::criteria,[section_data_set_id$eq{experiment}],"
@@ -84,8 +94,10 @@ def build_claims(atlas: str, found: list[dict], summary: set[int], projected: di
         injection = experiment["injection"]
         for row in projected[experiment["id"]]:
             target, density = row["structure_id"], row["projection_density"]
-            # Skip the injection site, targets outside the summary set or the pinned atlas, and weak densities.
-            if target == injection or target not in summary or target not in acronyms or density < DENSITY_MIN:
+            # Skip the injection site and any target that received tracer (spill-over labels it locally), targets
+            # outside the summary set or the pinned atlas, and weak densities.
+            if target == injection or target in experiment["injected"] or target not in summary or target not in acronyms \
+                    or density < DENSITY_MIN:
                 continue
             value = round(density, 6)
             claims.append({
@@ -100,11 +112,12 @@ def build_claims(atlas: str, found: list[dict], summary: set[int], projected: di
                 "measurements": [{"quantity": "projection_density", "value": value, "unit": "1"}],
                 "source": {**SOURCE, "locator": f"Allen Mouse Brain Connectivity Atlas, experiment {experiment['id']}"},
                 "paraphrase": (f"In Allen Mouse Brain Connectivity Atlas experiment {experiment['id']}, an anterograde "
-                               f"tracer injected into {acronyms.get(injection, injection)} of a wild-type mouse labelled "
-                               f"axons in {acronyms.get(target, target)} (projection density {value:.3f})."),
+                               f"tracer injected into {acronyms.get(injection, injection)} of a wild-type mouse "
+                               f"({experiment['share']:.0%} of the injection in {acronyms.get(injection, injection)}) "
+                               f"labelled axons in {acronyms.get(target, target)} (projection density {value:.3f})."),
                 "curation": {"by": "agent", "role": "ingester", "model": MODEL, "prompt": PROCEDURE, "date": ADAPTER_DATE},
-                "status": "accepted",
-                "extra": {"allen.experiment": experiment["id"]},
+                "status": "accepted" if experiment["share"] >= SHARE_MIN else "proposed",
+                "extra": {"allen.experiment": experiment["id"], "allen.injection_share": round(experiment["share"], 2)},
             })
     return sorted(claims, key=lambda claim: claim["id"])
 
@@ -118,5 +131,7 @@ def load_claims(atlas: str, structure_ids: list[int], acronyms: dict[int, str], 
         get = lambda criteria, num_rows=2000: _get(criteria, num_rows, session)  # noqa: E731
     found = experiments(get, structure_ids)
     summary = summary_structures(get)
+    for experiment in found:
+        experiment["share"], experiment["injected"] = injection(get, experiment["id"], summary, experiment["injection"])
     projected = {experiment["id"]: projections(get, experiment["id"]) for experiment in found}
     return build_claims(atlas, found, summary, projected, acronyms)
