@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 3 October 2026.
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 4 October 2026.
 
 ## Phase
 
@@ -26,6 +26,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 3.3c Network view | Done: a linked force-directed graph on `/brain` |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract, reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.4 MCP server | Done: `api/mcp`, four read-only tools over the API ([ADR 0014](docs/decisions/0014-mcp-server.md)) |
+| 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | In design: a spec for review comes first |
 | 3.3d Region pages | Done: `/regions`, a filterable index, and `/regions/<id>`, each region's inputs and outputs with evidence |
 | 0.3d Standard packages for the HTTP fetcher | Done: requests-cache, urllib3 Retry and requests-ratelimiter ([ADR 0012](docs/decisions/0012-http-packages.md)) |
 | 0.5 Gold set | Waiting on the maintainer |
@@ -51,7 +52,25 @@ Later phases get cards when they start.
 - Allen mouse connectivity: region-level claims made at build time from wild-type amygdala injections, never committed or dumped ([ADR 0010](docs/decisions/0010-allen-connectivity.md)).
 - Serving database: read-shaped tables in Supabase, rebuilt from the files on every merge to main, read-only to the public ([ADR 0008](docs/decisions/0008-serving-database.md)).
 
+## Handoff (4 October 2026)
+
+**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas (2,053 claims, 1,039 connections), shown in 3D and as a linked network (`/brain`), in a sortable table (`/explore`), region by region (`/regions`), through a read API (`/api/v1`, [api/README.md](api/README.md)) and through an MCP server for AI agents ([api/mcp](api/mcp/README.md)).
+
+**Not done:**
+- The minors deferred by the final review of #29–#42: the 3D and network views hide connections without a density (all current ones have one), and the online checks refuse cached answers from a host that failed earlier in the same run.
+- 1.5 SCKAN waits on a schema decision (below).
+- 4.1 SONATA export is in design.
+
+**Surprises:**
+- BrainGlobe labels the Allen mouse atlas "asr", but Allen's own data puts the right hemisphere at large z. The meshes follow Allen (ADR 0011).
+- The Allen API reports failed queries as HTTP 200, so the caches drop any answer that doesn't validate (ADR 0012).
+- Dependabot holds TypeScript and ESLint majors until typescript-eslint and eslint-config-next support them.
+
+**Next step:** 4.1 SONATA export for bmtk, design first (the spec needs the maintainer's modeling input), then the 2.2 literature corpus.
+
 ## Waiting on the maintainer
+
+- [ ] SCKAN (sprint 1.5): SCKAN records no method per statement, so its claims need either a new evidence class for curated knowledge bases (a schema change, graded below every experimental method) or per-paper extraction later. Its pinned simple export (`npo-simple-sckan-merged.ttl`, release sckan-2026-02-11) also has about 1,200 malformed IRIs; the full release files would be the input.
 
 - [ ] Gold-set curation: the maintainer alone, or with a second curator?
 - [ ] Whether visitors can suggest papers that have no matching claim yet.
@@ -60,7 +79,7 @@ Later phases get cards when they start.
 - [ ] Auto-renew for axonarium.org, which expires 2027-10-02.
 - [ ] Requiring 2FA in the GitHub organization.
 - [ ] A second organization owner.
-- [ ] Claiming the PyPI project name.
+- [ ] Claiming the PyPI project names (`axonarium`, and `axonarium-mcp` for the MCP server, which installs from GitHub for now).
 - [ ] Rotating the Vercel token and the Supabase database password, which were pasted in chat, and setting the new values in the `production` environment, where only jobs on `main` can read them: `gh secret set VERCEL_TOKEN --env production --repo axonarium/axonarium` and `gh secret set SUPABASE_DB_URL --env production --repo axonarium/axonarium`. Then the repository-level `VERCEL_TOKEN` (readable by any workflow, pull requests included) gets deleted.
 - [ ] Registering https://w3id.org/axonarium/ with w3id.org (a pull request to its registry).
 - [ ] Asking the Allen Institute for written permission to redistribute region and connectivity data under CC BY 4.0 (ADR 0005).
