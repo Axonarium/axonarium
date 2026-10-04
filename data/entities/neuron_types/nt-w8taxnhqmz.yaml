@@ -1,0 +1,14 @@
+id: nt-w8taxnhqmz
+name: Posterior BLA Ppp1r1b-expressing principal neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers:
+- Ppp1r1b
+cell_ontology: CL:4023039
+synonyms:
+- BLA Ppp1r1b+ neurons
+- BLA DARPP-32 neurons

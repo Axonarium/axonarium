@@ -1,0 +1,14 @@
+id: nt-fwck8mp6aj
+name: BLA parvalbumin-expressing interneurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Pvalb
+cell_ontology: CL:0000617
+synonyms:
+- BLA PV interneurons
+- BLA PV+ basket cells

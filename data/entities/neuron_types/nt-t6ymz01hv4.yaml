@@ -1,0 +1,14 @@
+id: nt-t6ymz01hv4
+name: CEAl somatostatin-expressing neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Sst
+cell_ontology: CL:0000617
+synonyms:
+- CeL SOM+ neurons
+- CeL SST neurons

@@ -1,0 +1,14 @@
+id: nt-56rbnwx5rb
+name: Anterior BLA Rspo2-expressing principal neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers:
+- Rspo2
+cell_ontology: CL:4023039
+synonyms:
+- BLA Rspo2+ neurons
+- magnocellular BLA Rspo2 neurons
