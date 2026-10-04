@@ -2,7 +2,7 @@
 
 `axonarium.yaml` is the [LinkML](https://linkml.io/) schema for everything in `data/`. It is the one definition the JSON Schemas and SQL in `generated/` are produced from.
 
-To validate a single record file in an editor or another tool, use the schema for its class, such as `generated/json/ConnectivityClaim.schema.json`, and turn on format checking so dates are checked. `generated/axonarium.schema.json` describes a whole-database dump (`KnowledgeBase`) and accepts any single record file without checking it. `generated/axonarium.sql` is a reference mapping of the classes to PostgreSQL tables, not the production layout (sprint 0.4 designs that). Version 0.2.0. Sprint 0.2 of [docs/plan.md](../docs/plan.md) created it ([design](../docs/specs/2026-10-02-sprint-0.2-schema.md), including what is out of scope); sprint 0.3 added the retractions log ([design](../docs/specs/2026-10-03-sprint-0.3-validation.md)).
+To validate a single record file in an editor or another tool, use the schema for its class, such as `generated/json/ConnectivityClaim.schema.json`, and turn on format checking so dates are checked. `generated/axonarium.schema.json` describes a whole-database dump (`KnowledgeBase`) and accepts any single record file without checking it. `generated/axonarium.sql` is a reference mapping of the classes to PostgreSQL tables, not the production layout (sprint 0.4 designs that). Version 0.4.0. Sprint 0.2 of [docs/plan.md](../docs/plan.md) created it ([design](../docs/specs/2026-10-02-sprint-0.2-schema.md), including what is out of scope); sprint 0.3 added the retractions log ([design](../docs/specs/2026-10-03-sprint-0.3-validation.md)); sprint C.2 added sources' kinds and the allowlist ([ADR 0015](../docs/decisions/0015-source-allowlist.md)).
 
 ## What it describes
 
@@ -13,8 +13,9 @@ To validate a single record file in an editor or another tool, use the schema fo
 | `Atlas` | A pinned atlas version |
 | `Region` | A structure in one atlas version, mapped to UBERON |
 | `NeuronType` | A neuron population, mapped to the Cell Ontology where a term exists. ID `nt-…` |
-| `Source` | Cached metadata for a paper or preprint |
+| `Source` | Cached metadata for a paper or preprint, including its `kind`: journal article, preprint, dataset or other |
 | `RetractionLog` | The log of deleted and retracted claims, `data/retractions.yaml` |
+| `Allowlist` | The kinds of source claims may cite, `data/allowlist.yaml` ([ADR 0015](../docs/decisions/0015-source-allowlist.md)) |
 
 Both claim classes share a citation, a paraphrase, an optional short excerpt, curation and verification records, a status, and the open-ended `extra` map.
 
@@ -59,7 +60,7 @@ Regenerate after changing the schema; a test fails until you do:
 
 ```bash
 uv run gen-json-schema schema/axonarium.yaml > schema/generated/axonarium.schema.json
-for c in ConnectivityClaim HomologyClaim Atlas Region NeuronType Source RetractionLog; do
+for c in ConnectivityClaim HomologyClaim Atlas Region NeuronType Source RetractionLog Allowlist; do
   uv run gen-json-schema --top-class $c --closed schema/axonarium.yaml > schema/generated/json/$c.schema.json
 done
 uv run gen-sqltables --dialect postgresql --autogenerate_index false --generate_abstract_class_ddl false schema/axonarium.yaml > schema/generated/axonarium.sql

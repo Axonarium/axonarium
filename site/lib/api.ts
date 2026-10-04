@@ -90,6 +90,7 @@ export const toSource = (s: Source) => ({
   title: s.title,
   year: s.year,
   journal: s.journal,
+  kind: s.kind,
   license: s.license,
   open_access: s.open_access,
   retracted: s.retracted,

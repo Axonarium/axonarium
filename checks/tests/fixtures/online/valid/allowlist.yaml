@@ -1,0 +1,12 @@
+# The kinds of source a claim may cite (docs/plan.md, Part 3.3, "Layer 2"; ADR 0015). A claim's source record in
+# sources/ must match an entry: its kind, and its journal too if the entry names venues. `python -m checks files`
+# refuses every other source. The maintainer owns this file (CODEOWNERS), so changes always get human review.
+accepted:
+  - kind: journal_article
+    reason: Articles in journals, as Crossref, DataCite or PubMed type them.
+  - kind: preprint
+    venues:
+      - arXiv
+      - bioRxiv
+      - medRxiv
+    reason: The major preprint servers. Preprints are a lower evidence tier than published work and never outrank it.
