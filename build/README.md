@@ -7,7 +7,7 @@ uv run python -m build                       # validate data/, write dist/
 AXONARIUM_DATABASE_URL=postgresql://… uv run python -m build   # …and load Postgres
 ```
 
-Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines), `--meshes DIR` (also write the 3D view's region meshes).
+Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines), `--meshes DIR` (also write the 3D view's region meshes), `--http-cache DIR` (keep the answers of OLS, UBERON's bridges and the Allen API for seven days; CI uses it so an outage doesn't block merging, deploys don't). All of the build's HTTP goes through the online checks' retried, rate-limited session ([ADR 0012](../docs/decisions/0012-http-packages.md)).
 
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
 2. **Atlases:** each atlas record with a BrainGlobe name is loaded at its pinned version (`ingest/atlases.py`), and its regions are mapped to UBERON by UBERON's bridges. The build stops if BrainGlobe serves another version, if data names a region its atlas lacks, or if an atlas resolves no amygdala region. Atlas regions go into the database, not the dumps ([ADR 0009](../docs/decisions/0009-atlas-layer.md)). `--no-atlases` skips this for offline work.

@@ -33,5 +33,5 @@ Chosen option: "build-time claims from the REST API", because it puts real amygd
 
 * Good, because the site shows real amygdala connectivity, each connection opening its experiments.
 * Bad, because absent results (densities below the threshold) aren't claims yet; that needs a decision on detection limits.
-* Bad, because every build depends on the Allen API (about 45 seconds), including the required CI job: an outage blocks merging until it ends, and the previous deployment stays live. A cache (sprint 0.3d's standard packages) is the planned mitigation.
+* Bad, because every deploy depends on the Allen API (about 45 seconds): during an outage the previous deployment stays live. CI keeps the API's answers for seven days (`--http-cache`, on ADR 0012's session), so an outage blocks merging only once that cache has expired.
 * Neutral: Cre-line experiments are a later sprint.
