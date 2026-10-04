@@ -68,6 +68,12 @@ repos:
         language: system
         files: ^api/mcp/
         pass_filenames: false
+      - id: eval-tests
+        name: Eval harness tests
+        entry: uv run --frozen --directory agents pytest -q -p no:cacheprovider
+        language: system
+        files: ^(agents/|schema/axonarium\.yaml)
+        pass_filenames: false
       - id: data-checks
         name: Data checks (python -m checks files)
         entry: uv run --frozen python -m checks files
