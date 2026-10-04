@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 
+import { SITE } from "@/lib/sitemap";
+
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
@@ -10,7 +12,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const REPO = "https://github.com/axonarium/axonarium";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://axonarium.com"),
+  metadataBase: new URL(SITE),
   title: { default: "Axonarium", template: "%s · Axonarium" },
   description: "An open, cited map of how the brain and body are wired.",
 };
