@@ -27,3 +27,7 @@ build = [
 [tool.uv]
 package = false
 default-groups = ["schema", "dev", "build"]
+
+[tool.pytest.ini_options]
+# pytest skips folders named build by default; list the suites so a bare `pytest` runs what CI runs.
+testpaths = ["schema/tests", "checks/tests", "build/tests", "ingest/tests"]

@@ -1,5 +1,6 @@
 """Edges: connectivity claims aggregated per subject, predicate, object and species. Never edited by hand."""
 
+from build.terms import terms_of
 from checks.findings import Record
 
 STRENGTHS = ("weak", "moderate", "strong")  # Ordinal, weakest first
@@ -39,5 +40,6 @@ def compute_edges(records: list[Record]) -> list[dict]:
             "density": max(densities) if densities else None,  # the strongest projection density found
             "signs": sorted({c["sign"] for c in claims}),
             "claim_ids": sorted(c["id"] for c in claims),
+            "terms": sorted({terms_of(c) for c in claims}),
         })
     return edges

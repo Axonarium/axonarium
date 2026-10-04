@@ -27,7 +27,7 @@ def test_edges_aggregate_claims():
         "object_id": "MBA:559", "object_type": "region", "species": "NCBITaxon:10090",
         "n_claims": 3, "n_present": 2, "n_absent": 1, "n_ambiguous": 0, "n_disputed": 0,
         "evidence_classes": ["anterograde_tracer", "retrograde_tracer"], "strength": None, "density": None,
-        "signs": ["unknown"], "claim_ids": ["clm-a", "clm-b", "clm-c"],
+        "signs": ["unknown"], "claim_ids": ["clm-a", "clm-b", "clm-c"], "terms": ["cc-by-4.0"],
     }]
 
 
@@ -60,3 +60,9 @@ def test_strongest_density_among_present():
     edges = compute_edges([claim("clm-a", density=0.2), claim("clm-b", density=0.5, status="proposed"),
                            claim("clm-c", result="absent", density=0.9), claim("clm-d")])
     assert edges[0]["density"] == 0.5  # proposed claims count; absent results don't
+
+
+def test_terms_of_the_claims():
+    allen = claim("clm-a")
+    allen.data["extra"] = {"allen.experiment": 1}
+    assert compute_edges([allen, claim("clm-b")])[0]["terms"] == ["allen-institute", "cc-by-4.0"]
