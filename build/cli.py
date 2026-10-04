@@ -1,10 +1,10 @@
-"""Command line: `python -m build [--data data] [--out dist] [--database URL] [--meshes DIR] [--snapshot FILE]`."""
+"""Command line: `python -m build [--data data] [--out dist] [--database URL] [--meshes DIR] [--snapshot FILE] [--report DIR]`."""
 
 import argparse
 import os
 from pathlib import Path
 
-from build import connectivity, meshes
+from build import connectivity, meshes, reconcile
 from build import regions as atlas_regions
 from build.database import LoadFailed, load
 from build.dumps import write_dumps, write_snapshot
@@ -37,6 +37,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
     parser.add_argument("--meshes", type=Path, help="also write glTF meshes of the connected regions here, for the site")
     parser.add_argument("--http-cache", type=Path, help="keep API answers here for seven days, so reruns (CI) don't depend on them")
     parser.add_argument("--snapshot", type=Path, help="also write every database row to this JSON file, for the site's fallback")
+    parser.add_argument("--report", type=Path, help="also write the reconciliation report (agreement, conflict, silence) here")
     args = parser.parse_args(argv)
 
     url = args.database or os.environ.get("AXONARIUM_DATABASE_URL")
@@ -117,6 +118,9 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
             print(f"meshes: {len(index['regions'])} region(s) of {atlas_id} in {args.meshes / atlas_id}")
     # Dumps hold the files' records only: atlas regions and Allen claims stay out of them (ADR 0005).
     write_dumps(records, tables, args.out)
+    if args.report:
+        claims = [r.data for r in records + generated if r.cls == "ConnectivityClaim"]
+        reconcile.write_report(reconcile.reconcile(claims, [row for rows in loaded.values() for row in rows]), args.report)
     tables = atlas_regions.merge(rows(records + generated), loaded)
     if args.snapshot:
         write_snapshot(tables, args.snapshot)
