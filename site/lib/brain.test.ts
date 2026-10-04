@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arcMidpoint, arcWidth, brainEdges, directed, hubOf, linkedView, networkData } from "./brain";
+import { arcMidpoint, arcWidth, brainEdges, byDensity, directed, hubOf, linkedView, networkData } from "./brain";
 
 const edge = (id: string, subject: string, object: string) => ({ id, subject_id: subject, object_id: object });
 const claim = (subject: string, object: string, density: number | null, status = "accepted") => ({
@@ -46,6 +46,20 @@ describe("arcs", () => {
   it("are wider for denser projections, and thin without a density", () => {
     expect(arcWidth(1, 1)).toBeGreaterThan(arcWidth(0.1, 1));
     expect(arcWidth(null, 1)).toBe(arcWidth(0, 1));
+  });
+});
+
+describe("byDensity", () => {
+  const at = (id: string, density: number | null) => ({ id, source: "MBA:295", target: id, density, claims: 1, accepted: 1 });
+  const edges = [at("weak", 0.02), at("unstated", null), at("strong", 0.4), at("zero", 0)];
+
+  it("keeps connections that state no density, whatever the minimum", () => {
+    expect(byDensity(edges, 0.05).map((e) => e.id)).toEqual(["strong", "unstated"]);
+    expect(byDensity(edges, 0).map((e) => e.id)).toEqual(["strong", "weak", "zero", "unstated"]);
+  });
+
+  it("lists the strongest first and connections without a density last", () => {
+    expect(byDensity([at("a", null), at("b", 0.1), at("c", null), at("d", 0.3)], 0).map((e) => e.id)).toEqual(["d", "b", "a", "c"]);
   });
 });
 
