@@ -44,7 +44,12 @@ export function edgeHref(id: string): string {
   return `/edges/${encodeURIComponent(id)}`;
 }
 
-/** The edge ID from its URL segment, whether or not the framework has already decoded it. */
+/** The page of an atlas region. */
+export function regionHref(id: string): string {
+  return `/regions/${encodeURIComponent(id)}`;
+}
+
+/** An edge or region ID from its URL segment, whether or not the framework has already decoded it. */
 export function edgeFromParam(segment: string): string {
   return segment.includes("%") ? decodeURIComponent(segment) : segment;
 }

@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 
-import { citationLinks, citationParts, edgeFromParam, edgeHref, formatMeasurement, predicateLabel, speciesName, withParam } from "./format";
+import {
+  citationLinks,
+  citationParts,
+  edgeFromParam,
+  edgeHref,
+  formatMeasurement,
+  predicateLabel,
+  regionHref,
+  speciesName,
+  withParam,
+} from "./format";
 
 describe("citationLinks", () => {
   it("links every identifier a citation carries, DOI first", () => {
@@ -87,5 +97,13 @@ describe("citationParts", () => {
       href: "https://doi.org/10.1016/j.cell.2020.04.007",
     });
     expect(citationParts("unpublished")).toEqual({ text: "unpublished", href: null });
+  });
+});
+
+describe("region URLs", () => {
+  it("make one segment of a region ID that edgeFromParam reads back", () => {
+    expect(regionHref("MBA:295")).toBe("/regions/MBA%3A295");
+    expect(edgeFromParam("MBA%3A295")).toBe("MBA:295");
+    expect(edgeFromParam("MBA:295")).toBe("MBA:295");
   });
 });

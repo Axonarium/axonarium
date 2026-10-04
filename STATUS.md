@@ -24,6 +24,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 3.3a Site shell on Vercel | Done: https://axonarium.vercel.app |
 | 3.3b 3D brain view | Done: `/brain`, the mouse amygdala's projections over BrainGlobe meshes |
 | 3.3c Network view | Done: a linked force-directed graph on `/brain` |
+| 3.3d Region pages | Done: `/regions/<id>`, each region's inputs and outputs with evidence |
 | 0.3d Standard packages for the HTTP fetcher | Ready for an agent |
 | 0.5 Gold set | Waiting on the maintainer |
 | C.2 Allowlist file, CODEOWNERS entry and ADR | Ready, but needs the maintainer |

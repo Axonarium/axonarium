@@ -92,11 +92,26 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
   const [hovered, setHovered] = useState<string | null>(null);
   const [view, setView] = useState<"3d" | "network">("3d");
 
+  // /brain?region=<id> (from a region's page) opens on that region. The viewer only runs in the browser.
+  const [linked] = useState(() => new URLSearchParams(window.location.search).get("region"));
+
   useEffect(() => {
     fetch(`${base}/index.json`)
       .then((response) => (response.ok ? response.json() : "missing"))
-      .then(setIndex, () => setIndex("missing"));
-  }, [base]);
+      .then(
+        (found: BrainIndex | "missing") => {
+          setIndex(found);
+          if (!linked || found === "missing") return;
+          const drawn = edges.filter((e) => found.regions[e.source] && found.regions[e.target]);
+          if (drawn.some((e) => e.source === linked)) setSource(linked);
+          else if (drawn.some((e) => e.target === linked)) {
+            setSelected(linked);
+            setThreshold(0.01);
+          }
+        },
+        () => setIndex("missing"),
+      );
+  }, [base, edges, linked]);
 
   const regions = useMemo<Record<string, BrainRegion>>(() => (index && index !== "missing" ? index.regions : {}), [index]);
   const drawable = useMemo(() => edges.filter((e) => regions[e.source] && regions[e.target]), [edges, regions]);
