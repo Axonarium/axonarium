@@ -14,8 +14,8 @@ describe("sitemapUrls", () => {
     expect(urls).toContain(`${SITE}/brain`);
     expect(urls).toContain(`${SITE}/edges/MBA%3A295%7Cprojects_to%7CMBA%3A672%7CNCBITaxon%3A10090`);
     expect(urls.filter((u) => u === `${SITE}/regions/MBA%3A295`)).toHaveLength(1);
-    expect(urls).toHaveLength(5 + 2 + 3);
-    expect(urls).not.toContain(`${SITE}/regions`); // no index page there
+    expect(urls).toHaveLength(6 + 2 + 3);
+    expect(urls).toContain(`${SITE}/regions`);
   });
 
   it("leaves out ends that aren't atlas regions", () => {
