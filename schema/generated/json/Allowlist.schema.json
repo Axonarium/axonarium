@@ -1544,108 +1544,19 @@
     "$id": "https://w3id.org/axonarium/schema",
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "additionalProperties": false,
-    "description": "A claim that a region or neuron type in one species corresponds to one in another. Homology is a weighted, cited claim, never a merge of nodes.",
+    "description": "The kinds of source a claim may cite, kept in data/allowlist.yaml. Any other kind is refused. The maintainer owns the file, so changes always get human review (plan Part 3.3, Layer 2; ADR 0015).",
     "metamodel_version": "1.11.0",
     "properties": {
-        "basis": {
-            "description": "The kinds of evidence the correspondence rests on.",
+        "accepted": {
+            "description": "The kinds of source accepted.",
             "items": {
-                "$ref": "#/$defs/HomologyBasis"
+                "$ref": "#/$defs/AcceptedSource"
             },
-            "minItems": 1,
             "type": "array"
-        },
-        "confidence": {
-            "$ref": "#/$defs/Confidence",
-            "description": "How strong the evidence for the correspondence is."
-        },
-        "correspondence": {
-            "$ref": "#/$defs/Correspondence",
-            "description": "How fully the two entities correspond."
-        },
-        "curation": {
-            "$ref": "#/$defs/Curation",
-            "description": "Who drafted or curated the claim."
-        },
-        "excerpt": {
-            "description": "A short verbatim quotation, at most 300 characters, taken only from an openly licensed paper.",
-            "pattern": "^[\\s\\S]{1,300}$",
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "extra": {
-            "anyOf": [
-                {
-                    "$ref": "#/$defs/Any"
-                },
-                {
-                    "type": "null"
-                }
-            ],
-            "description": "Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here."
-        },
-        "id": {
-            "description": "The record's identifier.",
-            "pattern": "^hom-[0-9a-hjkmnp-tv-z]{10}$",
-            "type": "string"
-        },
-        "object": {
-            "$ref": "#/$defs/EntityRef",
-            "description": "The region or neuron type the relationship ends at."
-        },
-        "object_species": {
-            "description": "The organism of the homology claim's object.",
-            "pattern": "^NCBITaxon:\\d+$",
-            "type": "string"
-        },
-        "paraphrase": {
-            "description": "The evidence summarised in the curator's own words. Copyright-safe: verbatim text belongs in excerpt, and only from openly licensed papers.",
-            "type": "string"
-        },
-        "source": {
-            "$ref": "#/$defs/Citation",
-            "description": "Where the evidence for the claim is."
-        },
-        "status": {
-            "$ref": "#/$defs/ClaimStatus",
-            "description": "Where the claim is in its life cycle."
-        },
-        "subject": {
-            "$ref": "#/$defs/EntityRef",
-            "description": "The region or neuron type the relationship starts from."
-        },
-        "subject_species": {
-            "description": "The organism of the homology claim's subject.",
-            "pattern": "^NCBITaxon:\\d+$",
-            "type": "string"
-        },
-        "verification": {
-            "anyOf": [
-                {
-                    "$ref": "#/$defs/Verification"
-                },
-                {
-                    "type": "null"
-                }
-            ],
-            "description": "The independent check of the claim, if one was made."
         }
     },
     "required": [
-        "subject",
-        "subject_species",
-        "object",
-        "object_species",
-        "correspondence",
-        "confidence",
-        "basis",
-        "id",
-        "source",
-        "paraphrase",
-        "curation",
-        "status"
+        "accepted"
     ],
     "title": "axonarium",
     "type": "object",

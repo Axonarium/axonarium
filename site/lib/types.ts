@@ -89,6 +89,8 @@ export interface Source {
   title: string | null;
   year: number | null;
   journal: string | null;
+  /** journal_article, preprint, dataset or other, from the source's registry; the allowlist decides which a claim may cite. */
+  kind: string;
   license: string | null;
   open_access: boolean | null;
   retracted: boolean | null;
