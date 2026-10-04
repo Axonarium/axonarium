@@ -91,7 +91,7 @@ What exists now:
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
 | `ingest/` | Adapters for external sources, run by the build: `atlases.py` reads BrainGlobe atlases and UBERON bridges |
 | `site/` | The explorer: Next.js on Vercel, reading Supabase ([site/README.md](site/README.md)); it also serves the read API |
-| `api/` | The read API's documentation ([api/README.md](api/README.md)); the MCP server will live here |
+| `api/` | The read API's documentation ([api/README.md](api/README.md)) and the MCP server (`api/mcp`) |
 | `.github/` | CI, Dependabot, code owners, sprint-card form, labels |
 
 Planned, from the plan's repository layout:
