@@ -14,7 +14,7 @@ from checks.http import Fetcher
 from checks.loading import load_tree
 from checks.lookups import CROSSREF, NCBI, OLS
 from checks.online_rules import check_online, mismatched
-from checks.tests.conftest import overlay
+from checks.tests.conftest import OpenerAdapter, overlay
 from checks.tests.test_changes import git
 
 ONLINE = Path(__file__).parent / "fixtures" / "online"
@@ -56,7 +56,7 @@ def test_lookup_failed(online_tree, replay):
             raise OSError("connection reset")
         return replay(url, headers, timeout)
 
-    findings = online(online_tree, Fetcher(None, opener, sleep=lambda seconds: None))
+    findings = online(online_tree, Fetcher(None, OpenerAdapter(opener)))
     assert [(Path(f.path).name, f.rule) for f in findings] == [("hom-c643x76f02.yaml", "lookup-failed")]
 
 
@@ -74,10 +74,10 @@ def test_pubmed_doi_case_ignored():
 
 def test_cli_online(online_tree, replay, tmp_path, capsys):
     command = ["online", "--data", str(online_tree), "--cache", str(tmp_path / "cache")]
-    assert main(command, opener=replay) == 0
+    assert main(command, transport=OpenerAdapter(replay)) == 0
     assert capsys.readouterr().out == ""
     overlay(online_tree, ONLINE / "broken" / "unknown-term")
-    assert main(command, opener=replay) == 1
+    assert main(command, transport=OpenerAdapter(replay)) == 1
     lines = capsys.readouterr().out.splitlines()
     assert len(lines) == 2 and all(": unknown-term: " in line for line in lines), lines
 
@@ -110,7 +110,7 @@ def test_scope_changed_claim_and_its_source(online_repo, fetch):
 def test_scope_nothing_changed(online_repo, fetch, replay, tmp_path):
     assert scoped(online_repo, fetch) == [] and fetch.requested == []
     command = ["online", "--base", "main", "--data", str(online_repo), "--cache", str(tmp_path / "cache")]
-    assert main(command, opener=replay) == 0
+    assert main(command, transport=OpenerAdapter(replay)) == 0
 
 
 def test_scope_untracked_file(online_repo, fetch):
@@ -157,7 +157,7 @@ def test_odd_registry_answers_are_reported_not_raised(online_tree, replay, url, 
     def opener(asked, headers, timeout):
         return (200, {}, json.dumps(body).encode()) if asked == url else replay(asked, headers, timeout)
 
-    findings = online(online_tree, Fetcher(None, opener, sleep=lambda seconds: None))
+    findings = online(online_tree, Fetcher(None, OpenerAdapter(opener)))
     assert findings and {f.rule for f in findings} == {"lookup-failed"}, [str(f) for f in findings]
 
 
@@ -171,7 +171,7 @@ def test_pmid_and_pmcid_without_doi(online_tree, replay):
     def opener(url, headers, timeout):
         return (200, {}, json.dumps(summary).encode()) if url == pmc else replay(url, headers, timeout)
 
-    assert online(online_tree, Fetcher(None, opener, sleep=lambda seconds: None)) == []
+    assert online(online_tree, Fetcher(None, OpenerAdapter(opener))) == []
 
 
 def test_scope_includes_pubmed_record(online_tree, fetch):

@@ -1,16 +1,20 @@
 """Shared fixtures: a valid data tree built from the schema's examples, and replayed registry responses."""
 
+import io
 import json
 import os
 import shutil
-import time
 from pathlib import Path
 from urllib.parse import urlsplit
 
 import pytest
+import requests
+import urllib3
 import yaml
+from requests.adapters import BaseAdapter
+from requests.structures import CaseInsensitiveDict
 
-from checks.http import Fetcher, default_opener
+from checks.http import Fetcher
 from checks.identifiers import source_file_name
 
 REPO = Path(__file__).resolve().parents[2]
@@ -18,6 +22,36 @@ EXAMPLES = REPO / "schema" / "examples" / "valid"
 BROKEN = Path(__file__).parent / "fixtures" / "broken"
 RECORDED = Path(__file__).parent / "fixtures" / "http" / "recorded.json"
 RECORDING = os.environ.get("AXONARIUM_RECORD") == "1"
+
+
+def default_opener(url, headers, timeout):
+    """The network, for recording: status, headers and body of a GET."""
+    response = requests.get(url, headers=headers, timeout=timeout)
+    return response.status_code, dict(response.headers), response.content
+
+
+class OpenerAdapter(BaseAdapter):
+    """A requests transport that answers from an opener function, `(url, headers, timeout) -> (status, headers,
+    body)`, instead of the network; an OSError it raises is a dropped connection."""
+
+    def __init__(self, opener):
+        super().__init__()
+        self.opener = opener
+
+    def send(self, request, stream=False, timeout=None, verify=True, cert=None, proxies=None):
+        try:
+            status, headers, body = self.opener(request.url, dict(request.headers), timeout)
+        except OSError as error:
+            raise requests.ConnectionError(error, request=request) from error
+        response = requests.Response()
+        response.status_code, response.url, response.request, response.reason = status, request.url, request, "Recorded"
+        response.headers = CaseInsensitiveDict(headers)
+        response.raw = urllib3.HTTPResponse(body=io.BytesIO(body), headers=headers, status=status, preload_content=False)
+        response._content = body
+        return response
+
+    def close(self):
+        pass
 
 
 def _data_path(cls: str, record: dict) -> Path | None:
@@ -110,4 +144,4 @@ def replay(recordings):
 
 @pytest.fixture
 def fetch(replay) -> Fetcher:
-    return Fetcher(None, replay, sleep=time.sleep if RECORDING else lambda seconds: None)
+    return Fetcher(None, OpenerAdapter(replay))

@@ -8,6 +8,7 @@ import pytest
 import yaml
 
 from checks.cli import main, run_files
+from checks.tests.conftest import OpenerAdapter
 from checks.http import Fetcher
 from checks.lookups import crossref_work, datacite_record
 from checks.sources import fetch_source, fill_sources, source_from_crossref, source_from_datacite, source_from_pubmed
@@ -100,7 +101,7 @@ def test_refresh_updates_and_keeps_extra(tree, fetch):
 
 def test_cli_sources(tree, replay, tmp_path, capsys):
     (tree / HINTIRYAN_FILE).unlink()
-    assert main(["sources", "--data", str(tree), "--cache", str(tmp_path / "cache")], opener=replay) == 0
+    assert main(["sources", "--data", str(tree), "--cache", str(tmp_path / "cache")], transport=OpenerAdapter(replay)) == 0
     assert capsys.readouterr().out.splitlines() == [f"wrote {tree / HINTIRYAN_FILE}"]
 
 
@@ -116,7 +117,7 @@ def test_fill_reports_odd_registry_answer(tree, replay):
     def opener(asked, headers, timeout):
         return (200, {}, b'{"message": {"updated-by": [{"type": ["retraction"]}]}}') if asked == url else replay(asked, headers, timeout)
 
-    written, findings = fill_sources(tree, Fetcher(None, opener, sleep=lambda seconds: None), TODAY)
+    written, findings = fill_sources(tree, Fetcher(None, OpenerAdapter(opener)), TODAY)
     assert written == [] and [f.rule for f in findings] == ["lookup-failed"]
 
 
@@ -135,10 +136,10 @@ def test_cli_refresh_ignores_cached_answers(tree, replay, tmp_path):
     def before_retraction(url, headers, timeout):
         return (200, {}, b'{"message": {"title": ["Old"], "updated-by": []}}') if url == crossref else replay(url, headers, timeout)
 
-    Fetcher(cache, before_retraction, sleep=lambda seconds: None).get_json(crossref)
+    Fetcher(cache, OpenerAdapter(before_retraction)).get_json(crossref)
     stale = {"id": f"doi:{WAKEFIELD}", "title": "Old", "retracted": False}
     (tree / WAKEFIELD_FILE).write_text(yaml.safe_dump(stale, sort_keys=False), encoding="utf-8")
-    assert main(["sources", "--refresh", "--data", str(tree), "--cache", str(cache)], opener=replay) == 0
+    assert main(["sources", "--refresh", "--data", str(tree), "--cache", str(cache)], transport=OpenerAdapter(replay)) == 0
     assert yaml.safe_load((tree / WAKEFIELD_FILE).read_text(encoding="utf-8"))["retracted"] is True
 
 

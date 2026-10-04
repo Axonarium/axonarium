@@ -6,7 +6,7 @@ import pytest
 
 from checks.http import Fetcher
 from checks.lookups import Term, arxiv_doi, atlas_structure, doi_agency, ncbi_summary, ontology_term
-from checks.tests.conftest import RECORDED
+from checks.tests.conftest import OpenerAdapter, RECORDED
 
 
 @pytest.mark.parametrize("curie, term", [
@@ -60,7 +60,7 @@ def test_doi_is_quoted_in_requests():
         return 200, {}, json.dumps([{"DOI": "x", "status": "DOI does not exist"}]).encode()
 
     doi = "10.1002/(sici)1096-9861(19960101)364:1<1::aid-cne1>3.0.co;2-#"
-    assert doi_agency(Fetcher(None, opener, sleep=lambda s: None), doi) is None
+    assert doi_agency(Fetcher(None, OpenerAdapter(opener)), doi) is None
     assert sent == ["https://doi.org/ra/10.1002/%28sici%291096-9861%2819960101%29364%3A1%3C1%3A%3Aaid-cne1%3E3.0.co%3B2-%23"]
 
 
