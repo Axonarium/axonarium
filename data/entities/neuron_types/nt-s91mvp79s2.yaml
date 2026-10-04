@@ -1,0 +1,14 @@
+id: nt-s91mvp79s2
+name: CEA neurotensin-expressing neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Nts
+cell_ontology: CL:0000617
+synonyms:
+- CeA Nts neurons
+- CeA neurotensin neurons

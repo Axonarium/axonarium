@@ -1,0 +1,15 @@
+id: nt-g513b58b0y
+name: CEAl PKC-delta-expressing neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Prkcd
+cell_ontology: CL:0000617
+synonyms:
+- CeL PKCδ+ neurons
+- CeL PKC-delta neurons
+- CeL-off neurons

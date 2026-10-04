@@ -1,0 +1,17 @@
+id: nt-y231zwbxhf
+name: Intercalated cell GABAergic neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:1105
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Foxp2
+- Tshz1
+cell_ontology: CL:0000617
+synonyms:
+- ITC neurons
+- ITCs
+- intercalated cells
+- intercalated neurons

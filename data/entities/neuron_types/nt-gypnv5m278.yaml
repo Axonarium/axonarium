@@ -1,0 +1,13 @@
+id: nt-gypnv5m278
+name: Rat lateral amygdaloid nucleus principal neurons
+species: NCBITaxon:10116
+region:
+  type: region
+  id: UBERON:0002886
+transmitter: glutamate
+markers:
+- Camk2a
+cell_ontology: CL:4023039
+synonyms:
+- rat LA principal neurons
+- rat LA projection neurons

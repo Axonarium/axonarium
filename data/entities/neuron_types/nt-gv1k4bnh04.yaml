@@ -1,0 +1,14 @@
+id: nt-gv1k4bnh04
+name: Rat basal amygdaloid nucleus principal neurons
+species: NCBITaxon:10116
+region:
+  type: region
+  id: UBERON:0002887
+transmitter: glutamate
+markers:
+- Camk2a
+cell_ontology: CL:4023039
+synonyms:
+- rat BLA principal neurons
+- rat basal nucleus principal neurons
+- rat BL projection neurons

@@ -54,7 +54,31 @@ def check_tree(records: list[Record]) -> list[Finding]:
             if record.cls in CLAIMS and isinstance(species, str) and atlas in atlas_species and atlas_species[atlas] != species:
                 findings.append(Finding(str(record.path), "atlas-species",
                                         f"{ref_id} is in {atlas} ({atlas_species[atlas]}), but this side of the claim is {species}"))
-    return findings + _source_rules(records)
+    return findings + _source_rules(records) + _allowlist_rules(records)
+
+
+def _accepts(entries: list[dict], source: dict) -> bool:
+    """Whether an allowlist entry accepts a source record: its kind, and its journal where the entry names venues."""
+    return any(entry.get("kind") == source.get("kind")
+               and ("venues" not in entry or source.get("journal") in entry["venues"]) for entry in entries)
+
+
+def _allowlist_rules(records: list[Record]) -> list[Finding]:
+    """Every claim cites a kind of source the allowlist accepts (ADR 0015). Without an allowlist, none is accepted."""
+    entries = [entry for r in records if r.cls == "Allowlist" and isinstance(r.data.get("accepted"), list)
+               for entry in r.data["accepted"] if isinstance(entry, dict)]
+    sources = {r.data["id"].lower(): r.data for r in records if r.cls == "Source" and isinstance(r.data.get("id"), str)}
+    findings = []
+    for record in records:
+        key = source_key(citation_of(record.data)) if record.cls in CLAIMS else None
+        source = sources.get(key.lower()) if key else None
+        if source is None or _accepts(entries, source):
+            continue  # A missing source record is the missing-source rule's finding.
+        venue = f" from {source['journal']}" if isinstance(source.get("journal"), str) else ""
+        findings.append(Finding(str(record.path), "source-not-allowed",
+                                f"cites {key}, a {source.get('kind', 'source of unknown kind')}{venue}, "
+                                "which allowlist.yaml doesn't accept"))
+    return findings
 
 
 def _source_rules(records: list[Record]) -> list[Finding]:

@@ -54,6 +54,15 @@ def test_generated_claim_with_unknown_region_stops_build(valid_tree, tmp_path, c
     assert "unknown-region" in capsys.readouterr().out
 
 
+def test_generated_claim_citing_a_refused_source_stops_build(valid_tree, tmp_path, capsys):
+    (valid_tree / "sources" / "doi" / "doi_10.5555_axonarium.example.099.yaml").write_text(
+        "id: doi:10.5555/axonarium.example.099\nkind: dataset\n", encoding="utf-8")  # the allowlist refuses datasets
+    refused = claim()
+    refused["source"] = {**refused["source"], "doi": "10.5555/axonarium.example.099"}
+    assert build(valid_tree, tmp_path / "dist", claims=(refused,)) == 1
+    assert "allen-connectivity/clm-a0a0a0a0a0.yaml: source-not-allowed" in capsys.readouterr().out
+
+
 @pytest.mark.skipif(not TEST_URL, reason="needs AXONARIUM_TEST_DATABASE_URL")
 def test_generated_claims_reach_the_database_and_rerun_is_identical(valid_tree, tmp_path, monkeypatch):
     monkeypatch.setenv("AXONARIUM_DATABASE_URL", TEST_URL)

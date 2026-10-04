@@ -221,12 +221,17 @@ export const openapi: OpenAPIV3_1.Document = {
       },
       Source: {
         type: "object",
-        required: ["id", "title", "year", "journal", "license", "open_access", "retracted"],
+        required: ["id", "title", "year", "journal", "kind", "license", "open_access", "retracted"],
         properties: {
           id: { type: "string" },
           title: nullable("string"),
           year: nullable("integer"),
-          journal: nullable("string"),
+          journal: { ...nullable("string"), description: "The journal, or a preprint's server" },
+          kind: {
+            type: "string",
+            enum: ["journal_article", "preprint", "dataset", "other"],
+            description: "The kind of publication, from its registry. Preprints are a lower evidence tier than published work.",
+          },
           license: nullable("string"),
           open_access: nullable("boolean"),
           retracted: nullable("boolean"),

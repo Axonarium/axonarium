@@ -13,10 +13,17 @@ from checks.identifiers import canonical_source_id, citation_of, source_file_nam
 from checks.loading import load_tree
 from checks.lookups import CROSSREF, DATACITE, arxiv_doi, crossref_work, datacite_record, doi_agency, ncbi_summary, pubmed_ids_for_doi
 
-FIELDS = ("id", "title", "year", "journal", "license", "open_access", "retracted")
+FIELDS = ("id", "title", "year", "journal", "kind", "license", "open_access", "retracted")
 CLAIMS = ("ConnectivityClaim", "HomologyClaim")
 RETRACTING = {"retraction", "withdrawal", "removal"}  # Crossref update types that withdraw a paper
 TAGS = re.compile(r"<[^>]+>")
+# A source's kind (ADR 0015), from each registry's own type: Crossref's type, DataCite's resourceTypeGeneral and
+# PubMed's publication types. Anything not listed is "other".
+CROSSREF_KINDS = {"journal-article": "journal_article", "dataset": "dataset"}
+DATACITE_KINDS = {"JournalArticle": "journal_article", "Preprint": "preprint", "Dataset": "dataset"}
+PUBMED_ARTICLES = {"Journal Article", "Review"}
+# Preprint servers by the name NCBI gives them (its `source`, lowercased), and the name source records use.
+PREPRINT_SERVERS = {"arxiv": "arXiv", "biorxiv": "bioRxiv", "medrxiv": "medRxiv", "res sq": "Research Square"}
 
 
 def _text(value) -> str | None:
@@ -57,11 +64,18 @@ def _crossref_licence(entries, today: date) -> str | None:
 def source_from_crossref(doi: str, message: dict, today: date) -> dict:
     issued = _date(message.get("issued"))
     updates = message.get("updated-by")
+    kind = CROSSREF_KINDS.get(message.get("type"), "other")
+    journal = _text(_first(message.get("container-title")))
+    if message.get("type") == "posted-content" and message.get("subtype") == "preprint":
+        kind = "preprint"  # Its server is the posting institution, such as bioRxiv, not the publisher.
+        server = _first(message.get("institution"))
+        journal = _text(server.get("name")) if isinstance(server, dict) else None
     return _record(
         f"doi:{doi.lower()}",
         title=_text(_first(message.get("title"))),
         year=issued.year if issued else None,
-        journal=_text(_first(message.get("container-title"))),
+        journal=journal,
+        kind=kind,
         license=_crossref_licence(message.get("license"), today),
         retracted=any(isinstance(u, dict) and u.get("type") in RETRACTING for u in updates) if isinstance(updates, list) else False,
     )
@@ -85,20 +99,39 @@ def source_from_datacite(doi: str, attributes: dict) -> dict:
             licence = _spdx_case(identifier)
         elif isinstance(rights.get("rightsUri"), str):
             licence = spdx_from_url(rights["rightsUri"])
+    types = attributes.get("types") if isinstance(attributes.get("types"), dict) else {}
+    arxiv = doi.lower().startswith("10.48550/arxiv.")  # arXiv is a preprint server, whatever type it registers
     return _record(
         f"doi:{doi.lower()}",
         title=_text(title.get("title")) if isinstance(title, dict) else None,
         year=int(year) if isinstance(year, int) or (isinstance(year, str) and year.isdigit()) else None,
         journal=_text(container.get("title")) or _text(publisher),
+        kind="preprint" if arxiv else DATACITE_KINDS.get(types.get("resourceTypeGeneral"), "other"),
         license=licence,
     )
 
 
-def _ncbi(source_id: str, summary: dict) -> dict:
-    """Title, year and journal from an NCBI summary (PubMed or PubMed Central)."""
+def _server(summary: dict) -> str | None:
+    """The preprint server an NCBI summary's journal is, by the name source records use; None for a journal."""
+    source = _text(summary.get("source"))
+    return PREPRINT_SERVERS.get(source.lower()) if source else None
+
+
+def _ncbi(source_id: str, summary: dict, preprint: bool = False) -> dict:
+    """Title, year and journal from an NCBI summary (PubMed or PubMed Central). A preprint's journal is its server."""
     year = re.match(r"([0-9]{4})", summary.get("pubdate") or "")
-    return dict(title=_text(summary.get("title")), year=int(year[1]) if year else None,
-                journal=_text(summary.get("fulljournalname")) or _text(summary.get("source")))
+    journal = _text(summary.get("fulljournalname")) or _text(summary.get("source"))
+    if preprint:
+        journal = _server(summary) or _text(summary.get("source"))
+    return dict(title=_text(summary.get("title")), year=int(year[1]) if year else None, journal=journal)
+
+
+def _pubmed_kind(summary: dict) -> str:
+    """A PubMed record's kind, from its publication types: a preprint, a journal article or review, or other."""
+    types = summary.get("pubtype") if isinstance(summary.get("pubtype"), list) else []
+    if "Preprint" in types:
+        return "preprint"
+    return "journal_article" if PUBMED_ARTICLES & set(types) else "other"
 
 
 def pubmed_says_retracted(summary: dict) -> bool:
@@ -110,7 +143,9 @@ def pubmed_says_retracted(summary: dict) -> bool:
 
 
 def source_from_pubmed(pmid: str, summary: dict) -> dict:
-    return _record(f"pubmed:{pmid}", **_ncbi(pmid, summary), retracted=pubmed_says_retracted(summary))
+    kind = _pubmed_kind(summary)
+    return _record(f"pubmed:{pmid}", **_ncbi(pmid, summary, kind == "preprint"), kind=kind,
+                   retracted=pubmed_says_retracted(summary))
 
 
 def _pubmed_retracted(fetch: Fetcher, doi: str) -> bool | None:
@@ -120,7 +155,10 @@ def _pubmed_retracted(fetch: Fetcher, doi: str) -> bool | None:
 
 
 def source_from_pmc(pmcid: str, summary: dict) -> dict:
-    return _record(f"pmc:{pmcid}", **_ncbi(pmcid, summary))  # PubMed Central has no retraction status.
+    # PubMed Central has no retraction status or publication types: its records are journal articles, except
+    # those from preprint servers.
+    preprint = _server(summary) is not None
+    return _record(f"pmc:{pmcid}", **_ncbi(pmcid, summary, preprint), kind="preprint" if preprint else "journal_article")
 
 
 def fetch_source(fetch: Fetcher, source_id: str, today: date) -> dict | None:
@@ -158,7 +196,7 @@ def _doi_record(fetch: Fetcher, doi: str, today: date) -> dict | None:
         if attributes is None:
             raise LookupFailed(DATACITE.format(doi=doi), "doi.org names DataCite, but DataCite has no record")
         return source_from_datacite(doi, attributes)
-    return _record(f"doi:{doi.lower()}")  # Other agencies: the DOI exists, and that is all the checks know.
+    return _record(f"doi:{doi.lower()}", kind="other")  # Other agencies: the DOI exists, and that is all the checks know.
 
 
 def write_source(path: Path, record: dict) -> None:

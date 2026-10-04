@@ -84,6 +84,9 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
               <p className="text-sm text-muted-foreground">{[s.journal, s.year].filter(Boolean).join(", ")}</p>
             )}
             <Citation cited={c} locator={c.locator} />
+            {s?.kind === "preprint" && (
+              <p className="text-sm text-muted-foreground">A preprint: not yet peer reviewed, so weaker evidence than a published paper.</p>
+            )}
             {s?.retracted && <p className="text-sm font-medium text-destructive">This paper has been retracted.</p>}
             {s?.license && <p className="text-sm text-muted-foreground">Licence: {s.license}</p>}
           </div>

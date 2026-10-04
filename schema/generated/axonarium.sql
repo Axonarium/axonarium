@@ -12,6 +12,7 @@ CREATE TYPE "Role" AS ENUM ('curator', 'ingester', 'extractor', 'verifier', 'rec
 CREATE TYPE "Verdict" AS ENUM ('agree', 'disagree', 'unsure');
 CREATE TYPE "QuantityKind" AS ENUM ('connection_probability', 'synapse_count', 'conduction_delay', 'projection_density', 'fraction_of_labelled_neurons');
 CREATE TYPE "Transmitter" AS ENUM ('glutamate', 'gaba', 'acetylcholine', 'dopamine', 'serotonin', 'noradrenaline', 'neuropeptide', 'unknown');
+CREATE TYPE "SourceKind" AS ENUM ('journal_article', 'preprint', 'dataset', 'other');
 CREATE TYPE "RetractionAction" AS ENUM ('deleted', 'retracted', 'restored');
 CREATE TYPE "HomologyBasis" AS ENUM ('connectivity', 'gene_expression', 'cytoarchitecture', 'development', 'function', 'expert_assertion');
 
@@ -86,6 +87,12 @@ COMMENT ON COLUMN "Verification".model IS 'The model ID an agent ran on, such as
 COMMENT ON COLUMN "Verification".prompt IS 'The versioned role prompt an agent ran, such as extract@1.0.0.';
 COMMENT ON COLUMN "Verification".verdict IS 'Whether the verifier agrees with the claim.';
 COMMENT ON COLUMN "Verification".date IS 'When the work was done, as YYYY-MM-DD. Quote it in YAML. The pattern catches non-dates in validators that ignore JSON Schema "format".';
+
+CREATE TABLE "Allowlist" (
+	id SERIAL NOT NULL,
+	PRIMARY KEY (id)
+);
+COMMENT ON TABLE "Allowlist" IS 'The kinds of source a claim may cite, kept in data/allowlist.yaml. Any other kind is refused. The maintainer owns the file, so changes always get human review (plan Part 3.3, Layer 2; ADR 0015).';
 
 CREATE TABLE "RetractionLog" (
 	id SERIAL NOT NULL,
@@ -241,6 +248,7 @@ CREATE TABLE "Source" (
 	title TEXT,
 	year INTEGER,
 	journal TEXT,
+	kind "SourceKind" NOT NULL,
 	license TEXT,
 	open_access BOOLEAN,
 	retracted BOOLEAN,
@@ -255,11 +263,25 @@ COMMENT ON COLUMN "Source".id IS 'The record''s identifier.';
 COMMENT ON COLUMN "Source".title IS 'The paper''s title.';
 COMMENT ON COLUMN "Source".year IS 'The year of publication.';
 COMMENT ON COLUMN "Source".journal IS 'The journal or preprint server.';
+COMMENT ON COLUMN "Source".kind IS 'What kind of publication the source is, as its registry types it (Crossref, DataCite or PubMed).';
 COMMENT ON COLUMN "Source".license IS 'The paper''s licence, as an SPDX ID where one exists.';
 COMMENT ON COLUMN "Source".open_access IS 'Whether the full text is openly available.';
 COMMENT ON COLUMN "Source".retracted IS 'Whether the paper has been retracted, per Crossref (for DOIs) or PubMed.';
 COMMENT ON COLUMN "Source"."KnowledgeBase_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "Source".extra_id IS 'Open-ended map of namespaced keys (prefix.name, such as lab.tracer) to any JSON value. Core facts always have typed fields and never live only here.';
+
+CREATE TABLE "AcceptedSource" (
+	id SERIAL NOT NULL,
+	kind "SourceKind" NOT NULL,
+	reason TEXT NOT NULL,
+	"Allowlist_id" INTEGER,
+	PRIMARY KEY (id),
+	FOREIGN KEY("Allowlist_id") REFERENCES "Allowlist" (id)
+);
+COMMENT ON TABLE "AcceptedSource" IS 'One kind of source the allowlist accepts, optionally only from named venues, such as preprints from bioRxiv.';
+COMMENT ON COLUMN "AcceptedSource".kind IS 'What kind of publication the source is, as its registry types it (Crossref, DataCite or PubMed).';
+COMMENT ON COLUMN "AcceptedSource".reason IS 'Why, in a sentence or two.';
+COMMENT ON COLUMN "AcceptedSource"."Allowlist_id" IS 'Autocreated FK slot';
 
 CREATE TABLE "RetractionEntry" (
 	id SERIAL NOT NULL,
@@ -358,6 +380,16 @@ CREATE TABLE "NeuronType_synonyms" (
 COMMENT ON TABLE "NeuronType_synonyms" IS 'None';
 COMMENT ON COLUMN "NeuronType_synonyms"."NeuronType_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "NeuronType_synonyms".synonyms IS 'Other names for the entity.';
+
+CREATE TABLE "AcceptedSource_venues" (
+	"AcceptedSource_id" INTEGER,
+	venues TEXT,
+	PRIMARY KEY ("AcceptedSource_id", venues),
+	FOREIGN KEY("AcceptedSource_id") REFERENCES "AcceptedSource" (id)
+);
+COMMENT ON TABLE "AcceptedSource_venues" IS 'None';
+COMMENT ON COLUMN "AcceptedSource_venues"."AcceptedSource_id" IS 'Autocreated FK slot';
+COMMENT ON COLUMN "AcceptedSource_venues".venues IS 'The journals or preprint servers accepted, as source records name them. Without it, every venue of the kind is accepted.';
 
 CREATE TABLE "Region_synonyms" (
 	"Region_id" TEXT,
