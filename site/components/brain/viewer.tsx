@@ -87,7 +87,8 @@ function Label({ region, detail }: { region: BrainRegion; detail?: string }) {
 
 const densityText = (edge: BrainEdge) => (edge.density === null ? "no density stated" : `projection density ${edge.density.toFixed(3)}`);
 
-export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base: string }) {
+/** The full viewer, or with `compact` a rotating preview without controls (the home page) that links to it. */
+export default function BrainViewer({ edges, base, compact = false }: { edges: BrainEdge[]; base: string; compact?: boolean }) {
   const [index, setIndex] = useState<BrainIndex | "missing" | null>(null);
   const [source, setSource] = useState<string>(ALL);
   const [threshold, setThreshold] = useState(0.05);
@@ -166,10 +167,20 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_19rem]">
-      <div className="relative h-[min(60vh,110vw)] min-h-[320px] overflow-hidden rounded-xl border bg-[#0b1020] lg:h-[62vh]">
+    <div className={compact ? "" : "grid gap-4 lg:grid-cols-[1fr_19rem]"}>
+      <div
+        className={`relative overflow-hidden rounded-xl border bg-[#0b1020] ${compact ? "h-[min(52vh,95vw)] min-h-[300px]" : "h-[min(60vh,110vw)] min-h-[320px] lg:h-[62vh]"}`}
+      >
         {index === null && <p className="absolute inset-0 grid place-items-center text-sm text-white/60">Loading the atlas…</p>}
-        {index && (
+        {compact && index && (
+          <Link
+            href="/brain"
+            className="absolute right-3 bottom-3 z-10 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-slate-900 shadow hover:bg-white/90"
+          >
+            Explore in 3D →
+          </Link>
+        )}
+        {!compact && index && (
           <div role="group" aria-label="View" className="absolute top-3 left-3 z-10 flex rounded-full bg-white/10 p-0.5 text-xs backdrop-blur">
             {(["3d", "network"] as const).map((v) => (
               <button
@@ -271,12 +282,20 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
                 }
               />
             )}
-            <OrbitControls makeDefault enableDamping autoRotate={focus === null} autoRotateSpeed={0.4} minDistance={6} maxDistance={60} />
+            <OrbitControls
+              makeDefault
+              enableDamping
+              enableZoom={!compact}
+              autoRotate={focus === null}
+              autoRotateSpeed={compact ? 0.8 : 0.4}
+              minDistance={6}
+              maxDistance={60}
+            />
           </Canvas>
         )}
       </div>
 
-      <aside className="space-y-4 text-sm">
+      <aside className={compact ? "hidden" : "space-y-4 text-sm"}>
         <div role="group" aria-label="Direction" className="grid grid-cols-2 rounded-lg border p-0.5 text-xs">
           {(["outputs", "inputs"] as const).map((d) => (
             <button

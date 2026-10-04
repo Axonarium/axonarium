@@ -10,6 +10,6 @@ const BrainViewer = dynamic(() => import("./viewer"), {
   loading: () => <div className="h-[min(60vh,110vw)] min-h-[320px] animate-pulse rounded-xl border bg-[#0b1020] lg:h-[62vh]" />,
 });
 
-export function BrainView({ edges, base }: { edges: BrainEdge[]; base: string }) {
-  return <BrainViewer edges={edges} base={base} />;
+export function BrainView({ edges, base, compact = false }: { edges: BrainEdge[]; base: string; compact?: boolean }) {
+  return <BrainViewer edges={edges} base={base} compact={compact} />;
 }
