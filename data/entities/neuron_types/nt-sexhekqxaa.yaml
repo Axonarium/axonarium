@@ -1,0 +1,12 @@
+id: nt-sexhekqxaa
+name: Rat central amygdala corticotropin-releasing hormone-expressing neurons
+species: NCBITaxon:10116
+region:
+  type: region
+  id: UBERON:0002883
+transmitter: gaba
+markers:
+- Crh
+cell_ontology: CL:0000617
+synonyms:
+- rat CeA CRF neurons

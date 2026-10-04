@@ -45,7 +45,7 @@ LLMs as a category will persist, but any specific model will be deprecated, repr
 
 1. **Files are the truth.** All knowledge lives as small, human-readable YAML files in git. Anyone can fork the entire project with one clone.
 2. **Everything else is rebuildable.** The database, dumps, site and graph analytics are regenerated from files by one command. CI proves this on every release by rebuilding from empty.
-3. **Agents contribute; they never own.** Agents open pull requests like any contributor. They never write to the database directly and never merge their own work.
+3. **Agents contribute; they never own.** Agents open pull requests like any contributor. They never write to the database directly, and never merge their own work unless the maintainer, having reviewed it, tells them to (AGENTS.md).
 4. **Model-agnostic roles.** Role prompts, schemas and the eval harness live in the repo. Any model that passes the gold-set eval can fill a role; none is hard-wired.
 5. **Provenance on everything.** Each claim records its source, locator, curator (human or agent), model and prompt version. Bad batches can be found and reverted in one query.
 6. **Degrade, don't break.** Each layer depends only on the layers below it (table below). Losing a layer freezes the project; it doesn't erase it.

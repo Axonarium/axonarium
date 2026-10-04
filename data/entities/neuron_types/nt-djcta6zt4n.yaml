@@ -1,0 +1,14 @@
+id: nt-djcta6zt4n
+name: BLA somatostatin-expressing interneurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Sst
+cell_ontology: CL:0000617
+synonyms:
+- BLA SOM interneurons
+- BLA SST interneurons

@@ -64,7 +64,8 @@ def forget(s: requests.Session, url: str) -> None:
 
 
 class Fetcher:
-    """Fetches JSON once per URL per run, and stops asking a host after it fails every attempt."""
+    """Fetches JSON once per URL per run, and stops asking a host after it fails every attempt (its cached answers
+    still count)."""
 
     def __init__(self, cache_dir: Path | None = None, transport: BaseAdapter | None = None, read_cache: bool = True,
                  intervals: dict[str, float] = INTERVALS):
@@ -87,16 +88,21 @@ class Fetcher:
 
     def _get(self, url: str) -> Any | None:
         host = urlsplit(url).hostname or ""
-        if host in self._down:
+        cached = isinstance(self.session, CachedSession)
+        # A host that failed every attempt isn't asked again this run, but its answers already in the cache still count.
+        only_cached = host in self._down
+        if only_cached and not (cached and self.read_cache):
             raise LookupFailed(url, f"{host} was unavailable earlier in this run ({self._down[host].reason})")
-        refresh = {"force_refresh": True} if isinstance(self.session, CachedSession) and not self.read_cache else {}
+        options = {"only_if_cached": True} if only_cached else {"force_refresh": True} if cached and not self.read_cache else {}
         try:
-            response = self.session.get(url, timeout=TIMEOUT, **refresh)
+            response = self.session.get(url, timeout=TIMEOUT, **options)
         except (requests.exceptions.InvalidURL, requests.exceptions.InvalidHeader, ValueError) as error:
             raise LookupFailed(url, f"{type(error).__name__}: {error}") from None  # Retrying won't help.
         except requests.RequestException as error:
             self._down[host] = LookupFailed(url, f"{type(error).__name__} after {ATTEMPTS} attempts")
             raise self._down[host] from None
+        if only_cached and response.status_code != 200:  # requests-cache's 504 for "not in the cache"; only 200s are kept
+            raise LookupFailed(url, f"{host} was unavailable earlier in this run ({self._down[host].reason})")
         if not getattr(response, "from_cache", False):
             self.requested.append(url)
         status = response.status_code

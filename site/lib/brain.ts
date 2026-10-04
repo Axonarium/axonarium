@@ -66,6 +66,14 @@ export function arcMidpoint(a: Point, b: Point): Point {
   return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2 + distance / 3, (a[2] + b[2]) / 2];
 }
 
+/** The connections at or above a minimum density, strongest first. The minimum applies only to connections that
+ * state a density: the others (literature claims rarely give one) are always kept, and listed last. */
+export function byDensity(edges: BrainEdge[], minimum: number): BrainEdge[] {
+  return edges
+    .filter((e) => e.density === null || e.density >= minimum)
+    .sort((a, b) => (a.density === null ? (b.density === null ? 0 : 1) : b.density === null ? -1 : b.density - a.density));
+}
+
 /** Arc width in pixels, by density relative to the strongest shown. */
 export function arcWidth(density: number | null, strongest: number): number {
   return 0.75 + 4 * Math.sqrt(Math.max(0, density ?? 0) / (strongest || 1));
