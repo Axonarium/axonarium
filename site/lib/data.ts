@@ -102,6 +102,20 @@ export function listEdges(): Promise<EdgeSummary[] | null> {
   );
 }
 
+/** The species and predicates connections have, for the explore page's filters. */
+export function getEdgeFacets(): Promise<{ species: string[]; predicate: string[] } | null> {
+  return read(
+    async (db) =>
+      offline.facetsOf(
+        await fetchAll((from, to) =>
+          rows<{ species: string; predicate: string }[]>("edge facets", () => db.from("edges").select("species, predicate").order("id").range(from, to)),
+        ),
+      ),
+    offline.edgeFacets,
+    null,
+  );
+}
+
 export function getEdge(id: string): Promise<Edge | null | undefined> {
   return read((db) => rows<Edge | null>("edge", () => db.from("edges").select("*").eq("id", id).maybeSingle()), (t) => offline.edge(t, id), undefined);
 }

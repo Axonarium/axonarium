@@ -162,6 +162,7 @@ jobs:
             site/test-results/
           retention-days: 7
           if-no-files-found: ignore
+          include-hidden-files: true  # .lighthouseci
 
   site:
     runs-on: ubuntu-latest

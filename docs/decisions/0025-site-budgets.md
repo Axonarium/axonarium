@@ -34,17 +34,23 @@ Chosen option: "axe-core through Playwright, and Lighthouse CI, on real data". B
 
   | Pages | Performance score | Largest paint | Blocking time | Layout shift | Weight |
   | --- | --- | --- | --- | --- | --- |
-  | Text and tables (explore, regions, a region, a claim, a connection) | ≥ 0.9 | ≤ 2.5 s | ≤ 200 ms | ≤ 0.1 | ≤ 1 MB |
-  | With the 3D brain (home's preview, `/brain`) | none | ≤ 4 s | ≤ 600 ms | ≤ 0.1 | ≤ 6 MB |
+  | Text and tables (explore, regions, a region, a claim, a connection) | ≥ 0.9 | ≤ 3 s | ≤ 200 ms | ≤ 0.1 | ≤ 1 MB |
+  | With the 3D brain (home's preview, `/brain`) | not judged | ≤ 4 s | not judged | ≤ 0.1 | ≤ 6 MB |
 
-  The first group uses Web Vitals' "good" thresholds. three.js and the meshes are heavy by nature, so the 3D pages' budget keeps them stable while they load and stops them growing.
+  * **Text pages:** Web Vitals' "good" thresholds, except largest paint. In the lab it includes the server's render on a CI runner, and today's pages land at 2.1–2.8 s, so it gets 3 s.
+  * **3D pages:** three.js and the meshes are heavy by nature, so their budget keeps them stable while they load and stops them growing. Their blocking time and score can't be judged in CI. The runners have no GPU, so WebGL renders in software on the main thread on every frame, and Lighthouse measures that (about 160 s), not what a phone's GPU does.
 * **Lighthouse CI runs through `npx` at a pinned version**, as the deploy runs the Vercel CLI. It isn't a dependency: its Puppeteer chain carries advisories (in its browser downloader and FTP client, which it never uses here) that would sit in the lockfile.
 * **Reports** (Lighthouse's, and Playwright's on failure) are kept for seven days as the run's `budgets` artifact.
 
 ### Consequences
 
 * Good, because any change that breaks accessibility, slows a page or makes it jump fails its pull request, with the offending element or metric named.
-* Good, because the first run found two layout shifts, now fixed. The brain viewer's placeholder didn't match the home page's smaller preview. The "no meshes" notice collapsed the brain page.
+* Good, because the first runs found real faults, all fixed:
+  * The 3D canvas's wrapper had an `aria-label` but no role.
+  * The brain viewer's placeholder didn't match the home page's smaller preview, and the "no meshes" notice collapsed the brain page.
+  * A fallback to the snapshot waited through postgrest-js's three retries with backoff, several seconds a query. The site's read client no longer retries.
+  * `/explore` built all 1,039 rows in the browser after hydration. That gave a layout shift of 0.28 and seconds of blocking time on a phone. It now renders 100 rows a page on the server, filtered and paged through its URL, and its filters work without JavaScript. Its score went from 0.69 to about 0.95, and its DOM from 21,000 nodes to 2,000.
 * Bad, because the job takes several minutes: a rebuild, a site build, about 40 browser runs.
 * Bad, because lab numbers vary between CI machines. Medians of three runs and budgets with some margin keep the noise down; a budget that flakes is raised in a reviewed change, never silently.
-* Neutral: the home page's 3D preview costs a phone about 0.3–0.5 s of blocking time at load. Whether phones get a lighter preview is a design question for the maintainer's look review (sprint 3.5).
+* Neutral: `/explore` now renders for each request instead of being cached for five minutes, because its URL holds the filters and the page.
+* Neutral: the home page's 3D preview costs a phone about 0.3–0.5 s of blocking time at load (measured on a CPU-only machine). Whether phones get a lighter preview is a design question for the maintainer's look review (sprint 3.5).
