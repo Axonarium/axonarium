@@ -28,3 +28,5 @@ One row per paper, sorted by `key`: its DOI, else PubMed ID, else PubMed Central
 | `first_seen` | The day the scout first found it: a run's new papers are the extractor's next batch |
 
 Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3) reads open-access full text from Europe PMC when it needs it.
+
+The manifest grows with every run, past pre-commit's 500 KB limit for added files, so that check skips it. It stays one file, so a run's diff shows which papers came and went.
