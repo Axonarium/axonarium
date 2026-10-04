@@ -4,10 +4,12 @@ import argparse
 from datetime import date
 from pathlib import Path
 
+from requests.adapters import BaseAdapter
+
 from checks.change_rules import changed_since, check_changes
 from checks.file_rules import check_file
 from checks.findings import Finding
-from checks.http import Fetcher, Opener, default_opener
+from checks.http import Fetcher
 from checks.loading import load_tree
 from checks.online_rules import check_online
 from checks.sources import fill_sources
@@ -23,7 +25,7 @@ def run_files(data_dir: Path) -> list[Finding]:
     return sorted(findings)
 
 
-def main(argv: list[str] | None = None, opener: Opener = default_opener) -> int:
+def main(argv: list[str] | None = None, transport: BaseAdapter | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m checks", description="Check Axonarium's data files.")
     commands = parser.add_subparsers(dest="command", required=True)
     files = commands.add_parser("files", help="check every file under the data folder")
@@ -48,9 +50,9 @@ def main(argv: list[str] | None = None, opener: Opener = default_opener) -> int:
     elif args.command == "online":
         records, _ = load_tree(args.data)
         scope = changed_since(args.data, args.base) if args.base else None
-        findings = check_online(records, Fetcher(args.cache, opener), date.today(), scope)
+        findings = check_online(records, Fetcher(args.cache, transport), date.today(), scope)
     else:
-        fetch = Fetcher(args.cache, opener, read_cache=not args.refresh)  # A refresh asks the registries again.
+        fetch = Fetcher(args.cache, transport, read_cache=not args.refresh)  # A refresh asks the registries again.
         written, findings = fill_sources(args.data, fetch, date.today(), args.refresh)
         for path in written:
             print(f"wrote {path}")
