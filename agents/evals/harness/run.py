@@ -3,14 +3,17 @@
 import argparse
 import json
 import re
+from dataclasses import asdict
 from datetime import date
 from pathlib import Path
 
 import yaml
 
+import screen
 from evals.harness import gold as goldsets
 from evals.harness import providers
 from evals.harness.score import Tally, score_paper
+from screen.injection import ProtectAI
 
 AGENTS = Path(__file__).resolve().parents[2]
 FRONT = re.compile(r"\A---\n(.*?)\n---\n(.*)\Z", re.S)
@@ -29,11 +32,20 @@ def read_prompt(path: Path) -> tuple[str, str]:
 
 
 def run(gold: goldsets.GoldSet, model: providers.Provider, prompt: Path, effort: str | None, today: str,
-        paper_text=goldsets.text) -> dict:
+        paper_text) -> dict:
+    """`paper_text(gold, paper)` gives a paper's screened text. A flagged paper is never sent to the model: it is
+    reported, and its gold claims count as missed."""
     prompt_id, system = read_prompt(prompt)
     total, papers = Tally(), []
     for paper in gold.papers:
-        answer = model.extract(paper.name, system, paper_text(gold, paper))
+        screened = paper_text(gold, paper)
+        if screened.flagged:
+            tally = score_paper(paper.claims, [])
+            total.add(tally)
+            papers.append({"paper": paper.name, "stop": "screened", "detail": None, "usage": {}, **tally.metrics(),
+                           "answer": None, "screen": [asdict(f) for f in screened.findings]})
+            continue
+        answer = model.extract(paper.name, system, screened.text)
         predicted = answer.extraction.claims if answer.extraction else []
         tally = score_paper(paper.claims, predicted)
         total.add(tally)
@@ -42,7 +54,8 @@ def run(gold: goldsets.GoldSet, model: providers.Provider, prompt: Path, effort:
     usage = {k: sum(p["usage"].get(k, 0) for p in papers) for k in ("input_tokens", "output_tokens")}
     return {"date": today, "gold": {"path": str(gold.path), "version": gold.version, "frozen": gold.frozen},
             "model": model.name, "effort": effort, "prompt": prompt_id, **total.metrics(), "usage": usage,
-            "failures": {p["paper"]: p["stop"] for p in papers if p["answer"] is None}, "papers": papers}
+            "failures": {p["paper"]: p["stop"] for p in papers if p["answer"] is None},
+            "screened": [p["paper"] for p in papers if p["stop"] == "screened"], "papers": papers}
 
 
 def _pct(value) -> str:
@@ -61,6 +74,9 @@ def markdown(result: dict) -> str:
              f"Tokens: {result['usage']['input_tokens']} in, {result['usage']['output_tokens']} out.", "",
              "| Paper | Stop | Precision | Recall |", "| --- | --- | --- | --- |"]
     lines += [f"| {p['paper']} | {p['stop']} | {_pct(p['precision'])} | {_pct(p['recall'])} |" for p in result["papers"]]
+    for paper in (p for p in result["papers"] if p["stop"] == "screened"):
+        lines += ["", f"**{paper['paper']}** was flagged by the hidden-text screen and not read by the model:", ""]
+        lines += [f"- {f['layer']}, {f['detail']}: {f['excerpt']}" for f in paper["screen"]]
     return "\n".join(lines) + "\n"
 
 
@@ -73,7 +89,7 @@ def write(result: dict, out: Path) -> Path:
     return out / f"{slug}.md"
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: list[str] | None = None, classify=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m evals.harness", description="Score a model and prompt against a gold set.")
     parser.add_argument("--gold", type=Path, required=True, help="the gold set folder, such as evals/gold/v1")
     parser.add_argument("--model", required=True, help="provider:model, such as anthropic:claude-opus-5-5 or openai:<model>")
@@ -84,7 +100,13 @@ def main(argv: list[str] | None = None) -> int:
     effort = None if args.effort == "none" else args.effort
     try:
         model = providers.provider(args.model, effort)
-        result = run(goldsets.load(args.gold), model, args.prompt, effort, date.today().isoformat())
+        gold = goldsets.load(args.gold)
+        classify = classify or ProtectAI()
+        problems = screen.preflight(classify)
+        if problems:
+            raise ValueError("the hidden-text screen fails its fixtures: " + "; ".join(problems))
+        result = run(gold, model, args.prompt, effort, date.today().isoformat(),
+                     lambda g, paper: goldsets.text(g, paper, classify))
     except ValueError as error:
         print(f"eval stopped: {error}")
         return 1

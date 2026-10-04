@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic fixture for the hidden-text screen (sprint C.5, ADR 0023): a clean article holding the invisible
+     characters and styles real papers use, none of which should be flagged. Not a real paper. -->
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" article-type="research-article">
+  <front>
+    <article-meta>
+      <title-group>
+        <article-title>Projections of the basolateral amyg&#xAD;dala to the central nucleus in the mouse</article-title>
+      </title-group>
+      <abstract>
+        <p>We injected an anterograde tracer into the basolateral amygdala (BLA) of adult mice and mapped labelled axons. Dense terminal fields were found in the medial central nucleus (CeM), and sparse fibres in the lateral central nucleus (CeL).</p>
+      </abstract>
+    </article-meta>
+  </front>
+  <body>
+    <sec>
+      <title>Methods</title>
+      <p>Animals were anaesthetised with isoflurane (1.5&#x2013;2&#xA0;%) and placed in a stereotaxic frame. Please note that all procedures followed the national guidelines for the care and use of laboratory animals. AAV&#x2011;hSyn&#x2011;EGFP (50&#xA0;nl) was injected unilaterally into the BLA at 0.1&#xA0;&#x3BC;l/min, and brains were collected three weeks later.</p>
+      <p>Labelled fibres were counted in <italic>n</italic>&#x2009;=&#x2009;6 sections per animal; density was computed as <inline-formula><mml:math><mml:mi>d</mml:mi><mml:mo>=</mml:mo><mml:mi>n</mml:mi><mml:mo>&#x2062;</mml:mo><mml:msup><mml:mi>A</mml:mi><mml:mn>&#x2212;1</mml:mn></mml:msup></mml:math></inline-formula>, where A is the area of each nucleus.</p>
+    </sec>
+    <sec>
+      <title>Results</title>
+      <p>Every injection labelled axons in the CeM, with fewer in the CeL&#x200B;/&#x200B;capsular part. To check specificity, readers can compare the injection sites in <xref ref-type="fig" rid="f1">Figure 1</xref> with the terminal fields in <xref ref-type="table" rid="t1">Table 1</xref>.</p>
+      <table-wrap id="t1">
+        <caption><title>Terminal density by target</title><p>Mean density (fibres per mm<sup>2</sup>) &#xB1; s.e.m.</p></caption>
+        <table>
+          <thead><tr><th><styled-content style="color: #FFFFFF; background-color: #1F3B73">Target</styled-content></th><th>Density</th></tr></thead>
+          <tbody><tr><td>CeM</td><td>412 &#xB1; 38</td></tr><tr><td>CeL</td><td>57 &#xB1; 12</td></tr></tbody>
+        </table>
+      </table-wrap>
+      <p>No labelled terminals were found in the medial amygdala in any animal.</p>
+    </sec>
+  </body>
+  <back>
+    <ack><p>We thank the imaging facility for help with confocal microscopy.</p></ack>
+    <ref-list>
+      <ref id="r1"><element-citation><article-title>The amygdala and its connections</article-title></element-citation></ref>
+    </ref-list>
+  </back>
+</article>
