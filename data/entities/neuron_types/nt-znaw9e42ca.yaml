@@ -1,0 +1,14 @@
+id: nt-znaw9e42ca
+name: CEA Htr2a-expressing neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Htr2a
+cell_ontology: CL:0000617
+synonyms:
+- CeA Htr2a+ neurons
+- CeA 5-HT2A receptor neurons

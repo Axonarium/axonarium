@@ -1,0 +1,5 @@
+Synthetic test paper (not a real study): Lateral amygdala and intercalated inputs to the rat central amygdala
+
+Abstract. This synthetic text exists only to test Axonarium's eval harness. Nothing in it is evidence.
+
+Results. In brain slices from adult Sprague Dawley rats expressing channelrhodopsin-2 in the lateral amygdala (LA), blue light evoked short-latency excitatory postsynaptic currents in central amygdala (CeA) neurons that were abolished by CNQX and APV (Fig. 2). In paired recordings, action potentials in intercalated cells (ITCs) evoked inhibitory postsynaptic currents in CeA neurons that were blocked by gabazine (Fig. 4).

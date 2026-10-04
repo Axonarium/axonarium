@@ -1,0 +1,15 @@
+id: nt-bqdbjsy396
+name: MEA GABAergic neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Slc32a1
+- Gad2
+cell_ontology: CL:0000617
+synonyms:
+- MeA GABAergic neurons
+- MeA VGAT neurons

@@ -1,0 +1,16 @@
+id: nt-659aayyts5
+name: LA glutamatergic principal neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers:
+- Slc17a7
+- Camk2a
+cell_ontology: CL:4023039
+synonyms:
+- LA principal neurons
+- LA projection neurons
+- LA pyramidal neurons

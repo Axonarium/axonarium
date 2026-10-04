@@ -1,0 +1,14 @@
+id: nt-cn7rcefwtw
+name: CEAm tachykinin 2-expressing neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Tac2
+cell_ontology: CL:0000617
+synonyms:
+- CeM Tac2 neurons
+- CeM neurokinin B neurons

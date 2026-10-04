@@ -1,0 +1,17 @@
+# Axonarium's agents: role prompts and the eval harness that qualifies a model and prompt for a role (ADR 0020).
+# Its own environment, so model SDKs stay out of the build's. Never published.
+[project]
+name = "axonarium-agents"
+version = "0.0.0"
+requires-python = ">=3.13,<3.14"
+dependencies = ["anthropic==1.11.0", "openai==3.24.0", "pydantic==2.13.5", "pyyaml==6.0.3"]
+
+[dependency-groups]
+dev = ["pytest==9.1.1"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["evals/tests"]
+pythonpath = ["."]

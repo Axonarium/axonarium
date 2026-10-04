@@ -1,0 +1,14 @@
+id: nt-5mqxp9fdsk
+name: Rat intercalated cell GABAergic neurons
+species: NCBITaxon:10116
+region:
+  type: region
+  id: UBERON:0002884
+transmitter: gaba
+markers:
+- Oprm1
+cell_ontology: CL:0000617
+synonyms:
+- rat ITC neurons
+- rat intercalated cells
+- rat mITC neurons

@@ -5,7 +5,7 @@ description: >-
   The data model of Axonarium, an open, cited map of how the brain and body
   are wired. The unit of knowledge is the claim: one statement from one source
   about one relationship in one species. See docs/plan.md, Part 1, "Data model".
-version: 0.3.0
+version: 0.4.0
 license: Apache-2.0
 see_also:
   - https://github.com/axonarium/axonarium
@@ -362,6 +362,7 @@ classes:
       - title
       - year
       - journal
+      - kind
       - license
       - open_access
       - retracted
@@ -369,6 +370,23 @@ classes:
     slot_usage:
       id:
         pattern: "^(doi:10\\.\\d{4,9}/\\S+|pubmed:\\d+|pmc:PMC\\d+|arxiv:\\d{4}\\.\\d{4,5}(v\\d+)?)$"
+
+  Allowlist:
+    description: >-
+      The kinds of source a claim may cite, kept in data/allowlist.yaml. Any
+      other kind is refused. The maintainer owns the file, so changes always
+      get human review (plan Part 3.3, Layer 2; ADR 0015).
+    slots:
+      - accepted
+
+  AcceptedSource:
+    description: >-
+      One kind of source the allowlist accepts, optionally only from named
+      venues, such as preprints from bioRxiv.
+    slots:
+      - kind
+      - venues
+      - reason
 
   RetractionLog:
     description: >-
@@ -621,6 +639,23 @@ slots:
     description: The year of publication.
   journal:
     description: The journal or preprint server.
+  kind:
+    range: SourceKind
+    required: true
+    description: >-
+      What kind of publication the source is, as its registry types it
+      (Crossref, DataCite or PubMed).
+  venues:
+    multivalued: true
+    description: >-
+      The journals or preprint servers accepted, as source records name them.
+      Without it, every venue of the kind is accepted.
+  accepted:
+    range: AcceptedSource
+    multivalued: true
+    inlined_as_list: true
+    required: true
+    description: The kinds of source accepted.
   license:
     description: The paper's licence, as an SPDX ID where one exists.
   open_access:
@@ -864,6 +899,18 @@ enums:
         description: A neuropeptide is the main signal.
       unknown:
         description: Not established.
+
+  SourceKind:
+    description: The kinds of publication a source can be.
+    permissible_values:
+      journal_article:
+        description: An article in a journal.
+      preprint:
+        description: A preprint, posted to a preprint server before or without peer review.
+      dataset:
+        description: A dataset.
+      other:
+        description: Anything else, such as a book, chapter, conference paper or thesis.
 
   RetractionAction:
     description: What happened to a claim in the retractions log.

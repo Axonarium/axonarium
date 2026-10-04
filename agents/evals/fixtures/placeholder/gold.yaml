@@ -1,0 +1,6 @@
+# A placeholder for testing the harness: two synthetic papers. It is not the gold set, which the maintainer curates
+# (sprint 0.5) in evals/gold/.
+version: placeholder
+frozen: null
+curators: []
+notes: Synthetic papers and claims, written to exercise every part of the scoring. Not evidence.

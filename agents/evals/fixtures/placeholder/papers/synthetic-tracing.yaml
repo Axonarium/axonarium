@@ -1,0 +1,7 @@
+source: {doi: 10.5555/axonarium.eval.001}
+text: {file: texts/synthetic-tracing.txt}
+claims:
+  - {subject: {type: region, id: "MBA:295"}, predicate: projects_to, object: {type: region, id: "MBA:551"}, species: "NCBITaxon:10090", evidence_class: anterograde_tracer, result: present, sign: unknown, locator: Fig. 1B}
+  - {subject: {type: region, id: "MBA:295"}, predicate: projects_to, object: {type: region, id: "MBA:56"}, species: "NCBITaxon:10090", evidence_class: anterograde_tracer, result: present, sign: unknown, locator: Fig. 1C}
+  - {subject: {type: region, id: "MBA:295"}, predicate: projects_to, object: {type: region, id: "MBA:972"}, species: "NCBITaxon:10090", evidence_class: anterograde_tracer, result: absent, sign: unknown, locator: Fig. 1D}
+  - {subject: {type: region, id: "MBA:559"}, predicate: projects_to, object: {type: region, id: "MBA:795"}, species: "NCBITaxon:10090", evidence_class: retrograde_tracer, result: present, sign: unknown, locator: Fig. 2A}

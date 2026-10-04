@@ -1,0 +1,14 @@
+id: nt-3kvfdzf7wn
+name: MEA glutamatergic neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers:
+- Slc17a6
+cell_ontology: CL:4023039
+synonyms:
+- MeA glutamatergic neurons
+- MeA VGLUT2 neurons

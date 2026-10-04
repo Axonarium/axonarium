@@ -1,0 +1,16 @@
+id: nt-wprma5fcrr
+name: BLA glutamatergic principal neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers:
+- Slc17a7
+- Camk2a
+cell_ontology: CL:4023039
+synonyms:
+- BLA principal neurons
+- BLA projection neurons
+- BLA pyramidal neurons

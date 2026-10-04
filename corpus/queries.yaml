@@ -1,0 +1,38 @@
+# The scout's saved literature searches (sprint 2.2, ADR 0019), in Europe PMC's search syntax. Europe PMC indexes all
+# of PubMed (SRC:MED) and preprint servers such as bioRxiv (SRC:PPR). `python -m ingest.scout` runs every query and
+# writes manifest.csv. Changing a query changes which papers the module reads, so it needs the maintainer's review.
+queries:
+  - id: amygdala-tract-tracing
+    why: Anatomical tracing of amygdala inputs and outputs in rats and mice, the core evidence for projects_to claims.
+    query: >-
+      (TITLE:amygdal* OR ABSTRACT:amygdal*)
+      AND (ABSTRACT:"tract tracing" OR ABSTRACT:"tract-tracing" OR ABSTRACT:anterograde* OR ABSTRACT:retrograde*
+      OR ABSTRACT:"Phaseolus vulgaris" OR ABSTRACT:"PHA-L" OR ABSTRACT:"biotinylated dextran" OR ABSTRACT:"cholera toxin"
+      OR ABSTRACT:"Fluoro-Gold" OR ABSTRACT:FluoroGold OR ABSTRACT:rabies)
+      AND (ABSTRACT:rat OR ABSTRACT:rats OR ABSTRACT:mouse OR ABSTRACT:mice)
+      AND (SRC:MED OR SRC:PPR)
+  - id: amygdala-optogenetic-circuits
+    why: Optogenetic mapping of amygdala pathways, the evidence for functionally_connects_to claims and for signs.
+    query: >-
+      (TITLE:amygdal* OR ABSTRACT:amygdal*)
+      AND (ABSTRACT:optogenetic* OR ABSTRACT:channelrhodopsin* OR ABSTRACT:ChR2)
+      AND (ABSTRACT:projection* OR ABSTRACT:afferent* OR ABSTRACT:efferent* OR ABSTRACT:terminal* OR ABSTRACT:input*
+      OR ABSTRACT:circuit*)
+      AND (ABSTRACT:rat OR ABSTRACT:rats OR ABSTRACT:mouse OR ABSTRACT:mice)
+      AND (SRC:MED OR SRC:PPR)
+  - id: amygdala-synapses
+    why: Electron microscopy, paired recordings and monosynaptic tracing, the evidence for synapses_onto claims.
+    query: >-
+      (TITLE:amygdal* OR ABSTRACT:amygdal*)
+      AND (ABSTRACT:"electron microscopy" OR ABSTRACT:ultrastructur* OR ABSTRACT:"paired recording"
+      OR ABSTRACT:"paired recordings" OR ABSTRACT:monosynaptic OR ABSTRACT:"synaptic contacts")
+      AND (ABSTRACT:rat OR ABSTRACT:rats OR ABSTRACT:mouse OR ABSTRACT:mice)
+      AND (SRC:MED OR SRC:PPR)
+  - id: amygdala-connections-in-titles
+    why: Papers whose title says they are about amygdala connections, to catch methods the other queries miss.
+    query: >-
+      TITLE:amygdal*
+      AND (TITLE:projection* OR TITLE:afferent* OR TITLE:efferent* OR TITLE:connection* OR TITLE:connectivity
+      OR TITLE:input* OR TITLE:output* OR TITLE:pathway*)
+      AND (ABSTRACT:rat OR ABSTRACT:rats OR ABSTRACT:mouse OR ABSTRACT:mice)
+      AND (SRC:MED OR SRC:PPR)
