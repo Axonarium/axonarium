@@ -1,18 +1,23 @@
 """python -m screen FILE...: screen JATS (.xml) or text files, printing what is flagged; exits 1 if anything is.
-python -m screen --preflight: check the screen against its planted and clean fixtures; exits 1 on any mistake."""
+python -m screen --preflight: check the screen against its planted and clean fixtures; exits 1 on any mistake.
+python -m screen --pin: the classifier's newest upstream revision and file hashes, to update injection.py by hand."""
 
 import argparse
 from pathlib import Path
 
 from screen import preflight, screen_jats, screen_text
-from screen.injection import ProtectAI
+from screen.injection import ProtectAI, pin
 
 
 def main(argv: list[str] | None = None, classify=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m screen", description="Flag hidden text before a model reads a paper.")
     parser.add_argument("files", nargs="*", type=Path, help="JATS .xml or plain-text files")
     parser.add_argument("--preflight", action="store_true", help="check the screen against its own fixtures")
+    parser.add_argument("--pin", action="store_true", help="print the classifier's newest revision and file hashes")
     args = parser.parse_args(argv)
+    if args.pin:
+        print(pin())
+        return 0
     if not args.files and not args.preflight:
         parser.error("give files to screen, or --preflight")
     classify = classify or ProtectAI()

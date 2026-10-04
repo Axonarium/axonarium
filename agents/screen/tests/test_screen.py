@@ -123,7 +123,7 @@ def test_the_classifier_scores_every_window_of_a_long_paragraph():
 
 
 def test_the_classifier_is_pinned():
-    assert re.fullmatch(r"[0-9a-f]{40}", injection.REVISION), "pin it: python -m screen.injection --pin"
+    assert re.fullmatch(r"[0-9a-f]{40}", injection.REVISION), "pin it: python -m screen --pin"
     assert all(re.fullmatch(r"[0-9a-f]{64}", digest) for digest in injection.FILES.values())
 
 

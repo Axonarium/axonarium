@@ -3,12 +3,11 @@
 The model is protectai/deberta-v3-base-prompt-injection-v2 (Apache-2.0): the default of LLM Guard's PromptInjection
 scanner, which PhantomLint uses to find hidden prompts. It runs here through ONNX Runtime, from a pinned revision with
 each file's SHA-256 checked, so it needs no PyTorch and a changed upload can't slip in. To move to a newer revision,
-run `python -m screen.injection --pin` and copy what it prints.
+run `python -m screen --pin` and copy what it prints.
 """
 
 import hashlib
 import json
-import sys
 from collections.abc import Callable
 from pathlib import Path
 
@@ -18,8 +17,12 @@ from huggingface_hub import HfApi, hf_hub_download
 from tokenizers import Tokenizer
 
 REPO = "protectai/deberta-v3-base-prompt-injection-v2"
-REVISION = ""
-FILES = {"onnx/config.json": "", "onnx/tokenizer.json": "", "onnx/model.onnx": ""}
+REVISION = "90c9989b1a342275dd0d1a95aad283c04e075671"
+FILES = {
+    "onnx/config.json": "3093743035223c46b1497a72e939e56fa0a50afbd7bafbf7eb8aad060b8d23f8",
+    "onnx/tokenizer.json": "752fe5f0d5678ad563e1bd2ecc1ddf7a3ba7e2024d0ac1dba1a72975e26dff2f",
+    "onnx/model.onnx": "f0ea7f239f765aedbde7c9e163a7cb38a79c5b8853d3f76db5152172047b228c",
+}
 THRESHOLD = 0.92  # LLM Guard's default for this model
 WINDOW, STRIDE = 512, 128  # tokens: the model's limit, and how much a long paragraph's windows overlap
 
@@ -44,7 +47,7 @@ class ProtectAI:
 
     def __init__(self, cache: Path | None = None):
         if not REVISION or not all(FILES.values()):
-            raise ValueError(f"{REPO} isn't pinned; run python -m screen.injection --pin")
+            raise ValueError(f"{REPO} isn't pinned; run python -m screen --pin")
         paths = {name: fetch(name, cache) for name in FILES}
         labels = json.loads(paths["onnx/config.json"].read_text(encoding="utf-8"))["id2label"]
         self.injection = next(int(i) for i, label in labels.items() if label.upper() == "INJECTION")
@@ -82,9 +85,3 @@ def pin() -> str:
     for name in FILES:
         lines.append(f'    "{name}": "{_sha256(Path(hf_hub_download(REPO, name, revision=revision)))}",')
     return "\n".join([*lines, "}"])
-
-
-if __name__ == "__main__":
-    if sys.argv[1:] != ["--pin"]:
-        sys.exit("usage: python -m screen.injection --pin")
-    print(pin())

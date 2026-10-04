@@ -99,8 +99,6 @@ jobs:
         with:  # The pinned model (about 740 MB); injection.py holds its revision.
           path: ~/.cache/huggingface/hub
           key: screen-model-${{ hashFiles('agents/screen/injection.py') }}
-      - name: Upstream revision (temporary, to pin the model)
-        run: uv run --frozen python -m screen.injection --pin
       - name: The real classifier passes the screen's fixtures
         env:
           AXONARIUM_SCREEN_MODEL: "1"
