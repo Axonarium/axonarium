@@ -4,7 +4,7 @@ These definitions are the only description of the database schema: Alembic gener
 build/migrations from them, and CI's `alembic check` fails if the two ever differ.
 """
 
-from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, MetaData, Table, Text
+from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, Float, ForeignKey, Integer, MetaData, Table, Text, Uuid, func, text
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 
 from build.edges import compute_edges
@@ -82,8 +82,26 @@ retractions = Table(
     _text("reason", True), Column("curation", JSONB, nullable=False),
 )
 
+# The community inbox (sprint C.1, ADR 0021): evidence visitors submit for or against a claim. Operational state, not
+# knowledge: written only by the site's server after its checks, read and closed only by triage, never loaded,
+# emptied or dumped by the build, and closed to Supabase's public API roles.
+submissions = Table(
+    "submissions", metadata,
+    Column("id", Uuid, primary_key=True, server_default=text("gen_random_uuid()")),
+    _text("claim", True), _text("stance", True), _text("identifier", True),  # identifier: as submitted
+    Column("submitted_at", DateTime(timezone=True), nullable=False, server_default=func.now()),
+    Column("status", Text, nullable=False, server_default="received"),
+    _text("source_id"), _text("reason"),  # set by triage: the canonical source ID, and why it was closed
+    Column("closed_at", DateTime(timezone=True)),
+    CheckConstraint(r"claim ~ '^(clm|hom)-[0-9a-hjkmnp-tv-z]{10}$'", name="submissions_claim"),
+    CheckConstraint("stance in ('supports', 'contradicts')", name="submissions_stance"),
+    CheckConstraint("char_length(identifier) between 1 and 300", name="submissions_identifier"),
+    CheckConstraint("status in ('received', 'closed')", name="submissions_status"),
+)
+OPERATIONAL = {"submissions"}  # tables the build never touches
+
 # Every serving table by name, referenced tables first (the order dumps and loads use).
-TABLES: dict[str, Table] = {table.name: table for table in metadata.sorted_tables}
+TABLES: dict[str, Table] = {table.name: table for table in metadata.sorted_tables if table.name not in OPERATIONAL}
 
 CLASS_TABLES = {"Atlas": "atlases", "Region": "regions", "NeuronType": "neuron_types", "Source": "sources",
                 "ConnectivityClaim": "connectivity_claims", "HomologyClaim": "homology_claims"}

@@ -57,7 +57,7 @@ def check_tree(records: list[Record]) -> list[Finding]:
     return findings + _source_rules(records) + _allowlist_rules(records)
 
 
-def _accepts(entries: list[dict], source: dict) -> bool:
+def accepts(entries: list[dict], source: dict) -> bool:
     """Whether an allowlist entry accepts a source record: its kind, and its journal where the entry names venues."""
     return any(entry.get("kind") == source.get("kind")
                and ("venues" not in entry or source.get("journal") in entry["venues"]) for entry in entries)
@@ -72,7 +72,7 @@ def _allowlist_rules(records: list[Record]) -> list[Finding]:
     for record in records:
         key = source_key(citation_of(record.data)) if record.cls in CLAIMS else None
         source = sources.get(key.lower()) if key else None
-        if source is None or _accepts(entries, source):
+        if source is None or accepts(entries, source):
             continue  # A missing source record is the missing-source rule's finding.
         venue = f" from {source['journal']}" if isinstance(source.get("journal"), str) else ""
         findings.append(Finding(str(record.path), "source-not-allowed",
