@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const REPO = "https://github.com/axonarium/axonarium";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://axonarium.org"),
+  metadataBase: new URL("https://axonarium.com"),
   title: { default: "Axonarium", template: "%s · Axonarium" },
   description: "An open, cited map of how the brain and body are wired.",
 };
