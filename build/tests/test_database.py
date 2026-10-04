@@ -153,3 +153,36 @@ def test_every_public_table_has_row_level_security():
 def test_api_roles_cannot_touch_alembic_version():
     for privilege in ("SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"):
         assert query("select has_table_privilege('anon', 'alembic_version', %s)", privilege) == [(False,)], privilege
+
+
+SUBMISSION = "insert into submissions (claim, stance, identifier) values ('clm-pq22bk4dtz', 'supports', '10.1038/x')"
+
+
+def test_the_inbox_survives_every_load(tables):
+    execute("delete from submissions", SUBMISSION)
+    try:
+        load(URL, tables)
+        assert query("select claim, stance, status from submissions") == [("clm-pq22bk4dtz", "supports", "received")]
+    finally:
+        execute("delete from submissions")
+
+
+def test_the_inbox_is_closed_to_the_public_api_roles():
+    for role in ("anon", "authenticated"):
+        for privilege in ("SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"):
+            assert query("select has_table_privilege(%s, 'submissions', %s)", role, privilege) == [(False,)], (role, privilege)
+
+
+@pytest.mark.parametrize("values", [
+    "('clm-pq22bk4dtz', 'endorses', '10.1038/x')",  # stance
+    "('clm-1', 'supports', '10.1038/x')",  # claim ID
+    "('clm-pq22bk4dtz', 'supports', '')",  # empty identifier
+    f"('clm-pq22bk4dtz', 'supports', '{'x' * 301}')",  # too long
+])
+def test_the_inbox_refuses_malformed_rows(values):
+    with pytest.raises(psycopg.errors.CheckViolation):
+        execute(f"insert into submissions (claim, stance, identifier) values {values}")
+
+
+def test_the_build_never_dumps_or_loads_the_inbox():
+    assert "submissions" not in TABLES
