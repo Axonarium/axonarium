@@ -8,6 +8,7 @@ import "server-only";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
+import { type BrainClaim, type BrainEdge, brainEdges } from "./brain";
 import { fetchAll } from "./pages";
 import type { AtlasRegion, RegionName } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
@@ -113,4 +114,25 @@ async function countWhere(db: SupabaseClient, table: string, column: string, val
   const { count: n, error } = await db.from(table).select("*", { count: "exact", head: true }).eq(column, value);
   if (error) failed(`count ${table}`, error);
   return n ?? 0;
+}
+
+/** Region-to-region connections in one atlas, with their strongest projection density, for the 3D view. */
+export async function getBrainEdges(atlas: string): Promise<BrainEdge[] | null> {
+  const db = client();
+  if (!db) return null;
+  const [edges, claims] = await Promise.all([
+    fetchAll((from, to) =>
+      rows<Pick<Edge, "id" | "subject_id" | "object_id">[]>("brain edges", () =>
+        db.from("edges").select("id, subject_id, object_id").eq("predicate", "projects_to").eq("subject_type", "region")
+          .eq("object_type", "region").gt("n_present", 0).order("id").range(from, to),
+      ),
+    ),
+    fetchAll((from, to) =>
+      rows<BrainClaim[]>("brain claims", () =>
+        db.from("connectivity_claims").select("subject_id, object_id, status, measurements").eq("predicate", "projects_to")
+          .eq("result", "present").neq("status", "retracted").eq("subject_atlas", atlas).eq("object_atlas", atlas).order("id").range(from, to),
+      ),
+    ),
+  ]);
+  return brainEdges(edges, claims).filter((edge) => edge.claims > 0);
 }

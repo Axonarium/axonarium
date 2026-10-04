@@ -23,9 +23,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <header className="border-b">
-          <nav aria-label="Main" className="mx-auto flex max-w-5xl items-center gap-6 px-4 py-3">
+          <nav aria-label="Main" className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3 sm:gap-6">
             <Link href="/" className="font-semibold tracking-tight">
               Axonarium
+            </Link>
+            <Link href="/brain" className="text-sm text-muted-foreground hover:text-foreground">
+              Brain
             </Link>
             <Link href="/explore" className="text-sm text-muted-foreground hover:text-foreground">
               Explore
@@ -36,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
               About
             </Link>
-            <a href={REPO} className="ml-auto text-sm text-muted-foreground hover:text-foreground">
+            <a href={REPO} className="ml-auto hidden text-sm text-muted-foreground hover:text-foreground sm:inline">
               GitHub
             </a>
           </nav>
@@ -59,7 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <a href="https://doi.org/10.1038/nature13186" className="hover:text-foreground">
                 Oh et al. 2014
               </a>
-              ), © Allen Institute; region names: Allen Institute atlases, via BrainGlobe;{" "}
+              ), © Allen Institute; region names and meshes: Allen Institute atlases, via BrainGlobe;{" "}
               <Link href="/atlases" className="hover:text-foreground">
                 cited on the Atlases page
               </Link>

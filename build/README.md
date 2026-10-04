@@ -7,13 +7,14 @@ uv run python -m build                       # validate data/, write dist/
 AXONARIUM_DATABASE_URL=postgresql://… uv run python -m build   # …and load Postgres
 ```
 
-Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines).
+Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines), `--meshes DIR` (also write the 3D view's region meshes).
 
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
 2. **Atlases:** each atlas record with a BrainGlobe name is loaded at its pinned version (`ingest/atlases.py`), and its regions are mapped to UBERON by UBERON's bridges. The build stops if BrainGlobe serves another version, if data names a region its atlas lacks, or if an atlas resolves no amygdala region. Atlas regions go into the database, not the dumps ([ADR 0009](../docs/decisions/0009-atlas-layer.md)). `--no-atlases` skips this for offline work.
 3. **Allen connectivity:** with the mouse atlas loaded, `ingest/allen_connectivity.py` makes region-level claims from wild-type amygdala injections in the Allen Mouse Brain Connectivity Atlas. They pass the same rules as committed claims, go into the database, and never into the repository or the dumps ([ADR 0010](../docs/decisions/0010-allen-connectivity.md)).
-4. **Dumps:** written to a fresh folder, then moved into place.
-5. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
+4. **Meshes** (with `--meshes`): glTF meshes of every region a connection names, plus the brain outline and an `index.json` of names and centroids, from the pinned BrainGlobe atlas ([ADR 0011](../docs/decisions/0011-brain-viewer.md)). The deploy puts them in the site; they are never committed.
+5. **Dumps:** written to a fresh folder, then moved into place.
+6. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
 
 The tables are defined once, as SQLAlchemy tables in [tables.py](tables.py). Alembic migrations in [migrations/](migrations/) create them; the build never changes the schema. To change a table, edit `tables.py` and generate a migration (see [migrations/README](migrations/README)).
 
@@ -48,4 +49,4 @@ Columns are declared in [tables.py](tables.py). Why these tables, and not LinkML
 ## Where it runs
 
 - **CI** migrates and rebuilds an empty Postgres 17 on every pull request.
-- **Deploy** (`.github/workflows/deploy.yml`) migrates and rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret.
+- **Deploy** (`.github/workflows/deploy.yml`) migrates and rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret, and exports the meshes for the site.

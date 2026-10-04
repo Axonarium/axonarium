@@ -25,8 +25,11 @@ export default async function Home() {
           Every connection is backed by a cited source, tagged by species and method, and exportable into simulations.
           Axonarium starts with the amygdala of rat, mouse and human, and grows one circuit at a time.
         </p>
-        <div className="flex gap-3">
-          <Link href="/explore" className={buttonVariants({ size: "lg" })}>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/brain" className={buttonVariants({ size: "lg" })}>
+            See it in 3D
+          </Link>
+          <Link href="/explore" className={buttonVariants({ size: "lg", variant: "outline" })}>
             Explore connections
           </Link>
           <Link href="/about" className={buttonVariants({ size: "lg", variant: "outline" })}>

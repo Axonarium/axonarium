@@ -1,10 +1,10 @@
-"""Command line: `python -m build [--data data] [--out dist] [--database URL]`."""
+"""Command line: `python -m build [--data data] [--out dist] [--database URL] [--meshes DIR]`."""
 
 import argparse
 import os
 from pathlib import Path
 
-from build import connectivity
+from build import connectivity, meshes
 from build import regions as atlas_regions
 from build.database import LoadFailed, load
 from build.dumps import write_dumps
@@ -27,18 +27,23 @@ def _unsafe_out(out: Path, data: Path) -> str | None:
     return None
 
 
-def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None, connectivity_loader=None) -> int:
+def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None, connectivity_loader=None,
+         mesh_opener=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m build",
                                      description="Rebuild the dumps and the database from the data files.")
     parser.add_argument("--data", type=Path, default=Path("data"), help="the data folder (default: data)")
     parser.add_argument("--out", type=Path, default=Path("dist"), help="where to write the dumps (default: dist)")
     parser.add_argument("--database", help="a Postgres URL to load (default: the AXONARIUM_DATABASE_URL environment variable)")
     parser.add_argument("--no-atlases", action="store_true", help="don't load atlas regions from BrainGlobe (offline work)")
+    parser.add_argument("--meshes", type=Path, help="also write glTF meshes of the connected regions here, for the site")
     args = parser.parse_args(argv)
 
     url = args.database or os.environ.get("AXONARIUM_DATABASE_URL")
     if url and args.no_atlases:
         print("refusing to load a database with --no-atlases: it would empty the atlas regions; build without a database")
+        return 1
+    if args.meshes and args.no_atlases:
+        print("--meshes needs the atlases; build without --no-atlases")
         return 1
     unsafe = _unsafe_out(args.out, args.data)
     if unsafe:
@@ -95,6 +100,15 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
         if generated:
             experiments = {record.data["extra"]["allen.experiment"] for record in generated}
             print(f"allen connectivity: {len(experiments)} experiment(s), {len(generated)} claim(s)")
+    if args.meshes:
+        for atlas_id, region_ids in meshes.regions_to_draw(records + generated, loaded).items():
+            atlas = next(a for a in atlases if a["id"] == atlas_id)
+            try:
+                index = meshes.export_atlas(atlas, region_ids, args.meshes, **({"open_atlas": mesh_opener} if mesh_opener else {}))
+            except Exception as error:  # BrainGlobe's S3 or a pin: the site would show a brain without its regions.
+                print(f"mesh export failed for {atlas_id}: {error}; build stopped")
+                return 1
+            print(f"meshes: {len(index['regions'])} region(s) of {atlas_id} in {args.meshes / atlas_id}")
     # Dumps hold the files' records only: atlas regions and Allen claims stay out of them (ADR 0005).
     write_dumps(records, tables, args.out)
     tables = atlas_regions.merge(rows(records + generated), loaded)
