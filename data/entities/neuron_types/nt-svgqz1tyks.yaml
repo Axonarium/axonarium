@@ -1,0 +1,12 @@
+id: nt-svgqz1tyks
+name: Rat basolateral complex parvalbumin-expressing interneurons
+species: NCBITaxon:10116
+region:
+  type: region
+  id: UBERON:0006107
+transmitter: gaba
+markers:
+- Pvalb
+cell_ontology: CL:0000617
+synonyms:
+- rat BLA PV interneurons

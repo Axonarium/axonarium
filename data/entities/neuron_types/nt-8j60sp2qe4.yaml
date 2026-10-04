@@ -1,0 +1,14 @@
+id: nt-8j60sp2qe4
+name: BLA VIP-expressing interneurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+transmitter: gaba
+markers:
+- Vip
+cell_ontology: CL:0000617
+synonyms:
+- BLA VIP interneurons
+- BLA VIP+ interneurons

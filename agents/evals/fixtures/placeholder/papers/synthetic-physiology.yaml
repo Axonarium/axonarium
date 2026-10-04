@@ -1,0 +1,5 @@
+source: {doi: 10.5555/axonarium.eval.002}
+text: {file: texts/synthetic-physiology.txt}
+claims:
+  - {subject: {type: region, id: "UBERON:0002886"}, predicate: functionally_connects_to, object: {type: region, id: "UBERON:0002883"}, species: "NCBITaxon:10116", evidence_class: optogenetic_circuit_mapping, result: present, sign: excitatory, locator: Fig. 2}
+  - {subject: {type: region, id: "UBERON:0002884"}, predicate: functionally_connects_to, object: {type: region, id: "UBERON:0002883"}, species: "NCBITaxon:10116", evidence_class: paired_recording, result: present, sign: inhibitory, locator: Fig. 4}

@@ -1,0 +1,42 @@
+{
+ "claims": [
+  {
+   "subject": {
+    "type": "region",
+    "id": "UBERON:0002886",
+    "name_in_paper": "LA"
+   },
+   "predicate": "functionally_connects_to",
+   "object": {
+    "type": "region",
+    "id": "UBERON:0002883",
+    "name_in_paper": "CeA"
+   },
+   "species": "NCBITaxon:10116",
+   "evidence_class": "optogenetic_circuit_mapping",
+   "result": "present",
+   "sign": "excitatory",
+   "locator": "Fig. 2",
+   "paraphrase": "Placeholder answer."
+  },
+  {
+   "subject": {
+    "type": "region",
+    "id": "UBERON:0002884",
+    "name_in_paper": "ITCs"
+   },
+   "predicate": "functionally_connects_to",
+   "object": {
+    "type": "region",
+    "id": "UBERON:0002883",
+    "name_in_paper": "CeA"
+   },
+   "species": "NCBITaxon:10116",
+   "evidence_class": "paired_recording",
+   "result": "present",
+   "sign": "unknown",
+   "locator": "Fig. 4",
+   "paraphrase": "Placeholder answer."
+  }
+ ]
+}

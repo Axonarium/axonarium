@@ -54,7 +54,16 @@ jobs:
         run: |
           uv run --frozen alembic upgrade head
           uv run --frozen alembic check
-          uv run --frozen python -m build --http-cache .cache/build
+          uv run --frozen python -m build --http-cache .cache/build --report reconciliation
+      - name: Reconciliation report in the run's summary (sprint 1.6)
+        run: cat reconciliation/reconciliation.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the reconciliation report and figure
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: reconciliation
+          path: reconciliation/
+          retention-days: 30
+          if-no-files-found: error
       - run: uvx pre-commit@4.6.2 run --all-files --show-diff-on-failure
       - name: Deletions and retractions are logged
         if: github.event_name == 'pull_request'

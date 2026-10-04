@@ -1,0 +1,7 @@
+Synthetic test paper (not a real study): Outputs of the mouse basolateral amygdala
+
+Abstract. This synthetic text exists only to test Axonarium's eval harness. Nothing in it is evidence.
+
+Results. We injected the anterograde tracer PHA-L into the basolateral amygdalar nucleus (BLA) of adult C57BL/6 mice (n = 6). Labelled axons and terminal boutons were dense in the lateral division of the central amygdala (CeL; Fig. 1B) and moderate in the nucleus accumbens (Fig. 1C). No labelled fibres were found in the prelimbic cortex in any animal, although the same sections showed labelling elsewhere (Fig. 1D).
+
+To test the central amygdala's outputs, we injected the retrograde tracer cholera toxin B into the periaqueductal gray of mice (n = 4). Retrogradely labelled neurons were found in the medial division of the central amygdala (CeM; Fig. 2A).

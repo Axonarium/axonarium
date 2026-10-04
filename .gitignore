@@ -18,8 +18,10 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .cache/
+reconciliation/
 
 # Node and Next.js
 node_modules/
 .next/
 dist/
+release/

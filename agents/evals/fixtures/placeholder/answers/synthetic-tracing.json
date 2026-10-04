@@ -1,0 +1,61 @@
+{
+ "claims": [
+  {
+   "subject": {
+    "type": "region",
+    "id": "MBA:295",
+    "name_in_paper": "BLA"
+   },
+   "predicate": "projects_to",
+   "object": {
+    "type": "region",
+    "id": "MBA:551",
+    "name_in_paper": "CeL"
+   },
+   "species": "NCBITaxon:10090",
+   "evidence_class": "anterograde_tracer",
+   "result": "present",
+   "sign": "unknown",
+   "locator": "Fig. 1B",
+   "paraphrase": "Placeholder answer."
+  },
+  {
+   "subject": {
+    "type": "region",
+    "id": "MBA:295",
+    "name_in_paper": "BLA"
+   },
+   "predicate": "projects_to",
+   "object": {
+    "type": "region",
+    "id": "MBA:56",
+    "name_in_paper": "nucleus accumbens"
+   },
+   "species": "NCBITaxon:10090",
+   "evidence_class": "anterograde_tracer",
+   "result": "present",
+   "sign": "unknown",
+   "locator": "Fig. 1C",
+   "paraphrase": "Placeholder answer."
+  },
+  {
+   "subject": {
+    "type": "region",
+    "id": "MBA:795",
+    "name_in_paper": "periaqueductal gray"
+   },
+   "predicate": "projects_to",
+   "object": {
+    "type": "region",
+    "id": "MBA:559",
+    "name_in_paper": "CeM"
+   },
+   "species": "NCBITaxon:10090",
+   "evidence_class": "retrograde_tracer",
+   "result": "present",
+   "sign": "unknown",
+   "locator": "Fig. 2A",
+   "paraphrase": "Placeholder answer."
+  }
+ ]
+}

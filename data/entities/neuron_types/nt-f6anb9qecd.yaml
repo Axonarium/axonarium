@@ -1,0 +1,14 @@
+id: nt-f6anb9qecd
+name: BMA glutamatergic principal neurons
+species: NCBITaxon:10090
+region:
+  type: region
+  id: MBA:319
+  atlas: allen-mouse-ccf-2017
+transmitter: glutamate
+markers:
+- Slc17a7
+cell_ontology: CL:4023039
+synonyms:
+- BMA principal neurons
+- basomedial amygdala projection neurons

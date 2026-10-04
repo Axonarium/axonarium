@@ -7,7 +7,7 @@ uv run python -m build                       # validate data/, write dist/
 AXONARIUM_DATABASE_URL=postgresql://… uv run python -m build   # …and load Postgres
 ```
 
-Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines), `--meshes DIR` (also write the 3D view's region meshes), `--http-cache DIR` (keep the answers of OLS, UBERON's bridges and the Allen API for seven days; CI uses it so an outage doesn't block merging, deploys don't). All of the build's HTTP goes through the online checks' retried, rate-limited session ([ADR 0012](../docs/decisions/0012-http-packages.md)).
+Options: `--data` (default `data`), `--out` (default `dist`), `--database` (default: the `AXONARIUM_DATABASE_URL` environment variable, so secrets stay off command lines), `--meshes DIR` (also write the 3D view's region meshes), `--http-cache DIR` (keep the answers of OLS, UBERON's bridges and the Allen API for seven days; CI uses it so an outage doesn't block merging, deploys don't), `--snapshot FILE` (also write every row the database gets, Allen claims and atlas regions included, as one JSON file: the site answers from it when Supabase can't, [ADR 0017](../docs/decisions/0017-static-fallback.md); never committed or published). All of the build's HTTP goes through the online checks' retried, rate-limited session ([ADR 0012](../docs/decisions/0012-http-packages.md)).
 
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
 2. **Atlases:** each atlas record with a BrainGlobe name is loaded at its pinned version (`ingest/atlases.py`), and its regions are mapped to UBERON by UBERON's bridges. The build stops if BrainGlobe serves another version, if data names a region its atlas lacks, or if an atlas resolves no amygdala region. Atlas regions go into the database, not the dumps ([ADR 0009](../docs/decisions/0009-atlas-layer.md)). `--no-atlases` skips this for offline work.
@@ -35,6 +35,10 @@ uv run pytest build/tests
 | `edges.graphml` | The edge graph |
 | `manifest.json` | Schema version and row counts |
 
+## Reconciliation report
+
+`--report DIR` also writes the reconciliation report (sprint 1.6, [ADR 0018](../docs/decisions/0018-reconciliation-report.md)): where sources agree, conflict or are silent about each connection, how the amygdala's outputs and inputs hold up at higher projection density thresholds, and which amygdala regions no claim names. It writes `reconciliation.json`, `.md` and `.svg`. Conflicts are listed, never resolved. CI writes it on every run, shows it in the run's summary and keeps it as the `reconciliation` artifact; it holds Allen-derived numbers, so it is never committed.
+
 ## Tables
 
 | Table | One row per |
@@ -49,7 +53,17 @@ Claims carry `terms` (`cc-by-4.0`, or `allen-institute` for claims made from the
 
 Columns are declared in [tables.py](tables.py). Why these tables, and not LinkML's generated SQL: [ADR 0008](../docs/decisions/0008-serving-database.md).
 
+## Releases
+
+A release publishes the dumps as a GitHub release, which Zenodo archives with a DOI ([ADR 0016](../docs/decisions/0016-releases.md)). Run the **Release** workflow from the Actions tab on `main`, with a version `vYYYY.MM.N` such as `v2026.10.0`. It rebuilds everything from an empty database, then attaches `axonarium-<version>-dumps.zip` (the dumps, the CC BY 4.0 licence and a README) and `SHA256SUMS`. To package dumps by hand:
+
+```bash
+uv run python -m build --no-atlases                              # the dumps don't need the atlases
+uv run python -m build.release v2026.10.0 --commit "$(git rev-parse HEAD)"   # writes release/
+```
+
 ## Where it runs
 
 - **CI** migrates and rebuilds an empty Postgres 17 on every pull request.
-- **Deploy** (`.github/workflows/deploy.yml`) migrates and rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret, and exports the meshes for the site.
+- **Deploy** (`.github/workflows/deploy.yml`) migrates and rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret, and exports the meshes and the database snapshot for the site.
+- **Release** (`.github/workflows/release.yml`) rebuilds an empty Postgres and publishes the dumps, when the maintainer runs it.
