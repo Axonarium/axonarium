@@ -15,40 +15,15 @@ TODAY = date(2026, 10, 3)
 ALLOWLIST = yaml.safe_load((REPO / "data" / "allowlist.yaml").read_text(encoding="utf-8"))["accepted"]
 
 
-@pytest.mark.parametrize("raw,expected", [
-    ("10.1038/s41467-021-22915-5", "doi:10.1038/s41467-021-22915-5"),
-    ("  doi:10.1038/S41467-021-22915-5 ", "doi:10.1038/s41467-021-22915-5"),
-    ("DOI: 10.1038/s41467-021-22915-5", "doi:10.1038/s41467-021-22915-5"),
-    ("https://doi.org/10.1038/s41467-021-22915-5", "doi:10.1038/s41467-021-22915-5"),
-    ("http://dx.doi.org/10.1016/S0140-6736(97)11096-0", "doi:10.1016/s0140-6736(97)11096-0"),
-    ("https://doi.org/10.1016%2FS0140-6736%2897%2911096-0", "doi:10.1016/s0140-6736(97)11096-0"),
-    ("https://www.biorxiv.org/content/10.1101/2020.01.01.000001v2.full", "doi:10.1101/2020.01.01.000001"),
-    ("https://www.medrxiv.org/content/10.1101/2021.05.06.21256745v1", "doi:10.1101/2021.05.06.21256745"),
-    ("34001873", "pubmed:34001873"),
-    ("PMID: 34001873", "pubmed:34001873"),
-    ("https://pubmed.ncbi.nlm.nih.gov/34001873/", "pubmed:34001873"),
-    ("https://www.ncbi.nlm.nih.gov/pubmed/34001873", "pubmed:34001873"),
-    ("https://europepmc.org/article/MED/34001873", "pubmed:34001873"),
-    ("PMC8129205", "pmc:PMC8129205"),
-    ("pmcid: pmc8129205", "pmc:PMC8129205"),
-    ("https://pmc.ncbi.nlm.nih.gov/articles/PMC8129205/", "pmc:PMC8129205"),
-    ("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8129205/", "pmc:PMC8129205"),
-    ("https://europepmc.org/article/PMC/PMC8129205", "pmc:PMC8129205"),
-    ("2409.13740", "arxiv:2409.13740"),
-    ("arXiv:2409.13740v2", "arxiv:2409.13740"),
-    ("https://arxiv.org/abs/2409.13740v1", "arxiv:2409.13740"),
-    ("https://arxiv.org/pdf/2409.13740v1.pdf", "arxiv:2409.13740"),
-])
+FORMS = json.loads((Path(__file__).parent / "identifier_forms.json").read_text(encoding="utf-8"))  # shared with the site's tests
+
+
+@pytest.mark.parametrize("raw,expected", FORMS["canonical"])
 def test_identifiers_become_canonical(raw, expected):
     assert canonical_identifier(raw) == expected
 
 
-@pytest.mark.parametrize("raw", [
-    "", "   ", "a paper about the amygdala", "https://bit.ly/3xyz", "https://example.com/paper.pdf",
-    "https://someblog.org/10.1038/s41467-021-22915-5", "10.1038", "doi:10.1038/", "PMC", "0", "1234567890",
-    "https://doi.org/10.1038/s41467-021-22915-5 and more", "10.1038/s41467\n021", "x" * 400,
-    "https://www.biorxiv.org/content/early/2020/01/01/000001", "javascript:alert(1)",
-])
+@pytest.mark.parametrize("raw", FORMS["malformed"])
 def test_anything_else_is_malformed(raw):
     assert canonical_identifier(raw) is None
 
