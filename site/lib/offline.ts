@@ -51,6 +51,13 @@ export function counts(t: Tables): Counts {
 }
 
 export const edges = (t: Tables): EdgeSummary[] => sorted(t.edges).map((e) => pick(e, SUMMARY));
+
+/** The species and predicates among some connections, each sorted: the explore page's filter choices. */
+export function facetsOf(rows: { species: string; predicate: string }[]): { species: string[]; predicate: string[] } {
+  const distinct = (key: "species" | "predicate") => [...new Set(rows.map((r) => r[key]))].sort();
+  return { species: distinct("species"), predicate: distinct("predicate") };
+}
+export const edgeFacets = (t: Tables) => facetsOf(t.edges);
 export const edge = (t: Tables, id: string): Edge | null => t.edges.find((e) => e.id === id) ?? null;
 export const claims = (t: Tables, ids: string[]): ConnectivityClaim[] => sorted(t.connectivity_claims.filter((c) => ids.includes(c.id)));
 export const claim = (t: Tables, id: string): ConnectivityClaim | null => t.connectivity_claims.find((c) => c.id === id) ?? null;

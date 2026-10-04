@@ -26,5 +26,9 @@ Locally, Cloudflare's test keys (site key `1x00000000000000000000AA`, secret `1x
 | `npm run typecheck` | Generates route types, then `tsc` |
 | `npm test` | Vitest unit tests |
 | `npm run build` | Production build |
+| `npm run e2e` | The accessibility budget: axe-core on every page type, phone and desktop, against the production build ([ADR 0025](../docs/decisions/0025-site-budgets.md)) |
+| `npx @lhci/cli@0.15.1 autorun --config=lighthouserc.cjs` | The performance budget: Lighthouse on a mid-range phone, against the production build |
+
+Both budgets need a build that read a snapshot (above); CI's `budgets` job makes one from the rebuild, with the meshes. Locally, `PLAYWRIGHT_CHROMIUM_PATH` points Playwright at a Chromium already installed, and `CHROME_PATH` does the same for Lighthouse.
 
 Deployed to Vercel by `.github/workflows/deploy.yml` on every merge to `main` (Vercel CLI, prebuilt). Pull requests run the commands above in CI and never deploy. Read [AGENTS.md](AGENTS.md) before changing Next.js code: this version's APIs differ from older ones.
