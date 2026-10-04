@@ -48,7 +48,17 @@ Claims carry `terms` (`cc-by-4.0`, or `allen-institute` for claims made from the
 
 Columns are declared in [tables.py](tables.py). Why these tables, and not LinkML's generated SQL: [ADR 0008](../docs/decisions/0008-serving-database.md).
 
+## Releases
+
+A release publishes the dumps as a GitHub release, which Zenodo archives with a DOI ([ADR 0016](../docs/decisions/0016-releases.md)). Run the **Release** workflow from the Actions tab on `main`, with a version `vYYYY.MM.N` such as `v2026.10.0`. It rebuilds everything from an empty database, then attaches `axonarium-<version>-dumps.zip` (the dumps, the CC BY 4.0 licence and a README) and `SHA256SUMS`. To package dumps by hand:
+
+```bash
+uv run python -m build --no-atlases                              # the dumps don't need the atlases
+uv run python -m build.release v2026.10.0 --commit "$(git rev-parse HEAD)"   # writes release/
+```
+
 ## Where it runs
 
 - **CI** migrates and rebuilds an empty Postgres 17 on every pull request.
 - **Deploy** (`.github/workflows/deploy.yml`) migrates and rebuilds Supabase on every push to `main`, from the `production` environment's `SUPABASE_DB_URL` secret, and exports the meshes for the site.
+- **Release** (`.github/workflows/release.yml`) rebuilds an empty Postgres and publishes the dumps, when the maintainer runs it.
