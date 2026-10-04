@@ -33,5 +33,6 @@ Chosen option: "build-time claims from the REST API", because it puts real amygd
 
 * Good, because the site shows real amygdala connectivity, each connection opening its experiments.
 * Bad, because absent results (densities below the threshold) aren't claims yet; that needs a decision on detection limits.
+* Bad, because projection density counts every labelled axon, including fibres of passage: an input claim at low density, especially into the basolateral amygdala, which the external and internal capsules border, may be axons passing through rather than terminals. Paraphrases say "labelled axons in", not "terminates in"; a higher threshold for inputs, or keeping them `proposed`, is a decision for the reconciliation sprint.
 * Bad, because every deploy depends on the Allen API (about 45 seconds): during an outage the previous deployment stays live. CI keeps the API's answers for seven days (`--http-cache`, on ADR 0012's session), so an outage blocks merging only once that cache has expired.
 * Neutral: Cre-line experiments are a later sprint.

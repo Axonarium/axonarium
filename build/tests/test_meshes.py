@@ -12,15 +12,15 @@ from build.meshes import convert, export_atlas, regions_to_draw, right_centroid,
 from build.tests.test_regions import USED, amygdala_loader, fake_loader, no_claims
 from checks.findings import Record
 
-SHAPE_UM = (13200.0, 8000.0, 11400.0)  # allen_mouse_25um, axes: anterior->posterior, superior->inferior, right->left
+# allen_mouse_25um, axes: anterior->posterior, superior->inferior, left->right. BrainGlobe labels it "asr", but
+# Allen places right-hemisphere injections (hemisphere_id 2) at large z, and the arcs come from Allen's experiments.
+SHAPE_UM = (13200.0, 8000.0, 11400.0)
 CENTER = np.array(SHAPE_UM) / 2
 
 
 def cube(center_asr, size=1000.0):
-    """A cube in atlas (asr) microns whose faces wind outwards in the atlas's own axes."""
+    """A cube in atlas microns whose faces wind outwards (the atlas axes, P, I and R, are right-handed)."""
     box = trimesh.creation.box(extents=(size, size, size))
-    # trimesh winds outwards in a right-handed frame; the asr frame is used as-is here, so the cube's
-    # volume is positive in atlas coordinates.
     return box.vertices + np.asarray(center_asr), box.faces
 
 
@@ -45,7 +45,7 @@ ATLAS = {"id": "allen-mouse-ccf-2017", "brainglobe_name": "allen_mouse_25um", "e
 
 def test_to_viewer_axes_and_units():
     center, anterior, superior, right = to_viewer(np.array([
-        CENTER, CENTER - [1000, 0, 0], CENTER - [0, 1000, 0], CENTER - [0, 0, 1000]]), SHAPE_UM)
+        CENTER, CENTER - [1000, 0, 0], CENTER - [0, 1000, 0], CENTER + [0, 0, 1000]]), SHAPE_UM)
     assert center.tolist() == [0, 0, 0]
     assert anterior.tolist() == [0, 0, -1]  # z points posterior
     assert superior.tolist() == [0, 1, 0]   # y points up
@@ -68,12 +68,12 @@ def test_right_centroid_uses_the_right_hemisphere():
     points, faces = cube(CENTER, size=2000)  # straddles the midline
     x, y, z = right_centroid(convert(points, faces, SHAPE_UM, 1000))
     assert 0 < x < 1 and y == pytest.approx(0) and z == pytest.approx(0)
-    points, faces = cube(CENTER + [0, 0, 3000])  # entirely in the left hemisphere
+    points, faces = cube(CENTER - [0, 0, 3000])  # entirely in the left hemisphere
     assert right_centroid(convert(points, faces, SHAPE_UM, 1000)) == pytest.approx([-3, 0, 0])
 
 
 def test_export_atlas_writes_meshes_and_index(tmp_path):
-    atlas = FakeAtlas({"root": cube(CENTER, 8000), 295: cube(CENTER + [500, 2000, -2000]), 536: None})
+    atlas = FakeAtlas({"root": cube(CENTER, 8000), 295: cube(CENTER + [500, 2000, 2000]), 536: None})
     index = export_atlas(ATLAS, ["MBA:295", "MBA:536"], tmp_path, open_atlas=lambda name, version: atlas,
                          amygdala={"MBA:295"})
     folder = tmp_path / "allen-mouse-ccf-2017"

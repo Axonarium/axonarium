@@ -2,7 +2,9 @@
 
 Like atlas regions, the meshes are never committed (ADR 0005): the deploy job writes them into the site build.
 Coordinates are millimetres from the centre of the atlas volume, with x towards the animal's right, y up and
-z posterior, a right-handed frame for three.js.
+z posterior, a right-handed frame for three.js. The atlas's third axis runs from the animal's left to its right, as
+in Allen's own data (right-hemisphere injections, hemisphere_id 2, sit at large values), although BrainGlobe labels
+this atlas "asr".
 """
 
 import json
@@ -20,16 +22,15 @@ ROOT_FACES = 20000  # the whole-brain outline, drawn translucent
 
 
 def to_viewer(points: np.ndarray, shape_um) -> np.ndarray:
-    """Atlas points in microns, axes anterior->posterior, superior->inferior, right->left (BrainGlobe's "asr"),
-    to viewer millimetres: x right, y superior, z posterior."""
+    """Atlas points in microns, axes anterior->posterior, superior->inferior, left->right, to viewer millimetres:
+    x right, y superior, z posterior. A rotation, so meshes keep their handedness and winding."""
     centred = (np.asarray(points, dtype=float) - np.asarray(shape_um, dtype=float) / 2) / 1000
-    return np.column_stack([-centred[:, 2], -centred[:, 1], centred[:, 0]]) + 0.0  # + 0.0 turns -0.0 into 0.0
+    return np.column_stack([centred[:, 2], -centred[:, 1], centred[:, 0]]) + 0.0  # + 0.0 turns -0.0 into 0.0
 
 
 def convert(points: np.ndarray, triangles: np.ndarray, shape_um, max_faces: int) -> trimesh.Trimesh:
     """One BrainGlobe mesh in viewer coordinates, simplified to at most max_faces triangles."""
-    # The axis change mirrors the mesh, so each triangle's corners are reversed to keep its normal pointing out.
-    mesh = trimesh.Trimesh(vertices=to_viewer(points, shape_um), faces=np.asarray(triangles)[:, ::-1], process=True)
+    mesh = trimesh.Trimesh(vertices=to_viewer(points, shape_um), faces=np.asarray(triangles), process=True)
     if len(mesh.faces) > max_faces:
         mesh = mesh.simplify_quadric_decimation(face_count=max_faces)
     return mesh

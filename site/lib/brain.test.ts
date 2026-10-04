@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arcMidpoint, arcWidth, brainEdges, directed, hubOf, networkData } from "./brain";
+import { arcMidpoint, arcWidth, brainEdges, directed, hubOf, linkedView, networkData } from "./brain";
 
 const edge = (id: string, subject: string, object: string) => ({ id, subject_id: subject, object_id: object });
 const claim = (subject: string, object: string, density: number | null, status = "accepted") => ({
@@ -91,5 +91,27 @@ describe("directed", () => {
   it("names the amygdala end of each", () => {
     expect(hubOf(edges[0], "outputs")).toBe("MBA:295");
     expect(hubOf(edges[2], "inputs")).toBe("MBA:295");
+  });
+});
+
+describe("linkedView", () => {
+  const region = (amygdala: boolean) => ({ acronym: "", name: "", file: "", centroid: [0, 0, 0] as [number, number, number], amygdala });
+  const regions = { "MBA:295": region(true), "MBA:131": region(true), "MBA:972": region(false), "MBA:672": region(false) };
+  const e = (id: string, source: string, target: string) => ({ id, source, target, density: 0.1, claims: 1, accepted: 1 });
+  // BLA has injections; LA (amygdala) is only a target; PL only sends; CP only receives.
+  const edges = [e("1", "MBA:295", "MBA:672"), e("2", "MBA:972", "MBA:131"), e("3", "MBA:295", "MBA:131")];
+
+  it("opens an amygdala region with injections on its outputs", () => {
+    expect(linkedView(edges, regions, "MBA:295")).toEqual({ direction: "outputs", source: "MBA:295" });
+  });
+
+  it("opens an amygdala region without injections on its inputs", () => {
+    expect(linkedView(edges, regions, "MBA:131")).toEqual({ direction: "inputs", source: "MBA:131" });
+  });
+
+  it("selects other regions in the direction they appear", () => {
+    expect(linkedView(edges, regions, "MBA:672")).toEqual({ direction: "outputs", selected: "MBA:672" });
+    expect(linkedView(edges, regions, "MBA:972")).toEqual({ direction: "inputs", selected: "MBA:972" });
+    expect(linkedView(edges, regions, "MBA:1")).toBeNull();
   });
 });

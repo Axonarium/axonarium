@@ -133,3 +133,24 @@ def test_mostly_off_target_injections_are_proposed():
     claims = build_claims(ATLAS, [{"id": 1, "injection": 295, "share": 0.3, "injected": {295}}], {536},
                           {1: [{"structure_id": 536, "projection_density": 0.3}]}, ACRONYMS)
     assert claims[0]["status"] == "proposed" and "30% of the injection in BLA" in claims[0]["paraphrase"]
+
+
+def test_failed_query_not_cached(tmp_path):
+    # The Allen API reports a failed query as HTTP 200 with success false; it must not be cached as an answer.
+    import json
+
+    import pytest
+
+    from checks.http import session
+    from checks.tests.conftest import OpenerAdapter
+    from ingest.allen_connectivity import _get
+
+    answers = [{"success": False, "msg": "busy"}, {"success": True, "msg": [{"id": 1}]}]
+
+    def opener(url, headers, timeout):
+        return 200, {"Content-Type": "application/json"}, json.dumps(answers.pop(0)).encode()
+
+    http = session(tmp_path, OpenerAdapter(opener))
+    with pytest.raises(RuntimeError, match="busy"):
+        _get("model::Structure,rma::criteria,[id$eq1]", 10, http)
+    assert _get("model::Structure,rma::criteria,[id$eq1]", 10, http) == [{"id": 1}] and answers == []
