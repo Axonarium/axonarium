@@ -10,6 +10,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { type BrainClaim, type BrainEdge, brainEdges } from "./brain";
 import { fetchAll } from "./pages";
+import { type IndexedRegion, regionIndex } from "./region-index";
 import type { AtlasRegion, RegionName } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
 
@@ -87,7 +88,7 @@ export async function getRegionNames(ids: string[]): Promise<Record<string, Regi
   if (!db || ids.length === 0) return {};
   const chunks = Array.from({ length: Math.ceil(ids.length / 200) }, (_, i) => ids.slice(i * 200, i * 200 + 200));
   const found = await Promise.all(
-    chunks.map((chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name").in("id", chunk))),
+    chunks.map((chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk))),
   );
   return Object.fromEntries(found.flat().map((region) => [region.id, region]));
 }
@@ -181,4 +182,12 @@ export async function getRegion(id: string): Promise<RegionPage | null | undefin
   ]);
   const ids = [region.parent, ...outputs.map((e) => e.target), ...inputs.map((e) => e.source)].filter((x): x is string => !!x);
   return { region, children, outputs, inputs, names: await getRegionNames([...new Set(ids)]) };
+}
+
+/** Every atlas region with a connection, with its numbers of outputs and inputs. */
+export async function getRegionIndex(): Promise<IndexedRegion[] | null> {
+  const edges = await listEdges();
+  if (edges === null) return null;
+  const names = await getRegionNames([...new Set(edges.flatMap((e) => [e.subject_id, e.object_id]))]);
+  return regionIndex(edges, names);
 }

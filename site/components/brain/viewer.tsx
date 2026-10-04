@@ -11,6 +11,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { regionHref } from "@/lib/format";
 import { arcMidpoint, arcWidth, type BrainEdge, type BrainIndex, type BrainRegion, type Direction, directed, hubOf } from "@/lib/brain";
 
 const PALETTE = [
@@ -306,8 +307,24 @@ export default function BrainViewer({ edges, base }: { edges: BrainEdge[]; base:
               </button>
             ))}
           </div>
-          {source !== ALL && regions[source] && <p className="text-muted-foreground">{regions[source].name}</p>}
+          {source !== ALL && regions[source] && (
+            <p className="text-muted-foreground">
+              <Link href={regionHref(source)} className="underline underline-offset-4">
+                {regions[source].name}
+              </Link>
+            </p>
+          )}
         </div>
+
+        {selected && regions[selected] && (
+          <p className="rounded-md border px-2.5 py-1.5">
+            Selected:{" "}
+            <Link href={regionHref(selected)} className="font-medium underline underline-offset-4">
+              {regions[selected].acronym}
+            </Link>{" "}
+            <span className="text-muted-foreground">{regions[selected].name}</span>
+          </p>
+        )}
 
         <label className="flex items-center justify-between gap-3">
           <span className="font-medium">Minimum density</span>

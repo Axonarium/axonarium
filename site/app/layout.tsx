@@ -35,8 +35,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/explore" className="text-sm text-muted-foreground hover:text-foreground">
               Explore
             </Link>
-            <Link href="/atlases" className="text-sm text-muted-foreground hover:text-foreground">
-              Atlases
+            <Link href="/regions" className="text-sm text-muted-foreground hover:text-foreground">
+              Regions
             </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
               About

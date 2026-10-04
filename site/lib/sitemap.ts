@@ -5,7 +5,7 @@ import type { Edge } from "./types";
 
 export const SITE = "https://axonarium.com";
 
-const PAGES = ["", "/brain", "/explore", "/atlases", "/about"];
+const PAGES = ["", "/brain", "/explore", "/regions", "/atlases", "/about"];
 
 export function sitemapUrls(edges: Pick<Edge, "id" | "subject_id" | "object_id">[], regions: Set<string>): string[] {
   const connected = new Set(edges.flatMap((e) => [e.subject_id, e.object_id]).filter((id) => regions.has(id)));

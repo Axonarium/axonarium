@@ -5,6 +5,7 @@ export interface RegionName {
   id: string;
   acronym: string | null;
   name: string;
+  amygdala?: boolean | null;
 }
 
 export interface AtlasRegion extends RegionName {
