@@ -7,7 +7,7 @@ import psycopg
 import pytest
 
 from build.cli import main
-from build.tests.test_regions import amygdala_loader, fake_loader
+from build.tests.test_regions import amygdala_loader, fake_loader, no_claims
 from checks.tests.conftest import BROKEN, overlay
 
 TEST_URL = os.environ.get("AXONARIUM_TEST_DATABASE_URL")
@@ -59,7 +59,7 @@ def test_database_url_not_printed(tmp_path, capsys):
 @pytest.mark.skipif(not TEST_URL, reason="needs AXONARIUM_TEST_DATABASE_URL")
 def test_database_from_environment(valid_tree, tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("AXONARIUM_DATABASE_URL", TEST_URL)
-    assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist")], atlas_loader=fake_loader(), amygdala_loader=amygdala_loader) == 0
+    assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist")], atlas_loader=fake_loader(), amygdala_loader=amygdala_loader, connectivity_loader=no_claims) == 0
     assert "loaded the database" in capsys.readouterr().out
     with psycopg.connect(TEST_URL) as conn:
         assert conn.execute("select count(*) from connectivity_claims").fetchone()[0] > 0

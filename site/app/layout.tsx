@@ -55,7 +55,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </span>
             <span>Code: Apache-2.0</span>
             <span>
-              Region names: Allen Institute atlases, via BrainGlobe;{" "}
+              Mouse connectivity: Allen Mouse Brain Connectivity Atlas (
+              <a href="https://doi.org/10.1038/nature13186" className="hover:text-foreground">
+                Oh et al. 2014
+              </a>
+              ), © Allen Institute; region names: Allen Institute atlases, via BrainGlobe;{" "}
               <Link href="/atlases" className="hover:text-foreground">
                 cited on the Atlases page
               </Link>

@@ -4,12 +4,14 @@ import argparse
 import os
 from pathlib import Path
 
+from build import connectivity
 from build import regions as atlas_regions
 from build.database import LoadFailed, load
 from build.dumps import write_dumps
 from build.tables import rows
 from checks.cli import run_files
 from checks.loading import load_tree
+from ingest.allen_connectivity import load_claims
 from ingest.atlases import amygdala_terms, load_atlas
 
 
@@ -25,7 +27,7 @@ def _unsafe_out(out: Path, data: Path) -> str | None:
     return None
 
 
-def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None) -> int:
+def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None, connectivity_loader=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m build",
                                      description="Rebuild the dumps and the database from the data files.")
     parser.add_argument("--data", type=Path, default=Path("data"), help="the data folder (default: data)")
@@ -77,8 +79,25 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None)
         if problems:
             print(f"build stopped: {len(problems)} atlas problem(s) above; nothing was written")
             return 1
-    write_dumps(records, tables, args.out)  # The files' records only: atlas-derived regions stay out of dumps.
-    tables = atlas_regions.merge(tables, loaded)
+    generated = []
+    if loaded:
+        try:
+            generated = connectivity.allen_records(loaded, connectivity_loader or load_claims)
+        except Exception as error:  # The Allen API: the build can't vouch for the claims.
+            print(f"Allen connectivity load failed: {error}; build stopped")
+            return 1
+        problems = connectivity.check_generated(records, generated) + atlas_regions.unknown_regions(generated, loaded)
+        if problems:
+            for problem in problems:
+                print(problem)
+            print(f"build stopped: {len(problems)} problem(s) in generated claims; nothing was written")
+            return 1
+        if generated:
+            experiments = {record.data["extra"]["allen.experiment"] for record in generated}
+            print(f"allen connectivity: {len(experiments)} experiment(s), {len(generated)} claim(s)")
+    # Dumps hold the files' records only: atlas regions and Allen claims stay out of them (ADR 0005).
+    write_dumps(records, tables, args.out)
+    tables = atlas_regions.merge(rows(records + generated), loaded)
     if url:
         try:
             load(url, tables)
