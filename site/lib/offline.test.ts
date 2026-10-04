@@ -32,7 +32,7 @@ const tables: Tables = {
     region("MBA:536", "CEA", "Central amygdalar nucleus", { amygdala: true }),
     region("MBA:303", "BLAp", "Basolateral amygdalar nucleus, posterior part", { parent: "MBA:295", amygdala: true }),
   ],
-  sources: [{ id: "doi:10.1038/nature13186", title: "A mesoscale connectome", year: 2014, journal: "Nature", license: null, open_access: null, retracted: false }],
+  sources: [{ id: "doi:10.1038/nature13186", kind: "journal_article", title: "A mesoscale connectome", year: 2014, journal: "Nature", license: null, open_access: null, retracted: false }],
   connectivity_claims: [
     claim("clm-b", "MBA:295", "MBA:672", 0.4),
     claim("clm-a", "MBA:295", "MBA:672", 0.1, { status: "proposed" }),
