@@ -8,7 +8,7 @@ this atlas "asr".
 """
 
 import json
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from pathlib import Path
 
 import numpy as np
@@ -84,10 +84,15 @@ def export_atlas(atlas: dict, region_ids: list[str], out: Path, open_atlas: Call
     return index
 
 
-def regions_to_draw(claims: list[Record], loaded: dict[str, list[dict]]) -> dict[str, list[str]]:
-    """Per loaded atlas with connections, the sorted regions those connections name."""
+def regions_to_draw(claims: list[Record], loaded: dict[str, list[dict]], also: Iterable[str] = ()) -> dict[str, list[str]]:
+    """Per loaded atlas with connections, the sorted regions those connections name, and any of `also` (gap mode's
+    untested regions, ADR 0027)."""
     known = {atlas: {row["id"] for row in rows} for atlas, rows in loaded.items()}
     drawn: dict[str, set[str]] = {}
+    for region in also:
+        atlas = next((a for a, ids in known.items() if region in ids), None)
+        if atlas:
+            drawn.setdefault(atlas, set()).add(region)
     for record in claims:
         if record.cls != "ConnectivityClaim":
             continue

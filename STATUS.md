@@ -31,7 +31,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
 | 3.3 Explorer v1 | Done: site shell, 3D brain, network view, region pages, and the static fallback ([#57](https://github.com/axonarium/axonarium/pull/57)) |
 | 3.4 MCP server | Done: `api/mcp`, four read-only tools over the API ([ADR 0014](docs/decisions/0014-mcp-server.md)) |
-| 3.5 Visual design pass ([#74](https://github.com/axonarium/axonarium/issues/74)) | Accessibility and performance budgets in CI ([#75](https://github.com/axonarium/axonarium/pull/75), [ADR 0025](docs/decisions/0025-site-budgets.md)). Figure export ([#76](https://github.com/axonarium/axonarium/pull/76)): either brain view as a PNG, the network as an SVG, each with a title, legend and the Allen citation. Path finder: a route between two regions, drawn hop by hop with each hop's citations ([ADR 0026](docs/decisions/0026-routes-in-the-browser.md)). The look (tokens, motion) and gap mode are next; the look needs the maintainer's eye |
+| 3.5 Visual design pass ([#74](https://github.com/axonarium/axonarium/issues/74)) | Accessibility and performance budgets in CI ([#75](https://github.com/axonarium/axonarium/pull/75), [ADR 0025](docs/decisions/0025-site-budgets.md)). Figure export ([#76](https://github.com/axonarium/axonarium/pull/76)): either brain view as a PNG, the network as an SVG, each with a title, legend and the Allen citation. Path finder: a route between two regions, drawn hop by hop with each hop's citations ([ADR 0026](docs/decisions/0026-routes-in-the-browser.md)). Gap mode: amygdala regions no claim reports outputs for, drawn to the targets their neighbours project to, as research prompts ([ADR 0027](docs/decisions/0027-gap-mode.md)). The look (tokens, motion) is next and needs the maintainer's eye |
 | 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | On hold until there is more data (maintainer, 4 October 2026); its design starts from scratch then |
 | C.1 Inbox and identifier vetting ([#64](https://github.com/axonarium/axonarium/issues/64)) | Done ([#65](https://github.com/axonarium/axonarium/pull/65)): the inbox table, closed to the public API, and identifier vetting |
 | C.2 Allowlist ([#14](https://github.com/axonarium/axonarium/issues/14)) | Done ([#54](https://github.com/axonarium/axonarium/pull/54)) |
@@ -63,38 +63,38 @@ Later phases get cards when they start.
 - Evidence buttons: Turnstile is checked on the server, and the rate limits (5 an hour and 20 a day per submitter, 500 a day overall) are enforced in the database by a keyed hash of the address, cleared after a day ([ADR 0024](docs/decisions/0024-evidence-buttons.md)).
 - Site budgets: axe-core (WCAG 2.1 AA, no violations) on every page type at phone and desktop sizes, and Lighthouse on a mid-range phone, in CI on real data ([ADR 0025](docs/decisions/0025-site-budgets.md)).
 - Routes are found in the browser over the connections the brain page loads: the fewest hops, then the strongest weakest hop ([ADR 0026](docs/decisions/0026-routes-in-the-browser.md)).
+- Gap mode: the build suggests outputs for amygdala regions no claim reports outputs for, from their neighbours' targets. Species gaps join once rat and homology claims exist ([ADR 0027](docs/decisions/0027-gap-mode.md)).
 
-## Handoff (4 October 2026, second session)
+## Handoff (5 October 2026, third session)
 
-**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas, shown in 3D and as a network (`/brain`), in a table (`/explore`), region by region (`/regions`), through the read API (`/api/v1`) and through the MCP server. The site now answers from a snapshot of the database when Supabase can't.
+**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas, shown in 3D and as a network (`/brain`), in a table (`/explore`), region by region (`/regions`), through the read API (`/api/v1`) and through the MCP server. In `/brain`, figures download as PNG and SVG, the path finder draws a route hop by hop with its citations, and gap mode suggests untested outputs. The site answers from a snapshot of the database when Supabase can't.
 
-**Done and merged**, each with CI green on main and a successful deploy after it:
-- [#53](https://github.com/axonarium/axonarium/pull/53): the two minors left from the last review. Connections without a density now show in the 3D and network views, and cached answers are still used when a host goes down.
-- [#54](https://github.com/axonarium/axonarium/pull/54) C.2: the allowlist. Source records gain a registry-derived `kind` (schema 0.4.0).
-- [#56](https://github.com/axonarium/axonarium/pull/56) 3.2: the Release workflow (dumps plus Zenodo).
-- [#57](https://github.com/axonarium/axonarium/pull/57) 3.3: the site answers from a snapshot of the database when Supabase can't.
-- [#58](https://github.com/axonarium/axonarium/pull/58) 1.6: the reconciliation report, in every CI run's summary.
-- [#60](https://github.com/axonarium/axonarium/pull/60) 2.1: the amygdala inventory draft.
-- [#62](https://github.com/axonarium/axonarium/pull/62) 2.2: the literature scout and the Scout workflow. Its first run found 2,079 papers: [#68](https://github.com/axonarium/axonarium/pull/68), after [#69](https://github.com/axonarium/axonarium/pull/69) let the manifest grow past pre-commit's 500 KB limit.
-- [#63](https://github.com/axonarium/axonarium/pull/63) 0.6: the eval harness. It works with any provider, plus a first extractor prompt.
-- [#65](https://github.com/axonarium/axonarium/pull/65) C.1: the community inbox and identifier vetting.
-- [#67](https://github.com/axonarium/axonarium/pull/67): agents merge the pull requests the maintainer names (ADR 0022).
+**Done and merged this session**, each with CI green on main and a successful deploy after it:
+- [#71](https://github.com/axonarium/axonarium/pull/71) C.5: the hidden-text screen. Every paper is screened before a model reads it (ADR 0023).
+- [#73](https://github.com/axonarium/axonarium/pull/73) C.3: the Supports and Contradicts buttons, with Turnstile and rate limits, hidden until the keys are set (ADR 0024).
+- [#75](https://github.com/axonarium/axonarium/pull/75) 3.5: accessibility and performance budgets in CI (ADR 0025).
+- [#76](https://github.com/axonarium/axonarium/pull/76) 3.5: figure export.
+- [#77](https://github.com/axonarium/axonarium/pull/77) 3.5: the path finder (ADR 0026).
+- [#78](https://github.com/axonarium/axonarium/pull/78) 3.5: gap mode (ADR 0027).
 
-**Prepared for the maintainer, outside the repository:** the w3id.org registration (`ids/axonarium/.htaccess`, passing the registry's checker and tested on a local Apache), permission emails to the Allen Institute and BAMS, and a preliminary trademark search (no "Axonarium" mark found on the web; the official databases are still to search).
+The previous sessions' work (#53–#69: the allowlist, releases, the static fallback, the reconciliation report, the inventory draft, the corpus, the eval harness, the inbox and the merge rule) is in the git history.
 
-**Not done:** the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); the visual design pass (3.5); triage (C.4); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
+**Not done:** the look of sprint 3.5 (tokens, motion), which needs the maintainer's eye; the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); triage (C.4); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
 
 **Surprises:**
-- This session's sandbox couldn't reach Crossref, NCBI, OLS, Europe PMC or the Allen API. Every identifier in the inventory and the extractor prompt was checked against UBERON's, the Cell Ontology's and BICAN's MBA sources from GitHub instead. CI's online checks looked them up again.
-- Allen's "BLA" is the whole basolateral nucleus, while Paxinos's "BLA" is its anterior part. Many behavioural papers mean the whole basolateral complex. The extractor's normaliser must handle all three (spec for 2.1).
-- The plan's anonymous insert into the inbox would have let anyone bypass Turnstile with the public key, so the inbox is closed to the public API instead (ADR 0021).
-- The first manifest (713 KB) tripped pre-commit's 500 KB limit for added files; the manifest is now exempt ([#69](https://github.com/axonarium/axonarium/pull/69)).
-- The first corpus holds 188 preprints and one retraction notice. It's a reading queue, so they stay; the allowlist and retraction checks apply when claims are extracted.
+- CI's runners have no GPU. WebGL renders in software on every frame, so Lighthouse can't judge blocking time on the 3D pages; their budget holds their layout and weight instead (ADR 0025).
+- The budgets found real faults:
+  - `/explore` built all 1,039 rows in the browser, so it now pages on the server.
+  - postgrest-js's retries made each snapshot fallback take about 7 s.
+- drei's `<Html>` labels threw on unmount when they mounted before the canvas connected its events, as a route opened from its URL does. They now wait for it (#77).
+- This session's sandbox couldn't reach the Allen API, Hugging Face or the live site. The screen's classifier runs in CI's `screen` job. Gap mode was tested on synthetic data; the build prints how many gaps the real data gives.
 
-**Next step:** enable Zenodo and run **Release**, and curate gold v1. With gold v1 and an API key, score two models (0.6) and start extraction (2.3) on the corpus's open-access papers.
+**Next step:** the maintainer's look review closes 3.5 (#74). Then enable Zenodo and run **Release**, and curate gold v1. With gold v1 and an API key, score two models (0.6) and start extraction (2.3) on the corpus's open-access papers.
 
 ## Waiting on the maintainer
 
+- [ ] The look review for sprint 3.5 ([#74](https://github.com/axonarium/axonarium/issues/74)): design tokens, motion, and whether phones get a lighter home preview (it costs a phone 0.3–0.5 s of blocking time; ADR 0025). Then #74 can close.
+- [ ] Gap mode's rule (ADR 0027): whether suggestions from neighbouring subdivisions are the research prompts you want. Also whether routes and gaps should join the read API and the MCP server: two of the plan's acceptance questions ask for them.
 - [ ] Gold-set curation (sprint 0.5): the maintainer alone, or with a second curator? Its format is in `agents/evals/README.md`.
 - [ ] An LLM API key with a spending cap (`ANTHROPIC_API_KEY`, and `OPENAI_API_KEY` for a second model family), for the eval harness and extraction.
 - [ ] Zenodo: switch on `axonarium/axonarium` in Zenodo's GitHub settings, run **Release**, then add the concept DOI to `README.md`, `CITATION.cff` and `SUCCESSION.md` (ADR 0016). Also whether `CITATION.cff` should list CC BY 4.0 beside Apache-2.0.

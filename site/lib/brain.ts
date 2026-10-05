@@ -2,7 +2,7 @@
 // Meshes and centroids come from the build's mesh export (build/meshes.py, ADR 0011), in millimetres with
 // x towards the animal's right, y up and z posterior.
 
-import type { Edge, Measurement } from "./types";
+import type { Edge, Gap, Measurement } from "./types";
 
 export type Point = [number, number, number];
 
@@ -14,6 +14,31 @@ export interface BrainEdge {
   density: number | null;
   claims: number;
   accepted: number;
+}
+
+/** Gap mode (ADR 0027): an untested connection from an amygdala region nobody has injected, and the regions whose
+ * connections to the same target suggest it. */
+export interface BrainGap {
+  id: string;
+  source: string;
+  target: string;
+  density: number | null;
+  /** The regions (a neighbour, or a subdivision of one) whose connections to the target suggest this one. */
+  by: string[];
+}
+
+/** A gap as the viewer draws it: a connection with no claims. */
+export const gapEdge = (gap: BrainGap): BrainEdge => ({ id: gap.id, source: gap.source, target: gap.target, density: gap.density, claims: 0, accepted: 0 });
+
+/** The brain page's gaps, with each suggesting connection reduced to its region (its ID's first part). */
+export function brainGaps(gaps: Pick<Gap, "id" | "subject_id" | "object_id" | "density" | "suggested_by">[]): BrainGap[] {
+  return gaps.map((g) => ({
+    id: g.id,
+    source: g.subject_id,
+    target: g.object_id,
+    density: g.density,
+    by: [...new Set(g.suggested_by.map((edge) => edge.split("|")[0]))],
+  }));
 }
 
 export interface BrainRegion {

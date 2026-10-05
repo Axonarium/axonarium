@@ -4,7 +4,7 @@ import argparse
 import os
 from pathlib import Path
 
-from build import connectivity, meshes, reconcile
+from build import connectivity, gaps, meshes, reconcile
 from build import regions as atlas_regions
 from build.database import LoadFailed, load
 from build.dumps import write_dumps, write_snapshot
@@ -104,8 +104,14 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
         if generated:
             experiments = {record.data["extra"]["allen.experiment"] for record in generated}
             print(f"allen connectivity: {len(experiments)} experiment(s), {len(generated)} claim(s)")
+    claims = [r.data for r in records + generated if r.cls == "ConnectivityClaim"]
+    region_rows = [row for rows in loaded.values() for row in rows]
+    found_gaps = gaps.find_gaps(claims, region_rows)  # gap mode (ADR 0027); none without the atlases
+    if found_gaps:
+        print(f"gaps: {len(found_gaps)} untested connection(s) from {len({g['subject_id'] for g in found_gaps})} region(s)")
     if args.meshes:
-        for atlas_id, region_ids in meshes.regions_to_draw(records + generated, loaded).items():
+        drawn = meshes.regions_to_draw(records + generated, loaded, also=[gap["subject_id"] for gap in found_gaps])
+        for atlas_id, region_ids in drawn.items():
             atlas = next(a for a in atlases if a["id"] == atlas_id)
             try:
                 prefix = loaded[atlas_id][0]["id"].split(":")[0]
@@ -116,12 +122,11 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
                 print(f"mesh export failed for {atlas_id}: {error}; build stopped")
                 return 1
             print(f"meshes: {len(index['regions'])} region(s) of {atlas_id} in {args.meshes / atlas_id}")
-    # Dumps hold the files' records only: atlas regions and Allen claims stay out of them (ADR 0005).
+    # Dumps hold the files' records only: atlas regions, Allen claims and the gaps they suggest stay out (ADR 0005).
     write_dumps(records, tables, args.out)
     if args.report:
-        claims = [r.data for r in records + generated if r.cls == "ConnectivityClaim"]
-        reconcile.write_report(reconcile.reconcile(claims, [row for rows in loaded.values() for row in rows]), args.report)
-    tables = atlas_regions.merge(rows(records + generated), loaded)
+        reconcile.write_report(reconcile.reconcile(claims, region_rows), args.report)
+    tables = {**atlas_regions.merge(rows(records + generated), loaded), "gaps": found_gaps}
     if args.snapshot:
         write_snapshot(tables, args.snapshot)
     if url:

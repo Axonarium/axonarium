@@ -41,9 +41,20 @@ const tables: Tables = {
   ],
   homology_claims: [{}],
   edges: [edge("MBA:295", "MBA:672", 0.4), edge("MBA:295", "MBA:536", null), edge("MBA:672", "MBA:295", 0.05, { n_present: 0, species: "NCBITaxon:10116" })],
+  gaps: [
+    { id: "MBA:303|projects_to|MBA:672|NCBITaxon:10090", subject_id: "MBA:303", object_id: "MBA:672", atlas: ATLAS, species: "NCBITaxon:10090", basis: "neighbours", density: 0.4, suggested_by: ["MBA:295|projects_to|MBA:672|NCBITaxon:10090"] },
+    { id: "WHS:1|projects_to|WHS:2|NCBITaxon:10116", subject_id: "WHS:1", object_id: "WHS:2", atlas: "waxholm-sd-rat-v4", species: "NCBITaxon:10116", basis: "neighbours", density: null, suggested_by: [] },
+  ],
 };
 
 describe("the snapshot answers like the database", () => {
+  it("gives an atlas's gaps, and none from a snapshot made before them", () => {
+    expect(offline.gaps(tables, ATLAS)).toEqual([
+      { id: "MBA:303|projects_to|MBA:672|NCBITaxon:10090", source: "MBA:303", target: "MBA:672", density: 0.4, by: ["MBA:295"] },
+    ]);
+    expect(offline.gaps({ ...tables, gaps: undefined }, ATLAS)).toEqual([]);
+  });
+
   it("counts claims, connections, sources and species", () => {
     expect(offline.counts(tables)).toEqual({ claims: 5, edges: 3, sources: 1, species: 2 });
   });

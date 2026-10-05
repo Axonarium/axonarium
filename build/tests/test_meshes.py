@@ -106,6 +106,9 @@ def test_regions_to_draw_takes_the_regions_of_connections():
     drawn = regions_to_draw([claim("MBA:295", "MBA:672"), claim("MBA:295", "MBA:1")], loaded)
     # Atlases with no connections are not drawn; regions outside the loaded atlas never are.
     assert drawn == {"allen-mouse-ccf-2017": ["MBA:295", "MBA:672"]}
+    # Gap mode's untested regions are drawn too (ADR 0027).
+    assert regions_to_draw([claim("MBA:295", "MBA:672")], loaded, also=["MBA:536", "MBA:9"]) == {
+        "allen-mouse-ccf-2017": ["MBA:295", "MBA:536", "MBA:672"]}
 
 
 def test_build_writes_meshes_for_connections(valid_tree, tmp_path, capsys):

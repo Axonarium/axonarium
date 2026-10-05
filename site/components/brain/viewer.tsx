@@ -13,17 +13,19 @@ import * as THREE from "three";
 import { Button } from "@/components/ui/button";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { download, type FigureText, framedPng, networkSvg, svgPng } from "@/lib/figure";
-import { regionHref } from "@/lib/format";
+import { edgeHref, regionHref } from "@/lib/format";
 import { reachable, shortestRoute } from "@/lib/route";
 import {
   arcMidpoint,
   arcWidth,
   type BrainEdge,
+  type BrainGap,
   type BrainIndex,
   type BrainRegion,
   byDensity,
   type Direction,
   directed,
+  gapEdge,
   hubOf,
   linkedView,
 } from "@/lib/brain";
@@ -153,8 +155,31 @@ function Snapshot({ register }: { register: (capture: (() => HTMLCanvasElement) 
   return null;
 }
 
+/** Which connection suggests a gap: a link to the first neighbour's connection to the same target. */
+function Suggested({ gap, regions }: { gap?: BrainGap; regions: Record<string, BrainRegion> }) {
+  if (!gap || gap.by.length === 0) return null;
+  const species = gap.id.split("|").at(-1);
+  const names = gap.by.map((id) => regions[id]?.acronym ?? id);
+  return (
+    <Link
+      href={edgeHref(`${gap.by[0]}|projects_to|${gap.target}|${species}`)}
+      className="shrink-0 text-xs underline underline-offset-4"
+      title={`Suggested by ${names.join(", ")}`}
+    >
+      via {names[0]}
+      {names.length > 1 ? ` +${names.length - 1}` : ""}
+    </Link>
+  );
+}
+
 /** The full viewer, or with `compact` a rotating preview without controls (the home page) that links to it. */
-export default function BrainViewer({ edges, base, compact = false }: { edges: BrainEdge[]; base: string; compact?: boolean }) {
+export default function BrainViewer({ edges, gaps = [], base, compact = false }: {
+  edges: BrainEdge[];
+  /** Gap mode's untested connections (ADR 0027). */
+  gaps?: BrainGap[];
+  base: string;
+  compact?: boolean;
+}) {
   const [index, setIndex] = useState<BrainIndex | "missing" | null>(null);
   const [source, setSource] = useState<string>(ALL);
   const [threshold, setThreshold] = useState(0.05);
@@ -162,6 +187,8 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   const [hovered, setHovered] = useState<string | null>(null);
   const [view, setView] = useState<"3d" | "network">("3d");
   const [direction, setDirection] = useState<Direction>("outputs");
+  // Gap mode (ADR 0027): untested outputs instead of connections; always outputs.
+  const [gapMode, setGapMode] = useState(false);
 
   // The path finder: a route's ends, and how many of its hops are drawn so far.
   const [from, setFrom] = useState("");
@@ -200,21 +227,25 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   }, [base, edges, linked, linkedRoute]);
 
   const regions = useMemo<Record<string, BrainRegion>>(() => (index && index !== "missing" ? index.regions : {}), [index]);
-  // `sources` are the amygdala regions at the amygdala end of the chosen direction's connections.
+  // `sources` are the amygdala regions at the amygdala end of the chosen direction's connections, or in gap mode
+  // the untested regions with gaps.
   const drawable = useMemo(() => directed(edges, regions, direction), [edges, regions, direction]);
+  const gapEdges = useMemo(() => gaps.filter((g) => regions[g.source] && regions[g.target]).map(gapEdge), [gaps, regions]);
+  const gapsById = useMemo(() => new Map(gaps.map((g) => [g.id, g])), [gaps]);
+  const pool = gapMode ? gapEdges : drawable;
   const sources = useMemo(() => {
     const counts = new Map<string, number>();
-    for (const edge of drawable) counts.set(hubOf(edge, direction), (counts.get(hubOf(edge, direction)) ?? 0) + 1);
+    for (const edge of pool) counts.set(hubOf(edge, direction), (counts.get(hubOf(edge, direction)) ?? 0) + 1);
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([id]) => id);
-  }, [drawable, direction]);
+  }, [pool, direction]);
   // One colour per amygdala region, the same in both directions.
   const colors = useMemo(() => {
     const ids = Object.keys(regions).filter((id) => regions[id].amygdala).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
     return Object.fromEntries(ids.map((id, i) => [id, PALETTE[i % PALETTE.length]]));
   }, [regions]);
   const shown = useMemo(
-    () => byDensity(drawable.filter((e) => source === ALL || hubOf(e, direction) === source), threshold),
-    [drawable, direction, source, threshold],
+    () => byDensity(pool.filter((e) => source === ALL || hubOf(e, direction) === source), threshold),
+    [pool, direction, source, threshold],
   );
   const other = (e: BrainEdge) => (direction === "outputs" ? e.target : e.source);
   // Stable between renders, so the network keeps its layout while the pointer moves.
@@ -291,6 +322,17 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
         caption: [...caption, `Route: ${[from, ...hops.map((h) => h.target)].map((id) => regions[id].acronym).join(" → ")}.`],
       };
     }
+    if (gapMode) {
+      return {
+        title: "Untested outputs of the mouse amygdala, suggested by neighbouring regions",
+        subtitle: `${source === ALL ? "Every amygdala region without reported outputs" : `${regions[source]?.acronym} (${regions[source]?.name})`}; neighbours' projection density ≥ ${threshold}; ${shown.length} suggestion${shown.length === 1 ? "" : "s"}`,
+        legend: (source === ALL ? sources : [source]).map((id) => ({ label: regions[id]?.acronym ?? id, color: colors[id] })),
+        caption: [
+          ...caption.slice(0, 1),
+          `Figure: Axonarium, https://axonarium.com/brain, ${date}. Gap mode: regions no claim reports outputs for, to the targets their neighbours project to. Suggestions for experiments, not evidence.`,
+        ],
+      };
+    }
     return {
       title: direction === "outputs" ? "Where the mouse amygdala projects" : "What projects to the mouse amygdala",
       subtitle: `${source === ALL ? "Every amygdala region" : `${regions[source]?.acronym} (${regions[source]?.name})`}; projection density ≥ ${threshold}; ${shown.length} connection${shown.length === 1 ? "" : "s"}`,
@@ -300,7 +342,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   };
   const figureSubject = hops
     ? `route-${regions[from].acronym}-${regions[to].acronym}`
-    : `${direction}-${source === ALL ? "all" : (regions[source]?.acronym ?? "region")}`;
+    : `${gapMode ? "gaps" : direction}-${source === ALL ? "all" : (regions[source]?.acronym ?? "region")}`;
   const figureName = (extension: string) =>
     `axonarium-${figureSubject.replace(/[^A-Za-z0-9-]+/g, "_")}-${new Date().toISOString().slice(0, 10)}.${extension}`;
   // The network view's figure is drawn from its layout, so the PNG is the SVG at twice the size, every label shown.
@@ -481,6 +523,22 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
       <aside className={compact ? "hidden" : "space-y-4 text-sm"}>
         {!routing && (
           <>
+          {gapEdges.length > 0 && (
+            <div role="group" aria-label="Show" className="grid grid-cols-2 rounded-lg border p-0.5 text-xs">
+              {([false, true] as const).map((on) => (
+                <button
+                  key={String(on)}
+                  type="button"
+                  aria-pressed={gapMode === on}
+                  onClick={() => (setGapMode(on), setDirection("outputs"), setSource(ALL), setSelected(null))}
+                  className="rounded-md px-2 py-1.5 text-muted-foreground transition-colors aria-pressed:bg-foreground aria-pressed:text-background"
+                >
+                  {on ? "Untested (gap mode)" : "Connections"}
+                </button>
+              ))}
+            </div>
+          )}
+          {!gapMode && (
           <div role="group" aria-label="Direction" className="grid grid-cols-2 rounded-lg border p-0.5 text-xs">
             {(["outputs", "inputs"] as const).map((d) => (
               <button
@@ -494,6 +552,14 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
               </button>
             ))}
           </div>
+          )}
+          {gapMode && (
+            <p className="text-xs text-muted-foreground">
+              Amygdala regions that no claim reports outputs for (no tracer injection is known), drawn to the targets their
+              neighbours, other parts of the same structure, project to. Width: the strongest neighbour&apos;s density.
+              Suggestions for experiments, not evidence.
+            </p>
+          )}
           <div className="space-y-2">
             <h2 className="font-medium">Amygdala region</h2>
             <div className="flex flex-wrap gap-1.5">
@@ -543,7 +609,9 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
 
           <div className="space-y-2">
             <h2 className="font-medium">
-              {shown.length} connection{shown.length === 1 ? "" : "s"}, strongest first
+              {gapMode
+                ? `${shown.length} untested connection${shown.length === 1 ? "" : "s"}, best suggested first`
+                : `${shown.length} connection${shown.length === 1 ? "" : "s"}, strongest first`}
             </h2>
             <ol className="max-h-[38vh] space-y-1 overflow-y-auto pr-1">
               {shown.slice(0, 40).map((edge) => (
@@ -561,9 +629,13 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
                       {regions[edge.source].acronym} → <span className="font-medium">{regions[edge.target].acronym}</span>
                     </button>
                     <span className="tabular-nums text-muted-foreground">{edge.density?.toFixed(3) ?? "–"}</span>
-                    <Link href={`/edges/${edge.id}`} className="text-xs underline underline-offset-4" aria-label="Evidence">
-                      claims
-                    </Link>
+                    {gapMode ? (
+                      <Suggested gap={gapsById.get(edge.id)} regions={regions} />
+                    ) : (
+                      <Link href={`/edges/${edge.id}`} className="text-xs underline underline-offset-4" aria-label="Evidence">
+                        claims
+                      </Link>
+                    )}
                   </div>
                 </li>
               ))}
@@ -601,13 +673,15 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
           </p>
         </div>
 
-        <p className="text-xs text-muted-foreground">
-          Outputs come from tracer injected into the amygdala; inputs from injections elsewhere that label it.
-          Arc width: the strongest projection density among a connection&apos;s claims; connections that state no
-          density are drawn thinnest and listed last, whatever the minimum. Dashed: every claim is
-          proposed, because most of the tracer landed outside the named region. Densities pool both hemispheres;
-          3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.
-        </p>
+        {!gapMode && (
+          <p className="text-xs text-muted-foreground">
+            Outputs come from tracer injected into the amygdala; inputs from injections elsewhere that label it.
+            Arc width: the strongest projection density among a connection&apos;s claims; connections that state no
+            density are drawn thinnest and listed last, whatever the minimum. Dashed: every claim is
+            proposed, because most of the tracer landed outside the named region. Densities pool both hemispheres;
+            3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.
+          </p>
+        )}
       </aside>
     </div>
   );

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arcMidpoint, arcWidth, brainEdges, byDensity, directed, hubOf, linkedView, networkData } from "./brain";
+import { arcMidpoint, arcWidth, brainEdges, brainGaps, byDensity, directed, gapEdge, hubOf, linkedView, networkData } from "./brain";
 
 const edge = (id: string, subject: string, object: string) => ({ id, subject_id: subject, object_id: object });
 const claim = (subject: string, object: string, density: number | null, status = "accepted") => ({
@@ -127,5 +127,25 @@ describe("linkedView", () => {
     expect(linkedView(edges, regions, "MBA:672")).toEqual({ direction: "outputs", selected: "MBA:672" });
     expect(linkedView(edges, regions, "MBA:972")).toEqual({ direction: "inputs", selected: "MBA:972" });
     expect(linkedView(edges, regions, "MBA:1")).toBeNull();
+  });
+});
+
+describe("gaps", () => {
+  const [gap] = brainGaps([
+    {
+      id: "MBA:4|projects_to|MBA:10|NCBITaxon:10090",
+      subject_id: "MBA:4",
+      object_id: "MBA:10",
+      density: 0.3,
+      suggested_by: ["MBA:2|projects_to|MBA:10|NCBITaxon:10090", "MBA:31|projects_to|MBA:10|NCBITaxon:10090"],
+    },
+  ]);
+
+  it("keeps each suggesting connection's region", () => {
+    expect(gap).toEqual({ id: "MBA:4|projects_to|MBA:10|NCBITaxon:10090", source: "MBA:4", target: "MBA:10", density: 0.3, by: ["MBA:2", "MBA:31"] });
+  });
+
+  it("draws as a connection without claims, so dashed", () => {
+    expect(gapEdge(gap)).toEqual({ id: gap.id, source: "MBA:4", target: "MBA:10", density: 0.3, claims: 0, accepted: 0 });
   });
 });

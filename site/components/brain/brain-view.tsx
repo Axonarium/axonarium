@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-import type { BrainEdge } from "@/lib/brain";
+import type { BrainEdge, BrainGap } from "@/lib/brain";
 
 import { CANVAS } from "./sizes";
 
@@ -15,6 +15,6 @@ const placeholder = (size: string) =>
 const FullViewer = dynamic(() => import("./viewer"), { ssr: false, loading: placeholder(CANVAS.full) });
 const CompactViewer = dynamic(() => import("./viewer"), { ssr: false, loading: placeholder(CANVAS.compact) });
 
-export function BrainView({ edges, base, compact = false }: { edges: BrainEdge[]; base: string; compact?: boolean }) {
-  return compact ? <CompactViewer edges={edges} base={base} compact /> : <FullViewer edges={edges} base={base} />;
+export function BrainView({ edges, gaps, base, compact = false }: { edges: BrainEdge[]; gaps?: BrainGap[]; base: string; compact?: boolean }) {
+  return compact ? <CompactViewer edges={edges} base={base} compact /> : <FullViewer edges={edges} gaps={gaps} base={base} />;
 }
