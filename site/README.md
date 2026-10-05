@@ -26,11 +26,13 @@ Locally, Cloudflare's test keys (site key `1x00000000000000000000AA`, secret `1x
 | `npm run typecheck` | Generates route types, then `tsc` |
 | `npm test` | Vitest unit tests |
 | `npm run build` | Production build |
-| `npm run e2e` | The accessibility budget: axe-core on every page type, phone and desktop, against the production build ([ADR 0025](../docs/decisions/0025-site-budgets.md)); and the brain viewer's figure downloads, when the build has meshes |
+| `npm run e2e` | The accessibility budget: axe-core on every page type, phone and desktop, against the production build ([ADR 0025](../docs/decisions/0025-site-budgets.md)); and the brain viewer's figure downloads and path finder, when the build has meshes |
 | `npx @lhci/cli@0.15.1 autorun --config=lighthouserc.cjs` | The performance budget: Lighthouse on a mid-range phone, against the production build |
 
 Both budgets need a build that read a snapshot (above); CI's `budgets` job makes one from the rebuild, with the meshes. Locally, `PLAYWRIGHT_CHROMIUM_PATH` points Playwright at a Chromium already installed, and `CHROME_PATH` does the same for Lighthouse.
 
 **Figures.** The brain viewer's Figure panel downloads the current view, framed with a title, the legend and the citation the data's terms ask for (`lib/figure.ts`). Download PNG captures the 3D view at twice its on-screen resolution, or draws the network view at 2,400 pixels wide. Download SVG redraws the network view from its layout, for editing in Illustrator or Inkscape.
+
+**Routes.** The brain viewer's Route panel finds the route with the fewest hops from one region to another (`lib/route.ts`, [ADR 0026](../docs/decisions/0026-routes-in-the-browser.md)). It draws the route hop by hop, and each hop shows its citations from the read API. `/brain?from=<id>&to=<id>` opens a route.
 
 Deployed to Vercel by `.github/workflows/deploy.yml` on every merge to `main` (Vercel CLI, prebuilt). Pull requests run the commands above in CI and never deploy. Read [AGENTS.md](AGENTS.md) before changing Next.js code: this version's APIs differ from older ones.

@@ -17,6 +17,7 @@ test("the brain viewer's figures", async ({ page }) => {
   const svg = page.getByRole("button", { name: "Download SVG" });
   await expect(svg).toBeDisabled(); // SVG comes from the network view only
 
+  await expect(png).toBeEnabled(); // once the 3D view has registered its capture
   const [threeD] = await Promise.all([page.waitForEvent("download"), png.click()]);
   expect(threeD.suggestedFilename()).toMatch(/^axonarium-outputs-all-\d{4}-\d{2}-\d{2}\.png$/);
   const image = await contents(threeD);

@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { download, type FigureText, framedPng, networkSvg, svgPng } from "@/lib/figure";
 import { regionHref } from "@/lib/format";
+import { reachable, shortestRoute } from "@/lib/route";
 import {
   arcMidpoint,
   arcWidth,
@@ -28,6 +29,7 @@ import {
 } from "@/lib/brain";
 
 import type { NetworkFigure } from "./network";
+import { ROUTE_COLOR, RoutePanel } from "./route-panel";
 import { CANVAS } from "./sizes";
 
 const PALETTE = [
@@ -112,6 +114,22 @@ function Label({ region, detail }: { region: BrainRegion; detail?: string }) {
   );
 }
 
+/** Renders its children (labels) once the canvas's events are connected. An <Html> mounted before then moves to
+ * the connected element afterwards and makes a second React root on the same node, which fails to unmount. */
+function WhenConnected({ children }: { children: ReactNode }) {
+  const connected = useThree((state) => state.events.connected);
+  return connected ? children : null;
+}
+
+/** A route's stop, named on the brain. */
+function Stop({ region }: { region: BrainRegion }) {
+  return (
+    <Html position={region.centroid} center distanceFactor={14} zIndexRange={[19, 0]} style={{ pointerEvents: "none" }}>
+      <div className="rounded bg-black/75 px-1.5 py-0.5 text-[11px] font-semibold text-yellow-200">{region.acronym}</div>
+    </Html>
+  );
+}
+
 const densityText = (edge: BrainEdge) => (edge.density === null ? "no density stated" : `projection density ${edge.density.toFixed(3)}`);
 
 /** Registers a capture of the 3D view: one frame rendered at twice the resolution and copied out, so the canvas
@@ -145,8 +163,18 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   const [view, setView] = useState<"3d" | "network">("3d");
   const [direction, setDirection] = useState<Direction>("outputs");
 
-  // /brain?region=<id> (from a region's page) opens on that region. The viewer only runs in the browser.
+  // The path finder: a route's ends, and how many of its hops are drawn so far.
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [revealed, setRevealed] = useState(0);
+
+  // /brain?region=<id> (from a region's page) opens on that region, and ?from=<id>&to=<id> on a route. The viewer
+  // only runs in the browser.
   const [linked] = useState(() => new URLSearchParams(window.location.search).get("region"));
+  const [linkedRoute] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return { from: params.get("from") ?? "", to: params.get("to") ?? "" };
+  });
 
   useEffect(() => {
     fetch(`${base}/index.json`)
@@ -155,6 +183,10 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
       .then(
         (found: BrainIndex | "missing") => {
           setIndex(found);
+          if (found !== "missing" && found.regions[linkedRoute.from]) {
+            setFrom(linkedRoute.from);
+            if (found.regions[linkedRoute.to]) setTo(linkedRoute.to);
+          }
           if (!linked || found === "missing") return;
           const view = linkedView(edges, found.regions, linked);
           if (!view) return;
@@ -165,7 +197,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
         },
         () => setIndex("missing"),
       );
-  }, [base, edges, linked]);
+  }, [base, edges, linked, linkedRoute]);
 
   const regions = useMemo<Record<string, BrainRegion>>(() => (index && index !== "missing" ? index.regions : {}), [index]);
   // `sources` are the amygdala regions at the amygdala end of the chosen direction's connections.
@@ -193,25 +225,84 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   const Turn = compact ? Spin : Fragment;
   const focusEdges = focus ? shown.filter((e) => e.target === focus || e.source === focus) : [];
 
+  // The path finder (lib/route.ts) runs over every drawable connection, whichever the direction.
+  const linkable = useMemo(() => edges.filter((e) => regions[e.source] && regions[e.target] && e.source !== e.target), [edges, regions]);
+  const byAcronym = useCallback(
+    (ids: Iterable<string>) => [...ids].sort((a, b) => regions[a].acronym.localeCompare(regions[b].acronym, "en", { numeric: true })),
+    [regions],
+  );
+  const starts = useMemo(() => byAcronym(new Set(linkable.map((e) => e.source))), [linkable, byAcronym]);
+  const ends = useMemo(() => (from ? byAcronym(reachable(linkable, from)) : []), [linkable, from, byAcronym]);
+  const hops = useMemo(() => (from && to ? shortestRoute(linkable, from, to) : null), [linkable, from, to]);
+  const routing = hops !== null;
+  const routeShown = useMemo(() => (hops ? hops.slice(0, revealed) : []), [hops, revealed]);
+  const stops = useMemo(() => (hops ? [from, ...routeShown.map((e) => e.target)] : []), [hops, from, routeShown]);
+  const routeColors = useMemo(() => Object.fromEntries(stops.map((id) => [id, ROUTE_COLOR])), [stops]);
+  const routeHub = useCallback((e: BrainEdge) => e.source, []);
+  const drawn = routing ? routeShown : shown;
+  // One hop at a time, or all at once for those who ask for less motion.
+  useEffect(() => {
+    if (!hops || revealed >= hops.length) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = setTimeout(() => setRevealed((n) => n + 1), still ? 0 : revealed === 0 ? 300 : 1100);
+    return () => clearTimeout(timer);
+  }, [hops, revealed]);
+  // The route lives in the URL, so it can be shared.
+  useEffect(() => {
+    if (compact || !index) return;
+    const url = new URL(window.location.href);
+    for (const [name, value] of [["from", from], ["to", to]]) {
+      if (value) url.searchParams.set(name, value);
+      else url.searchParams.delete(name);
+    }
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
+  }, [compact, index, from, to]);
+  const chooseFrom = (id: string) => {
+    setFrom(id);
+    setRevealed(0);
+    if (!id || (to && !reachable(linkable, id).has(to))) setTo("");
+  };
+
   // Figure export (lib/figure.ts): the current view as a PNG, the network view as an SVG too.
   const capture3d = useRef<(() => HTMLCanvasElement) | null>(null);
   const networkFigure = useRef<NetworkFigure | null>(null);
-  const register3d = useCallback((capture: (() => HTMLCanvasElement) | null) => void (capture3d.current = capture), []);
-  const registerNetwork = useCallback((figure: NetworkFigure | null) => void (networkFigure.current = figure), []);
+  // Each view can be exported once it has registered; until then its buttons are disabled.
+  const [exportable, setExportable] = useState({ "3d": false, network: false });
+  const register3d = useCallback((capture: (() => HTMLCanvasElement) | null) => {
+    capture3d.current = capture;
+    setExportable((now) => ({ ...now, "3d": capture !== null }));
+  }, []);
+  const registerNetwork = useCallback((figure: NetworkFigure | null) => {
+    networkFigure.current = figure;
+    setExportable((now) => ({ ...now, network: figure !== null }));
+  }, []);
   const figureText = (): FigureText => {
     const date = new Date().toISOString().slice(0, 10);
+    const caption = [
+      "Data: Allen Mouse Brain Connectivity Atlas (Oh et al. 2014, doi:10.1038/nature13186), © Allen Institute; region names and meshes: Allen Institute atlases, via BrainGlobe.",
+      `Figure: Axonarium, https://axonarium.com/brain, ${date}. Width: the strongest projection density; dashed: only proposed claims.`,
+    ];
+    if (hops) {
+      const weakest = Math.min(...hops.map((h) => h.density ?? 0));
+      return {
+        title: `A route from ${regions[from].acronym} to ${regions[to].acronym} in the mouse brain`,
+        subtitle: `${hops.length} hop${hops.length === 1 ? "" : "s"}, the fewest there are; weakest hop: projection density ${weakest.toFixed(3)}`,
+        legend: [{ label: "Route", color: ROUTE_COLOR }],
+        caption: [...caption, `Route: ${[from, ...hops.map((h) => h.target)].map((id) => regions[id].acronym).join(" → ")}.`],
+      };
+    }
     return {
       title: direction === "outputs" ? "Where the mouse amygdala projects" : "What projects to the mouse amygdala",
       subtitle: `${source === ALL ? "Every amygdala region" : `${regions[source]?.acronym} (${regions[source]?.name})`}; projection density ≥ ${threshold}; ${shown.length} connection${shown.length === 1 ? "" : "s"}`,
       legend: (source === ALL ? sources : [source]).map((id) => ({ label: regions[id]?.acronym ?? id, color: colors[id] })),
-      caption: [
-        "Data: Allen Mouse Brain Connectivity Atlas (Oh et al. 2014, doi:10.1038/nature13186), © Allen Institute; region names and meshes: Allen Institute atlases, via BrainGlobe.",
-        `Figure: Axonarium, https://axonarium.com/brain, ${date}. Width: the strongest projection density; dashed: only proposed claims.`,
-      ],
+      caption,
     };
   };
+  const figureSubject = hops
+    ? `route-${regions[from].acronym}-${regions[to].acronym}`
+    : `${direction}-${source === ALL ? "all" : (regions[source]?.acronym ?? "region")}`;
   const figureName = (extension: string) =>
-    `axonarium-${direction}-${(source === ALL ? "all" : (regions[source]?.acronym ?? "region")).replace(/[^A-Za-z0-9-]+/g, "_")}-${new Date().toISOString().slice(0, 10)}.${extension}`;
+    `axonarium-${figureSubject.replace(/[^A-Za-z0-9-]+/g, "_")}-${new Date().toISOString().slice(0, 10)}.${extension}`;
   // The network view's figure is drawn from its layout, so the PNG is the SVG at twice the size, every label shown.
   const networkFigureSvg = () => {
     const figure = networkFigure.current;
@@ -279,11 +370,11 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
         )}
         {index && view === "network" && (
           <Network
-            shown={shown}
+            shown={drawn}
             regions={regions}
-            injected={sources}
-            hub={hub}
-            colors={colors}
+            injected={routing ? stops : sources}
+            hub={routing ? routeHub : hub}
+            colors={routing ? routeColors : colors}
             strongest={strongest}
             focus={focus}
             onSelect={choose}
@@ -315,7 +406,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
                 <RegionMesh
                   url={`${base}/${regions[id].file}`}
                   color={colors[id]}
-                  opacity={source === ALL || source === id ? 0.95 : 0.25}
+                  opacity={routing ? (stops.includes(id) ? 0.95 : 0.15) : source === ALL || source === id ? 0.95 : 0.25}
                   onClick={() => setSource(source === id ? ALL : id)}
                   onHover={(over) => setHovered(over ? id : null)}
                 />
@@ -326,27 +417,28 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
                 <RegionMesh url={`${base}/${regions[selected].file}`} color="#e2e8f0" opacity={0.35} />
               </Suspense>
             )}
-            {shown.map((edge) => {
+            {drawn.map((edge, i) => {
               const start = regions[edge.source].centroid;
               const end = regions[edge.target].centroid;
               const dim = focus !== null && edge.target !== focus && edge.source !== focus;
+              const latest = routing && i === drawn.length - 1;
               return (
                 <QuadraticBezierLine
                   key={edge.id}
                   start={start}
                   end={end}
                   mid={arcMidpoint(start, end)}
-                  color={colors[hubOf(edge, direction)]}
-                  lineWidth={arcWidth(edge.density, strongest)}
+                  color={routing ? ROUTE_COLOR : colors[hubOf(edge, direction)]}
+                  lineWidth={routing ? (latest ? 4.5 : 3) : arcWidth(edge.density, strongest)}
                   dashed={edge.accepted === 0}
                   dashSize={0.25}
                   gapSize={0.15}
                   transparent
-                  opacity={dim ? 0.08 : 0.85}
+                  opacity={dim ? 0.08 : routing && !latest ? 0.7 : 0.85}
                 />
               );
             })}
-            {targets.map((id) => (
+            {(routing ? stops : targets).map((id) => (
               <mesh
                 key={id}
                 position={regions[id].centroid}
@@ -355,19 +447,22 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
                 onPointerOut={() => setHovered(null)}
               >
                 <sphereGeometry args={[focus === id ? 0.16 : 0.1, 16, 16]} />
-                <meshBasicMaterial color={source === ALL ? "#e2e8f0" : colors[source]} />
+                <meshBasicMaterial color={routing ? ROUTE_COLOR : source === ALL ? "#e2e8f0" : colors[source]} />
               </mesh>
             ))}
-            {focus && regions[focus] && (
-              <Label
-                region={regions[focus]}
-                detail={
-                  focusEdges.length === 1
-                    ? `${regions[focusEdges[0].source].acronym} → ${regions[focusEdges[0].target].acronym}: ${densityText(focusEdges[0])}`
-                    : `${focusEdges.length} connections shown`
-                }
-              />
-            )}
+            <WhenConnected>
+              {routing && stops.map((id) => <Stop key={id} region={regions[id]} />)}
+              {focus && regions[focus] && (
+                <Label
+                  region={regions[focus]}
+                  detail={
+                    focusEdges.length === 1
+                      ? `${regions[focusEdges[0].source].acronym} → ${regions[focusEdges[0].target].acronym}: ${densityText(focusEdges[0])}`
+                      : `${focusEdges.length} connections shown`
+                  }
+                />
+              )}
+            </WhenConnected>
             </Turn>
             {!compact && (
               <OrbitControls
@@ -384,102 +479,120 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
       </div>
 
       <aside className={compact ? "hidden" : "space-y-4 text-sm"}>
-        <div role="group" aria-label="Direction" className="grid grid-cols-2 rounded-lg border p-0.5 text-xs">
-          {(["outputs", "inputs"] as const).map((d) => (
-            <button
-              key={d}
-              type="button"
-              aria-pressed={direction === d}
-              onClick={() => (setDirection(d), setSource(ALL), setSelected(null))}
-              className="rounded-md px-2 py-1.5 text-muted-foreground transition-colors aria-pressed:bg-foreground aria-pressed:text-background"
-            >
-              {d === "outputs" ? "Where it projects" : "What projects to it"}
-            </button>
-          ))}
-        </div>
-        <div className="space-y-2">
-          <h2 className="font-medium">Amygdala region</h2>
-          <div className="flex flex-wrap gap-1.5">
-            {[ALL, ...sources].map((id) => (
+        {!routing && (
+          <>
+          <div role="group" aria-label="Direction" className="grid grid-cols-2 rounded-lg border p-0.5 text-xs">
+            {(["outputs", "inputs"] as const).map((d) => (
               <button
-                key={id}
+                key={d}
                 type="button"
-                aria-pressed={source === id}
-                onClick={() => (setSource(id), setSelected(null))}
-                className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-muted"
-                title={id === ALL ? "Every amygdala region" : regions[id]?.name}
+                aria-pressed={direction === d}
+                onClick={() => (setDirection(d), setSource(ALL), setSelected(null))}
+                className="rounded-md px-2 py-1.5 text-muted-foreground transition-colors aria-pressed:bg-foreground aria-pressed:text-background"
               >
-                {id !== ALL && <span className="size-2.5 rounded-full" style={{ background: colors[id] }} />}
-                {id === ALL ? "All" : regions[id]?.acronym}
+                {d === "outputs" ? "Where it projects" : "What projects to it"}
               </button>
             ))}
           </div>
-          {source !== ALL && regions[source] && (
-            <p className="text-muted-foreground">
-              <Link href={regionHref(source)} className="underline underline-offset-4">
-                {regions[source].name}
-              </Link>
+          <div className="space-y-2">
+            <h2 className="font-medium">Amygdala region</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {[ALL, ...sources].map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  aria-pressed={source === id}
+                  onClick={() => (setSource(id), setSelected(null))}
+                  className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-muted"
+                  title={id === ALL ? "Every amygdala region" : regions[id]?.name}
+                >
+                  {id !== ALL && <span className="size-2.5 rounded-full" style={{ background: colors[id] }} />}
+                  {id === ALL ? "All" : regions[id]?.acronym}
+                </button>
+              ))}
+            </div>
+            {source !== ALL && regions[source] && (
+              <p className="text-muted-foreground">
+                <Link href={regionHref(source)} className="underline underline-offset-4">
+                  {regions[source].name}
+                </Link>
+              </p>
+            )}
+          </div>
+
+          {selected && regions[selected] && (
+            <p className="rounded-md border px-2.5 py-1.5">
+              Selected:{" "}
+              <Link href={regionHref(selected)} className="font-medium underline underline-offset-4">
+                {regions[selected].acronym}
+              </Link>{" "}
+              <span className="text-muted-foreground">{regions[selected].name}</span>
             </p>
           )}
-        </div>
 
-        {selected && regions[selected] && (
-          <p className="rounded-md border px-2.5 py-1.5">
-            Selected:{" "}
-            <Link href={regionHref(selected)} className="font-medium underline underline-offset-4">
-              {regions[selected].acronym}
-            </Link>{" "}
-            <span className="text-muted-foreground">{regions[selected].name}</span>
-          </p>
+          <label className="flex items-center justify-between gap-3">
+            <span className="font-medium">Minimum density</span>
+            <NativeSelect size="sm" value={threshold} onChange={(event) => setThreshold(Number(event.target.value))}>
+              {THRESHOLDS.map((t) => (
+                <NativeSelectOption key={t} value={t}>
+                  {t}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+
+          <div className="space-y-2">
+            <h2 className="font-medium">
+              {shown.length} connection{shown.length === 1 ? "" : "s"}, strongest first
+            </h2>
+            <ol className="max-h-[38vh] space-y-1 overflow-y-auto pr-1">
+              {shown.slice(0, 40).map((edge) => (
+                <li key={edge.id}>
+                  <div
+                    className={`flex items-center gap-2 rounded-md px-2 py-1 ${selected === other(edge) ? "bg-muted" : "hover:bg-muted/60"}`}
+                  >
+                    <span className="size-2 shrink-0 rounded-full" style={{ background: colors[hubOf(edge, direction)] }} />
+                    <button
+                      type="button"
+                      className="min-w-0 flex-1 truncate text-left"
+                      title={`${regions[edge.source].name} → ${regions[edge.target].name}`}
+                      onClick={() => setSelected(selected === other(edge) ? null : other(edge))}
+                    >
+                      {regions[edge.source].acronym} → <span className="font-medium">{regions[edge.target].acronym}</span>
+                    </button>
+                    <span className="tabular-nums text-muted-foreground">{edge.density?.toFixed(3) ?? "–"}</span>
+                    <Link href={`/edges/${edge.id}`} className="text-xs underline underline-offset-4" aria-label="Evidence">
+                      claims
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          </>
         )}
 
-        <label className="flex items-center justify-between gap-3">
-          <span className="font-medium">Minimum density</span>
-          <NativeSelect size="sm" value={threshold} onChange={(event) => setThreshold(Number(event.target.value))}>
-            {THRESHOLDS.map((t) => (
-              <NativeSelectOption key={t} value={t}>
-                {t}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </label>
-
-        <div className="space-y-2">
-          <h2 className="font-medium">
-            {shown.length} connection{shown.length === 1 ? "" : "s"}, strongest first
-          </h2>
-          <ol className="max-h-[38vh] space-y-1 overflow-y-auto pr-1">
-            {shown.slice(0, 40).map((edge) => (
-              <li key={edge.id}>
-                <div
-                  className={`flex items-center gap-2 rounded-md px-2 py-1 ${selected === other(edge) ? "bg-muted" : "hover:bg-muted/60"}`}
-                >
-                  <span className="size-2 shrink-0 rounded-full" style={{ background: colors[hubOf(edge, direction)] }} />
-                  <button
-                    type="button"
-                    className="min-w-0 flex-1 truncate text-left"
-                    title={`${regions[edge.source].name} → ${regions[edge.target].name}`}
-                    onClick={() => setSelected(selected === other(edge) ? null : other(edge))}
-                  >
-                    {regions[edge.source].acronym} → <span className="font-medium">{regions[edge.target].acronym}</span>
-                  </button>
-                  <span className="tabular-nums text-muted-foreground">{edge.density?.toFixed(3) ?? "–"}</span>
-                  <Link href={`/edges/${edge.id}`} className="text-xs underline underline-offset-4" aria-label="Evidence">
-                    claims
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+        <RoutePanel
+          regions={regions}
+          starts={starts}
+          ends={ends}
+          from={from}
+          to={to}
+          hops={hops}
+          revealed={revealed}
+          onFrom={chooseFrom}
+          onTo={(id) => (setTo(id), setRevealed(0))}
+          onReplay={() => setRevealed(0)}
+          onClear={() => chooseFrom("")}
+        />
 
         <div className="space-y-2">
           <h2 className="font-medium">Figure</h2>
           <div className="flex gap-2">
-            <Button type="button" size="sm" variant="outline" onClick={exportPng}>
+            <Button type="button" size="sm" variant="outline" onClick={exportPng} disabled={!exportable[view]}>
               Download PNG
             </Button>
-            <Button type="button" size="sm" variant="outline" onClick={exportSvg} disabled={view !== "network"}>
+            <Button type="button" size="sm" variant="outline" onClick={exportSvg} disabled={view !== "network" || !exportable.network}>
               Download SVG
             </Button>
           </div>
