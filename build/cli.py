@@ -107,6 +107,8 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
     claims = [r.data for r in records + generated if r.cls == "ConnectivityClaim"]
     region_rows = [row for rows in loaded.values() for row in rows]
     found_gaps = gaps.find_gaps(claims, region_rows)  # gap mode (ADR 0027); none without the atlases
+    if found_gaps:
+        print(f"gaps: {len(found_gaps)} untested connection(s) from {len({g['subject_id'] for g in found_gaps})} region(s)")
     if args.meshes:
         drawn = meshes.regions_to_draw(records + generated, loaded, also=[gap["subject_id"] for gap in found_gaps])
         for atlas_id, region_ids in drawn.items():

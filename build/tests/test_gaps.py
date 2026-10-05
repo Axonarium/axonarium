@@ -62,7 +62,7 @@ def test_regions_outside_the_amygdala_and_unknown_regions_get_none():
     assert find_gaps([claim(2, 999, 0.3)], REGIONS) == []
 
 
-def test_the_build_puts_gaps_in_the_snapshot_and_meshes_their_regions(valid_tree, tmp_path):
+def test_the_build_puts_gaps_in_the_snapshot_and_meshes_their_regions(valid_tree, tmp_path, capsys):
     # The fake atlas's amygdala region (MBA:295) gets a parent and an uninjected sibling, MBA:5001.
     def loader(atlas, terms):
         rows = fake_loader([*USED, "MBA:5000", "MBA:5001"])(atlas, terms)
@@ -79,6 +79,7 @@ def test_the_build_puts_gaps_in_the_snapshot_and_meshes_their_regions(valid_tree
                 atlas_loader=loader, amygdala_loader=amygdala_loader, connectivity_loader=connectivity(generated()),
                 mesh_opener=lambda name, version: meshes) == 0
     rows = json.loads(snapshot.read_text(encoding="utf-8"))["tables"]["gaps"]
+    assert f"gaps: {len(rows)} untested connection(s) from 1 region(s)" in capsys.readouterr().out
     assert {"MBA:5001|projects_to|MBA:536|NCBITaxon:10090"} <= {row["id"] for row in rows}
     assert all(row["subject_id"] == "MBA:5001" for row in rows)
     assert "MBA:5001" in json.loads((brain / "allen-mouse-ccf-2017" / "index.json").read_text(encoding="utf-8"))["regions"]
