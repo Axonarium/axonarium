@@ -1,9 +1,9 @@
 // The read queries of lib/data.ts, answered from the deploy's snapshot of the database instead of Supabase
 // (Tier 1, ADR 0017). Each matches its Supabase query: the same filters, order and pages.
 
-import { type BrainClaim, type BrainEdge, brainEdges } from "./brain";
+import { type BrainClaim, type BrainEdge, brainEdges, type BrainGap, brainGaps } from "./brain";
 import type { AtlasRegion, RegionName } from "./regions";
-import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
+import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Gap, Source } from "./types";
 
 export interface RegionDetail extends AtlasRegion {
   atlas: string;
@@ -28,6 +28,8 @@ export interface Tables {
   connectivity_claims: ConnectivityClaim[];
   homology_claims: unknown[];
   edges: Edge[];
+  /** Absent from snapshots made before gap mode (ADR 0027). */
+  gaps?: Gap[];
 }
 
 /** Postgres orders these text IDs byte by byte; so does this. */
@@ -83,6 +85,10 @@ export function brain(t: Tables, atlas: string): BrainEdge[] {
   const drawn = sorted(t.edges.filter((e) => e.predicate === "projects_to" && e.subject_type === "region" && e.object_type === "region" && e.n_present > 0));
   const evidence = sorted(t.connectivity_claims.filter((c) => found(c) && c.subject_atlas === atlas && c.object_atlas === atlas));
   return brainEdges(drawn, evidence.map(asBrainClaim)).filter((e) => e.claims > 0);
+}
+
+export function gaps(t: Tables, atlas: string): BrainGap[] {
+  return brainGaps(sorted((t.gaps ?? []).filter((g) => g.atlas === atlas)));
 }
 
 export function region(t: Tables, id: string): RegionPage | null {

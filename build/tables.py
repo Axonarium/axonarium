@@ -82,6 +82,13 @@ retractions = Table(
     Column("position", Integer, primary_key=True, autoincrement=False), _text("claim", True), _text("action", True),
     _text("reason", True), Column("curation", JSONB, nullable=False),
 )
+# Gap mode (ADR 0027): connections that are plausible but untested, computed by the build (build/gaps.py). Research
+# prompts, never evidence; they rest on Allen claims and atlas regions, so they are never dumped.
+gaps = Table(
+    "gaps", metadata,
+    Column("id", Text, primary_key=True), _text("subject_id", True), _text("object_id", True), _text("atlas", True),
+    _text("species", True), _text("basis", True), Column("density", Float), Column("suggested_by", ARRAY(Text), nullable=False),
+)
 
 # The community inbox (sprint C.1, ADR 0021): evidence visitors submit for or against a claim. Operational state, not
 # knowledge: written only by the site's server after its checks, read and closed only by triage, never loaded,

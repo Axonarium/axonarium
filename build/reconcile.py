@@ -12,7 +12,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from build.connectivity import amygdala_structures
+from build.connectivity import amygdala_regions
 
 THRESHOLDS = (0.01, 0.02, 0.05, 0.1, 0.2)  # projection densities; the Allen claims start at 0.01 (ADR 0010)
 CATEGORIES = ("agreement", "conflict", "replicated", "single")
@@ -57,17 +57,6 @@ def _category(claims: list[dict]) -> str:
     return "replicated" if len({(_source(c), c["source"].get("locator")) for c in claims}) > 1 else "single"
 
 
-def _amygdala(regions: list[dict]) -> set[str]:
-    by_atlas: dict[str, list[dict]] = defaultdict(list)
-    for row in regions:
-        by_atlas[row["atlas"]].append(row)
-    found = set()
-    for rows in by_atlas.values():
-        prefix = rows[0]["id"].split(":")[0]
-        found |= {f"{prefix}:{n}" for n in amygdala_structures(rows)}
-    return found
-
-
 def _direction(claim: dict, amygdala: set[str]) -> str:
     if claim["subject"]["id"] in amygdala:
         return "outputs"
@@ -86,7 +75,7 @@ def _thresholds(connections: dict[str, list[dict]]) -> list[dict]:
 def reconcile(claims: list[dict], regions: list[dict]) -> dict:
     """The report for these connectivity claims (committed and build-time); `regions` are the atlases' regions."""
     live = [c for c in claims if c.get("status") != "retracted"]
-    amygdala = _amygdala(regions)
+    amygdala = amygdala_regions(regions)
     connections: dict[str, list[dict]] = defaultdict(list)
     for claim in live:
         connections[_connection(claim)].append(claim)

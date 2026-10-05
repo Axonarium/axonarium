@@ -24,6 +24,18 @@ def amygdala_structures(rows: list[dict]) -> list[int]:
     return sorted(int(region.split(":")[1]) for region in found)
 
 
+def amygdala_regions(regions: list[dict]) -> set[str]:
+    """The IDs of the amygdala regions and all their subdivisions, in every atlas among these region rows."""
+    by_atlas: dict[str, list[dict]] = {}
+    for row in regions:
+        by_atlas.setdefault(row["atlas"], []).append(row)
+    found = set()
+    for rows in by_atlas.values():
+        prefix = rows[0]["id"].split(":")[0]
+        found |= {f"{prefix}:{n}" for n in amygdala_structures(rows)}
+    return found
+
+
 def allen_records(loaded: dict[str, list[dict]], loader: Callable) -> list[Record]:
     """Allen connectivity claims for every loaded atlas with MBA regions (the Allen mouse atlas), as records."""
     records = []

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { BrainView } from "@/components/brain/brain-view";
 import { DataUnavailable } from "@/components/data-unavailable";
-import { getBrainEdges } from "@/lib/data";
+import { getBrainEdges, getBrainGaps } from "@/lib/data";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const ATLAS = "allen-mouse-ccf-2017";
 
 export default async function Brain() {
-  const edges = await getBrainEdges(ATLAS);
+  const [edges, gaps] = await Promise.all([getBrainEdges(ATLAS), getBrainGaps(ATLAS)]);
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -30,7 +30,7 @@ export default async function Brain() {
       ) : edges.length === 0 ? (
         <p className="rounded-lg border border-dashed p-6 text-muted-foreground">No mouse connections yet.</p>
       ) : (
-        <BrainView edges={edges} base={`/brain/${ATLAS}`} />
+        <BrainView edges={edges} gaps={gaps} base={`/brain/${ATLAS}`} />
       )}
       <p className="text-sm text-muted-foreground">
         Prefer a table? Every connection is on{" "}

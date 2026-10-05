@@ -12,7 +12,7 @@ Options: `--data` (default `data`), `--out` (default `dist`), `--database` (defa
 1. **Validate:** every `checks files` rule. Any finding stops the build, and nothing is written.
 2. **Atlases:** each atlas record with a BrainGlobe name is loaded at its pinned version (`ingest/atlases.py`), and its regions are mapped to UBERON by UBERON's bridges. The build stops if BrainGlobe serves another version, if data names a region its atlas lacks, or if an atlas resolves no amygdala region. Atlas regions go into the database, not the dumps ([ADR 0009](../docs/decisions/0009-atlas-layer.md)). `--no-atlases` skips this for offline work.
 3. **Allen connectivity:** with the mouse atlas loaded, `ingest/allen_connectivity.py` makes region-level claims from wild-type experiments in the Allen Mouse Brain Connectivity Atlas: the targets of amygdala injections, and the amygdala targets of injections elsewhere. They pass the same rules as committed claims, go into the database, and never into the repository or the dumps ([ADR 0010](../docs/decisions/0010-allen-connectivity.md)).
-4. **Meshes** (with `--meshes`): glTF meshes of every region a connection names, plus the brain outline and an `index.json` of names and centroids, from the pinned BrainGlobe atlas ([ADR 0011](../docs/decisions/0011-brain-viewer.md)). The deploy puts them in the site; they are never committed.
+4. **Gaps and meshes:** gap mode's untested connections (`build/gaps.py`, [ADR 0027](../docs/decisions/0027-gap-mode.md)). With `--meshes`, glTF meshes of every region a connection or a gap names, plus the brain outline and an `index.json` of names and centroids, from the pinned BrainGlobe atlas ([ADR 0011](../docs/decisions/0011-brain-viewer.md)). The deploy puts them in the site; they are never committed.
 5. **Dumps:** written to a fresh folder, then moved into place.
 6. **Database:** in one transaction, the tables below are emptied and refilled. A failed load changes nothing.
 
@@ -47,6 +47,7 @@ uv run pytest build/tests
 | `connectivity_claims`, `homology_claims` | Claim; subject, object and citation flattened into columns, nested parts as JSONB |
 | `edges` | Subject, predicate, object and species, aggregated from claims that aren't retracted: counts by result, evidence classes, strongest strength, strongest projection density, signs and claim IDs |
 | `retractions` | Log entry, by position |
+| `gaps` | Untested connection that gap mode suggests: an amygdala region no claim reports outputs for, to a target its neighbours project to, with the connections that suggest it ([ADR 0027](../docs/decisions/0027-gap-mode.md)). Suggestions, not evidence; never dumped |
 | `submissions` | The community inbox: a visitor's identifier for or against a claim ([ADR 0021](../docs/decisions/0021-community-inbox.md)). Closed to the public API, and never loaded, emptied or dumped by the build. Rows arrive only through `submit_evidence()`, which applies the rate limits and only the secret key may call ([ADR 0024](../docs/decisions/0024-evidence-buttons.md)) |
 
 Claims carry `terms` (`cc-by-4.0`, or `allen-institute` for claims made from the Allen atlas; `build/terms.py`), and each edge lists its claims' terms, so the API can state what may be reused ([ADR 0013](../docs/decisions/0013-read-api.md)).

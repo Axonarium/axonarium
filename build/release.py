@@ -30,8 +30,8 @@ GraphML (`edges.graphml`), the retractions log and `manifest.json` (schema versi
 `SHA256SUMS` holds its checksum.
 
 **Licence:** CC BY 4.0. Credit Axonarium and the sources each claim cites. The connections the site and API make at \
-build time from the Allen Mouse Brain Connectivity Atlas, and the atlases' regions, are not included: they carry the \
-Allen Institute's terms (ADR 0005).
+build time from the Allen Mouse Brain Connectivity Atlas, the atlases' regions and gap mode's suggestions made from \
+them are not included: they carry the Allen Institute's terms (ADR 0005, ADR 0027).
 
 **Citing:** each release is archived on Zenodo with its own DOI; cite that DOI, or use CITATION.cff.
 """

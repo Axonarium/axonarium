@@ -15,13 +15,13 @@ import path from "node:path";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-import { type BrainClaim, type BrainEdge, brainEdges } from "./brain";
+import { type BrainClaim, type BrainEdge, brainEdges, type BrainGap, brainGaps } from "./brain";
 import * as offline from "./offline";
 import type { RegionDetail, RegionPage, Tables } from "./offline";
 import { fetchAll } from "./pages";
 import { type IndexedRegion, regionIndex } from "./region-index";
 import type { AtlasRegion, RegionName } from "./regions";
-import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Source } from "./types";
+import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Gap, Source } from "./types";
 
 export type { RegionDetail, RegionPage } from "./offline";
 
@@ -201,6 +201,22 @@ async function liveBrainEdges(db: SupabaseClient, atlas: string): Promise<BrainE
     ),
   ]);
   return brainEdges(edges, claims).filter((edge) => edge.claims > 0);
+}
+
+/** Gap mode's untested connections in an atlas (ADR 0027); none when neither the database nor the snapshot has them. */
+export function getBrainGaps(atlas: string): Promise<BrainGap[]> {
+  return read(
+    async (db) =>
+      brainGaps(
+        await fetchAll((from, to) =>
+          rows<Pick<Gap, "id" | "subject_id" | "object_id" | "density" | "suggested_by">[]>("gaps", () =>
+            db.from("gaps").select("id, subject_id, object_id, density, suggested_by").eq("atlas", atlas).order("id").range(from, to),
+          ),
+        ),
+      ),
+    (t) => offline.gaps(t, atlas),
+    [],
+  );
 }
 
 /** An atlas region with its subregions and its connections both ways, each with its strongest density. */

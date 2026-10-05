@@ -1,5 +1,20 @@
 // Rows of the serving tables (build/tables.py, ADR 0008).
 
+/** Gap mode (ADR 0027): a connection that is plausible but untested, suggested by the build (build/gaps.py). */
+export interface Gap {
+  id: string;
+  subject_id: string;
+  object_id: string;
+  atlas: string;
+  species: string;
+  /** How it was suggested: "neighbours", another subdivision of the same parent projecting there. */
+  basis: string;
+  /** The strongest projection density among the connections that suggest it. */
+  density: number | null;
+  /** The IDs of those connections. */
+  suggested_by: string[];
+}
+
 export interface Edge {
   id: string;
   subject_id: string;
