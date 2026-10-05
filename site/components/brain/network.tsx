@@ -7,6 +7,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph2D, { type ForceGraphMethods, type LinkObject, type NodeObject } from "react-force-graph-2d";
 
 import { arcWidth, type BrainEdge, type BrainRegion, type NetworkLink, type NetworkNode, networkData } from "@/lib/brain";
+import type { FigureLink, FigureNode } from "@/lib/figure";
+
+/** What figure export needs from the network view: its nodes where the layout left them, and its links. */
+export interface NetworkFigure {
+  nodes(): FigureNode[];
+  links(): FigureLink[];
+}
 
 type Node = NodeObject<NetworkNode>;
 type Link = LinkObject<NetworkNode, NetworkLink>;
@@ -15,8 +22,9 @@ const TARGET = "#cbd5e1";
 
 // After the first layout tick the library has swapped link ends for node objects.
 const endId = (end: unknown) => String(end && typeof end === "object" ? (end as { id?: unknown }).id : end);
+const radius = (node: Node) => (node.injected ? 7 : 2.5 + Math.sqrt(node.inputs) * 1.6);
 
-export default function Network({ shown, regions, injected, hub, colors, strongest, focus, onSelect, onHover }: {
+export default function Network({ shown, regions, injected, hub, colors, strongest, focus, onSelect, onHover, register }: {
   shown: BrainEdge[];
   regions: Record<string, BrainRegion>;
   injected: string[];
@@ -26,6 +34,7 @@ export default function Network({ shown, regions, injected, hub, colors, stronge
   focus: string | null;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
+  register?: (figure: NetworkFigure | null) => void;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const graph = useRef<ForceGraphMethods<Node, Link> | undefined>(undefined);
@@ -56,8 +65,32 @@ export default function Network({ shown, regions, injected, hub, colors, stronge
     graph.current?.d3ReheatSimulation();
   }, [data, ready]);
 
-  const radius = (node: Node) => (node.injected ? 7 : 2.5 + Math.sqrt(node.inputs) * 1.6);
   const lit = (id: string) => !neighbours || neighbours.has(id);
+
+  useEffect(() => {
+    if (!register) return;
+    register({
+      nodes: () =>
+        (data.nodes as Node[]).map((n) => ({
+          id: String(n.id),
+          acronym: n.acronym,
+          x: n.x ?? 0,
+          y: n.y ?? 0,
+          r: radius(n),
+          color: n.injected ? colors[String(n.id)] : TARGET,
+          injected: n.injected,
+        })),
+      links: () =>
+        (data.links as Link[]).map((l) => ({
+          source: endId(l.source),
+          target: endId(l.target),
+          color: colors[l.from],
+          width: arcWidth(l.density, strongest),
+          dashed: l.accepted === 0,
+        })),
+    });
+    return () => register(null);
+  }, [register, data, colors, strongest]);
 
   return (
     <div ref={box} className="absolute inset-0">

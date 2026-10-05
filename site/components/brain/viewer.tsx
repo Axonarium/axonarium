@@ -10,7 +10,9 @@ import Link from "next/link";
 import { Fragment, type ReactNode, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
+import { Button } from "@/components/ui/button";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { download, type FigureText, framedPng, networkSvg, svgPng } from "@/lib/figure";
 import { regionHref } from "@/lib/format";
 import {
   arcMidpoint,
@@ -25,6 +27,7 @@ import {
   linkedView,
 } from "@/lib/brain";
 
+import type { NetworkFigure } from "./network";
 import { CANVAS } from "./sizes";
 
 const PALETTE = [
@@ -111,6 +114,27 @@ function Label({ region, detail }: { region: BrainRegion; detail?: string }) {
 
 const densityText = (edge: BrainEdge) => (edge.density === null ? "no density stated" : `projection density ${edge.density.toFixed(3)}`);
 
+/** Registers a capture of the 3D view: one frame rendered at twice the resolution and copied out, so the canvas
+ * needn't keep its drawing buffer between frames. */
+function Snapshot({ register }: { register: (capture: (() => HTMLCanvasElement) | null) => void }) {
+  const { gl, scene, camera, size } = useThree();
+  useEffect(() => {
+    register(() => {
+      const ratio = gl.getPixelRatio();
+      gl.setPixelRatio(2);
+      gl.setSize(size.width, size.height, false);
+      gl.render(scene, camera);
+      const copy = Object.assign(document.createElement("canvas"), { width: gl.domElement.width, height: gl.domElement.height });
+      copy.getContext("2d")?.drawImage(gl.domElement, 0, 0);
+      gl.setPixelRatio(ratio);
+      gl.setSize(size.width, size.height, false);
+      return copy;
+    });
+    return () => register(null);
+  }, [gl, scene, camera, size, register]);
+  return null;
+}
+
 /** The full viewer, or with `compact` a rotating preview without controls (the home page) that links to it. */
 export default function BrainViewer({ edges, base, compact = false }: { edges: BrainEdge[]; base: string; compact?: boolean }) {
   const [index, setIndex] = useState<BrainIndex | "missing" | null>(null);
@@ -168,6 +192,41 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
   const focus = selected ?? hovered;
   const Turn = compact ? Spin : Fragment;
   const focusEdges = focus ? shown.filter((e) => e.target === focus || e.source === focus) : [];
+
+  // Figure export (lib/figure.ts): the current view as a PNG, the network view as an SVG too.
+  const capture3d = useRef<(() => HTMLCanvasElement) | null>(null);
+  const networkFigure = useRef<NetworkFigure | null>(null);
+  const register3d = useCallback((capture: (() => HTMLCanvasElement) | null) => void (capture3d.current = capture), []);
+  const registerNetwork = useCallback((figure: NetworkFigure | null) => void (networkFigure.current = figure), []);
+  const figureText = (): FigureText => {
+    const date = new Date().toISOString().slice(0, 10);
+    return {
+      title: direction === "outputs" ? "Where the mouse amygdala projects" : "What projects to the mouse amygdala",
+      subtitle: `${source === ALL ? "Every amygdala region" : `${regions[source]?.acronym} (${regions[source]?.name})`}; projection density ≥ ${threshold}; ${shown.length} connection${shown.length === 1 ? "" : "s"}`,
+      legend: (source === ALL ? sources : [source]).map((id) => ({ label: regions[id]?.acronym ?? id, color: colors[id] })),
+      caption: [
+        "Data: Allen Mouse Brain Connectivity Atlas (Oh et al. 2014, doi:10.1038/nature13186), © Allen Institute; region names and meshes: Allen Institute atlases, via BrainGlobe.",
+        `Figure: Axonarium, https://axonarium.com/brain, ${date}. Width: the strongest projection density; dashed: only proposed claims.`,
+      ],
+    };
+  };
+  const figureName = (extension: string) =>
+    `axonarium-${direction}-${(source === ALL ? "all" : (regions[source]?.acronym ?? "region")).replace(/[^A-Za-z0-9-]+/g, "_")}-${new Date().toISOString().slice(0, 10)}.${extension}`;
+  // The network view's figure is drawn from its layout, so the PNG is the SVG at twice the size, every label shown.
+  const networkFigureSvg = () => {
+    const figure = networkFigure.current;
+    return figure ? networkSvg(figure.nodes(), figure.links(), figureText()) : null;
+  };
+  const exportPng = async () => {
+    const svg = view === "network" ? networkFigureSvg() : null;
+    const canvas = view === "3d" ? capture3d.current?.() : null;
+    if (svg) download(await svgPng(svg), figureName("png"));
+    else if (canvas) download(await framedPng(canvas, figureText()), figureName("png"));
+  };
+  const exportSvg = () => {
+    const svg = networkFigureSvg();
+    if (svg) download(new Blob([svg], { type: "image/svg+xml" }), figureName("svg"));
+  };
   // Clicking an injected region shows only its connections; clicking a target selects it.
   const choose = (id: string | null) => {
     if (id && sources.includes(id) && id !== source) return (setSource(id), setSelected(null));
@@ -229,6 +288,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
             focus={focus}
             onSelect={choose}
             onHover={setHovered}
+            register={registerNetwork}
           />
         )}
         {index && view === "3d" && (
@@ -241,6 +301,7 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
             fallback={<p className="p-4 text-sm text-white/70">This browser can&apos;t show 3D. The table on Explore has every connection.</p>}
           >
             <color attach="background" args={["#0b1020"]} />
+            {!compact && <Snapshot register={register3d} />}
             <FitCamera />
             <ambientLight intensity={0.7} />
             <directionalLight position={[10, 15, -5]} intensity={1.6} />
@@ -410,6 +471,21 @@ export default function BrainViewer({ edges, base, compact = false }: { edges: B
               </li>
             ))}
           </ol>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="font-medium">Figure</h2>
+          <div className="flex gap-2">
+            <Button type="button" size="sm" variant="outline" onClick={exportPng}>
+              Download PNG
+            </Button>
+            <Button type="button" size="sm" variant="outline" onClick={exportSvg} disabled={view !== "network"}>
+              Download SVG
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            This view with a title, legend and citation, for a paper or a talk. SVG comes from the network view.
+          </p>
         </div>
 
         <p className="text-xs text-muted-foreground">
