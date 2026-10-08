@@ -115,13 +115,16 @@ class AnthropicRunner:
 
     def __init__(self, model: str, schema: type[BaseModel], effort: str | None, max_tokens: int, batch: bool = True,
                  client=None, poll_seconds: float = 60, wait_seconds: float = 5 * 3600, sleep: Callable = time.sleep,
-                 collect_batch: str | None = None):
+                 collect_batch: str | None = None, clock: Callable[[], float] = time.monotonic):
         if client is None:
             import anthropic
 
             client = anthropic.Anthropic()
         self.model, self.schema, self.effort, self.max_tokens, self.batch = model, schema, effort, max_tokens, batch
-        self.client, self.poll_seconds, self.wait_seconds, self.sleep = client, poll_seconds, wait_seconds, sleep
+        self.client, self.poll_seconds, self.sleep, self.clock = client, poll_seconds, sleep, clock
+        # The wait counts from now, not from each batch, so a step's batches (its own and a fallback's) share it and a
+        # run can be fitted into a time limit, such as a CI job's.
+        self.deadline = clock() + wait_seconds
         # An earlier batch to collect instead of submitting a new one: its tokens are paid for already.
         self.collect_batch, self._collected = collect_batch, None
 
@@ -175,13 +178,11 @@ class AnthropicRunner:
         return self.collect(batch.id)
 
     def collect(self, batch_id: str) -> dict[str, Result]:
-        """Wait for a batch (up to the wait), then its results. Raises BatchPending if it is still running."""
-        waited = 0.0
-        while (batch := self.client.messages.batches.retrieve(batch_id)).processing_status != "ended":
-            if waited >= self.wait_seconds:
+        """Wait for a batch (until the wait runs out), then its results. Raises BatchPending if it is still running."""
+        while self.client.messages.batches.retrieve(batch_id).processing_status != "ended":
+            if self.clock() >= self.deadline:
                 raise BatchPending(batch_id)
             self.sleep(self.poll_seconds)
-            waited += self.poll_seconds
         results = {}
         for entry in self.client.messages.batches.results(batch_id):
             outcome = entry.result
@@ -266,13 +267,14 @@ class ReplayRunner:
 
 
 def runner(spec: str, schema: type[BaseModel], effort: str | None, max_tokens: int, batch: bool,
-           collect_batch: str | None = None):
-    """A runner from `anthropic:<model>` or `replay:<folder>`; `collect_batch` collects an earlier batch instead."""
+           collect_batch: str | None = None, wait_seconds: float = 5 * 3600):
+    """A runner from `anthropic:<model>` or `replay:<folder>`; `collect_batch` collects an earlier batch instead, and
+    batches are waited for until `wait_seconds` from now."""
     kind, _, rest = spec.partition(":")
     if collect_batch is not None and not (kind == "anthropic" and batch and re.fullmatch(r"msgbatch_\w+", collect_batch)):
         raise ValueError("--collect takes a batch ID such as msgbatch_01ABC, with an anthropic: model and without --now")
     if kind == "anthropic" and rest:
-        return AnthropicRunner(rest, schema, effort, max_tokens, batch, collect_batch=collect_batch)
+        return AnthropicRunner(rest, schema, effort, max_tokens, batch, collect_batch=collect_batch, wait_seconds=wait_seconds)
     if kind == "replay" and rest:
         return ReplayRunner(Path(rest), schema)
     raise ValueError(f"{spec!r}: use anthropic:<model>, such as anthropic:claude-opus-5-5, or replay:<folder>")
