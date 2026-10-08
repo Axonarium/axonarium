@@ -79,16 +79,27 @@ jobs:
           REDO: ${{ inputs.redo }}
           HF_HUB_DISABLE_TELEMETRY: "1"
         run: |
+          # The job may run 360 minutes. Batches are waited for until 330 minutes after this step starts, which leaves
+          # time for the checks and the push; a batch still running then is collected later (`collect`).
+          deadline=$(( $(date +%s) + 330 * 60 ))
+          minutes_left() { echo $(( (deadline - $(date +%s)) / 60 )); }
           if [ "$STEP" != extract-and-verify ]; then
-            uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" ${COLLECT:+--collect "$COLLECT"} ${REDO:+--redo "$REDO"}
+            uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${COLLECT:+--collect "$COLLECT"} ${REDO:+--redo "$REDO"}
             exit
           fi
           if [ -n "$COLLECT" ]; then
             echo "A batch is collected by the step that sent it: choose extract or verify." >&2
             exit 1
           fi
-          uv run --frozen python -m pipeline extract --limit "$LIMIT" --model "$MODEL" ${REDO:+--redo "$REDO"}
-          uv run --frozen python -m pipeline verify --limit "$LIMIT" --model "$MODEL" ${REDO:+--redo "$REDO"}
+          uv run --frozen python -m pipeline extract --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"}
+          # Extraction's claims are paid for: if verification's batch outlives the job, they are still pushed, unverified.
+          status=0
+          uv run --frozen python -m pipeline verify --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"} || status=$?
+          if [ "$status" -eq 3 ]; then
+            echo "The extracted claims are pushed unverified. Once their pull request merges, run **verify** with that batch's ID as its collect input." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$status" -ne 0 ]; then
+            exit "$status"
+          fi
       - name: Source records for newly cited papers, then the data checks
         if: inputs.step != 'triage'
         run: |

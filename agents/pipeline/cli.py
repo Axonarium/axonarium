@@ -52,6 +52,9 @@ def main(argv: list[str] | None = None, classify=None) -> int:
                         help="where refused requests go in the same run: provider:model, 'none', or 'auto' "
                              f"({', '.join(f'{k} to {v}' for k, v in FALLBACKS.items())}; none for other models)")
     parser.add_argument("--effort", help="the model's effort level (default: the step's own); 'none' to leave it unset")
+    parser.add_argument("--wait", type=float, default=300, metavar="MINUTES",
+                        help="stop waiting for batches this many minutes after the step starts (default 300); a batch "
+                             "still running then is collected later with --collect, and 0 sends without waiting")
     parser.add_argument("--now", action="store_true", help="live calls at full price instead of a batch, for small trials")
     parser.add_argument("--collect", metavar="BATCH_ID",
                         help="collect an earlier batch's results instead of sending a new one (they are paid for already); "
@@ -66,10 +69,12 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     schema = {"triage": triage.Verdict, "extract": extract.PaperClaims, "verify": verify.Verdicts}[args.step]
     redo = Redo(tuple(args.redo))
     try:
-        run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect)
+        wait = max(args.wait, 0) * 60
+        run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect,
+                     wait_seconds=wait)
         fallback = FALLBACKS.get(args.model) if args.fallback == "auto" else None if args.fallback == "none" else args.fallback
         if fallback:
-            run = FallbackRunner(run, runner(fallback, schema, effort, step.MAX_TOKENS, batch=not args.now))
+            run = FallbackRunner(run, runner(fallback, schema, effort, step.MAX_TOKENS, batch=not args.now, wait_seconds=wait))
         if args.collect is None:  # collecting sends nothing, so it can't pay twice
             elsewhere = branches.waiting(step.LEDGER)
             if elsewhere:

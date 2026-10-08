@@ -162,12 +162,36 @@ def test_a_batch_is_submitted_with_structured_output_and_collected():
     assert {r.model for r in results.values()} == {"claude-opus-5-5"}  # each result names the model it went to
 
 
+class Clock:
+    """Time that passes only when the runner sleeps, or when a test moves it on."""
+
+    def __init__(self):
+        self.now = 0.0
+
+    def __call__(self) -> float:
+        return self.now
+
+    def sleep(self, seconds: float) -> None:
+        self.now += seconds
+
+
 def test_a_batch_still_running_when_the_wait_runs_out():
-    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, None, 8000, client=client(FakeBatches(ends_after=99)),
-                          poll_seconds=60, wait_seconds=120, sleep=lambda s: None)
+    clock, batches = Clock(), FakeBatches(ends_after=99)
+    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, None, 8000, client=client(batches), poll_seconds=60,
+                          wait_seconds=120, sleep=clock.sleep, clock=clock)
     with pytest.raises(BatchPending) as pending:
         run.run([Request("p00000", "prompt", "text")])
-    assert pending.value.batch_id == "msgbatch_1"
+    assert pending.value.batch_id == "msgbatch_1" and batches.polls == 3
+
+
+def test_the_wait_counts_from_the_start_of_the_step():
+    clock, batches = Clock(), FakeBatches(ends_after=99)
+    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, None, 8000, client=client(batches), poll_seconds=60,
+                          wait_seconds=600, sleep=clock.sleep, clock=clock)
+    clock.now = 600  # fetching and screening the papers took the whole wait
+    with pytest.raises(BatchPending):
+        run.run([Request("p00000", "prompt", "text")])
+    assert batches.created is not None and batches.polls == 1  # sent, looked at once, then left to be collected
 
 
 def test_cost_at_list_and_batch_prices():
@@ -248,8 +272,9 @@ def test_choose_limits_new_runs_and_follows_a_collected_batch():
 
 
 def test_collecting_a_batch_still_running_sends_nothing():
+    clock = Clock()
     run = AnthropicRunner("claude-opus-5-5", triage.Verdict, None, 8000, client=client(EarlierBatch([], ends_after=99)),
-                          poll_seconds=60, wait_seconds=120, sleep=lambda s: None, collect_batch="msgbatch_1")
+                          poll_seconds=60, wait_seconds=120, sleep=clock.sleep, clock=clock, collect_batch="msgbatch_1")
     with pytest.raises(BatchPending):
         run.known()
 

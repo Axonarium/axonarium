@@ -106,10 +106,11 @@ def test_replayed_refusals_and_the_cli_fallback(tmp_path, monkeypatch, capsys):
 
 
 def test_the_cli_picks_a_fallback_for_opus_5_5_only(monkeypatch, capsys):
-    made = []
+    made, waits = [], []
 
     def runner(spec, *args, **kwargs):
         made.append(spec)
+        waits.append(kwargs["wait_seconds"])
         return SimpleNamespace(model=spec.partition(":")[2], name=spec, batch=True, run=lambda requests: {})
 
     monkeypatch.setattr(cli, "runner", runner)
@@ -122,6 +123,10 @@ def test_the_cli_picks_a_fallback_for_opus_5_5_only(monkeypatch, capsys):
         made.clear()
         assert cli.main(argv) == 0
         assert made == expected, argv
+    waits.clear()
+    assert cli.main(["triage", "--wait", "45"]) == 0 and waits == [45 * 60, 45 * 60]  # both models share one wait
+    waits.clear()
+    assert cli.main(["triage", "--wait", "-5", "--fallback", "none"]) == 0 and waits == [0]
 
 
 def test_the_cli_tells_how_to_collect_a_fallback_batch_still_running(tmp_path, monkeypatch, capsys):
