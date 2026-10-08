@@ -4,15 +4,18 @@ import {
   checkedBy,
   checkNote,
   citationLinks,
+  citedAs,
   citationParts,
   edgeFromParam,
   edgeHref,
   formatMeasurement,
   madeBy,
   namesInPaper,
+  pageParam,
   predicateLabel,
   proposedBecause,
   regionHref,
+  sourceHref,
   speciesName,
   strongestFirst,
   withParam,
@@ -145,5 +148,20 @@ describe("provenance", () => {
     expect(proposedBecause(extracted)).toMatch(/^Drafted and checked by AI models/);
     expect(proposedBecause(allen)).toBe("Most of the injected tracer landed outside the region it names.");
     expect(proposedBecause({ ...allen, status: "accepted" })).toBeNull();
+  });
+});
+
+describe("sources", () => {
+  it("link to their page and cite the identifier their key holds", () => {
+    expect(sourceHref("doi:10.1002/cne.23960")).toBe("/sources/doi%3A10.1002%2Fcne.23960");
+    expect(citedAs("doi:10.1002/cne.23960")).toEqual({ doi: "10.1002/cne.23960" });
+    expect(citedAs("pubmed:26779765")).toEqual({ pmid: "26779765" });
+    expect(citedAs("pmc:PMC4900924")).toEqual({ pmcid: "PMC4900924" });
+    expect(citedAs("arxiv:2101.00001")).toEqual({ arxiv: "2101.00001" });
+    expect(citedAs("isbn:123")).toEqual({});
+  });
+
+  it("read the page number from the URL, 1 or more", () => {
+    expect([pageParam("3"), pageParam("0"), pageParam("x"), pageParam(undefined), pageParam(["2"])]).toEqual([3, 1, 1, 1, 1]);
   });
 });

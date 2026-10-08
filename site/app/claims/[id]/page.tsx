@@ -9,7 +9,7 @@ import { RegionName } from "@/components/region-name";
 import { getClaim, getNames, getSource } from "@/lib/data";
 import { inboxConfig } from "@/lib/inbox";
 import { regionLabel } from "@/lib/regions";
-import { checkedBy, checkNote, edgeHref, formatMeasurement, madeBy, namesInPaper, predicateLabel, proposedBecause, speciesName } from "@/lib/format";
+import { checkedBy, checkNote, edgeHref, formatMeasurement, madeBy, namesInPaper, predicateLabel, proposedBecause, sourceHref, speciesName } from "@/lib/format";
 
 export const revalidate = 300;
 
@@ -84,7 +84,13 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
         ) : null}
         <Row label="Source">
           <div className="space-y-1">
-            {s?.title && <p>{s.title}</p>}
+            {s && (
+              <p>
+                <Link href={sourceHref(s.id)} className="underline underline-offset-4">
+                  {s.title ?? s.id}
+                </Link>
+              </p>
+            )}
             {s && (s.journal || s.year) && (
               <p className="text-sm text-muted-foreground">{[s.journal, s.year].filter(Boolean).join(", ")}</p>
             )}

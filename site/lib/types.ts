@@ -108,6 +108,8 @@ export interface Source {
   kind: string;
   license: string | null;
   open_access: boolean | null;
+  /** The claims citing it that aren't retracted, counted by the build; absent from snapshots made before. */
+  n_claims?: number | null;
   retracted: boolean | null;
 }
 

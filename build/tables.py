@@ -4,6 +4,8 @@ These definitions are the only description of the database schema: Alembic gener
 build/migrations from them, and CI's `alembic check` fails if the two ever differ.
 """
 
+from collections import Counter
+
 from sqlalchemy import (Boolean, CheckConstraint, Column, DateTime, Float, ForeignKey, Index, Integer, MetaData, Table, Text, Uuid,
                         func, text)
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
@@ -55,6 +57,7 @@ sources = Table(
     "sources", metadata,
     Column("id", Text, primary_key=True), _text("title"), Column("year", Integer), _text("journal"), _text("kind", True),
     _text("license"), Column("open_access", Boolean), Column("retracted", Boolean), Column("extra", JSONB),
+    Column("n_claims", Integer),  # set by the build: the claims citing it that aren't retracted, for the site's source pages
 )
 connectivity_claims = Table(
     "connectivity_claims", metadata,
@@ -172,6 +175,10 @@ def rows(records: list[Record]) -> dict[str, list[dict]]:
             tables["retractions"] = [_row("retractions", {**entry, "position": i})
                                      for i, entry in enumerate(record.data["entries"], start=1)]
     tables["edges"] = compute_edges(records)
+    cited = Counter(row["source_key"] for name in ("connectivity_claims", "homology_claims") for row in tables[name]
+                    if row["status"] != "retracted")
+    for source in tables["sources"]:
+        source["n_claims"] = cited[source["id"]]
     for name, table in tables.items():
         key = TABLES[name].primary_key.columns.values()[0].name
         table.sort(key=lambda row: row[key])

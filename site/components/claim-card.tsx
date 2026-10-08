@@ -6,7 +6,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { checkedBy, checkNote, madeBy } from "@/lib/format";
 import type { ConnectivityClaim } from "@/lib/types";
 
-export function ClaimCard({ claim }: { claim: ConnectivityClaim }) {
+/** A claim in a list. `connection` names what it connects, where the list doesn't already say; `cited` is false where
+ * the page is its source's own. */
+export function ClaimCard({ claim, connection, cited = true }: { claim: ConnectivityClaim; connection?: React.ReactNode; cited?: boolean }) {
   const check = checkedBy(claim);
   const note = claim.verification && claim.verification.verdict !== "agree" ? checkNote(claim) : null;
   return (
@@ -23,8 +25,9 @@ export function ClaimCard({ claim }: { claim: ConnectivityClaim }) {
         )}
       </CardHeader>
       <CardContent className="space-y-2">
+        {connection && <p className="font-medium">{connection}</p>}
         <p>{claim.paraphrase}</p>
-        <Citation cited={claim} locator={claim.locator} />
+        {cited ? <Citation cited={claim} locator={claim.locator} /> : <p className="text-sm text-muted-foreground">{claim.locator}</p>}
         <p className="text-sm text-muted-foreground">
           Made by {madeBy(claim)}
           {check ? `; ${check}` : claim.curation.role === "extractor" ? "; not checked yet" : ""}.
