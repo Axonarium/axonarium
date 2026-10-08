@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { DataUnavailable } from "@/components/data-unavailable";
 import { EdgeTable } from "@/components/edge-table";
 import { ExploreFilters } from "@/components/explore-filters";
+import { Pager } from "@/components/pager";
 import { getEdgeFacets, getNames, listConnections } from "@/lib/data";
 import { exploreHref, exploreState, PAGE_SIZE, pageCount } from "@/lib/explore";
 import { regionLabel } from "@/lib/regions";
@@ -54,27 +54,7 @@ export default async function Explore({ searchParams }: PageProps<"/explore">) {
             </p>
           </div>
           <EdgeTable edges={found.items} labels={labels} />
-          {pages > 1 && (
-            <nav aria-label="Pages" className="flex items-center justify-between gap-4 text-sm">
-              {state.page > 1 ? (
-                <Link href={exploreHref({ ...state, page: state.page - 1 })} className="underline underline-offset-4">
-                  ← Stronger
-                </Link>
-              ) : (
-                <span />
-              )}
-              <span className="text-muted-foreground">
-                Page {state.page} of {pages}
-              </span>
-              {state.page < pages ? (
-                <Link href={exploreHref({ ...state, page: state.page + 1 })} className="underline underline-offset-4">
-                  Weaker →
-                </Link>
-              ) : (
-                <span />
-              )}
-            </nav>
-          )}
+          <Pager page={state.page} pages={pages} href={(n) => exploreHref({ ...state, page: n })} previous="← Stronger" next="Weaker →" />
         </div>
       )}
     </div>

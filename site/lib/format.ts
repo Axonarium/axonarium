@@ -146,3 +146,22 @@ export function proposedBecause(c: Provenanced): string | null {
   if (c.extra && "allen.experiment" in c.extra) return "Most of the injected tracer landed outside the region it names.";
   return "Not yet accepted.";
 }
+
+/** A source's page on this site. */
+export function sourceHref(id: string): string {
+  return `/sources/${encodeURIComponent(id)}`;
+}
+
+/** The identifier a source's key holds (`doi:…`, `pubmed:…`, `pmc:…` or `arxiv:…`), for its citation links. */
+export function citedAs(key: string): Cited {
+  const at = key.indexOf(":");
+  const [kind, value] = [key.slice(0, at), key.slice(at + 1)];
+  if (!value) return {};
+  return kind === "doi" ? { doi: value } : kind === "pubmed" ? { pmid: value } : kind === "pmc" ? { pmcid: value } : kind === "arxiv" ? { arxiv: value } : {};
+}
+
+/** The page number in a URL's `page` parameter: 1 or more. */
+export function pageParam(value: string | string[] | undefined): number {
+  const n = Number.parseInt(typeof value === "string" ? value : "", 10);
+  return Number.isFinite(n) && n > 1 ? n : 1;
+}

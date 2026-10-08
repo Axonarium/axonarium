@@ -337,3 +337,39 @@ async function liveConnections(db: SupabaseClient, f: ConnectionsFilter) {
   if (error) failed("connections page", error);
   return { items: (data ?? []) as Edge[], total: total ?? 0 };
 }
+
+/** A page of sources, those with the most claims first (the build counts them). */
+export function listSources(limit: number, offset: number): Promise<{ items: Source[]; total: number } | null> {
+  return read(
+    async (db) => {
+      const { data, count: total, error } = await db
+        .from("sources")
+        .select("*", { count: "exact" })
+        .order("n_claims", { ascending: false, nullsFirst: false })
+        .order("id")
+        .range(offset, offset + limit - 1);
+      if (error) failed("sources page", error);
+      return { items: (data ?? []) as Source[], total: total ?? 0 };
+    },
+    (t) => offline.sourcesPage(t, limit, offset),
+    null,
+  );
+}
+
+/** A page of the claims citing one source, by ID. */
+export function listSourceClaims(id: string, limit: number, offset: number): Promise<{ items: ConnectivityClaim[]; total: number } | null> {
+  return read(
+    async (db) => {
+      const { data, count: total, error } = await db
+        .from("connectivity_claims")
+        .select("*", { count: "exact" })
+        .eq("source_key", id)
+        .order("id")
+        .range(offset, offset + limit - 1);
+      if (error) failed("source claims", error);
+      return { items: (data ?? []) as ConnectivityClaim[], total: total ?? 0 };
+    },
+    (t) => offline.sourceClaims(t, id, limit, offset),
+    null,
+  );
+}

@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { edgeHref, regionHref } from "../lib/format";
+import { edgeHref, regionHref, sourceHref } from "../lib/format";
 import type { Tables } from "../lib/offline";
 
 function snapshot(): Tables {
@@ -25,6 +25,8 @@ export const PAGES: Record<string, string> = {
   region: regionHref(region.id),
   claim: `/claims/${claim.id}`,
   connection: edgeHref(tables.edges[0].id),
+  sources: "/sources",
+  source: sourceHref(claim.source_key),
   atlases: "/atlases",
   about: "/about",
   "not found": "/claims/clm-0000000000",

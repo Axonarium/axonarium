@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <header className="border-b">
-          <nav aria-label="Main" className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3 sm:gap-6">
+          <nav aria-label="Main" className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 sm:gap-x-6">
             <Link href="/" className="font-semibold tracking-tight">
               Axonarium
             </Link>
@@ -37,6 +37,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
             <Link href="/regions" className="text-sm text-muted-foreground hover:text-foreground">
               Regions
+            </Link>
+            <Link href="/sources" className="text-sm text-muted-foreground hover:text-foreground">
+              Sources
             </Link>
             <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
               About

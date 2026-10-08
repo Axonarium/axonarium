@@ -166,3 +166,12 @@ export function connectionsPage(t: Tables, f: {
     .sort((a, b) => (a.density === b.density ? byId(a, b) : a.density === null ? 1 : b.density === null ? -1 : b.density - a.density));
   return page(rows, f.limit, f.offset);
 }
+
+/** Sources with the most claims first, then by ID, as the database orders them (nulls last). */
+export function sourcesPage(t: Tables, limit: number, offset: number) {
+  const rows = [...t.sources].sort((a, b) => (b.n_claims ?? -1) - (a.n_claims ?? -1) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  return page(rows, limit, offset);
+}
+
+export const sourceClaims = (t: Tables, id: string, limit: number, offset: number) =>
+  page(sorted(t.connectivity_claims.filter((c) => c.source_key === id)), limit, offset);

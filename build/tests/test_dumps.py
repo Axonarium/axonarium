@@ -35,6 +35,14 @@ def test_rows_cover_every_record(valid_tree):
     assert all(set(row) == set(columns(name)) for name, table in tables.items() for row in table)
 
 
+def test_each_source_counts_the_claims_citing_it(valid_tree):
+    _, tables = build_rows(valid_tree)
+    for source in tables["sources"]:
+        citing = [c for c in tables["connectivity_claims"] + tables["homology_claims"] if c["source_key"] == source["id"]]
+        assert source["n_claims"] == sum(c["status"] != "retracted" for c in citing), source["id"]
+    assert any(source["n_claims"] for source in tables["sources"])
+
+
 def test_knowledge_base_validates(valid_tree, tmp_path):
     records, tables = build_rows(valid_tree)
     write_dumps(records, tables, tmp_path / "dist")

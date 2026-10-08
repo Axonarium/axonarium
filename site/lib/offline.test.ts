@@ -92,6 +92,21 @@ describe("the snapshot answers like the database", () => {
     expect(offline.names(tables, ["nt-3kvfdzf7wn"])).toEqual({}); // a snapshot without neuron types
   });
 
+  it("pages sources, those with the most claims first, and the claims citing one", () => {
+    const sources = [
+      { ...tables.sources[0], id: "doi:10.1/b", n_claims: 2 },
+      { ...tables.sources[0], id: "doi:10.1/a", n_claims: 2 },
+      { ...tables.sources[0], id: "doi:10.1/c", n_claims: null },
+      { ...tables.sources[0], id: "doi:10.1/d", n_claims: 9 },
+    ];
+    const t: Tables = { ...tables, sources };
+    expect(offline.sourcesPage(t, 3, 0)).toEqual({ items: [sources[3], sources[1], sources[0]], total: 4 });
+    expect(offline.sourcesPage(t, 3, 3).items).toEqual([sources[2]]);
+    const cited = offline.sourceClaims(tables, "doi:10.1038/nature13186", 2, 1);
+    expect(cited.total).toBe(tables.connectivity_claims.length);
+    expect(cited.items.map((c) => c.id)).toEqual(["clm-b", "clm-c"]);
+  });
+
   it("gives each atlas its region count and amygdala regions", () => {
     const [entry] = offline.atlases(tables);
     expect(entry.atlas).not.toHaveProperty("extra");
