@@ -11,8 +11,8 @@ from pipeline.corpus import ROOT, Redo, read_manifest
 from pipeline.llm import BatchPending, FallbackRunner, runner
 
 DEFAULT_MODEL = "anthropic:claude-opus-5-5"
-# Where a model's refused requests go by default. Claude Opus 5 runs no bio classifier, which in Claude Opus 5.5 refuses
-# some papers on viral tracers (rabies, pseudorabies, herpes simplex) and on drugs.
+# Where a model's refused requests go by default. Claude Opus 5.5's bio classifier refuses some papers on viral tracers
+# (rabies, pseudorabies, herpes simplex) and on drugs; Claude Opus 5 refuses far fewer of them.
 FALLBACKS = {"anthropic:claude-opus-5-5": "anthropic:claude-opus-5"}
 LEXICON = ROOT / ".cache" / "lexicon.json"
 SHOWN = 30  # list entries (dropped drafts, screen findings) shown in a report
