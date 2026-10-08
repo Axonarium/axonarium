@@ -81,7 +81,19 @@ Later phases get cards when they start.
 - [#87](https://github.com/axonarium/axonarium/pull/87): the literature pipeline's plan (ADR 0028) and sprint cards #79–#86.
 - [#88](https://github.com/axonarium/axonarium/pull/88) 2.2a, [#90](https://github.com/axonarium/axonarium/pull/90) 2.3, [#91](https://github.com/axonarium/axonarium/pull/91) 2.4: triage, extraction and verification, run by `python -m pipeline` and the **Literature** workflow.
 - [#89](https://github.com/axonarium/axonarium/pull/89) 1.7: Allen's Cre-line experiments (ADR 0029).
-- 0.5a: the gold curation tool (`python -m curate`).
+- [#93](https://github.com/axonarium/axonarium/pull/93) 0.5a: the gold curation tool (`python -m curate`).
+- [#94](https://github.com/axonarium/axonarium/pull/94), [#96](https://github.com/axonarium/axonarium/pull/96): the pipeline never pays for a paper twice.
+  - A batch that outlives a run's wait is collected later (`--collect`).
+  - Each step reads a paper once, whatever the prompt version, unless asked (`--redo`).
+  - A failing paper is set aside after two reads.
+  - A run refuses to start while another branch holds its results.
+  - Verification has its own ledger, `corpus/verified.csv`.
+- [#97](https://github.com/axonarium/axonarium/pull/97), [#98](https://github.com/axonarium/axonarium/pull/98): the site is ready for claims from papers.
+  - Rat claims' UBERON terms and neuron types are shown by name.
+  - Each claim says who made it and what the independent check said.
+  - Sources has a page per paper with every claim drawn from it, and an index (`/sources`).
+- [#99](https://github.com/axonarium/axonarium/pull/99): the **Literature** workflow's `extract-and-verify` step, so claims arrive already checked, in one pull request.
+- [#95](https://github.com/axonarium/axonarium/pull/95): a timing flake in the route test's accessibility check.
 
 **Not done:**
 - No model has been called yet: the first real run waits on the `models` key (below).
@@ -93,7 +105,7 @@ Later phases get cards when they start.
 - The eval harness doesn't give the extractor the region lexicon or the pruned text, so its scores wouldn't match pipeline runs (#92).
 - This session's sandbox couldn't reach the Anthropic API, Europe PMC, the Allen API, Hugging Face, figshare or Janelia. The pipeline was tested with replayed answers and a synthetic article, so the first real run is its real test.
 
-**Next step:** once the key is in place, run **Literature** with step `triage` and limit 20, and read the report: the verdicts, the tokens and the cost. If they look right, triage the rest; then run `extract` on a few papers, then `verify`. Each run pushes a `literature/…` branch to open a pull request from. Rough cost at batch prices for the open-access backlog (about 2,000 abstracts, then the few hundred open papers triage keeps): $100–200 in all. This is an estimate; each run's report gives the real figure.
+**Next step:** once the key is in place, run **Literature** with step `triage` and limit 20, and read the report: the verdicts, the tokens and the cost. If they look right, triage the rest; then run `extract-and-verify` on a few papers. Each run pushes a `literature/…` branch to open a pull request from; once it merges, the deploy puts its claims on the site, under each connection and on each paper's page in Sources. Rough cost at batch prices for the open-access backlog (about 2,000 abstracts, then the few hundred open papers triage keeps): $100–200 in all. This is an estimate; each run's report gives the real figure.
 
 ## Waiting on the maintainer
 
