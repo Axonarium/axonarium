@@ -8,9 +8,10 @@ repos:
       # in-progress merge, so in CI they would check nothing.
       - id: check-added-large-files
         args: [--enforce-all]
-        # The scout's manifest is one row per paper and grows with every run
-        # (corpus/README.md); 2,079 papers already take 713 KB.
-        exclude: ^corpus/manifest\.csv$
+        # The scout's manifest and the pipeline's ledgers are one row per paper
+        # and grow with every run (corpus/README.md); 2,079 papers already take
+        # 713 KB in the manifest and 521 KB in the triage ledger.
+        exclude: ^corpus/(manifest|triage|extracted|verified)\.csv$
       - id: check-case-conflict
       - id: check-merge-conflict
         args: [--assume-in-merge]
