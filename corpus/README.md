@@ -75,4 +75,4 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 | `attempts` | How many times a model has read this list of claims |
 | `model`, `prompt`, `date` | Which model and prompt version verified, and when |
 
-The manifest grows with every run, past pre-commit's 500 KB limit for added files, so that check skips it. It stays one file, so a run's diff shows which papers came and went.
+The manifest and the ledgers grow with every run, past pre-commit's 500 KB limit for added files, so that check skips them. Each stays one file, so a run's diff shows which papers came and went.
