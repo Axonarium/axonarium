@@ -1,0 +1,40 @@
+id: clm-mfgzj668sb
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002691
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1002/ar.23983
+  pmid: '30332715'
+  pmcid: PMC6618262
+  locator: Results, 'Neurons in the LPB Sent Collateral Projections to the CeA and VTA'; Fig. 2; Tables 1-2
+paraphrase: Tetramethylrhodamine-dextran injected into the right VTA retrogradely labeled many LPB neurons bilaterally with
+  an ipsilateral predominance. About 27% of these cells were CGRP-positive, and about 13% were also labeled from the CeA injection,
+  consistent with axon collaterals to both targets.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: lateral parabrachial nucleus (LPB)
+  extract.object_name: ventral tegmental area (VTA)
+  verify.note: The paper's own TMR retrograde tracing from VTA labeled dense ipsilateral-predominant LPB neurons, 26.73% of
+    them CGRP-positive and 13.07% double-labeled, as reported in the Results sections and tables cited.

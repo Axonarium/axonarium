@@ -1,0 +1,40 @@
+id: clm-ya8xx2s0j7
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/advs.202523115
+  pmid: '42102389'
+  pmcid: PMC13335908
+  locator: Fig. 1A,B; Results, first section
+paraphrase: A retrograde AAV carrying a Cre-dependent EYFP was placed in the BLA of CCK-Cre mice; five weeks later, retrogradely
+  labelled CCK-expressing cell bodies appeared in the entorhinal cortex, indicating an entorhinal CCK projection reaching
+  the BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: EC (CCK-expressing neurons)
+  extract.object_name: BLA
+  verify.note: Retro-AAV with Cre-dependent EYFP in BLA labelled EC CCK neurons, matching the claim.

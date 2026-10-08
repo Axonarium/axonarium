@@ -1,0 +1,40 @@
+id: clm-e4a03mhs2x
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1002/advs.202523115
+  pmid: '42102389'
+  pmcid: PMC13335908
+  locator: Fig. 1E–I; Fig. 5E–J, M–O
+paraphrase: Optogenetic activation of ChrimsonR-expressing entorhinal CCK neurons in CCK-Cre mice rapidly increased GCaMP6s
+  calcium signals in CaMKII-positive BLA neurons, and the same stimulation elevated a BLA CCK sensor signal; the calcium response
+  was strongly reduced after the mGluR5 agonist DHPG.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: ECCCK neurons
+  extract.object_name: BLAGlu neurons
+  verify.note: Photometry during ChrimsonR activation of EC CCK neurons showed increased BLA CaMKII calcium and CCK sensor
+    signals, reduced by DHPG.

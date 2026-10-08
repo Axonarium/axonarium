@@ -1,0 +1,40 @@
+id: clm-80d6exg9h4
+subject:
+  type: region
+  id: MBA:541
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1002/advs.202414271
+  pmid: '39887927'
+  pmcid: PMC11948000
+  locator: Fig. 5H–K
+paraphrase: Optogenetic activation of TeA CaMKIIα+ axon terminals in slices produced depolarizing EPSPs that drove spikes
+  and inward EPSCs in VGluT2+ neurons of the BLA/La region.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: TeA CaMKIIα+ neurons
+  extract.object_name: BLA/La VGluT2+ neurons
+  verify.note: Slice optogenetics of TeA terminals evoked EPSPs, spikes and EPSCs in VGluT2+ BLA/La neurons, supporting an
+    excitatory link.

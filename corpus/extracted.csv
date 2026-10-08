@@ -1,0 +1,11 @@
+key,outcome,claims,dropped,attempts,model,prompt,date
+doi:10.1002/advs.202414271,claims,18,0,1,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/advs.202505025,claims,2,0,1,claude-opus-5,extract@0.3.0,2026-10-08
+doi:10.1002/advs.202523115,claims,4,0,1,claude-opus-5,extract@0.3.0,2026-10-08
+doi:10.1002/ar.23983,claims,2,0,1,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/brb3.2616,claims,3,0,1,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/brb3.2893,claims,1,0,1,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/cne.20788,unfetched,,,0,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/cne.20790,unfetched,,,0,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/cne.20970,unfetched,,,0,claude-opus-5-5,extract@0.3.0,2026-10-08
+doi:10.1002/cne.21019,unfetched,,,0,claude-opus-5-5,extract@0.3.0,2026-10-08
