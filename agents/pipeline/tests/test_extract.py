@@ -7,7 +7,7 @@ import yaml
 from evals.harness.models import DraftClaim, Entity, Extraction
 from pipeline import cli, europepmc, extract, sections
 from pipeline.corpus import Ledger
-from pipeline.llm import Result
+from pipeline.llm import Result, request_id
 from screen import Finding, Screened, screen_jats
 
 FIXTURE = Path(__file__).parent / "fixtures" / "article.xml"
@@ -173,7 +173,7 @@ def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
     lexicon.write_text(json.dumps(LEXICON), encoding="utf-8")
     answers = tmp_path / "answers"
     answers.mkdir()
-    (answers / "p00000.json").write_text(Extraction(claims=[draft("MBA:295", "MBA:536")]).model_dump_json(), encoding="utf-8")
+    (answers / f"{request_id('doi:10.1/a')}.json").write_text(Extraction(claims=[draft("MBA:295", "MBA:536")]).model_dump_json(), encoding="utf-8")
     monkeypatch.setattr(cli, "read_manifest", lambda: PAPERS[:1])
     monkeypatch.setattr(extract, "LEDGER", Ledger(tmp_path / "extracted.csv", extract.LEDGER.columns))
     monkeypatch.setattr(extract, "CLAIMS", tmp_path / "claims")

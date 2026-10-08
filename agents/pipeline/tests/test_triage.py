@@ -1,13 +1,14 @@
 """Triage (sprint 2.2a): abstracts in, verdicts in corpus/triage.csv out; never twice for the same prompt."""
 
 import csv
+import re
 from types import SimpleNamespace
 
 import pytest
 
 from pipeline import cli, europepmc, triage
 from pipeline.corpus import Ledger
-from pipeline.llm import AnthropicRunner, BatchPending, Request, Result, cost, parse
+from pipeline.llm import AnthropicRunner, BatchPending, Request, Result, choose, cost, parse, request_id
 
 PAPERS = [
     {"key": "doi:10.1/a", "title": "BLA to CeA, traced", "europe_pmc": "MED:1", "full_text": "false"},
@@ -179,8 +180,81 @@ def test_cli_reports_a_replayed_run(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(triage.europepmc, "abstract", fetch)
     answers = tmp_path / "answers"
     answers.mkdir()
-    (answers / "p00000.json").write_text('{"tests_connections": true, "evidence": [], "species": ["mouse"], "reason": "Traces."}')
+    (answers / f"{request_id('doi:10.1/a')}.json").write_text(
+        '{"tests_connections": true, "evidence": [], "species": ["mouse"], "reason": "Traces."}')
     summary = tmp_path / "summary.md"
     monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
     assert cli.main(["triage", "--model", f"replay:{answers}"]) == 0
-    assert "**triage** with replay:" in summary.read_text() and "cost: unknown for this model" in capsys.readouterr().out
+    assert "**triage** with replay:" in summary.read_text() and "- in: 1" in capsys.readouterr().out
+
+
+def test_request_ids_are_stable_readable_and_unique():
+    first = request_id("doi:10.1038/nature13186")
+    assert first == request_id("doi:10.1038/nature13186") and first.startswith("doi_10_1038_nature13186-")
+    assert request_id("doi:10.1/a") != request_id("doi:10.1_a")  # the same letters and digits, different keys
+    long = request_id("doi:" + "9" * 200)
+    assert len(long) <= 64 and re.fullmatch(r"[A-Za-z0-9_-]+", long)
+
+
+class EarlierBatch(FakeBatches):
+    """A batch sent by an earlier run, holding answers for the papers it was asked about."""
+
+    def __init__(self, keys, ends_after=0):
+        super().__init__(ends_after)
+        self.keys = keys
+
+    def create(self, requests):
+        raise AssertionError("collecting must never send a new batch")
+
+    def results(self, batch_id):
+        good = '{"tests_connections": true, "evidence": ["retrograde_tracer"], "species": ["rat"], "reason": "Traces."}'
+        for key in self.keys:
+            yield SimpleNamespace(custom_id=request_id(key), result=SimpleNamespace(type="succeeded", message=message(good)))
+
+
+def test_an_earlier_batch_is_collected_for_its_own_papers(tmp_path):
+    ledger = Ledger(tmp_path / "triage.csv", triage.LEDGER.columns)
+    batches = EarlierBatch(["doi:10.1/a"])
+    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, "low", 8000, client=client(batches), sleep=lambda s: None,
+                          collect_batch="msgbatch_1")
+    summary = triage.triage(PAPERS, run, limit=1, today="2026-10-08", ledger=ledger, abstract=fetch)
+    rows = {r["key"]: r for r in ledger.read().values()}
+    assert list(rows) == ["doi:10.1/a"] and rows["doi:10.1/a"]["verdict"] == "in"  # the limit doesn't hide its papers
+    assert summary["papers"] == 1 and batches.created is None
+
+
+def test_choose_limits_new_runs_and_follows_a_collected_batch():
+    papers = [{"key": f"doi:10.1/{n}"} for n in range(5)]
+    assert choose(papers, SimpleNamespace(), 2) == papers[:2]  # a runner that can't collect
+    collecting = SimpleNamespace(known=lambda: {request_id("doi:10.1/3"), request_id("doi:10.1/4")})
+    assert choose(papers, collecting, 1) == papers[3:]
+
+
+def test_collecting_a_batch_still_running_sends_nothing():
+    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, None, 8000, client=client(EarlierBatch([], ends_after=99)),
+                          poll_seconds=60, wait_seconds=120, sleep=lambda s: None, collect_batch="msgbatch_1")
+    with pytest.raises(BatchPending):
+        run.known()
+
+
+def test_collect_needs_a_batch_id_and_the_batch_api():
+    from pipeline.llm import runner
+
+    with pytest.raises(ValueError, match="--collect"):
+        runner("replay:answers", triage.Verdict, None, 8000, batch=True, collect_batch="msgbatch_1")
+    with pytest.raises(ValueError, match="--collect"):
+        runner("anthropic:claude-opus-5-5", triage.Verdict, None, 8000, batch=False, collect_batch="msgbatch_1")
+    with pytest.raises(ValueError, match="--collect"):
+        runner("anthropic:claude-opus-5-5", triage.Verdict, None, 8000, batch=True, collect_batch="; rm -rf /")
+
+
+def test_cli_tells_how_to_collect_a_batch_still_running(tmp_path, monkeypatch, capsys):
+    def still_running(*args, **kwargs):
+        raise BatchPending("msgbatch_7")
+
+    monkeypatch.setattr(cli, "read_manifest", lambda: PAPERS[:1])
+    monkeypatch.setattr(triage, "triage", still_running)
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    assert cli.main(["triage", "--model", "replay:answers"]) == 3
+    assert "--collect msgbatch_7" in summary.read_text() and "--collect msgbatch_7" in capsys.readouterr().out

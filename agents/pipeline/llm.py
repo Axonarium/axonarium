@@ -5,7 +5,9 @@ Live calls (`--now`) cost full price and suit small trials. Neither falls back t
 claim records the model that drafted it, and a refused paper is reported and retried later.
 """
 
+import hashlib
 import json
+import re
 import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
@@ -24,9 +26,25 @@ PRICES = {
 USAGE = ("input_tokens", "output_tokens", "cache_read_input_tokens", "cache_creation_input_tokens")
 
 
+def request_id(key: str) -> str:
+    """A paper's request ID, the same in every run, so a batch's results can be matched to papers later. The key's
+    letters and digits keep it readable; a hash of the whole key keeps it unique (the Batch API's custom_id: at most
+    64 letters, digits, _ and -)."""
+    readable = re.sub(r"[^A-Za-z0-9]+", "_", key).strip("_")[:48]
+    return f"{readable}-{hashlib.sha256(key.encode()).hexdigest()[:12]}"
+
+
+def choose(papers: list, run, limit: int, key: Callable = lambda paper: paper["key"]) -> list:
+    """The papers to send: up to `limit`; or, when the runner collects an earlier batch, every one it holds."""
+    known = getattr(run, "known", lambda: None)()
+    if known is None:
+        return papers[:limit]
+    return [paper for paper in papers if request_id(key(paper)) in known]
+
+
 @dataclass(frozen=True)
 class Request:
-    id: str  # unique within a run; letters, digits, _ and - only (the Batch API's custom_id)
+    id: str  # request_id(paper key): unique within a run, stable across runs
     system: str
     text: str
 
@@ -79,13 +97,16 @@ class AnthropicRunner:
     """Requests to one Claude model with structured output, as one batch or as live calls."""
 
     def __init__(self, model: str, schema: type[BaseModel], effort: str | None, max_tokens: int, batch: bool = True,
-                 client=None, poll_seconds: float = 60, wait_seconds: float = 5 * 3600, sleep: Callable = time.sleep):
+                 client=None, poll_seconds: float = 60, wait_seconds: float = 5 * 3600, sleep: Callable = time.sleep,
+                 collect_batch: str | None = None):
         if client is None:
             import anthropic
 
             client = anthropic.Anthropic()
         self.model, self.schema, self.effort, self.max_tokens, self.batch = model, schema, effort, max_tokens, batch
         self.client, self.poll_seconds, self.wait_seconds, self.sleep = client, poll_seconds, wait_seconds, sleep
+        # An earlier batch to collect instead of submitting a new one: its tokens are paid for already.
+        self.collect_batch, self._collected = collect_batch, None
 
     @property
     def name(self) -> str:
@@ -106,9 +127,24 @@ class AnthropicRunner:
             "output_config": output_config,
         }
 
+    def known(self) -> set[str] | None:
+        """The request IDs of the batch being collected (once it has ended), or None when a new batch is to be sent.
+        Steps send only these papers' requests, so the results land on the papers they were asked about."""
+        if self.collect_batch is None:
+            return None
+        if self._collected is None:
+            self._collected = self.collect(self.collect_batch)
+        return set(self._collected)
+
     def run(self, requests: list[Request]) -> dict[str, Result]:
         if not requests:
             return {}
+        if self.collect_batch is not None:
+            collected = self._collected if self._collected is not None else self.collect(self.collect_batch)
+            found = sum(r.id in collected for r in requests)
+            print(f"batch {self.collect_batch}: {found} of its {len(collected)} result(s) collected", flush=True)
+            missing = Result(None, "errored", detail=f"not in batch {self.collect_batch}")
+            return {r.id: collected.get(r.id, missing) for r in requests}
         if not self.batch:
             results = {}
             for request in requests:
@@ -165,11 +201,14 @@ class ReplayRunner:
         return results
 
 
-def runner(spec: str, schema: type[BaseModel], effort: str | None, max_tokens: int, batch: bool):
-    """A runner from `anthropic:<model>` or `replay:<folder>`."""
+def runner(spec: str, schema: type[BaseModel], effort: str | None, max_tokens: int, batch: bool,
+           collect_batch: str | None = None):
+    """A runner from `anthropic:<model>` or `replay:<folder>`; `collect_batch` collects an earlier batch instead."""
     kind, _, rest = spec.partition(":")
+    if collect_batch is not None and not (kind == "anthropic" and batch and re.fullmatch(r"msgbatch_\w+", collect_batch)):
+        raise ValueError("--collect takes a batch ID such as msgbatch_01ABC, with an anthropic: model and without --now")
     if kind == "anthropic" and rest:
-        return AnthropicRunner(rest, schema, effort, max_tokens, batch)
+        return AnthropicRunner(rest, schema, effort, max_tokens, batch, collect_batch=collect_batch)
     if kind == "replay" and rest:
         return ReplayRunner(Path(rest), schema)
     raise ValueError(f"{spec!r}: use anthropic:<model>, such as anthropic:claude-opus-5-5, or replay:<folder>")

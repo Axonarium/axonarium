@@ -75,3 +75,21 @@ def test_papers_whose_text_is_flagged_or_unreadable_are_skipped(tmp_path):
     summary = verify.verify(PAPERS, Judge(), 10, lexicon(), classify=None, claims_dir=claims, text=flagged)
     assert summary["sent"] == 0 and summary["skipped"] == ["doi:10.1/a: its text couldn't be read (SyntaxError)"]
     assert all("verification" not in yaml.safe_load(p.read_text(encoding="utf-8")) for p in claims.glob("*.yaml"))
+
+
+def test_a_collected_batch_is_used_only_for_the_claims_it_listed(tmp_path):
+    from pipeline.llm import request_id
+
+    claims = extracted(tmp_path)
+    (paper, listed), = verify.unverified(claims, "verify@0.1.0", verify.paper_index(PAPERS)).values()
+    then = request_id(verify.request_key((paper, listed)))
+    assert then == request_id(verify.request_key((paper, list(listed))))  # the same claims, the same request
+
+    judge = Judge()
+    judge.known = lambda: {request_id(verify.request_key((paper, listed[:-1])))}  # a batch that listed one claim fewer
+    summary = verify.verify(PAPERS, judge, 10, lexicon(), classify=None, today="2026-10-09", claims_dir=claims, text=text)
+    assert judge.sent == [] and summary["sent"] == 0  # its numbering would put verdicts on the wrong claims
+
+    judge.known = lambda: {then}
+    verify.verify(PAPERS, judge, 10, lexicon(), classify=None, today="2026-10-09", claims_dir=claims, text=text)
+    assert [r.id for r in judge.sent] == [then]

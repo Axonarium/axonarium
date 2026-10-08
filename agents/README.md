@@ -20,8 +20,16 @@ uv run python -m pipeline triage --limit 5 --now   # a small trial with live cal
 uv run --directory .. python -m ingest.lexicon --out .cache/lexicon.json   # the region lexicon extraction needs
 uv run python -m pipeline extract --limit 20       # extract the next 20 triaged papers into data/claims/amygdala/
 uv run python -m pipeline verify --limit 20        # verify the claims of the next 20 extracted papers
+uv run python -m pipeline extract --collect msgbatch_01…   # collect a batch an earlier run left running
 AXONARIUM_SCREEN_MODEL=1 uv run pytest screen      # with the real classifier (downloads about 740 MB once)
 ```
+
+**Running the pipeline yourself.** Anyone with an Anthropic API key can run it from a checkout:
+1. Set `ANTHROPIC_API_KEY`.
+2. Build the lexicon once (above).
+3. Run a step.
+
+Each step starts where the ledgers in `corpus/` left off, so a run can be as small as the credit to hand. Afterwards, `uv run python -m checks sources` from the repository root writes records for newly cited papers. The changes in `corpus/` and `data/` then go to a pull request like any other. The **Literature** workflow does the same from the Actions tab and pushes a branch to open the pull request from. Batches finish within a day, usually within an hour. A step waits up to five hours; if its batch is still running then, it writes nothing, exits with code 3 and prints the batch's ID. Run the same step again later with `--collect <batch ID>` (the workflow's `collect` input) to collect the results without paying for them again.
 
 A flagged paper is never given to a model. The screen's real classifier is pinned to one revision with its files' hashes; `uv run python -m screen --pin` prints a newer one, and moving to it is a reviewed change.
 

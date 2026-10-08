@@ -33,6 +33,13 @@ def report(summary: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def summarize(text: str) -> None:
+    """Add to the GitHub Actions run's summary, when there is one."""
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+            f.write(text)
+
+
 def main(argv: list[str] | None = None, classify=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m pipeline", description="The literature pipeline (ADR 0028).")
     parser.add_argument("step", choices=["triage", "extract", "verify"], help="which step to run")
@@ -40,13 +47,16 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"anthropic:<model> or replay:<folder> (default {DEFAULT_MODEL})")
     parser.add_argument("--effort", help="the model's effort level (default: the step's own); 'none' to leave it unset")
     parser.add_argument("--now", action="store_true", help="live calls at full price instead of a batch, for small trials")
+    parser.add_argument("--collect", metavar="BATCH_ID",
+                        help="collect an earlier batch's results instead of sending a new one (they are paid for already); "
+                             "its papers are taken whatever --limit says")
     parser.add_argument("--lexicon", default=LEXICON, help="extract and verify: the region lexicon from `python -m ingest.lexicon`")
     args = parser.parse_args(argv)
     step = {"triage": triage, "extract": extract, "verify": verify}[args.step]
     effort = None if args.effort == "none" else args.effort or step.EFFORT
     schema = {"triage": triage.Verdict, "extract": Extraction, "verify": verify.Verdicts}[args.step]
     try:
-        run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now)
+        run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect)
         if args.step == "triage":
             summary = triage.triage(read_manifest(), run, args.limit)
         else:
@@ -60,16 +70,17 @@ def main(argv: list[str] | None = None, classify=None) -> int:
             work = extract.extract if args.step == "extract" else verify.verify
             summary = work(read_manifest(), run, args.limit, extract.Lexicon.load(args.lexicon), classify)
     except BatchPending as pending:
-        print(f"batch {pending.batch_id} is still running; nothing was written. Run the step again later: "
-              "papers without a result are sent again.")
+        note = (f"Batch `{pending.batch_id}` is still running, so nothing was written. Collect its results later with "
+                f"`--collect {pending.batch_id}` (the Literature workflow's `collect` input), at no further cost. A run "
+                "without it sends these papers again, and pays for them again.\n")
+        print(note)
+        summarize(note)
         return 3
     except (ValueError, FileNotFoundError) as error:
         print(f"{args.step} stopped: {error}")
         return 1
     text = report(summary)
     print(text)
-    if os.environ.get("GITHUB_STEP_SUMMARY"):
-        with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
-            f.write(text)
+    summarize(text)
     print(json.dumps(summary), file=sys.stderr)
     return 0

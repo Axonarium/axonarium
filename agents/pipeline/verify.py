@@ -17,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from evals.harness.run import read_prompt
 from pipeline import extract
 from pipeline.extract import Lexicon
-from pipeline.llm import Request, cost
+from pipeline.llm import Request, choose, cost, request_id
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "verifier.md"
 EFFORT, MAX_TOKENS = "medium", 32_000
@@ -66,6 +66,13 @@ def unverified(claims_dir: Path, prompt_id: str, index: dict) -> dict[str, tuple
     return found
 
 
+def request_key(found: tuple[dict, list[tuple[Path, dict]]]) -> str:
+    """A paper's request key: its key and the IDs of the claims listed. The verifier answers by claim number, so a
+    batch collected later must list exactly the same claims, or it isn't used."""
+    paper, claims = found
+    return paper["key"] + "|" + ",".join(record["id"] for _, record in claims)
+
+
 def _entity(ref: dict, name_in_paper: str | None, lexicon: Lexicon) -> str:
     atlas_name = lexicon.name(ref["id"])
     parts = [f"{ref['id']}" + (f" ({atlas_name})" if atlas_name else "")]
@@ -105,7 +112,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
     today, claims_dir = today or date.today().isoformat(), claims_dir or extract.CLAIMS
     prompt_id, system = read_prompt(prompt)
     model = getattr(run, "model", "replay")
-    papers = list(unverified(claims_dir, prompt_id, paper_index(manifest)).values())[:limit]
+    papers = choose(list(unverified(claims_dir, prompt_id, paper_index(manifest)).values()), run, limit, key=request_key)
     requests, sent, skipped = [], {}, []
     for paper, claims in papers:
         try:
@@ -117,7 +124,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
             skipped.append(f"{paper['key']}: the hidden-text screen flagged it")
             continue
         listed = "\n\n".join(describe(n, record, lexicon) for n, (_, record) in enumerate(claims, start=1))
-        request = Request(f"p{len(requests):05d}", system, f"{screened.text}\n\n## Claims to check\n\n{listed}")
+        request = Request(request_id(request_key((paper, claims))), system, f"{screened.text}\n\n## Claims to check\n\n{listed}")
         requests.append(request)
         sent[request.id] = (paper, claims)
     results = run.run(requests)
