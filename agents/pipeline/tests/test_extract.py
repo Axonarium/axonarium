@@ -1,6 +1,8 @@
 """Extraction (sprint 2.3): triaged papers' full text, pruned and screened, into proposed claim files."""
 
 from pathlib import Path
+from types import SimpleNamespace
+from urllib.error import HTTPError
 
 import yaml
 
@@ -25,14 +27,14 @@ LEXICON = {
     },
     "neuron_types": [{"id": "nt-3kvfdzf7wn", "name": "MEA glutamatergic neurons", "species": MOUSE, "region": "MBA:403"}],
 }
-PAPERS = [
-    {"key": "doi:10.1/a", "doi": "10.1/a", "pmid": "1", "pmcid": "PMC1", "full_text": "true"},
-    {"key": "doi:10.1/b", "doi": "10.1/b", "pmid": "2", "pmcid": "PMC2", "full_text": "true"},
-    {"key": "doi:10.1/c", "doi": "10.1/c", "pmid": "3", "pmcid": "PMC3", "full_text": "true"},
-    {"key": "doi:10.1/d", "doi": "10.1/d", "pmid": "4", "pmcid": "", "full_text": "true"},  # no PMC ID: not readable
-    {"key": "doi:10.1/e", "doi": "10.1/e", "pmid": "5", "pmcid": "PMC5", "full_text": "true"},  # its fetch fails
-    {"key": "doi:10.1/f", "doi": "10.1/f", "pmid": "6", "pmcid": "PMC6", "full_text": "true"},  # triaged out
-]
+PAPERS = [{**paper, "full_text": "true", "open_access": "true"} for paper in (
+    {"key": "doi:10.1/a", "doi": "10.1/a", "pmid": "1", "pmcid": "PMC1"},
+    {"key": "doi:10.1/b", "doi": "10.1/b", "pmid": "2", "pmcid": "PMC2"},
+    {"key": "doi:10.1/c", "doi": "10.1/c", "pmid": "3", "pmcid": "PMC3"},
+    {"key": "doi:10.1/d", "doi": "10.1/d", "pmid": "4", "pmcid": ""},  # no PMC ID: not readable
+    {"key": "doi:10.1/e", "doi": "10.1/e", "pmid": "5", "pmcid": "PMC5"},  # its fetch fails
+    {"key": "doi:10.1/f", "doi": "10.1/f", "pmid": "6", "pmcid": "PMC6"},  # triaged out
+)] + [{"key": "doi:10.1/g", "doi": "10.1/g", "pmid": "7", "pmcid": "PMC7", "full_text": "true", "open_access": "false"}]  # Europe PMC won't serve it
 TRIAGED = {p["key"]: {"verdict": "out" if p["key"].endswith("f") else "in"} for p in PAPERS}
 
 
@@ -225,3 +227,21 @@ def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():
     absent, _ = extract.claim(draft("MBA:295", "MBA:672", result="absent", strength="weak", measurements=[number("connection_probability", 0.0)]),
                               paper, lexicon, "m", "extract@0.3.0", "2026-10-09", notes)
     assert "strength" not in absent and "measurements" not in absent
+
+
+def test_only_open_access_papers_are_read_and_a_missing_text_is_not_asked_for_again(tmp_path):
+    assert "doi:10.1/g" not in [p["key"] for p in extract.candidates(PAPERS, TRIAGED, {}, "extract@0.3.0")]
+
+    def missing(paper):
+        if paper["pmcid"] == "PMC1":
+            raise HTTPError("https://www.ebi.ac.uk/…/PMC1/fullTextXML", 404, "Not Found", None, None)
+        raise OSError("unreachable")
+
+    ledger = Ledger(tmp_path / "extracted.csv", extract.LEDGER.columns)
+    run = SimpleNamespace(model="m", name="m", batch=False, run=lambda requests: {r.id: Result(None, "refusal") for r in requests})
+    lexicon = extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"])
+    extract.extract(PAPERS[:1] + PAPERS[4:5], run, 10, lexicon, classify=None, today="2026-10-08", ledger=ledger,
+                    triaged=TRIAGED, claims_dir=tmp_path / "claims", text=missing)
+    assert {k: r["outcome"] for k, r in ledger.read().items()} == {"doi:10.1/a": "unavailable", "doi:10.1/e": "unfetched"}
+    assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, ledger.read(), "extract@0.3.0")] == [
+        "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]  # unfetched is tried again; unavailable is done
