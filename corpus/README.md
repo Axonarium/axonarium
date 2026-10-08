@@ -31,9 +31,17 @@ One row per paper, sorted by `key`: its DOI, else PubMed ID, else PubMed Central
 
 Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3) reads open-access full text from Europe PMC when it needs it.
 
+## Reading each paper once
+
+The ledgers below record every paper the literature pipeline has handled (ADR 0028), and each step reads a paper once:
+- **A finished paper is never sent again**, whatever version of the prompt finished it. Reading it again takes an explicit `--redo`: named papers (key, DOI, PubMed ID or PMC ID), `older` (finished by an earlier prompt version) or `all`.
+- **A paper whose answers fail** (a refusal, a cut-off or invalid answer) is tried again, and set aside after two reads. Batch entries no model answered (errored, expired) don't count.
+- **A paper is the same paper under any of its identifiers:** one keyed by its PubMed ID that later gains a DOI is still recognised.
+- **A run refuses to start while another branch holds this step's results** that aren't on its own branch yet. Merge that run's pull request first.
+
 ## Triage
 
-`triage.csv` has one row per paper, sorted by `key`, from sprint 2.2a. A paper is triaged once per version of the triage prompt; a failed request is tried again on the next run.
+`triage.csv` has one row per paper, sorted by `key`, from sprint 2.2a.
 
 | Column | Holds |
 | --- | --- |
@@ -41,16 +49,30 @@ Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3
 | `basis` | `abstract`, or `title` when Europe PMC has no abstract |
 | `evidence`, `species` | The kinds of evidence and the species the abstract describes, `;`-separated |
 | `reason` | One sentence in the model's own words, never the abstract's |
+| `attempts` | How many times a model has read it for this step |
 | `model`, `prompt`, `date` | Which model and prompt version decided, and when |
 
 ## Extraction
 
-`extracted.csv` has one row per paper extraction has handled, sorted by `key`, from sprint 2.3. A paper is extracted once per version of the extractor prompt.
+`extracted.csv` has one row per paper extraction has handled, sorted by `key`, from sprint 2.3.
 
 | Column | Holds |
 | --- | --- |
 | `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unfetched` (Europe PMC couldn't be reached; tried again next run), or why the request failed |
 | `claims`, `dropped` | Claims written, and drafts dropped for naming a region outside the lexicon or breaking the schema's rules |
+| `attempts` | How many times a model has read it for this step |
 | `model`, `prompt`, `date` | Which model and prompt version extracted, and when |
+
+## Verification
+
+`verified.csv` has one row per paper verification has sent, sorted by `key`, from sprint 2.4. The verdicts themselves are in the claims.
+
+| Column | Holds |
+| --- | --- |
+| `outcome` | `judged` (the verifier answered), `screened`, `unreadable`, `unfetched`, or why the request failed |
+| `claims`, `judged` | Claims listed in the request, and how many got a verdict |
+| `listed` | A short hash of the paper and the claims listed: tries are counted per list |
+| `attempts` | How many times a model has read this list of claims |
+| `model`, `prompt`, `date` | Which model and prompt version verified, and when |
 
 The manifest grows with every run, past pre-commit's 500 KB limit for added files, so that check skips it. It stays one file, so a run's diff shows which papers came and went.

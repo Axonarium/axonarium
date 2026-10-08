@@ -6,8 +6,8 @@ import os
 import sys
 
 from evals.harness.models import Extraction
-from pipeline import extract, triage, verify
-from pipeline.corpus import ROOT, read_manifest
+from pipeline import branches, extract, triage, verify
+from pipeline.corpus import ROOT, Redo, read_manifest
 from pipeline.llm import BatchPending, runner
 
 DEFAULT_MODEL = "anthropic:claude-opus-5-5"
@@ -50,15 +50,23 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     parser.add_argument("--collect", metavar="BATCH_ID",
                         help="collect an earlier batch's results instead of sending a new one (they are paid for already); "
                              "its papers are taken whatever --limit says")
+    parser.add_argument("--redo", action="append", default=[], metavar="PAPERS",
+                        help="send papers again although this step has finished them: keys, DOIs, PubMed IDs or PMC IDs, "
+                             "'older' for those an earlier version of the prompt finished, or 'all'; repeatable")
     parser.add_argument("--lexicon", default=LEXICON, help="extract and verify: the region lexicon from `python -m ingest.lexicon`")
     args = parser.parse_args(argv)
     step = {"triage": triage, "extract": extract, "verify": verify}[args.step]
     effort = None if args.effort == "none" else args.effort or step.EFFORT
     schema = {"triage": triage.Verdict, "extract": Extraction, "verify": verify.Verdicts}[args.step]
+    redo = Redo(tuple(args.redo))
     try:
         run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect)
+        if args.collect is None:  # collecting sends nothing, so it can't pay twice
+            elsewhere = branches.waiting(step.LEDGER)
+            if elsewhere:
+                raise ValueError(branches.refusal(args.step, elsewhere))
         if args.step == "triage":
-            summary = triage.triage(read_manifest(), run, args.limit)
+            summary = triage.triage(read_manifest(), run, args.limit, redo=redo)
         else:
             from screen import preflight
             from screen.injection import ProtectAI
@@ -68,7 +76,7 @@ def main(argv: list[str] | None = None, classify=None) -> int:
             if problems:
                 raise ValueError("the hidden-text screen fails its fixtures: " + "; ".join(problems))
             work = extract.extract if args.step == "extract" else verify.verify
-            summary = work(read_manifest(), run, args.limit, extract.Lexicon.load(args.lexicon), classify)
+            summary = work(read_manifest(), run, args.limit, extract.Lexicon.load(args.lexicon), classify, redo=redo)
     except BatchPending as pending:
         note = (f"Batch `{pending.batch_id}` is still running, so nothing was written. Collect its results later with "
                 f"`--collect {pending.batch_id}` (the Literature workflow's `collect` input), at no further cost. A run "
@@ -78,6 +86,7 @@ def main(argv: list[str] | None = None, classify=None) -> int:
         return 3
     except (ValueError, FileNotFoundError) as error:
         print(f"{args.step} stopped: {error}")
+        summarize(f"**{args.step}** stopped: {error}\n")
         return 1
     text = report(summary)
     print(text)

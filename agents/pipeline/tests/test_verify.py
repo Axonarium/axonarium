@@ -3,7 +3,7 @@
 import yaml
 
 from pipeline import extract, verify
-from pipeline.corpus import Ledger
+from pipeline.corpus import Ledger, Redo
 from pipeline.llm import Result
 from pipeline.tests.test_extract import LEXICON, PAPERS, TRIAGED, FakeRun, text
 
@@ -93,3 +93,42 @@ def test_a_collected_batch_is_used_only_for_the_claims_it_listed(tmp_path):
     judge.known = lambda: {then}
     verify.verify(PAPERS, judge, 10, lexicon(), classify=None, today="2026-10-09", claims_dir=claims, text=text)
     assert [r.id for r in judge.sent] == [then]
+
+
+class Silent(Judge):
+    """Answers, but judges none of the claims."""
+
+    def run(self, requests):
+        self.sent += requests
+        return {r.id: Result(verify.Verdicts(verdicts=[]), "end_turn", {"input_tokens": 20_000}) for r in requests}
+
+
+def test_the_ledger_records_each_request_and_sets_aside_claims_never_judged(tmp_path):
+    claims = extracted(tmp_path)
+    ledger = Ledger(tmp_path / "verified.csv", verify.LEDGER.columns)
+    for day in ("2026-10-09", "2026-10-10"):
+        verify.verify(PAPERS, Silent(), 10, lexicon(), classify=None, today=day, claims_dir=claims, text=text, ledger=ledger)
+    row = ledger.read()["doi:10.1/a"]
+    assert row["outcome"] == "judged" and row["judged"] == "0" and row["claims"] == "4" and row["attempts"] == "2"
+    third = Silent()
+    summary = verify.verify(PAPERS, third, 10, lexicon(), classify=None, today="2026-10-11", claims_dir=claims, text=text,
+                            ledger=ledger)
+    assert third.sent == [] and summary["set_aside"] == ["doi:10.1/a: 4 claim(s)"]
+
+    judge = Judge()  # asked for again: judged now, and judged claims are never sent again
+    verify.verify(PAPERS, judge, 10, lexicon(), classify=None, today="2026-10-11", claims_dir=claims, text=text, ledger=ledger,
+                  redo=Redo(("10.1/a",)))
+    assert len(judge.sent) == 1 and ledger.read()["doi:10.1/a"]["judged"] == "3"
+
+
+def test_a_new_verifier_prompt_judges_again_only_when_asked_and_never_over_a_person(tmp_path):
+    claims = extracted(tmp_path)
+    verify.verify(PAPERS, Judge(), 10, lexicon(), classify=None, today="2026-10-09", claims_dir=claims, text=text)
+    person = next(p for p in sorted(claims.glob("*.yaml")) if "verification" in yaml.safe_load(p.read_text(encoding="utf-8")))
+    record = yaml.safe_load(person.read_text(encoding="utf-8"))
+    record["verification"] = {**record["verification"], "by": "human", "role": "curator"}
+    person.write_text(yaml.safe_dump(record, sort_keys=False), encoding="utf-8")
+    index = verify.paper_index(PAPERS)
+    assert sum(len(c) for _, c in verify.unverified(claims, "verify@0.2.0", index).values()) == 1  # the claim left out
+    redone = verify.unverified(claims, "verify@0.2.0", index, Redo(("older",)))
+    assert sum(len(c) for _, c in redone.values()) == 3  # two the agent judged, and the one left out; not the person's

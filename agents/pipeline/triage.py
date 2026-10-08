@@ -1,8 +1,9 @@
 """Triage (sprint 2.2a, ADR 0028): from each paper's title and abstract, does its own data test a connection?
 
 Abstracts are fetched from Europe PMC at run time and never stored. The verdict, the kinds of evidence, the species
-and a one-sentence reason in the model's own words go in corpus/triage.csv. Papers with a verdict from the current
-prompt are skipped; papers whose request failed are tried again.
+and a one-sentence reason in the model's own words go in corpus/triage.csv. A paper with a verdict is never sent
+again, whatever version of the prompt decided it, unless asked for (`--redo`); one whose answers failed is tried again
+until it has been read MAX_ATTEMPTS times (pipeline.corpus).
 """
 
 from collections.abc import Callable
@@ -16,11 +17,12 @@ from pydantic import BaseModel, ConfigDict, Field
 from evals.harness.models import EvidenceClass
 from evals.harness.run import read_prompt
 from pipeline import europepmc
-from pipeline.corpus import CORPUS, Ledger
+from pipeline.corpus import CORPUS, Ledger, Redo, attempts, due, recorded, set_aside
 from pipeline.llm import Request, Result, choose, cost, request_id
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "triage.md"
-LEDGER = Ledger(CORPUS / "triage.csv", ("key", "verdict", "basis", "evidence", "species", "reason", "model", "prompt", "date"))
+LEDGER = Ledger(CORPUS / "triage.csv", ("key", "verdict", "basis", "evidence", "species", "reason", "attempts", "model", "prompt",
+                                         "date"))
 DECIDED = {"in", "out"}
 EFFORT, MAX_TOKENS = "low", 8_000
 
@@ -35,10 +37,10 @@ class Verdict(BaseModel):
     reason: str = Field(description="One short sentence in your own words, at most 25 words")
 
 
-def pending(manifest: list[dict], ledger: dict[str, dict], prompt_id: str) -> list[dict]:
-    """Papers without a verdict from this prompt: those Europe PMC holds the full text of first, as extraction can
-    read them, then the rest, each group in manifest order."""
-    todo = [p for p in manifest if not (ledger.get(p["key"], {}).get("verdict") in DECIDED and ledger[p["key"]]["prompt"] == prompt_id)]
+def pending(manifest: list[dict], ledger: dict[str, dict], prompt_id: str, redo: Redo = Redo()) -> list[dict]:
+    """Papers to triage (pipeline.corpus.due): those Europe PMC holds the full text of first, as extraction can read
+    them, then the rest, each group in manifest order."""
+    todo = [p for p in manifest if due(p, recorded(ledger, p), "verdict", DECIDED, prompt_id, redo)]
     return sorted(todo, key=lambda p: p["full_text"] != "true")
 
 
@@ -46,21 +48,24 @@ def request_text(paper: dict, abstract: str) -> str:
     return f"Title: {paper['title']}\n\nAbstract: {abstract}" if abstract else f"Title: {paper['title']}\n\nAbstract: (none)"
 
 
-def row(paper: dict, result: Result, basis: str, model: str, prompt_id: str, today: str) -> dict:
-    found = result.parsed
+def row(paper: dict, result: Result, basis: str, model: str, prompt_id: str, today: str, previous: dict | None = None) -> dict:
+    found, tries = result.parsed, attempts(previous, result.stop)
     if found is None:
-        return {"key": paper["key"], "verdict": result.stop, "basis": basis, "model": model, "prompt": prompt_id, "date": today}
+        return {"key": paper["key"], "verdict": result.stop, "basis": basis, "attempts": tries, "model": model,
+                "prompt": prompt_id, "date": today}
     return {"key": paper["key"], "verdict": "in" if found.tests_connections else "out", "basis": basis,
             "evidence": ";".join(sorted(set(found.evidence))), "species": ";".join(sorted(set(found.species))),
-            "reason": " ".join(found.reason.split())[:300], "model": model, "prompt": prompt_id, "date": today}
+            "reason": " ".join(found.reason.split())[:300], "attempts": tries, "model": model, "prompt": prompt_id,
+            "date": today}
 
 
 def triage(manifest: list[dict], run, limit: int, today: str | None = None, ledger: Ledger | None = None,
-           abstract: Callable[[str], str] | None = None, prompt: Path = PROMPT, workers: int = 4) -> dict:
+           abstract: Callable[[str], str] | None = None, prompt: Path = PROMPT, workers: int = 4, redo: Redo = Redo()) -> dict:
     """Triage up to `limit` pending papers with `run` (a runner from pipeline.llm). Returns a summary."""
     today, ledger, abstract = today or date.today().isoformat(), ledger or LEDGER, abstract or europepmc.abstract
     prompt_id, system = read_prompt(prompt)
-    papers = choose(pending(manifest, ledger.read(), prompt_id), run, limit)
+    before = ledger.read()
+    papers = choose(pending(manifest, before, prompt_id, redo), run, limit)
 
     def fetch(paper: dict) -> str | None:
         try:
@@ -74,7 +79,7 @@ def triage(manifest: list[dict], run, limit: int, today: str | None = None, ledg
     requests = [Request(request_id(p["key"]), system, request_text(p, a)) for p, a in fetched]
     results = run.run(requests)
     model = getattr(run, "model", "replay")
-    rows = [row(p, results[r.id], "abstract" if a else "title", model, prompt_id, today)
+    rows = [row(p, results[r.id], "abstract" if a else "title", model, prompt_id, today, recorded(before, p))
             for (p, a), r in zip(fetched, requests, strict=True)]
     ledger.update(rows)
     usage = {kind: sum(results[r.id].usage.get(kind, 0) for r in requests) for kind in ("input_tokens", "output_tokens",
@@ -85,4 +90,5 @@ def triage(manifest: list[dict], run, limit: int, today: str | None = None, ledg
             "failed": len(verdicts) - verdicts.count("in") - verdicts.count("out"),
             "unfetched": len(papers) - len(fetched), "without_abstract": sum(1 for _, a in fetched if not a),
             "usage": usage, "cost": cost(model, usage, getattr(run, "batch", False)),
-            "remaining": len(pending(manifest, ledger.read(), prompt_id))}
+            "remaining": len(pending(manifest, ledger.read(), prompt_id)),
+            "set_aside": set_aside(manifest, ledger.read(), "verdict", DECIDED)}

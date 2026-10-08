@@ -1,6 +1,7 @@
 """Extraction (sprint 2.3, ADR 0028): the open full text of triaged papers, as proposed claim files.
 
-For each paper triaged in, with full text in Europe PMC and not yet extracted by the current prompt:
+For each paper triaged in, with full text in Europe PMC and not yet extracted (pipeline.corpus.due: once, whatever the
+prompt version, unless asked for again with --redo):
 
 1. its JATS full text is fetched (cached in .cache/papers, never committed) and cut to the parts that hold claims;
 2. it passes the hidden-text screen, and a flagged paper is never sent;
@@ -24,16 +25,16 @@ import yaml
 from evals.harness.models import DraftClaim
 from evals.harness.run import read_prompt
 from pipeline import europepmc, sections
-from pipeline.corpus import CORPUS, ROOT, Ledger
+from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, recorded, set_aside
 from pipeline.llm import Request, choose, cost, request_id
 from pipeline.triage import LEDGER as TRIAGE
 from screen import Screened, screen_jats
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "extractor.md"
-LEDGER = Ledger(CORPUS / "extracted.csv", ("key", "outcome", "claims", "dropped", "model", "prompt", "date"))
+LEDGER = Ledger(CORPUS / "extracted.csv", ("key", "outcome", "claims", "dropped", "attempts", "model", "prompt", "date"))
 CLAIMS = ROOT / "data" / "claims" / "amygdala"
 EFFORT, MAX_TOKENS = "high", 64_000
-# Outcomes that mean a paper is done for a prompt version; any other (a refusal, a failed fetch) is tried again.
+# Outcomes that mean a paper is done; any other (a refusal, a failed fetch) is tried again while it has tries left.
 DONE = {"claims", "none", "screened", "unreadable"}
 SPECIES = {"mouse": "NCBITaxon:10090", "rat": "NCBITaxon:10116", "human": "NCBITaxon:9606"}
 EVIDENCE = {  # the schema's predicate rule: each predicate allows only its own kinds of evidence
@@ -149,11 +150,12 @@ def write(record: dict, folder: Path) -> Path:
     return path
 
 
-def candidates(manifest: list[dict], triaged: dict[str, dict], done: dict[str, dict], prompt_id: str) -> list[dict]:
-    """Papers triaged in, whose full text Europe PMC holds, not yet extracted by this prompt; in manifest order."""
+def candidates(manifest: list[dict], triaged: dict[str, dict], done: dict[str, dict], prompt_id: str,
+               redo: Redo = Redo()) -> list[dict]:
+    """Papers triaged in, whose full text Europe PMC holds, due for extraction (pipeline.corpus.due); in manifest order."""
     return [p for p in manifest
-            if triaged.get(p["key"], {}).get("verdict") == "in" and p["full_text"] == "true" and p["pmcid"]
-            and not (done.get(p["key"], {}).get("outcome") in DONE and done[p["key"]]["prompt"] == prompt_id)]
+            if (recorded(triaged, p) or {}).get("verdict") == "in" and p["full_text"] == "true" and p["pmcid"]
+            and due(p, recorded(done, p), "outcome", DONE, prompt_id, redo)]
 
 
 def full_text(paper: dict, classify, fetch: Callable[[str], bytes] | None = None) -> Screened:
@@ -162,7 +164,7 @@ def full_text(paper: dict, classify, fetch: Callable[[str], bytes] | None = None
 
 def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, today: str | None = None,
             ledger: Ledger | None = None, triaged: dict | None = None, claims_dir: Path | None = None,
-            text: Callable | None = None, prompt: Path = PROMPT) -> dict:
+            text: Callable | None = None, prompt: Path = PROMPT, redo: Redo = Redo()) -> dict:
     """Extract up to `limit` candidate papers with `run` (a runner from pipeline.llm). Returns a summary."""
     today, ledger, claims_dir = today or date.today().isoformat(), ledger or LEDGER, claims_dir or CLAIMS
     triaged = triaged if triaged is not None else TRIAGE.read()
@@ -170,10 +172,12 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     lexicon.uberon |= set(UBERON.findall(instructions))  # the rat terms in the prompt's own table of names
     system = instructions + "\n\n" + lexicon.text()
     model = getattr(run, "model", "replay")
-    papers = choose(candidates(manifest, triaged, ledger.read(), prompt_id), run, limit)
+    before = ledger.read()
+    papers = choose(candidates(manifest, triaged, before, prompt_id, redo), run, limit)
     rows, requests, sent, flagged = [], [], {}, []
     for paper in papers:
-        base = {"key": paper["key"], "model": model, "prompt": prompt_id, "date": today}
+        base = {"key": paper["key"], "attempts": attempts(recorded(before, paper), None), "model": model, "prompt": prompt_id,
+                "date": today}
         try:
             screened = (text or (lambda p: full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:  # unreachable, or XML that won't parse (ParseError)
@@ -191,6 +195,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     for request in requests:
         paper, base = sent[request.id]
         result = results[request.id]
+        base = {**base, "attempts": attempts(recorded(before, paper), result.stop)}
         if result.parsed is None:
             rows.append({**base, "outcome": result.stop})
             continue
@@ -215,4 +220,6 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             **{f"papers_{outcome}": outcomes.count(outcome) for outcome in sorted(set(outcomes))},
             "usage": usage, "cost": cost(model, usage, getattr(run, "batch", False)),
             "remaining": len(candidates(manifest, triaged, ledger.read(), prompt_id)),
+            "set_aside": set_aside([p for p in manifest if (recorded(triaged, p) or {}).get("verdict") == "in"], ledger.read(),
+                                   "outcome", DONE),
             "dropped": dropped_reasons, "screen_findings": flagged}

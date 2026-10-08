@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import pytest
 
 from pipeline import cli, europepmc, triage
-from pipeline.corpus import Ledger
+from pipeline.corpus import MAX_ATTEMPTS, Ledger, Redo, aliases, due, identifier, recorded
 from pipeline.llm import AnthropicRunner, BatchPending, Request, Result, choose, cost, parse, request_id
 
 PAPERS = [
@@ -55,8 +55,8 @@ def test_triage_records_verdicts_and_skips_what_is_decided(tmp_path):
     summary = triage.triage(PAPERS, run, limit=10, today="2026-10-08", ledger=ledger, abstract=fetch)
     rows = ledger.read()
     assert rows["doi:10.1/a"] == {"key": "doi:10.1/a", "verdict": "in", "basis": "abstract", "evidence": "anterograde_tracer",
-                                       "species": "mouse", "reason": "Traces BLA outputs with AAV.", "model": "claude-opus-5-5",
-                                       "prompt": "triage@0.1.0", "date": "2026-10-08"}
+                                       "species": "mouse", "reason": "Traces BLA outputs with AAV.", "attempts": "1",
+                                       "model": "claude-opus-5-5", "prompt": "triage@0.1.0", "date": "2026-10-08"}
     assert rows["doi:10.1/b"]["verdict"] == "out" and rows["doi:10.1/b"]["species"] == "mouse;rat"
     assert rows["doi:10.1/c"]["verdict"] == "refusal" and rows["doi:10.1/c"]["basis"] == "title"
     assert "doi:10.1/d" not in rows  # its abstract couldn't be fetched: nothing was sent
@@ -73,8 +73,17 @@ def test_triage_records_verdicts_and_skips_what_is_decided(tmp_path):
     with (tmp_path / "triage.csv").open(encoding="utf-8") as f:
         assert [r["key"] for r in csv.DictReader(f)] == ["doi:10.1/a", "doi:10.1/b", "doi:10.1/c"]
 
+    # Refused twice, it is set aside: a third run sends nothing until someone asks for it again.
+    third = FakeRun()
+    summary = triage.triage(PAPERS, third, limit=10, today="2026-10-10", ledger=ledger, abstract=fetch)
+    assert third.sent == [] and ledger.read()["doi:10.1/c"]["attempts"] == "2"
+    assert summary["set_aside"] == ["doi:10.1/c: refusal"]
+    fourth = FakeRun()
+    triage.triage(PAPERS, fourth, limit=10, today="2026-10-10", ledger=ledger, abstract=fetch, redo=Redo(("10.1/c",)))
+    assert [r.text.split("\n")[0] for r in fourth.sent] == ["Title: No abstract here"]
 
-def test_limit_and_a_new_prompt_version(tmp_path):
+
+def test_a_new_prompt_version_reads_nothing_again_unless_asked(tmp_path):
     ledger = Ledger(tmp_path / "triage.csv", triage.LEDGER.columns)
     triage.triage(PAPERS, FakeRun(), limit=1, today="2026-10-08", ledger=ledger, abstract=fetch)
     assert list(ledger.read()) == ["doi:10.1/b"]
@@ -82,7 +91,14 @@ def test_limit_and_a_new_prompt_version(tmp_path):
     prompt.write_text(triage.PROMPT.read_text(encoding="utf-8").replace("triage@0.1.0", "triage@0.2.0"), encoding="utf-8")
     run = FakeRun()
     triage.triage(PAPERS[:2], run, limit=10, today="2026-10-09", ledger=ledger, abstract=fetch, prompt=prompt)
-    assert len(run.sent) == 2 and ledger.read()["doi:10.1/b"]["prompt"] == "triage@0.2.0"
+    assert [r.text.split("\n")[0] for r in run.sent] == ["Title: BLA to CeA, traced"]  # only the paper never triaged
+    assert ledger.read()["doi:10.1/b"]["prompt"] == "triage@0.1.0"
+
+    older = FakeRun()  # asked for: every paper an earlier prompt decided
+    triage.triage(PAPERS[:2], older, limit=10, today="2026-10-09", ledger=ledger, abstract=fetch, prompt=prompt,
+                  redo=Redo(("older",)))
+    assert [r.text.split("\n")[0] for r in older.sent] == ["Title: A review"]
+    assert ledger.read()["doi:10.1/b"]["prompt"] == "triage@0.2.0" and ledger.read()["doi:10.1/b"]["attempts"] == "2"
 
 
 def test_ledger_refuses_a_file_with_other_columns(tmp_path):
@@ -258,3 +274,56 @@ def test_cli_tells_how_to_collect_a_batch_still_running(tmp_path, monkeypatch, c
     monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
     assert cli.main(["triage", "--model", "replay:answers"]) == 3
     assert "--collect msgbatch_7" in summary.read_text() and "--collect msgbatch_7" in capsys.readouterr().out
+
+
+def test_a_paper_is_found_under_any_of_its_keys():
+    paper = {"key": "doi:10.1/x", "doi": "10.1/x", "pmid": "77", "pmcid": "PMC9"}
+    assert aliases(paper) == ["doi:10.1/x", "pubmed:77", "pmc:PMC9"]
+    ledger = {"pubmed:77": {"key": "pubmed:77", "verdict": "in"}}  # triaged while it was keyed by its PubMed ID
+    assert recorded(ledger, paper)["verdict"] == "in"
+    assert [identifier(v) for v in ("10.1/X", "doi:10.1/x", "PMC9", "77")] == ["doi:10.1/x", "doi:10.1/x", "pmc:pmc9", "pubmed:77"]
+    assert Redo(("PMC9",)).wants(paper, "triage@0.1.0", "triage@0.1.0") and Redo(("10.1/x, 5",)).wants(paper, None, "x")
+    assert not Redo(("older",)).wants(paper, "triage@0.1.0", "triage@0.1.0") and Redo(("all",)).wants(paper, None, "x")
+
+
+def test_only_answered_tries_count():
+    paper = {"key": "doi:10.1/x"}
+    for stop, due_after in (("expired", True), ("errored", True), ("refusal", False), ("max_tokens", False)):
+        row = {"verdict": stop, "attempts": "0", "prompt": "p"}
+        for _ in range(MAX_ATTEMPTS):
+            row = {**row, "attempts": triage.row(paper, Result(None, stop), "abstract", "m", "p", "d", row)["attempts"]}
+        assert due(paper, row, "verdict", triage.DECIDED, "p", Redo()) is due_after, stop
+    assert not due(paper, {"verdict": "out", "attempts": "1", "prompt": "old"}, "verdict", triage.DECIDED, "new", Redo())
+
+
+def test_results_waiting_on_another_branch_are_found(tmp_path):
+    from pipeline import branches
+
+    ledger = Ledger(tmp_path / "triage.csv", triage.LEDGER.columns)
+    ledger.update([{"key": "doi:10.1/a", "verdict": "in", "attempts": "1", "date": "2026-10-08"}])
+    header = ",".join(triage.LEDGER.columns)
+    merged = f"{header}\ndoi:10.1/a,in,,,,,1,,,2026-10-08\n"  # its pull request merged: nothing new
+    unmerged = merged + "doi:10.1/b,out,,,,,1,,,2026-10-09\n"
+
+    def git(args, **kwargs):
+        if "for-each-ref" in args:
+            return SimpleNamespace(returncode=0, stdout="origin\norigin/main\norigin/literature/triage-1\norigin/literature/triage-2\n")
+        shown = {"origin/main:triage.csv": merged, "origin/literature/triage-1:triage.csv": merged,
+                 "origin/literature/triage-2:triage.csv": unmerged}.get(args[-1])
+        return SimpleNamespace(returncode=0 if shown else 128, stdout=shown or "", stderr="")
+
+    assert branches.waiting(ledger, run=git) == {"origin/literature/triage-2": 1}
+    assert "origin/literature/triage-2 (1 paper(s))" in branches.refusal("triage", {"origin/literature/triage-2": 1})
+    assert branches.waiting(ledger, run=lambda args, **kwargs: SimpleNamespace(returncode=128, stdout="", stderr="no")) == {}
+
+
+def test_cli_refuses_while_another_branch_holds_results(tmp_path, monkeypatch, capsys):
+    from pipeline import branches
+
+    monkeypatch.setattr(cli, "read_manifest", lambda: PAPERS[:1])
+    monkeypatch.setattr(cli, "branches", SimpleNamespace(waiting=lambda ledger: {"origin/literature/triage-2": 3},
+                                                         refusal=branches.refusal))
+    sent = []
+    monkeypatch.setattr(triage, "triage", lambda *args, **kwargs: sent.append(args))
+    assert cli.main(["triage", "--model", "replay:answers"]) == 1
+    assert sent == [] and "pay for them twice" in capsys.readouterr().out
