@@ -20,6 +20,10 @@ on:
         description: provider:model
         type: string
         default: anthropic:claude-opus-5-5
+      collect:
+        description: An earlier run's batch ID (msgbatch_…) to collect instead of sending a new batch; leave empty otherwise
+        type: string
+        default: ""
 
 permissions: {}
 
@@ -66,8 +70,9 @@ jobs:
           STEP: ${{ inputs.step }}
           LIMIT: ${{ inputs.limit }}
           MODEL: ${{ inputs.model }}
+          COLLECT: ${{ inputs.collect }}
           HF_HUB_DISABLE_TELEMETRY: "1"
-        run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL"
+        run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" ${COLLECT:+--collect "$COLLECT"}
       - name: Source records for newly cited papers, then the data checks
         if: inputs.step != 'triage'
         run: |

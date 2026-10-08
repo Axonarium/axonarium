@@ -17,7 +17,7 @@ from evals.harness.models import EvidenceClass
 from evals.harness.run import read_prompt
 from pipeline import europepmc
 from pipeline.corpus import CORPUS, Ledger
-from pipeline.llm import Request, Result, cost
+from pipeline.llm import Request, Result, choose, cost, request_id
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "triage.md"
 LEDGER = Ledger(CORPUS / "triage.csv", ("key", "verdict", "basis", "evidence", "species", "reason", "model", "prompt", "date"))
@@ -60,7 +60,7 @@ def triage(manifest: list[dict], run, limit: int, today: str | None = None, ledg
     """Triage up to `limit` pending papers with `run` (a runner from pipeline.llm). Returns a summary."""
     today, ledger, abstract = today or date.today().isoformat(), ledger or LEDGER, abstract or europepmc.abstract
     prompt_id, system = read_prompt(prompt)
-    papers = pending(manifest, ledger.read(), prompt_id)[:limit]
+    papers = choose(pending(manifest, ledger.read(), prompt_id), run, limit)
 
     def fetch(paper: dict) -> str | None:
         try:
@@ -71,7 +71,7 @@ def triage(manifest: list[dict], run, limit: int, today: str | None = None, ledg
     with ThreadPoolExecutor(max_workers=workers) as pool:
         abstracts = list(pool.map(fetch, papers))
     fetched = [(p, a) for p, a in zip(papers, abstracts, strict=True) if a is not None]
-    requests = [Request(f"p{i:05d}", system, request_text(p, a)) for i, (p, a) in enumerate(fetched)]
+    requests = [Request(request_id(p["key"]), system, request_text(p, a)) for p, a in fetched]
     results = run.run(requests)
     model = getattr(run, "model", "replay")
     rows = [row(p, results[r.id], "abstract" if a else "title", model, prompt_id, today)

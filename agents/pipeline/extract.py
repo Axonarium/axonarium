@@ -25,7 +25,7 @@ from evals.harness.models import DraftClaim
 from evals.harness.run import read_prompt
 from pipeline import europepmc, sections
 from pipeline.corpus import CORPUS, ROOT, Ledger
-from pipeline.llm import Request, cost
+from pipeline.llm import Request, choose, cost, request_id
 from pipeline.triage import LEDGER as TRIAGE
 from screen import Screened, screen_jats
 
@@ -170,7 +170,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     lexicon.uberon |= set(UBERON.findall(instructions))  # the rat terms in the prompt's own table of names
     system = instructions + "\n\n" + lexicon.text()
     model = getattr(run, "model", "replay")
-    papers = candidates(manifest, triaged, ledger.read(), prompt_id)[:limit]
+    papers = choose(candidates(manifest, triaged, ledger.read(), prompt_id), run, limit)
     rows, requests, sent, flagged = [], [], {}, []
     for paper in papers:
         base = {"key": paper["key"], "model": model, "prompt": prompt_id, "date": today}
@@ -183,7 +183,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             rows.append({**base, "outcome": "screened"})
             flagged += [f"{paper['key']}: {f.layer}, {f.detail}: {f.excerpt}" for f in screened.findings]
             continue
-        request = Request(f"p{len(requests):05d}", system, screened.text)
+        request = Request(request_id(paper["key"]), system, screened.text)
         requests.append(request)
         sent[request.id] = (paper, base)
     results = run.run(requests)
