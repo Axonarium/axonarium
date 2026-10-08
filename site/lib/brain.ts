@@ -14,6 +14,8 @@ export interface BrainEdge {
   density: number | null;
   claims: number;
   accepted: number;
+  /** Claims drafted from published papers rather than read from the Allen atlas (their terms say which; build/terms.py). */
+  papers: number;
 }
 
 /** Gap mode (ADR 0027): an untested connection from an amygdala region nobody has injected, and the regions whose
@@ -28,7 +30,15 @@ export interface BrainGap {
 }
 
 /** A gap as the viewer draws it: a connection with no claims. */
-export const gapEdge = (gap: BrainGap): BrainEdge => ({ id: gap.id, source: gap.source, target: gap.target, density: gap.density, claims: 0, accepted: 0 });
+export const gapEdge = (gap: BrainGap): BrainEdge => ({
+  id: gap.id,
+  source: gap.source,
+  target: gap.target,
+  density: gap.density,
+  claims: 0,
+  accepted: 0,
+  papers: 0,
+});
 
 /** The brain page's gaps, with each suggesting connection reduced to its region (its ID's first part). */
 export function brainGaps(gaps: Pick<Gap, "id" | "subject_id" | "object_id" | "density" | "suggested_by">[]): BrainGap[] {
@@ -62,6 +72,8 @@ export interface BrainClaim {
   object_id: string;
   status: string;
   measurements: Measurement[] | null;
+  /** "allen-institute" for claims from the Allen atlas; absent from snapshots made before it was read here. */
+  terms?: string;
 }
 
 const key = (subject: string, object: string) => `${subject} ${object}`;
@@ -70,7 +82,7 @@ export function brainEdges(edges: Pick<Edge, "id" | "subject_id" | "object_id">[
   const found = new Map<string, BrainEdge>(
     edges.map((e) => [
       key(e.subject_id, e.object_id),
-      { id: e.id, source: e.subject_id, target: e.object_id, density: null, claims: 0, accepted: 0 },
+      { id: e.id, source: e.subject_id, target: e.object_id, density: null, claims: 0, accepted: 0, papers: 0 },
     ]),
   );
   for (const claim of claims) {
@@ -78,6 +90,7 @@ export function brainEdges(edges: Pick<Edge, "id" | "subject_id" | "object_id">[
     if (!edge) continue;
     edge.claims += 1;
     if (claim.status === "accepted") edge.accepted += 1;
+    if (claim.terms !== undefined && claim.terms !== "allen-institute") edge.papers += 1;
     for (const m of claim.measurements ?? []) {
       if (m.quantity === "projection_density" && (edge.density === null || m.value > edge.density)) edge.density = m.value;
     }

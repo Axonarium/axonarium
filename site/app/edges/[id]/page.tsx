@@ -25,6 +25,7 @@ export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
   if (e === undefined) return <DataUnavailable />;
   if (e === null) notFound();
   const [claims, regions] = await Promise.all([getClaims(e.claim_ids), getRegionNames([e.subject_id, e.object_id])]);
+  const sources = new Set(claims.map((c) => c.source_key)).size;
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -34,7 +35,8 @@ export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
           <RegionName heading label={regionLabel(e.object_id, regions)} />
         </h1>
         <p className="text-muted-foreground">
-          {e.n_claims} claim{e.n_claims === 1 ? "" : "s"}: {e.n_present} found, {e.n_absent} tested and absent,{" "}
+          {e.n_claims} claim{e.n_claims === 1 ? "" : "s"} from {sources} source{sources === 1 ? "" : "s"}: {e.n_present} found,{" "}
+          {e.n_absent} tested and absent,{" "}
           {e.n_ambiguous} ambiguous{e.n_disputed ? `, ${e.n_disputed} disputed` : ""}. Evidence:{" "}
           {e.evidence_classes.map((c) => c.replaceAll("_", " ")).join(", ")}.
           {e.strength && ` Strongest reported: ${e.strength}.`}

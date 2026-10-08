@@ -309,8 +309,10 @@ export default function BrainViewer({ edges, gaps = [], base, compact = false }:
   }, []);
   const figureText = (): FigureText => {
     const date = new Date().toISOString().slice(0, 10);
+    const papers = (hops ?? (gapMode ? [] : shown)).reduce((n, edge) => n + edge.papers, 0);
+    const fromPapers = papers ? `; ${papers} claim${papers === 1 ? "" : "s"} drafted from published papers, each cited at https://axonarium.com` : "";
     const caption = [
-      "Data: Allen Mouse Brain Connectivity Atlas (Oh et al. 2014, doi:10.1038/nature13186), © Allen Institute; region names and meshes: Allen Institute atlases, via BrainGlobe.",
+      `Data: Allen Mouse Brain Connectivity Atlas (Oh et al. 2014, doi:10.1038/nature13186), © Allen Institute${fromPapers}; region names and meshes: Allen Institute atlases, via BrainGlobe.`,
       `Figure: Axonarium, https://axonarium.com/brain, ${date}. Width: the strongest projection density; dashed: only proposed claims.`,
     ];
     if (hops) {
@@ -677,8 +679,9 @@ export default function BrainViewer({ edges, gaps = [], base, compact = false }:
           <p className="text-xs text-muted-foreground">
             Outputs come from tracer injected into the amygdala; inputs from injections elsewhere that label it.
             Arc width: the strongest projection density among a connection&apos;s claims; connections that state no
-            density are drawn thinnest and listed last, whatever the minimum. Dashed: every claim is
-            proposed, because most of the tracer landed outside the named region. Densities pool both hemispheres;
+            density, as most from papers don&apos;t, are drawn thinnest and listed last, whatever the minimum. Dashed:
+            every claim is proposed, because most of an Allen injection landed outside the named region or because
+            AI models drafted it from a paper and people haven&apos;t audited it yet. Densities pool both hemispheres;
             3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.
           </p>
         )}

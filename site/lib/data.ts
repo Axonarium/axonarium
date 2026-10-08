@@ -20,7 +20,7 @@ import * as offline from "./offline";
 import type { RegionDetail, RegionPage, Tables } from "./offline";
 import { fetchAll } from "./pages";
 import { type IndexedRegion, regionIndex } from "./region-index";
-import type { AtlasRegion, RegionName } from "./regions";
+import { type AtlasRegion, isNeuronType, isUberon, type MappedRegion, type RegionName, uberonNames } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Gap, Source } from "./types";
 
 export type { RegionDetail, RegionPage } from "./offline";
@@ -140,16 +140,30 @@ export function getSource(id: string): Promise<Source | null> {
   return read((db) => rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle()), (t) => offline.source(t, id), null);
 }
 
-/** The names of these atlas regions, by ID (IDs that aren't atlas regions are left out). */
+/** Names by ID: atlas regions, UBERON terms (named from the regions mapped to them) and neuron types. IDs without a
+ * name are left out. */
 export async function getRegionNames(ids: string[]): Promise<Record<string, RegionName>> {
   if (ids.length === 0) return {};
+  const chunked = <T>(all: string[], fetch: (chunk: string[]) => Promise<T[]>) =>
+    Promise.all(Array.from({ length: Math.ceil(all.length / 200) }, (_, i) => fetch(all.slice(i * 200, i * 200 + 200)))).then((found) => found.flat());
   return read(
     async (db) => {
-      const chunks = Array.from({ length: Math.ceil(ids.length / 200) }, (_, i) => ids.slice(i * 200, i * 200 + 200));
-      const found = await Promise.all(
-        chunks.map((chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk))),
-      );
-      return Object.fromEntries(found.flat().map((region) => [region.id, region]));
+      const terms = [...new Set(ids.filter(isUberon))];
+      const types = [...new Set(ids.filter(isNeuronType))];
+      const [regions, mapped, neuronTypes] = await Promise.all([
+        chunked(ids, (chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk))),
+        chunked(terms, (chunk) =>
+          rows<MappedRegion[]>("UBERON names", () =>
+            db.from("regions").select("id, acronym, name, atlas, parent, uberon, uberon_label").in("uberon", chunk).order("id"),
+          ),
+        ),
+        chunked(types, (chunk) => rows<{ id: string; name: string }[]>("neuron type names", () => db.from("neuron_types").select("id, name").in("id", chunk))),
+      ]);
+      return {
+        ...uberonNames(terms, mapped),
+        ...Object.fromEntries(neuronTypes.map((n) => [n.id, { id: n.id, acronym: null, name: n.name, kind: "neuron_type" as const }])),
+        ...Object.fromEntries(regions.map((region) => [region.id, region])),
+      };
     },
     (t) => offline.regionNames(t, ids),
     {},
@@ -195,7 +209,7 @@ async function liveBrainEdges(db: SupabaseClient, atlas: string): Promise<BrainE
     ),
     fetchAll((from, to) =>
       rows<BrainClaim[]>("brain claims", () =>
-        db.from("connectivity_claims").select("subject_id, object_id, status, measurements").eq("predicate", "projects_to")
+        db.from("connectivity_claims").select("subject_id, object_id, status, measurements, terms").eq("predicate", "projects_to")
           .eq("result", "present").neq("status", "retracted").eq("subject_atlas", atlas).eq("object_atlas", atlas).order("id").range(from, to),
       ),
     ),
@@ -238,7 +252,7 @@ async function liveRegion(db: SupabaseClient, id: string): Promise<RegionPage | 
       ),
       fetchAll((from, to) =>
         rows<BrainClaim[]>("region claims", () =>
-          db.from("connectivity_claims").select("subject_id, object_id, status, measurements").eq(end, id)
+          db.from("connectivity_claims").select("subject_id, object_id, status, measurements, terms").eq(end, id)
             .eq("result", "present").neq("status", "retracted").order("id").range(from, to),
         ),
       ),

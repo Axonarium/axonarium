@@ -99,3 +99,50 @@ export function citationParts(citation: string): { text: string; href: string | 
   const match = citation.match(/^(.*?)[,;]?\s*(https?:\/\/\S+)\s*$/);
   return match ? { text: match[1].trim(), href: match[2] } : { text: citation, href: null };
 }
+
+/** The fields that say who made a claim and who checked it. */
+export interface Provenanced {
+  curation: { by: string; role: string; model?: string; prompt?: string; orcid?: string };
+  verification?: { by: string; model?: string; verdict: string } | null;
+  status: string;
+  extra?: Record<string, unknown> | null;
+}
+
+const VERDICTS: Record<string, string> = { agree: "agrees", disagree: "disagrees", unsure: "is unsure" };
+
+/** Who made a claim: a person, an AI model reading the paper (ADR 0028), or an adapter reading a database. */
+export function madeBy(c: Provenanced): string {
+  const { by, role, model, prompt, orcid } = c.curation;
+  if (by === "human") return orcid ? `a curator (ORCID ${orcid})` : "a curator";
+  if (role === "extractor") return `an AI model reading the paper (${[model, prompt].filter(Boolean).join(", ")})`;
+  if (role === "ingester") return `an adapter reading a database (${prompt ?? model})`;
+  return `an agent (${model})`;
+}
+
+/** What the independent check said, or null when nothing has checked the claim yet. */
+export function checkedBy(c: Provenanced): string | null {
+  const v = c.verification;
+  if (!v) return null;
+  return `${v.by === "human" ? "a curator" : `a second AI model (${v.model})`} ${VERDICTS[v.verdict] ?? v.verdict}`;
+}
+
+/** The checker's one-sentence reason, when it gave one. */
+export function checkNote(c: Provenanced): string | null {
+  const note = c.extra?.["verify.note"];
+  return typeof note === "string" && note ? note : null;
+}
+
+/** The names a paper used for the claim's two ends, when an extractor recorded them. */
+export function namesInPaper(c: Provenanced): [string, string] | null {
+  const [subject, object] = [c.extra?.["extract.subject_name"], c.extra?.["extract.object_name"]];
+  return typeof subject === "string" && typeof object === "string" && subject && object ? [subject, object] : null;
+}
+
+/** Why a claim is proposed rather than accepted, by how it was made. */
+export function proposedBecause(c: Provenanced): string | null {
+  if (c.status !== "proposed") return null;
+  if (c.curation.role === "extractor")
+    return "Drafted and checked by AI models; it stays proposed until people have audited a sample of such claims.";
+  if (c.extra && "allen.experiment" in c.extra) return "Most of the injected tracer landed outside the region it names.";
+  return "Not yet accepted.";
+}

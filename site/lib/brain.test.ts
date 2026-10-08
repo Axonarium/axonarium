@@ -21,15 +21,23 @@ describe("brainEdges", () => {
       ],
     );
     expect(found).toEqual([
-      { id: "e1", source: "MBA:295", target: "MBA:672", density: 0.5, claims: 2, accepted: 1 },
-      { id: "e2", source: "MBA:295", target: "MBA:536", density: null, claims: 1, accepted: 1 },
+      { id: "e1", source: "MBA:295", target: "MBA:672", density: 0.5, claims: 2, accepted: 1, papers: 0 },
+      { id: "e2", source: "MBA:295", target: "MBA:536", density: null, claims: 1, accepted: 1, papers: 0 },
+    ]);
+  });
+
+  it("counts the claims drafted from papers, which Allen's terms don't cover", () => {
+    const fromPaper = { ...claim("MBA:295", "MBA:672", null, "proposed"), terms: "cc-by-4.0" };
+    const fromAllen = { ...claim("MBA:295", "MBA:672", 0.3), terms: "allen-institute" };
+    expect(brainEdges([edge("e1", "MBA:295", "MBA:672")], [fromPaper, fromAllen, claim("MBA:295", "MBA:672", 0.1)])).toEqual([
+      { id: "e1", source: "MBA:295", target: "MBA:672", density: 0.3, claims: 3, accepted: 2, papers: 1 },
     ]);
   });
 
   it("ignores other measurements and claims of connections it wasn't given", () => {
     const other = { ...claim("MBA:295", "MBA:672", null), measurements: [{ quantity: "synapse_count", value: 9, unit: "1" }] };
     expect(brainEdges([edge("e1", "MBA:295", "MBA:672")], [other, claim("MBA:1", "MBA:2", 0.9)])).toEqual([
-      { id: "e1", source: "MBA:295", target: "MBA:672", density: null, claims: 1, accepted: 1 },
+      { id: "e1", source: "MBA:295", target: "MBA:672", density: null, claims: 1, accepted: 1, papers: 0 },
     ]);
   });
 });
@@ -50,7 +58,7 @@ describe("arcs", () => {
 });
 
 describe("byDensity", () => {
-  const at = (id: string, density: number | null) => ({ id, source: "MBA:295", target: id, density, claims: 1, accepted: 1 });
+  const at = (id: string, density: number | null) => ({ id, source: "MBA:295", target: id, density, claims: 1, accepted: 1, papers: 0 });
   const edges = [at("weak", 0.02), at("unstated", null), at("strong", 0.4), at("zero", 0)];
 
   it("keeps connections that state no density, whatever the minimum", () => {
@@ -67,9 +75,9 @@ describe("networkData", () => {
   const region = (acronym: string) => ({ acronym, name: acronym, file: "", centroid: [0, 0, 0] as [number, number, number] });
   const regions = { "MBA:295": region("BLA"), "MBA:536": region("CEA"), "MBA:672": region("CP") };
   const shown = [
-    { id: "e1", source: "MBA:295", target: "MBA:672", density: 0.5, claims: 1, accepted: 1 },
-    { id: "e2", source: "MBA:295", target: "MBA:536", density: 0.2, claims: 1, accepted: 0 },
-    { id: "e3", source: "MBA:536", target: "MBA:672", density: 0.1, claims: 1, accepted: 1 },
+    { id: "e1", source: "MBA:295", target: "MBA:672", density: 0.5, claims: 1, accepted: 1, papers: 0 },
+    { id: "e2", source: "MBA:295", target: "MBA:536", density: 0.2, claims: 1, accepted: 0, papers: 0 },
+    { id: "e3", source: "MBA:536", target: "MBA:672", density: 0.1, claims: 1, accepted: 1, papers: 0 },
   ];
 
   it("makes one node per region, marking injected regions and counting inputs", () => {
@@ -94,7 +102,7 @@ describe("networkData", () => {
 describe("directed", () => {
   const region = (amygdala: boolean) => ({ acronym: "", name: "", file: "", centroid: [0, 0, 0] as [number, number, number], amygdala });
   const regions = { "MBA:295": region(true), "MBA:536": region(true), "MBA:972": region(false), "MBA:672": region(false) };
-  const e = (id: string, source: string, target: string) => ({ id, source, target, density: 0.1, claims: 1, accepted: 1 });
+  const e = (id: string, source: string, target: string) => ({ id, source, target, density: 0.1, claims: 1, accepted: 1, papers: 0 });
   const edges = [e("out", "MBA:295", "MBA:672"), e("within", "MBA:295", "MBA:536"), e("in", "MBA:972", "MBA:295"), e("off", "MBA:972", "MBA:1")];
 
   it("splits connections into the amygdala's outputs and its inputs from outside it", () => {
@@ -111,7 +119,7 @@ describe("directed", () => {
 describe("linkedView", () => {
   const region = (amygdala: boolean) => ({ acronym: "", name: "", file: "", centroid: [0, 0, 0] as [number, number, number], amygdala });
   const regions = { "MBA:295": region(true), "MBA:131": region(true), "MBA:972": region(false), "MBA:672": region(false) };
-  const e = (id: string, source: string, target: string) => ({ id, source, target, density: 0.1, claims: 1, accepted: 1 });
+  const e = (id: string, source: string, target: string) => ({ id, source, target, density: 0.1, claims: 1, accepted: 1, papers: 0 });
   // BLA has injections; LA (amygdala) is only a target; PL only sends; CP only receives.
   const edges = [e("1", "MBA:295", "MBA:672"), e("2", "MBA:972", "MBA:131"), e("3", "MBA:295", "MBA:131")];
 
@@ -146,6 +154,6 @@ describe("gaps", () => {
   });
 
   it("draws as a connection without claims, so dashed", () => {
-    expect(gapEdge(gap)).toEqual({ id: gap.id, source: "MBA:4", target: "MBA:10", density: 0.3, claims: 0, accepted: 0 });
+    expect(gapEdge(gap)).toEqual({ id: gap.id, source: "MBA:4", target: "MBA:10", density: 0.3, claims: 0, accepted: 0, papers: 0 });
   });
 });

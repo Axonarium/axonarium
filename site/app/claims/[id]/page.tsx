@@ -9,7 +9,7 @@ import { RegionName } from "@/components/region-name";
 import { getClaim, getRegionNames, getSource } from "@/lib/data";
 import { inboxConfig } from "@/lib/inbox";
 import { regionLabel } from "@/lib/regions";
-import { edgeHref, formatMeasurement, predicateLabel, speciesName } from "@/lib/format";
+import { checkedBy, checkNote, edgeHref, formatMeasurement, madeBy, namesInPaper, predicateLabel, proposedBecause, speciesName } from "@/lib/format";
 
 export const revalidate = 300;
 
@@ -37,6 +37,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
   if (c === null) notFound();
   const [s, regions] = await Promise.all([getSource(c.source_key), getRegionNames([c.subject_id, c.object_id])]);
   const edgeId = [c.subject_id, c.predicate, c.object_id, c.species].join("|");
+  const [check, note, called, because] = [checkedBy(c), checkNote(c), namesInPaper(c), proposedBecause(c)];
   // The buttons appear once submissions are open: Turnstile's keys and the Supabase secret key set (ADR 0024).
   const siteKey = inboxConfig() && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   return (
@@ -95,16 +96,30 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
             {s?.license && <p className="text-sm text-muted-foreground">Licence: {s.license}</p>}
           </div>
         </Row>
-        <Row label="Curated by">
-          {c.curation.by === "human" ? `a curator (ORCID ${c.curation.orcid})` : `an agent (${c.curation.model})`}, {c.curation.date}
-        </Row>
-        {c.verification && (
-          <Row label="Verified by">
-            {c.verification.by === "human" ? "a curator" : `an agent (${c.verification.model})`}: {c.verification.verdict},{" "}
-            {c.verification.date}
+        {called && (
+          <Row label="Named in the paper">
+            “{called[0]}” and “{called[1]}”
           </Row>
         )}
-        <Row label="Status">{c.status}</Row>
+        <Row label="Made by">
+          {madeBy(c)}, {c.curation.date}
+        </Row>
+        {c.verification && check && (
+          <Row label="Checked by">
+            <div className="space-y-1">
+              <p>
+                {check}, {c.verification.date}
+              </p>
+              {note && <p className="text-sm text-muted-foreground">“{note}”</p>}
+            </div>
+          </Row>
+        )}
+        <Row label="Status">
+          <div className="space-y-1">
+            <p>{c.status}</p>
+            {because && <p className="text-sm text-muted-foreground">{because}</p>}
+          </div>
+        </Row>
       </dl>
       {siteKey && c.status !== "retracted" && <Evidence claimId={c.id} siteKey={siteKey} />}
     </div>

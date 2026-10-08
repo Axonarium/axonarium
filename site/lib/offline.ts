@@ -2,7 +2,7 @@
 // (Tier 1, ADR 0017). Each matches its Supabase query: the same filters, order and pages.
 
 import { type BrainClaim, type BrainEdge, brainEdges, type BrainGap, brainGaps } from "./brain";
-import type { AtlasRegion, RegionName } from "./regions";
+import { type AtlasRegion, isNeuronType, isUberon, type RegionName, uberonNames } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Gap, Source } from "./types";
 
 export interface RegionDetail extends AtlasRegion {
@@ -30,6 +30,7 @@ export interface Tables {
   edges: Edge[];
   /** Absent from snapshots made before gap mode (ADR 0027). */
   gaps?: Gap[];
+  neuron_types?: { id: string; name: string }[];
 }
 
 /** Postgres orders these text IDs byte by byte; so does this. */
@@ -67,7 +68,14 @@ export const source = (t: Tables, id: string): Source | null => t.sources.find((
 
 export function regionNames(t: Tables, ids: string[]): Record<string, RegionName> {
   const wanted = new Set(ids);
-  return Object.fromEntries(t.regions.filter((r) => wanted.has(r.id)).map((r) => [r.id, pick(r, NAME)]));
+  const terms = ids.filter(isUberon);
+  const mapped = sorted(t.regions.filter((r) => r.uberon !== null && terms.includes(r.uberon)));
+  const types = (t.neuron_types ?? []).filter((n) => isNeuronType(n.id) && wanted.has(n.id));
+  return {
+    ...uberonNames(terms, mapped),
+    ...Object.fromEntries(types.map((n) => [n.id, { id: n.id, acronym: null, name: n.name, kind: "neuron_type" as const }])),
+    ...Object.fromEntries(t.regions.filter((r) => wanted.has(r.id)).map((r) => [r.id, pick(r, NAME)])),
+  };
 }
 
 export function atlases(t: Tables): { atlas: Atlas; regions: number; amygdala: AtlasRegion[] }[] {
@@ -78,7 +86,7 @@ export function atlases(t: Tables): { atlas: Atlas; regions: number; amygdala: A
   }));
 }
 
-const asBrainClaim = (c: ConnectivityClaim): BrainClaim => pick(c, ["subject_id", "object_id", "status", "measurements"] as const);
+const asBrainClaim = (c: ConnectivityClaim): BrainClaim => pick(c, ["subject_id", "object_id", "status", "measurements", "terms"] as const);
 const found = (c: ConnectivityClaim) => c.predicate === "projects_to" && c.result === "present" && c.status !== "retracted";
 
 export function brain(t: Tables, atlas: string): BrainEdge[] {
