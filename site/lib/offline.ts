@@ -68,13 +68,19 @@ export const source = (t: Tables, id: string): Source | null => t.sources.find((
 
 export function regionNames(t: Tables, ids: string[]): Record<string, RegionName> {
   const wanted = new Set(ids);
+  return Object.fromEntries(t.regions.filter((r) => wanted.has(r.id)).map((r) => [r.id, pick(r, NAME)]));
+}
+
+/** Names for showing claims and connections: atlas regions, UBERON terms and neuron types (lib/data.ts, getNames). */
+export function names(t: Tables, ids: string[]): Record<string, RegionName> {
+  const wanted = new Set(ids);
   const terms = ids.filter(isUberon);
   const mapped = sorted(t.regions.filter((r) => r.uberon !== null && terms.includes(r.uberon)));
   const types = (t.neuron_types ?? []).filter((n) => isNeuronType(n.id) && wanted.has(n.id));
   return {
     ...uberonNames(terms, mapped),
     ...Object.fromEntries(types.map((n) => [n.id, { id: n.id, acronym: null, name: n.name, kind: "neuron_type" as const }])),
-    ...Object.fromEntries(t.regions.filter((r) => wanted.has(r.id)).map((r) => [r.id, pick(r, NAME)])),
+    ...regionNames(t, ids),
   };
 }
 

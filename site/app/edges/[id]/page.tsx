@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ClaimCard } from "@/components/claim-card";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { RegionName } from "@/components/region-name";
-import { getClaims, getEdge, getRegionNames } from "@/lib/data";
+import { getClaims, getEdge, getNames } from "@/lib/data";
 import { regionLabel } from "@/lib/regions";
 import { edgeFromParam, predicateLabel, speciesName } from "@/lib/format";
 
@@ -24,7 +24,7 @@ export default async function EdgePage({ params }: PageProps<"/edges/[id]">) {
   const e = await getEdge(edgeFromParam((await params).id));
   if (e === undefined) return <DataUnavailable />;
   if (e === null) notFound();
-  const [claims, regions] = await Promise.all([getClaims(e.claim_ids), getRegionNames([e.subject_id, e.object_id])]);
+  const [claims, regions] = await Promise.all([getClaims(e.claim_ids), getNames([e.subject_id, e.object_id])]);
   const sources = new Set(claims.map((c) => c.source_key)).size;
   return (
     <div className="space-y-8">

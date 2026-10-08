@@ -140,12 +140,23 @@ export function getSource(id: string): Promise<Source | null> {
   return read((db) => rows<Source | null>("source", () => db.from("sources").select("*").eq("id", id).maybeSingle()), (t) => offline.source(t, id), null);
 }
 
-/** Names by ID: atlas regions, UBERON terms (named from the regions mapped to them) and neuron types. IDs without a
- * name are left out. */
+/** The names of these atlas regions, by ID (IDs that aren't atlas regions are left out). */
 export async function getRegionNames(ids: string[]): Promise<Record<string, RegionName>> {
   if (ids.length === 0) return {};
-  const chunked = <T>(all: string[], fetch: (chunk: string[]) => Promise<T[]>) =>
-    Promise.all(Array.from({ length: Math.ceil(all.length / 200) }, (_, i) => fetch(all.slice(i * 200, i * 200 + 200)))).then((found) => found.flat());
+  return read(
+    async (db) => {
+      const found = await chunked(ids, (chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk)));
+      return Object.fromEntries(found.map((region) => [region.id, region]));
+    },
+    (t) => offline.regionNames(t, ids),
+    {},
+  );
+}
+
+/** Names for showing claims and connections: atlas regions, UBERON terms (named from the regions mapped to them) and
+ * neuron types. IDs without a name are left out. Only atlas regions have pages (`kind` says which). */
+export async function getNames(ids: string[]): Promise<Record<string, RegionName>> {
+  if (ids.length === 0) return {};
   return read(
     async (db) => {
       const terms = [...new Set(ids.filter(isUberon))];
@@ -165,9 +176,14 @@ export async function getRegionNames(ids: string[]): Promise<Record<string, Regi
         ...Object.fromEntries(regions.map((region) => [region.id, region])),
       };
     },
-    (t) => offline.regionNames(t, ids),
+    (t) => offline.names(t, ids),
     {},
   );
+}
+
+/** A query run over IDs 200 at a time, so its URL stays short. */
+function chunked<T>(all: string[], fetch: (chunk: string[]) => Promise<T[]>): Promise<T[]> {
+  return Promise.all(Array.from({ length: Math.ceil(all.length / 200) }, (_, i) => fetch(all.slice(i * 200, i * 200 + 200)))).then((found) => found.flat());
 }
 
 /** Each atlas, with its number of regions and the regions UBERON places under the amygdala. */

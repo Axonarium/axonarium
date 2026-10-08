@@ -6,7 +6,7 @@ import { Citation } from "@/components/citation";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { Evidence } from "@/components/evidence";
 import { RegionName } from "@/components/region-name";
-import { getClaim, getRegionNames, getSource } from "@/lib/data";
+import { getClaim, getNames, getSource } from "@/lib/data";
 import { inboxConfig } from "@/lib/inbox";
 import { regionLabel } from "@/lib/regions";
 import { checkedBy, checkNote, edgeHref, formatMeasurement, madeBy, namesInPaper, predicateLabel, proposedBecause, speciesName } from "@/lib/format";
@@ -35,7 +35,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
   const c = await getClaim((await params).id);
   if (c === undefined) return <DataUnavailable />;
   if (c === null) notFound();
-  const [s, regions] = await Promise.all([getSource(c.source_key), getRegionNames([c.subject_id, c.object_id])]);
+  const [s, regions] = await Promise.all([getSource(c.source_key), getNames([c.subject_id, c.object_id])]);
   const edgeId = [c.subject_id, c.predicate, c.object_id, c.species].join("|");
   const [check, note, called, because] = [checkedBy(c), checkNote(c), namesInPaper(c), proposedBecause(c)];
   // The buttons appear once submissions are open: Turnstile's keys and the Supabase secret key set (ADR 0024).
