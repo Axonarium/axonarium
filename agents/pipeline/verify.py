@@ -164,7 +164,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
             screened = (text or (lambda p: extract.full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:
             skipped.append(f"{paper['key']}: its text couldn't be read ({type(error).__name__})")
-            rows.append(ledger_row((paper, claims), "unreadable" if isinstance(error, SyntaxError) else "unfetched", None))
+            rows.append(ledger_row((paper, claims), extract.fetch_failure(error), None))
             continue
         if screened.flagged:
             skipped.append(f"{paper['key']}: the hidden-text screen flagged it")

@@ -1,7 +1,7 @@
 """Extraction (sprint 2.3, ADR 0028): the open full text of triaged papers, as proposed claim files.
 
-For each paper triaged in, with full text in Europe PMC and not yet extracted (pipeline.corpus.due: once, whatever the
-prompt version, unless asked for again with --redo):
+For each paper triaged in, open access with its full text in Europe PMC, and not yet extracted (pipeline.corpus.due:
+once, whatever the prompt version, unless asked for again with --redo):
 
 1. its JATS full text is fetched (cached in .cache/papers, never committed) and cut to the parts that hold claims;
 2. it passes the hidden-text screen, and a flagged paper is never sent;
@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 from typing import Literal
+from urllib.error import HTTPError
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field
@@ -38,7 +39,8 @@ LEDGER = Ledger(CORPUS / "extracted.csv", ("key", "outcome", "claims", "dropped"
 CLAIMS = ROOT / "data" / "claims" / "amygdala"
 EFFORT, MAX_TOKENS = "high", 64_000
 # Outcomes that mean a paper is done; any other (a refusal, a failed fetch) is tried again while it has tries left.
-DONE = {"claims", "none", "screened", "unreadable"}
+# `unavailable`: Europe PMC has no full text to give for it.
+DONE = {"claims", "none", "screened", "unreadable", "unavailable"}
 SPECIES = {"mouse": "NCBITaxon:10090", "rat": "NCBITaxon:10116", "human": "NCBITaxon:9606"}
 # The numbers extraction reads, with their unit and range (the data checks' own; checks/file_rules.py). Papers
 # normalise projection density each in their own way, so a paper's density isn't comparable with Allen's, which sets
@@ -229,10 +231,20 @@ def write(record: dict, folder: Path) -> Path:
 
 def candidates(manifest: list[dict], triaged: dict[str, dict], done: dict[str, dict], prompt_id: str,
                redo: Redo = Redo()) -> list[dict]:
-    """Papers triaged in, whose full text Europe PMC holds, due for extraction (pipeline.corpus.due); in manifest order."""
+    """Papers triaged in, open access with their full text in Europe PMC, due for extraction (pipeline.corpus.due); in
+    manifest order. Europe PMC serves full text only for its open-access subset: it holds other papers' text, such as
+    author manuscripts, but won't give it out."""
     return [p for p in manifest
-            if (recorded(triaged, p) or {}).get("verdict") == "in" and p["full_text"] == "true" and p["pmcid"]
-            and due(p, recorded(done, p), "outcome", DONE, prompt_id, redo)]
+            if (recorded(triaged, p) or {}).get("verdict") == "in" and p["full_text"] == "true" and p["open_access"] == "true"
+            and p["pmcid"] and due(p, recorded(done, p), "outcome", DONE, prompt_id, redo)]
+
+
+def fetch_failure(error: Exception) -> str:
+    """A ledger outcome for a full text that couldn't be read: `unreadable` XML, `unavailable` text (Europe PMC answers
+    that it has none), or `unfetched` (Europe PMC unreachable; tried again next run)."""
+    if isinstance(error, SyntaxError):
+        return "unreadable"
+    return "unavailable" if isinstance(error, HTTPError) and error.code == 404 else "unfetched"
 
 
 def full_text(paper: dict, classify, fetch: Callable[[str], bytes] | None = None) -> Screened:
@@ -258,7 +270,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
         try:
             screened = (text or (lambda p: full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:  # unreachable, or XML that won't parse (ParseError)
-            rows.append({**base, "outcome": "unreadable" if isinstance(error, SyntaxError) else "unfetched"})
+            rows.append({**base, "outcome": fetch_failure(error)})
             continue
         if screened.flagged:  # never sent; its findings go to the maintainer in the run's report
             rows.append({**base, "outcome": "screened"})
