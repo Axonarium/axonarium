@@ -11,6 +11,7 @@ A flagged paper is never given to a model. Its findings go to the maintainer ins
 """
 
 import xml.etree.ElementTree as ET
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -69,10 +70,13 @@ def screen_text(text: str, classify: Classifier) -> Screened:
     return _screen_blocks(text.splitlines(), classify, [])
 
 
-def screen_jats(xml: bytes, classify: Classifier) -> Screened:
-    """A JATS article: hidden elements removed, then its titles and paragraphs screened."""
+def screen_jats(xml: bytes, classify: Classifier, prune: Callable[[ET.Element], None] | None = None) -> Screened:
+    """A JATS article: hidden elements removed, then its titles and paragraphs screened. `prune` can then drop the
+    parts a model needn't read (such as the discussion); hidden markup anywhere in the article still flags it."""
     root = ET.fromstring(xml)
     findings = [Finding("hidden-markup", reason, _excerpt(text)) for reason, text in markup.strip_hidden(root) if text]
+    if prune:
+        prune(root)
     return _screen_blocks(jats.blocks(root), classify, findings)
 
 

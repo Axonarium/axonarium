@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic JATS article for the pipeline's tests. Not a real paper. -->
+<article xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article">
+  <front>
+    <article-meta>
+      <title-group><article-title>Basolateral amygdala outputs in the mouse</article-title></title-group>
+      <abstract><p>ABSTRACT: we traced BLA outputs.</p></abstract>
+    </article-meta>
+  </front>
+  <body>
+    <sec sec-type="intro"><title>Introduction</title><p>INTRO: earlier work showed many things.</p></sec>
+    <sec sec-type="materials|methods"><title>Materials and methods</title><p>METHODS: AAV was injected into the BLA.</p></sec>
+    <sec><title>Results</title>
+      <p>RESULTS: labelled axons filled the CeA.</p>
+      <fig id="f1"><label>Figure 1</label><caption><p>CAPTION ONE: terminals in CeM.</p></caption></fig>
+    </sec>
+    <sec><title>4. Discussion</title>
+      <p>DISCUSSION: this agrees with earlier work.</p>
+      <fig id="f2"><caption><p>CAPTION TWO: a summary diagram.</p></caption></fig>
+    </sec>
+  </body>
+  <back>
+    <ack><p>ACKNOWLEDGEMENTS: we thank everyone.</p></ack>
+    <ref-list><ref><mixed-citation>REFERENCE: a cited paper.</mixed-citation></ref></ref-list>
+  </back>
+</article>
