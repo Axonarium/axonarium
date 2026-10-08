@@ -7,6 +7,7 @@ The prompts that agents work from, the harness that decides which models may fil
 | `roles/` | Role prompts, each versioned in its front matter (`id: extract@0.1.0`); a claim records the version that drafted it |
 | `evals/` | The eval harness, the gold set (`evals/gold/`, human-owned) and the scored results |
 | `pipeline/` | The literature pipeline on the Batch API ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)): `triage` decides which papers to read; `extract` turns their open full text (abstract, methods, results and captions, screened first) into proposed claim files, checked against a region lexicon; `verify` has a separate prompt judge each claim against the same text, writing the verdict into the claim |
+| `curate/` | The gold curation tool: `python -m curate` serves a local page with a paper beside a claim form and atlas-region search, and saves drafts in the gold set's format for the maintainer to review (sprint 0.5a) |
 | `screen/` | The hidden-text screen: invisible characters and hidden markup stripped, injection-like paragraphs flagged, with planted fixtures (sprint C.5) |
 
 ```bash
