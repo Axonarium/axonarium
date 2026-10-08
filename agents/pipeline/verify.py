@@ -117,9 +117,20 @@ def describe(number: int, record: dict, lexicon: Lexicon) -> str:
         f"- evidence: {record['evidence_class']}",
         f"- result: {record['result']}",
         f"- sign: {record['sign']}",
+        *([f"- strength: {record['strength']}"] if record.get("strength") else []),
+        *[f"- number: {in_words(m)}" for m in record.get("measurements") or []],
         f"- locator: {record['source']['locator']}",
         f"- paraphrase: {record['paraphrase']}",
     ])
+
+
+def in_words(m: dict) -> str:
+    """A measurement in words, such as "connection probability 0.4 (n = 30)"."""
+    unit = "" if m["unit"] == "1" else f" {m['unit']}"
+    spread = [f"SD {m['sd']}" if "sd" in m else "", f"SEM {m['sem']}" if "sem" in m else "",
+              f"CI {m['ci_low']} to {m['ci_high']}" if "ci_low" in m else "", f"n = {m['n']}" if "n" in m else ""]
+    detail = ", ".join(part for part in spread if part)
+    return f"{m['quantity'].replace('_', ' ')} {m['value']}{unit}" + (f" ({detail})" if detail else "")
 
 
 def record_verdict(path: Path, record: dict, verdict: ClaimVerdict, model: str, prompt_id: str, today: str) -> None:

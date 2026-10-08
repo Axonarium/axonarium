@@ -14,15 +14,18 @@ corpus/extracted.csv records what each paper gave.
 
 import hashlib
 import json
+import math
 import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
+from typing import Literal
 
 import yaml
+from pydantic import BaseModel, ConfigDict, Field
 
-from evals.harness.models import DraftClaim
+from evals.harness.models import DraftClaim, values
 from evals.harness.run import read_prompt
 from pipeline import europepmc, sections
 from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, recorded, set_aside
@@ -37,6 +40,15 @@ EFFORT, MAX_TOKENS = "high", 64_000
 # Outcomes that mean a paper is done; any other (a refusal, a failed fetch) is tried again while it has tries left.
 DONE = {"claims", "none", "screened", "unreadable"}
 SPECIES = {"mouse": "NCBITaxon:10090", "rat": "NCBITaxon:10116", "human": "NCBITaxon:9606"}
+# The numbers extraction reads, with their unit and range (the data checks' own; checks/file_rules.py). Papers
+# normalise projection density each in their own way, so a paper's density isn't comparable with Allen's, which sets
+# the brain view's arc widths; it stays in the paraphrase.
+QUANTITIES = {
+    "connection_probability": ("1", 0.0, 1.0),
+    "fraction_of_labelled_neurons": ("1", 0.0, 1.0),
+    "synapse_count": ("1", 0.0, math.inf),
+    "conduction_delay": ("ms", 0.0, math.inf),
+}
 EVIDENCE = {  # the schema's predicate rule: each predicate allows only its own kinds of evidence
     "projects_to": {"anterograde_tracer", "retrograde_tracer", "single_neuron_reconstruction"},
     "synapses_onto": {"electron_microscopy", "transsynaptic_tracer"},
@@ -102,6 +114,59 @@ class Lexicon:
         return None, f"{entity.id} is not in the region lexicon"
 
 
+class DraftMeasurement(BaseModel):
+    """A number the paper reports for the connection. An unknown part is null; nothing has a default."""
+
+    model_config = ConfigDict(extra="forbid")
+    quantity: Literal[tuple(QUANTITIES)]  # type: ignore[valid-type]
+    value: float = Field(description="Fractions and probabilities from 0 to 1, never percent; delays in ms")
+    sd: float | None
+    sem: float | None
+    ci_low: float | None
+    ci_high: float | None
+    n: int | None = Field(description="How many cells, pairs, animals or sections the value comes from")
+
+
+class Draft(DraftClaim):
+    """A draft claim with what the paper says of the connection's strength, and the numbers it reports."""
+
+    strength: Literal[values("OrdinalStrength")] | None = Field(  # type: ignore[valid-type]
+        description="Only when the paper itself grades the connection, such as dense or sparse labelling")
+    measurements: list[DraftMeasurement] = Field(description="The numbers the paper reports for this connection; empty if none")
+
+
+class PaperClaims(BaseModel):
+    """Every connectivity claim a paper makes, with strength and numbers (the pipeline's extraction; ADR 0028)."""
+
+    model_config = ConfigDict(extra="forbid")
+    claims: list[Draft]
+
+
+def measurements(found: list[DraftMeasurement]) -> tuple[list[dict], list[str]]:
+    """The numbers as the schema's measurements, and why any were left out. Each must have its quantity's range."""
+    kept, left_out = [], []
+    for m in found:
+        unit, low, high = QUANTITIES[m.quantity]
+        numbers = [x for x in (m.value, m.sd, m.sem, m.ci_low, m.ci_high) if x is not None]
+        problem = (
+            "isn't a finite number" if not all(math.isfinite(x) for x in numbers)
+            else f"{m.value} is outside [{low}, {high}]" + (", perhaps a percent" if unit == "1" and high == 1 and m.value <= 100 else "")
+            if not low <= m.value <= high
+            else "has a negative spread" if any(x is not None and x < 0 for x in (m.sd, m.sem))
+            else "needs both ends of its interval" if (m.ci_low is None) != (m.ci_high is None)
+            else "has an interval whose low end is above its high end" if m.ci_low is not None and m.ci_low > m.ci_high
+            else "has a sample size below 1" if m.n is not None and m.n < 1
+            else None
+        )
+        if problem:
+            left_out.append(f"{m.quantity} {problem}")
+            continue
+        kept.append({"quantity": m.quantity, "value": m.value, "unit": unit,
+                     **{k: v for k, v in (("sd", m.sd), ("sem", m.sem), ("ci_low", m.ci_low), ("ci_high", m.ci_high), ("n", m.n))
+                        if v is not None}})
+    return kept, left_out
+
+
 def claim_id(source_key: str, draft: DraftClaim) -> str:
     """A stable ID: the same paper and claim always give the same ID (ADR 0004's shape)."""
     parts = (source_key, draft.subject.id, draft.predicate, draft.object.id, draft.species, draft.evidence_class,
@@ -110,8 +175,10 @@ def claim_id(source_key: str, draft: DraftClaim) -> str:
     return "clm-" + "".join(CROCKFORD[(number >> (5 * i)) & 31] for i in range(10))
 
 
-def claim(draft: DraftClaim, paper: dict, lexicon: Lexicon, model: str, prompt_id: str, today: str) -> tuple[dict | None, str | None]:
-    """A draft as a proposed claim record, or why it was dropped."""
+def claim(draft: DraftClaim, paper: dict, lexicon: Lexicon, model: str, prompt_id: str, today: str,
+          notes: list[str] | None = None) -> tuple[dict | None, str | None]:
+    """A draft as a proposed claim record, or why it was dropped. Numbers left out of a kept claim are added to
+    `notes`. An absent result keeps no strength or numbers, as the schema's rules require."""
     if draft.species not in SPECIES.values():
         return None, f"species {draft.species} is outside the project's species"
     if draft.evidence_class not in EVIDENCE[draft.predicate]:
@@ -134,6 +201,16 @@ def claim(draft: DraftClaim, paper: dict, lexicon: Lexicon, model: str, prompt_i
         "evidence_class": draft.evidence_class,
         "result": draft.result,
         "sign": "unknown" if draft.result == "absent" else draft.sign,
+    }
+    if draft.result != "absent" and getattr(draft, "strength", None):
+        record["strength"] = draft.strength
+    if draft.result != "absent" and getattr(draft, "measurements", None):
+        kept, left_out = measurements(draft.measurements)
+        if kept:
+            record["measurements"] = kept
+        if notes is not None:
+            notes += [f"{paper['key']}: {draft.subject.id} → {draft.object.id}: {problem}" for problem in left_out]
+    record |= {
         "source": {**source, "locator": " ".join(draft.locator.split())},
         "paraphrase": " ".join(draft.paraphrase.split()),
         "curation": {"by": "agent", "role": "extractor", "model": model, "prompt": prompt_id, "date": today},
@@ -191,7 +268,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
         requests.append(request)
         sent[request.id] = (paper, base)
     results = run.run(requests)
-    written, dropped_reasons = 0, []
+    written, dropped_reasons, numbers_left_out = 0, [], []
     for request in requests:
         paper, base = sent[request.id]
         result = results[request.id]
@@ -201,7 +278,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             continue
         kept, dropped = {}, 0
         for draft in result.parsed.claims:
-            record, problem = claim(draft, paper, lexicon, model, prompt_id, today)
+            record, problem = claim(draft, paper, lexicon, model, prompt_id, today, numbers_left_out)
             if record is None:
                 dropped += 1
                 dropped_reasons.append(f"{paper['key']}: {problem}")
@@ -222,4 +299,4 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             "remaining": len(candidates(manifest, triaged, ledger.read(), prompt_id)),
             "set_aside": set_aside([p for p in manifest if (recorded(triaged, p) or {}).get("verdict") == "in"], ledger.read(),
                                    "outcome", DONE),
-            "dropped": dropped_reasons, "screen_findings": flagged}
+            "dropped": dropped_reasons, "numbers_left_out": numbers_left_out, "screen_findings": flagged}

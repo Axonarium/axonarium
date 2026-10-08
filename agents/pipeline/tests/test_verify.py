@@ -52,7 +52,7 @@ def test_verdicts_are_written_into_the_claims(tmp_path):
     judged = [r for r in records if "verification" in r]
     assert sorted(r["verification"]["verdict"] for r in judged) == ["agree", "disagree", "unsure"]
     first = next(r for r in judged if r["verification"]["verdict"] == "agree")
-    assert first["verification"] == {"by": "agent", "role": "verifier", "model": "claude-opus-5-5", "prompt": "verify@0.1.0",
+    assert first["verification"] == {"by": "agent", "role": "verifier", "model": "claude-opus-5-5", "prompt": "verify@0.2.0",
                                      "verdict": "agree", "date": "2026-10-09"}
     assert first["extra"]["verify.note"] == "Figure 1 shows it." and first["status"] == "proposed"
     assert list(first) == ["id", "subject", "predicate", "object", "species", "evidence_class", "result", "sign", "source",
@@ -81,7 +81,7 @@ def test_a_collected_batch_is_used_only_for_the_claims_it_listed(tmp_path):
     from pipeline.llm import request_id
 
     claims = extracted(tmp_path)
-    (paper, listed), = verify.unverified(claims, "verify@0.1.0", verify.paper_index(PAPERS)).values()
+    (paper, listed), = verify.unverified(claims, "verify@0.2.0", verify.paper_index(PAPERS)).values()
     then = request_id(verify.request_key((paper, listed)))
     assert then == request_id(verify.request_key((paper, list(listed))))  # the same claims, the same request
 
@@ -129,6 +129,17 @@ def test_a_new_verifier_prompt_judges_again_only_when_asked_and_never_over_a_per
     record["verification"] = {**record["verification"], "by": "human", "role": "curator"}
     person.write_text(yaml.safe_dump(record, sort_keys=False), encoding="utf-8")
     index = verify.paper_index(PAPERS)
-    assert sum(len(c) for _, c in verify.unverified(claims, "verify@0.2.0", index).values()) == 1  # the claim left out
-    redone = verify.unverified(claims, "verify@0.2.0", index, Redo(("older",)))
+    assert sum(len(c) for _, c in verify.unverified(claims, "verify@0.3.0", index).values()) == 1  # the claim left out
+    redone = verify.unverified(claims, "verify@0.3.0", index, Redo(("older",)))
     assert sum(len(c) for _, c in redone.values()) == 3  # two the agent judged, and the one left out; not the person's
+
+
+def test_the_verifier_reads_strength_and_numbers():
+    record = {"subject": {"id": "MBA:295"}, "predicate": "functionally_connects_to", "object": {"id": "MBA:536"}, "species": "NCBITaxon:10090",
+              "evidence_class": "paired_recording", "result": "present", "sign": "excitatory", "strength": "strong",
+              "measurements": [{"quantity": "connection_probability", "value": 0.4, "unit": "1", "n": 30},
+                               {"quantity": "conduction_delay", "value": 3.2, "unit": "ms", "sem": 0.4}],
+              "source": {"locator": "Fig. 4"}, "paraphrase": "p"}
+    text = verify.describe(1, record, lexicon())
+    assert "- strength: strong" in text
+    assert "- number: connection probability 0.4 (n = 30)" in text and "- number: conduction delay 3.2 ms (SEM 0.4)" in text
