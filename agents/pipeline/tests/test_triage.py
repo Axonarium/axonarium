@@ -159,6 +159,7 @@ def test_a_batch_is_submitted_with_structured_output_and_collected():
     assert results["p00000"].parsed.evidence == ["retrograde_tracer"]
     assert results["p00001"].stop == "errored" and "overloaded" in results["p00001"].detail
     assert results["p00002"].stop == "expired"
+    assert {r.model for r in results.values()} == {"claude-opus-5-5"}  # each result names the model it went to
 
 
 def test_a_batch_still_running_when_the_wait_runs_out():

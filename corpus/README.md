@@ -36,6 +36,7 @@ Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3
 The ledgers below record every paper the literature pipeline has handled (ADR 0028), and each step reads a paper once:
 - **A finished paper is never sent again**, whatever version of the prompt finished it. Reading it again takes an explicit `--redo`: named papers (key, DOI, PubMed ID or PMC ID), `older` (finished by an earlier prompt version) or `all`.
 - **A paper whose answers fail** (a refusal, a cut-off or invalid answer) is tried again, and set aside after two reads. Batch entries no model answered (errored, expired) don't count.
+- **A refused paper goes to a second model in the same run:** Claude Opus 5.5's refusals go to Claude Opus 5 (`--fallback`). That counts as one read, and the row names the model that answered.
 - **A paper is the same paper under any of its identifiers:** one keyed by its PubMed ID that later gains a DOI is still recognised.
 - **A run refuses to start while another branch holds this step's results** that aren't on its own branch yet. Merge that run's pull request first.
 
@@ -48,9 +49,9 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 | `verdict` | `in` (worth reading for claims), `out`, or why the request failed (`refusal`, `invalid`, `errored`, `expired`, …) |
 | `basis` | `abstract`, or `title` when Europe PMC has no abstract |
 | `evidence`, `species` | The kinds of evidence and the species the abstract describes, `;`-separated |
-| `reason` | One sentence in the model's own words, never the abstract's |
+| `reason` | One sentence in the model's own words, never the abstract's; for a refusal, its category, such as `bio` |
 | `attempts` | How many times a model has read it for this step |
-| `model`, `prompt`, `date` | Which model and prompt version decided, and when |
+| `model`, `prompt`, `date` | Which model and prompt version decided (the fallback, when it answered a refusal), and when |
 
 ## Extraction
 
@@ -61,7 +62,7 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 | `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unfetched` (Europe PMC couldn't be reached; tried again next run), or why the request failed |
 | `claims`, `dropped` | Claims written, and drafts dropped for naming a region outside the lexicon or breaking the schema's rules |
 | `attempts` | How many times a model has read it for this step |
-| `model`, `prompt`, `date` | Which model and prompt version extracted, and when |
+| `model`, `prompt`, `date` | Which model and prompt version extracted (the fallback, when it answered a refusal), and when |
 
 ## Verification
 
@@ -73,6 +74,6 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 | `claims`, `judged` | Claims listed in the request, and how many got a verdict |
 | `listed` | A short hash of the paper and the claims listed: tries are counted per list |
 | `attempts` | How many times a model has read this list of claims |
-| `model`, `prompt`, `date` | Which model and prompt version verified, and when |
+| `model`, `prompt`, `date` | Which model and prompt version verified (the fallback, when it answered a refusal), and when |
 
 The manifest and the ledgers grow with every run, past pre-commit's 500 KB limit for added files, so that check skips them. Each stays one file, so a run's diff shows which papers came and went.

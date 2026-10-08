@@ -22,6 +22,7 @@ uv run python -m pipeline extract --limit 20       # extract the next 20 triaged
 uv run python -m pipeline verify --limit 20        # verify the claims of the next 20 extracted papers
 uv run python -m pipeline extract --collect msgbatch_01…   # collect a batch an earlier run left running
 uv run python -m pipeline extract --redo 10.1038/nature13186   # read a finished paper again (also: older, all)
+uv run python -m pipeline triage --fallback none          # leave refusals refused (default: Opus 5.5's go to Opus 5)
 AXONARIUM_SCREEN_MODEL=1 uv run pytest screen      # with the real classifier (downloads about 740 MB once)
 ```
 
