@@ -6,7 +6,7 @@ import os
 import sys
 
 from evals.harness.models import Extraction
-from pipeline import extract, triage
+from pipeline import extract, triage, verify
 from pipeline.corpus import ROOT, read_manifest
 from pipeline.llm import BatchPending, runner
 
@@ -35,16 +35,16 @@ def report(summary: dict) -> str:
 
 def main(argv: list[str] | None = None, classify=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m pipeline", description="The literature pipeline (ADR 0028).")
-    parser.add_argument("step", choices=["triage", "extract"], help="which step to run")
+    parser.add_argument("step", choices=["triage", "extract", "verify"], help="which step to run")
     parser.add_argument("--limit", type=int, default=50, help="at most this many papers (default 50)")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"anthropic:<model> or replay:<folder> (default {DEFAULT_MODEL})")
     parser.add_argument("--effort", help="the model's effort level (default: the step's own); 'none' to leave it unset")
     parser.add_argument("--now", action="store_true", help="live calls at full price instead of a batch, for small trials")
-    parser.add_argument("--lexicon", default=LEXICON, help="extract: the region lexicon from `python -m ingest.lexicon`")
+    parser.add_argument("--lexicon", default=LEXICON, help="extract and verify: the region lexicon from `python -m ingest.lexicon`")
     args = parser.parse_args(argv)
-    step = {"triage": triage, "extract": extract}[args.step]
+    step = {"triage": triage, "extract": extract, "verify": verify}[args.step]
     effort = None if args.effort == "none" else args.effort or step.EFFORT
-    schema = triage.Verdict if args.step == "triage" else Extraction
+    schema = {"triage": triage.Verdict, "extract": Extraction, "verify": verify.Verdicts}[args.step]
     try:
         run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now)
         if args.step == "triage":
@@ -57,7 +57,8 @@ def main(argv: list[str] | None = None, classify=None) -> int:
             problems = preflight(classify)
             if problems:
                 raise ValueError("the hidden-text screen fails its fixtures: " + "; ".join(problems))
-            summary = extract.extract(read_manifest(), run, args.limit, extract.Lexicon.load(args.lexicon), classify)
+            work = extract.extract if args.step == "extract" else verify.verify
+            summary = work(read_manifest(), run, args.limit, extract.Lexicon.load(args.lexicon), classify)
     except BatchPending as pending:
         print(f"batch {pending.batch_id} is still running; nothing was written. Run the step again later: "
               "papers without a result are sent again.")

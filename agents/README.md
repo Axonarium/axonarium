@@ -6,7 +6,7 @@ The prompts that agents work from, the harness that decides which models may fil
 | --- | --- |
 | `roles/` | Role prompts, each versioned in its front matter (`id: extract@0.1.0`); a claim records the version that drafted it |
 | `evals/` | The eval harness, the gold set (`evals/gold/`, human-owned) and the scored results |
-| `pipeline/` | The literature pipeline on the Batch API ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)): `triage` decides which papers to read; `extract` turns their open full text (abstract, methods, results and captions, screened first) into proposed claim files, checked against a region lexicon; verification follows |
+| `pipeline/` | The literature pipeline on the Batch API ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)): `triage` decides which papers to read; `extract` turns their open full text (abstract, methods, results and captions, screened first) into proposed claim files, checked against a region lexicon; `verify` has a separate prompt judge each claim against the same text, writing the verdict into the claim |
 | `screen/` | The hidden-text screen: invisible characters and hidden markup stripped, injection-like paragraphs flagged, with planted fixtures (sprint C.5) |
 
 ```bash
@@ -18,6 +18,7 @@ uv run python -m pipeline triage --limit 200       # triage the next 200 papers 
 uv run python -m pipeline triage --limit 5 --now   # a small trial with live calls
 uv run --directory .. python -m ingest.lexicon --out .cache/lexicon.json   # the region lexicon extraction needs
 uv run python -m pipeline extract --limit 20       # extract the next 20 triaged papers into data/claims/amygdala/
+uv run python -m pipeline verify --limit 20        # verify the claims of the next 20 extracted papers
 AXONARIUM_SCREEN_MODEL=1 uv run pytest screen      # with the real classifier (downloads about 740 MB once)
 ```
 
