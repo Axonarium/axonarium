@@ -10,7 +10,7 @@ on:
       step:
         description: Which step
         type: choice
-        options: [triage, extract]
+        options: [triage, extract, verify]
         default: triage
       limit:
         description: At most this many papers
@@ -44,7 +44,7 @@ jobs:
           version: "0.12.22"
           enable-cache: false
       - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        if: inputs.step == 'extract'
+        if: inputs.step != 'triage'
         with:  # the CI build's atlases and API answers, for the region lexicon
           path: |
             .cache/build
@@ -52,12 +52,12 @@ jobs:
           key: build-http-${{ github.run_id }}
           restore-keys: build-http-
       - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        if: inputs.step == 'extract'
+        if: inputs.step != 'triage'
         with:  # the hidden-text screen's pinned model, as the CI screen job caches it
           path: ~/.cache/huggingface/hub
           key: screen-model-${{ hashFiles('agents/screen/injection.py') }}
       - name: The region lexicon (never committed; ADR 0005)
-        if: inputs.step == 'extract'
+        if: inputs.step != 'triage'
         run: uv run --frozen python -m ingest.lexicon --out .cache/lexicon.json --http-cache .cache/build
       - name: Run the step
         working-directory: agents
@@ -69,7 +69,7 @@ jobs:
           HF_HUB_DISABLE_TELEMETRY: "1"
         run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL"
       - name: Source records for newly cited papers, then the data checks
-        if: inputs.step == 'extract'
+        if: inputs.step != 'triage'
         run: |
           uv run --frozen python -m checks sources
           { echo '### Data checks'; echo '```'; uv run --frozen python -m checks files 2>&1 | tail -50 || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

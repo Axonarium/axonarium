@@ -59,6 +59,12 @@ class Lexicon:
         self.atlas_species = {atlas: entry["species"] for atlas, entry in self.atlases.items()}
         self.uberon = self.uberon | {r["uberon"] for entry in self.atlases.values() for r in entry["regions"] if r.get("uberon")}
         self.neuron_species = {n["id"]: n["species"] for n in self.neuron_types}
+        self.names = {r["id"]: f"{r['acronym']}, {r['name']}" for entry in self.atlases.values() for r in entry["regions"]}
+        self.names |= {n["id"]: n["name"] for n in self.neuron_types}
+
+    def name(self, entity_id: str) -> str:
+        """A region's atlas acronym and name, or a project neuron type's name; "" for anything else."""
+        return self.names.get(entity_id, "")
 
     @classmethod
     def load(cls, path: Path) -> "Lexicon":
