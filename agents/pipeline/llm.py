@@ -1,8 +1,9 @@
 """Model calls for the pipeline: many requests, each answered as a Pydantic model, on the Batch API or live.
 
 The Batch API halves the price of every token and answers within a day, most batches within an hour (ADR 0028).
-Live calls (`--now`) cost full price and suit small trials. Neither falls back to another model on a refusal: a
-claim records the model that drafted it, and a refused paper is reported and retried later.
+Live calls (`--now`) cost full price and suit small trials. A model's safety classifiers can refuse a request; the
+Batch API takes no server-side fallbacks, so FallbackRunner sends refused requests to a second model itself, in the
+same run. Each result names the model that answered it, and a claim records that model.
 """
 
 import hashlib
@@ -15,11 +16,14 @@ from pathlib import Path
 
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
+from pipeline.corpus import UNANSWERED
+
 # List prices in dollars per million tokens (input, output, cache read, cache write), from Anthropic's model table of
 # 25 September 2026. Batches cost half. Reports only; the Console's spend limit is the real cap.
 PRICES = {
     "claude-fable-5-1": (10.0, 50.0, 0.25, 12.5),
     "claude-opus-5-5": (4.0, 20.0, 0.20, 5.0),
+    "claude-opus-5": (5.0, 25.0, 0.50, 6.25),
     "claude-sonnet-5-5": (2.0, 10.0, 0.20, 2.5),
     "claude-haiku-4-5": (1.0, 5.0, 0.10, 1.25),
 }
@@ -55,6 +59,19 @@ class Result:
     stop: str  # end_turn, refusal, max_tokens, invalid, errored, expired, canceled
     usage: dict[str, int] = field(default_factory=dict)
     detail: str | None = None
+    model: str | None = None  # the model the request went to; None: the runner's own
+    earlier: list["Result"] = field(default_factory=list)  # refused answers from other models before this one
+
+
+def spend(results: Iterable[Result], model: str, batch: bool) -> tuple[dict[str, int], float | None]:
+    """The tokens and dollars of these results and the refused answers before them, each at its own model's price;
+    dollars are None when any model's price is unknown."""
+    tries = [answer for result in results for answer in (*result.earlier, result)]
+    usage = {kind: sum(answer.usage.get(kind, 0) for answer in tries) for kind in USAGE}
+    if not tries:
+        return usage, cost(model, usage, batch)
+    dollars = [cost(answer.model or model, answer.usage, batch) for answer in tries]
+    return usage, None if None in dollars else sum(dollars)
 
 
 def cost(model: str, usage: dict[str, int], batch: bool) -> float | None:
@@ -143,13 +160,14 @@ class AnthropicRunner:
             collected = self._collected if self._collected is not None else self.collect(self.collect_batch)
             found = sum(r.id in collected for r in requests)
             print(f"batch {self.collect_batch}: {found} of its {len(collected)} result(s) collected", flush=True)
-            missing = Result(None, "errored", detail=f"not in batch {self.collect_batch}")
-            return {r.id: collected.get(r.id, missing) for r in requests}
+            return {r.id: collected.get(r.id) or Result(None, "errored", detail=f"not in batch {self.collect_batch}",
+                                                        model=self.model) for r in requests}
         if not self.batch:
             results = {}
             for request in requests:
                 with self.client.messages.stream(**self.params(request)) as stream:
                     results[request.id] = parse(stream.get_final_message(), self.schema)
+                results[request.id].model = self.model
             return results
         batch = self.client.messages.batches.create(
             requests=[{"custom_id": request.id, "params": self.params(request)} for request in requests])
@@ -174,11 +192,54 @@ class AnthropicRunner:
                 results[entry.custom_id] = Result(None, "errored", detail=str(getattr(error, "error", error))[:500])
             else:  # canceled or expired
                 results[entry.custom_id] = Result(None, outcome.type)
+            results[entry.custom_id].model = self.model
+        return results
+
+
+class FallbackRunner:
+    """A runner whose refused requests go to a second runner in the same run (ADR 0028). Claude Opus 5.5's bio
+    classifier refuses some papers on viral tracers and drugs; the Batch API takes no server-side fallbacks. A request
+    the fallback answers takes its answer, which keeps the refusal before it (its tokens are paid for too); one the
+    fallback doesn't answer stays refused. If the fallback's batch is still running when the wait runs out, the
+    refusals stand, and `pending` holds the batch's ID to collect later."""
+
+    def __init__(self, primary, fallback):
+        self.primary, self.fallback = primary, fallback
+        self.model, self.batch = primary.model, getattr(primary, "batch", False)
+        self.retried, self.pending = 0, None
+
+    @property
+    def name(self) -> str:
+        return f"{self.primary.name}, refusals to {self.fallback.name}"
+
+    def known(self) -> set[str] | None:
+        return getattr(self.primary, "known", lambda: None)()
+
+    def run(self, requests: list[Request]) -> dict[str, Result]:
+        results = self.primary.run(requests)
+        refused = [request for request in requests if results[request.id].stop == "refusal"]
+        if not refused:
+            return results
+        print(f"{len(refused)} refusal(s) sent to {self.fallback.name}", flush=True)
+        self.retried += len(refused)
+        try:
+            answers = self.fallback.run(refused)
+        except BatchPending as pending:
+            self.pending = pending.batch_id
+            return results
+        for request in refused:
+            answer = answers[request.id]
+            if answer.stop in UNANSWERED:  # no model answered: the refusal is the last answer
+                continue
+            refusal = results[request.id]
+            answer.earlier = [*refusal.earlier, refusal]
+            results[request.id] = answer
         return results
 
 
 class ReplayRunner:
-    """Saved answers, `<folder>/<request id>.json`, for tests and for re-running a step without a model."""
+    """Saved answers, `<folder>/<request id>.json`, for tests and for re-running a step without a model. A saved
+    `{"refusal": "<category>"}` stands for a refused request."""
 
     def __init__(self, folder: Path, schema: type[BaseModel], model: str = "replay"):
         self.folder, self.schema, self.model, self.batch = Path(folder), schema, model, False
@@ -195,9 +256,12 @@ class ReplayRunner:
                 results[request.id] = Result(None, "errored", detail=f"no saved answer {saved}")
                 continue
             try:
-                results[request.id] = Result(self.schema.model_validate(json.loads(saved.read_text(encoding="utf-8"))), "end_turn")
+                answer = json.loads(saved.read_text(encoding="utf-8"))
+                results[request.id] = Result(None, "refusal", detail=answer["refusal"]) if set(answer) == {"refusal"} \
+                    else Result(self.schema.model_validate(answer), "end_turn")
             except (ValidationError, ValueError) as error:
                 results[request.id] = Result(None, "invalid", detail=str(error)[:500])
+            results[request.id].model = self.model
         return results
 
 
