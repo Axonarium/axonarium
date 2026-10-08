@@ -1,0 +1,41 @@
+id: clm-kxnwd6345g
+subject:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:196
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electron_microscopy
+result: present
+sign: excitatory
+source:
+  doi: 10.1002/brb3.2893
+  pmid: '36860170'
+  pmcid: PMC10097056
+  locator: Results, final section; Fig. S2A-C
+paraphrase: Electron microscopy of the mitral cell layer of the accessory olfactory bulb in adult male mice identified excitatory
+  synapses between mitral and granule cells. Synapses were classified by postsynaptic density thickness and counted in 20
+  sections per mouse. Cntn6 knockout males had more of these excitatory synapses than wild-type littermates.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: mitral cells in the AOB
+  extract.object_name: granule cells in the AOB
+  verify.note: The final Results section reports EM-identified excitatory synapses, classified by postsynaptic density thickness,
+    between AOB mitral and granule cells in mouse; this implies mitral-to-granule transmission and matches the cited locator.

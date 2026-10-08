@@ -1,0 +1,41 @@
+id: clm-czxrdj6xva
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1002/advs.202505025
+  pmid: '40801458'
+  pmcid: PMC12591187
+  locator: Fig. 8C,D; Fig. S14
+paraphrase: A retrograde Cre-dependent eYFP virus injected into the central amygdala of Vglut2-Cre mice produced strong eYFP
+  labelling of neurons in the paraventricular thalamus; about 24% of these CeA-projecting PVT neurons also contained Igfbp2.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: PVT
+  extract.object_name: CeA
+  verify.note: Retrograde Cre-dependent eYFP injected into the CeA gave strong PVT labelling (Fig. 8C,D), and Fig. S14 gives
+    the roughly 24% Igfbp2 co-expression among these CeA-projecting neurons.

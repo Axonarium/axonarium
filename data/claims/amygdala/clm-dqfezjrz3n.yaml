@@ -1,0 +1,38 @@
+id: clm-dqfezjrz3n
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002892
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/brb3.2616
+  pmid: '35605044'
+  pmcid: PMC9304845
+  locator: Results, Tables 1 and 2, Figs. 3-5
+paraphrase: MeA tracer injections labelled infralimbic neurons in both hemispheres, scattered across all layers. Labelling
+  was generally weaker than in Cg and Pl, graded weak to strong depending on age and sex group.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: infralimbic (Il)
+  extract.object_name: medial amygdala (MeA)
+  verify.note: Infralimbic neurons were labelled bilaterally and scattered across layers, graded weak to strong and generally
+    below Cg and Pl.

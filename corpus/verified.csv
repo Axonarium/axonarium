@@ -1,0 +1,7 @@
+key,outcome,claims,judged,listed,attempts,model,prompt,date
+doi:10.1002/advs.202414271,judged,18,18,71b2a9baff26,1,claude-opus-5-5,verify@0.2.0,2026-10-08
+doi:10.1002/advs.202505025,judged,2,2,c5d76f3511c8,1,claude-opus-5-5,verify@0.2.0,2026-10-08
+doi:10.1002/advs.202523115,judged,4,4,0ea1b25d35cc,1,claude-opus-5,verify@0.2.0,2026-10-08
+doi:10.1002/ar.23983,judged,2,2,7e6479e3ac93,1,claude-opus-5-5,verify@0.2.0,2026-10-08
+doi:10.1002/brb3.2616,judged,3,3,8e38ca43ba5c,1,claude-opus-5-5,verify@0.2.0,2026-10-08
+doi:10.1002/brb3.2893,judged,1,1,3ed01db87e27,1,claude-opus-5-5,verify@0.2.0,2026-10-08

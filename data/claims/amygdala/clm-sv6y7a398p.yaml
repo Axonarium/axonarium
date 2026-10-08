@@ -1,0 +1,40 @@
+id: clm-sv6y7a398p
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/advs.202523115
+  pmid: '42102389'
+  pmcid: PMC13335908
+  locator: Fig. 3E–I; Results, mGluR5 enrichment section
+paraphrase: Anterogradely transported AAV1-hSyn-Cre injected in the entorhinal cortex combined with a Cre-dependent CaMKII-driven
+  reporter in the BLA labelled BLA glutamatergic neurons receiving entorhinal input; expansion microscopy showed these postsynaptic
+  sites carried mGluR5 colocalized with PSD-95.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: ECCCK neurons
+  extract.object_name: BLAGlu neurons (CaMKII-positive)
+  verify.note: Anterograde AAV1-Cre plus Cre-dependent CaMKII reporter plus expansion microscopy supports EC input onto mGluR5/PSD-95-positive
+    BLA glutamatergic neurons.

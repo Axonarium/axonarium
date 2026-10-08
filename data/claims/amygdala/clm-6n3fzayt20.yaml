@@ -1,0 +1,40 @@
+id: clm-6n3fzayt20
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/advs.202505025
+  pmid: '40801458'
+  pmcid: PMC12591187
+  locator: Fig. 8A,B; Fig. S13
+paraphrase: Cre-dependent eYFP anterograde tracer injected into the paraventricular thalamus of Vglut2-Cre mice labelled glutamatergic
+  cells, and their eYFP-positive axons were found predominantly in the central amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-08'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-08'
+status: proposed
+extra:
+  extract.subject_name: PVT
+  extract.object_name: CeA
+  verify.note: The Cre-dependent eYFP injected into the PVT of Vglut2-Cre mice labelled axons found mainly in the CeA, as
+    Fig. 8A,B and Fig. S13 show.
