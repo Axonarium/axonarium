@@ -1,7 +1,7 @@
 name: Literature
 
 # The literature pipeline (ADR 0028): one step on up to `limit` papers, on the Batch API, then a literature/<step>
-# branch for review. Started by hand from the Actions tab on main. The key is the `models` environment's secret, which
+# branch for review. `extract-and-verify` runs both, so the claims arrive already checked, in one pull request. Started by hand from the Actions tab on main. The key is the `models` environment's secret, which
 # only main may use, so pull requests never see it. A pull request opened with this workflow's token wouldn't run CI,
 # so it is opened from the branch.
 on:
@@ -10,7 +10,7 @@ on:
       step:
         description: Which step
         type: choice
-        options: [triage, extract, verify]
+        options: [triage, extract, verify, extract-and-verify]
         default: triage
       limit:
         description: At most this many papers
@@ -78,7 +78,17 @@ jobs:
           COLLECT: ${{ inputs.collect }}
           REDO: ${{ inputs.redo }}
           HF_HUB_DISABLE_TELEMETRY: "1"
-        run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" ${COLLECT:+--collect "$COLLECT"} ${REDO:+--redo "$REDO"}
+        run: |
+          if [ "$STEP" != extract-and-verify ]; then
+            uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" ${COLLECT:+--collect "$COLLECT"} ${REDO:+--redo "$REDO"}
+            exit
+          fi
+          if [ -n "$COLLECT" ]; then
+            echo "A batch is collected by the step that sent it: choose extract or verify." >&2
+            exit 1
+          fi
+          uv run --frozen python -m pipeline extract --limit "$LIMIT" --model "$MODEL" ${REDO:+--redo "$REDO"}
+          uv run --frozen python -m pipeline verify --limit "$LIMIT" --model "$MODEL" ${REDO:+--redo "$REDO"}
       - name: Source records for newly cited papers, then the data checks
         if: inputs.step != 'triage'
         run: |
