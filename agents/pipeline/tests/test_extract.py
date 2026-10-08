@@ -6,7 +6,7 @@ import yaml
 
 from evals.harness.models import DraftClaim, Entity, Extraction
 from pipeline import cli, europepmc, extract, sections
-from pipeline.corpus import Ledger
+from pipeline.corpus import Ledger, Redo
 from pipeline.llm import Result, request_id
 from screen import Finding, Screened, screen_jats
 
@@ -129,7 +129,14 @@ def test_extraction_writes_checked_proposed_claims(tmp_path):
     extract.extract(PAPERS, again, 10, extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"]), classify=None,
                     today="2026-10-09", ledger=ledger, triaged=TRIAGED, claims_dir=claims, text=text)
     assert again.sent == []
-    assert ledger.read()["doi:10.1/e"]["date"] == "2026-10-09"
+    assert ledger.read()["doi:10.1/e"]["date"] == "2026-10-09" and ledger.read()["doi:10.1/e"]["attempts"] == "0"
+    assert rows["doi:10.1/a"]["attempts"] == "1" and rows["doi:10.1/b"]["attempts"] == "0"  # the screened one was never read
+
+    redo = FakeRun()  # asked for by PMC ID: read again, and its claims rewritten under the same IDs
+    extract.extract(PAPERS, redo, 10, extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"]), classify=None,
+                    today="2026-10-10", ledger=ledger, triaged=TRIAGED, claims_dir=claims, text=text, redo=Redo(("PMC1",)))
+    assert [r.text for r in redo.sent] == ["PMC1"] and ledger.read()["doi:10.1/a"]["attempts"] == "2"
+    assert len(list(claims.glob("*.yaml"))) == 4
 
 
 def test_rat_terms_named_in_the_prompt_are_allowed(tmp_path):

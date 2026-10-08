@@ -24,6 +24,10 @@ on:
         description: An earlier run's batch ID (msgbatch_…) to collect instead of sending a new batch; leave empty otherwise
         type: string
         default: ""
+      redo:
+        description: Papers to read again though this step finished them (DOIs, PubMed or PMC IDs; older; all); usually empty
+        type: string
+        default: ""
 
 permissions: {}
 
@@ -43,6 +47,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0  # every branch: a run refuses to start while another holds results not yet merged
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           version: "0.12.22"
@@ -71,8 +76,9 @@ jobs:
           LIMIT: ${{ inputs.limit }}
           MODEL: ${{ inputs.model }}
           COLLECT: ${{ inputs.collect }}
+          REDO: ${{ inputs.redo }}
           HF_HUB_DISABLE_TELEMETRY: "1"
-        run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" ${COLLECT:+--collect "$COLLECT"}
+        run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" ${COLLECT:+--collect "$COLLECT"} ${REDO:+--redo "$REDO"}
       - name: Source records for newly cited papers, then the data checks
         if: inputs.step != 'triage'
         run: |

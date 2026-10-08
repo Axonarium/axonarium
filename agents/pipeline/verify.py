@@ -1,11 +1,14 @@
 """Verification (sprint 2.4, ADR 0028): a separate prompt checks each extracted claim against the paper.
 
-For each paper with extracted claims that the current verifier prompt hasn't judged, the verifier reads the same text
-the extractor read (pruned and screened) and the paper's claims, numbered and described in words, with each region's
-atlas name. It never sees the extractor's reasoning. Each verdict (agree, disagree or unsure) goes in the claim's
-`verification`, and the verifier's one-sentence note in `extra` as `verify.note`. Claims stay proposed (ADR 0028).
+For each paper with extracted claims no verifier has judged, the verifier reads the same text the extractor read
+(pruned and screened) and the paper's claims, numbered and described in words, with each region's atlas name. It never
+sees the extractor's reasoning. Each verdict (agree, disagree or unsure) goes in the claim's `verification`, and the
+verifier's one-sentence note in `extra` as `verify.note`. Claims stay proposed (ADR 0028). corpus/verified.csv records
+each paper's last request. A judged claim is never sent again unless asked for (`--redo`), and a list of claims whose
+answers keep failing is set aside after MAX_ATTEMPTS reads (pipeline.corpus).
 """
 
+import hashlib
 from collections.abc import Callable
 from datetime import date
 from pathlib import Path
@@ -16,10 +19,12 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from evals.harness.run import read_prompt
 from pipeline import extract
+from pipeline.corpus import CORPUS, MAX_ATTEMPTS, Ledger, Redo, attempts, recorded
 from pipeline.extract import Lexicon
 from pipeline.llm import Request, choose, cost, request_id
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "verifier.md"
+LEDGER = Ledger(CORPUS / "verified.csv", ("key", "outcome", "claims", "judged", "listed", "attempts", "model", "prompt", "date"))
 EFFORT, MAX_TOKENS = "medium", 32_000
 ORDER = ("id", "subject", "predicate", "object", "species", "evidence_class", "result", "sign", "strength", "measurements",
          "source", "paraphrase", "excerpt", "curation", "verification", "status", "extra")
@@ -49,20 +54,23 @@ def paper_index(manifest: list[dict]) -> dict[tuple[str, str], dict]:
     return index
 
 
-def unverified(claims_dir: Path, prompt_id: str, index: dict) -> dict[str, tuple[dict, list[tuple[Path, dict]]]]:
-    """Extracted claims this verifier prompt hasn't judged, by paper key: {key: (paper, [(path, record), ...])}."""
+def unverified(claims_dir: Path, prompt_id: str, index: dict, redo: Redo = Redo()) -> dict[str, tuple[dict, list[tuple[Path, dict]]]]:
+    """Extracted claims no verifier has judged, or that `redo` asks for again, by paper key:
+    {key: (paper, [(path, record), ...])}. A person's verdict is never sent to the model again."""
     found: dict[str, tuple[dict, list]] = {}
     for path in sorted(claims_dir.glob("*.yaml")):
         record = yaml.safe_load(path.read_text(encoding="utf-8"))
         if record.get("curation", {}).get("role") != "extractor" or record.get("status") == "retracted":
             continue
-        if (record.get("verification") or {}).get("prompt") == prompt_id:
-            continue
         source = record["source"]
         paper = next((index[(k, str(source[k]).lower())] for k in ("doi", "pmid", "pmcid") if source.get(k)
                       and (k, str(source[k]).lower()) in index), None)
-        if paper is not None:
-            found.setdefault(paper["key"], (paper, []))[1].append((path, record))
+        if paper is None:
+            continue
+        verification = record.get("verification") or {}
+        if verification and (verification.get("by") != "agent" or not redo.wants(paper, verification.get("prompt"), prompt_id)):
+            continue
+        found.setdefault(paper["key"], (paper, []))[1].append((path, record))
     return found
 
 
@@ -71,6 +79,23 @@ def request_key(found: tuple[dict, list[tuple[Path, dict]]]) -> str:
     batch collected later must list exactly the same claims, or it isn't used."""
     paper, claims = found
     return paper["key"] + "|" + ",".join(record["id"] for _, record in claims)
+
+
+def listed(found: tuple[dict, list[tuple[Path, dict]]]) -> str:
+    """A short hash of the paper and the claims listed, kept in the ledger: tries are counted per list of claims."""
+    return hashlib.sha256(request_key(found).encode()).hexdigest()[:12]
+
+
+def last_try(ledger: dict[str, dict], found: tuple[dict, list[tuple[Path, dict]]]) -> dict | None:
+    """The ledger's row for this paper, if its last request listed these same claims."""
+    row = recorded(ledger, found[0])
+    return row if row is not None and row.get("listed") == listed(found) else None
+
+
+def due(found: tuple[dict, list[tuple[Path, dict]]], ledger: dict[str, dict], prompt_id: str, redo: Redo) -> bool:
+    """Whether to send these claims: not tried with this list before, tries left, or asked for again."""
+    row = last_try(ledger, found)
+    return row is None or redo.wants(found[0], row.get("prompt"), prompt_id) or int(row.get("attempts") or 0) < MAX_ATTEMPTS
 
 
 def _entity(ref: dict, name_in_paper: str | None, lexicon: Lexicon) -> str:
@@ -107,24 +132,35 @@ def record_verdict(path: Path, record: dict, verdict: ClaimVerdict, model: str, 
 
 
 def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, today: str | None = None,
-           claims_dir: Path | None = None, text: Callable | None = None, prompt: Path = PROMPT) -> dict:
+           claims_dir: Path | None = None, text: Callable | None = None, prompt: Path = PROMPT, ledger: Ledger | None = None,
+           redo: Redo = Redo()) -> dict:
     """Verify the claims of up to `limit` papers with `run` (a runner from pipeline.llm). Returns a summary."""
-    today, claims_dir = today or date.today().isoformat(), claims_dir or extract.CLAIMS
+    today, claims_dir, ledger = today or date.today().isoformat(), claims_dir or extract.CLAIMS, ledger or LEDGER
     prompt_id, system = read_prompt(prompt)
     model = getattr(run, "model", "replay")
-    papers = choose(list(unverified(claims_dir, prompt_id, paper_index(manifest)).values()), run, limit, key=request_key)
-    requests, sent, skipped = [], {}, []
+    before, index = ledger.read(), paper_index(manifest)
+    papers = choose([f for f in unverified(claims_dir, prompt_id, index, redo).values() if due(f, before, prompt_id, redo)],
+                    run, limit, key=request_key)
+    requests, sent, skipped, rows = [], {}, [], []
+
+    def ledger_row(found, outcome: str, stop: str | None, judged: int = 0) -> dict:
+        return {"key": found[0]["key"], "outcome": outcome, "claims": str(len(found[1])), "judged": str(judged),
+                "listed": listed(found), "attempts": attempts(last_try(before, found), stop), "model": model,
+                "prompt": prompt_id, "date": today}
+
     for paper, claims in papers:
         try:
             screened = (text or (lambda p: extract.full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:
             skipped.append(f"{paper['key']}: its text couldn't be read ({type(error).__name__})")
+            rows.append(ledger_row((paper, claims), "unreadable" if isinstance(error, SyntaxError) else "unfetched", None))
             continue
         if screened.flagged:
             skipped.append(f"{paper['key']}: the hidden-text screen flagged it")
+            rows.append(ledger_row((paper, claims), "screened", None))
             continue
-        listed = "\n\n".join(describe(n, record, lexicon) for n, (_, record) in enumerate(claims, start=1))
-        request = Request(request_id(request_key((paper, claims))), system, f"{screened.text}\n\n## Claims to check\n\n{listed}")
+        described = "\n\n".join(describe(n, record, lexicon) for n, (_, record) in enumerate(claims, start=1))
+        request = Request(request_id(request_key((paper, claims))), system, f"{screened.text}\n\n## Claims to check\n\n{described}")
         requests.append(request)
         sent[request.id] = (paper, claims)
     results = run.run(requests)
@@ -135,8 +171,10 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
         result = results[request.id]
         if result.parsed is None:
             unjudged.append(f"{paper['key']}: {result.stop}")
+            rows.append(ledger_row((paper, claims), result.stop, result.stop))
             continue
         by_number = {v.claim: v for v in result.parsed.verdicts}
+        judged = 0
         for number, (path, record) in enumerate(claims, start=1):
             verdict = by_number.get(number)
             if verdict is None:
@@ -144,9 +182,15 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
                 continue
             record_verdict(path, record, verdict, model, prompt_id, today)
             counts[verdict.verdict] += 1
+            judged += 1
+        rows.append(ledger_row((paper, claims), "judged", result.stop, judged))
+    ledger.update(rows)
+    after = ledger.read()
+    left = list(unverified(claims_dir, prompt_id, index).values())
     usage = {kind: sum(results[r.id].usage.get(kind, 0) for r in requests) for kind in ("input_tokens", "output_tokens",
              "cache_read_input_tokens", "cache_creation_input_tokens")}
     return {"step": "verify", "model": run.name, "prompt": prompt_id, "papers": len(papers), "sent": len(requests),
             **counts, "usage": usage, "cost": cost(model, usage, getattr(run, "batch", False)),
-            "remaining": len(unverified(claims_dir, prompt_id, paper_index(manifest))),
-            "skipped": skipped, "unjudged": unjudged}
+            "remaining": sum(due(f, after, prompt_id, Redo()) for f in left),
+            "skipped": skipped, "unjudged": unjudged,
+            "set_aside": [f"{f[0]['key']}: {len(f[1])} claim(s)" for f in left if not due(f, after, prompt_id, Redo())]}
