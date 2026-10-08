@@ -21,8 +21,8 @@ export default async function Brain() {
         <h1 className="text-3xl font-semibold tracking-tight">The mouse amygdala&apos;s connections</h1>
         <p className="max-w-3xl text-muted-foreground">
           In 3D or as a network: where the amygdala sends its axons, and which regions send axons to it, from anterograde tracer injections in the Allen Mouse Brain Connectivity
-          Atlas. Each arc is a connection made from cited claims; open one to see the experiments behind it. Region
-          meshes: Allen Mouse Brain Common Coordinate Framework, via BrainGlobe.
+          Atlas and from mouse experiments in published papers. Each arc is a connection made from cited claims; open one to
+          see the evidence behind it. Region meshes: Allen Mouse Brain Common Coordinate Framework, via BrainGlobe.
         </p>
       </div>
       {edges === null ? (

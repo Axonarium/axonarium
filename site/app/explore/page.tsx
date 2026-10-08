@@ -4,7 +4,7 @@ import Link from "next/link";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { EdgeTable } from "@/components/edge-table";
 import { ExploreFilters } from "@/components/explore-filters";
-import { getEdgeFacets, getRegionNames, listConnections } from "@/lib/data";
+import { getEdgeFacets, getNames, listConnections } from "@/lib/data";
 import { exploreHref, exploreState, PAGE_SIZE, pageCount } from "@/lib/explore";
 import { regionLabel } from "@/lib/regions";
 
@@ -24,7 +24,7 @@ export default async function Explore({ searchParams }: PageProps<"/explore">) {
       offset: (state.page - 1) * PAGE_SIZE,
     }));
   const ids = [...new Set((found?.items ?? []).flatMap((e) => [e.subject_id, e.object_id]))];
-  const regions = await getRegionNames(ids);
+  const regions = await getNames(ids);
   const labels = Object.fromEntries(ids.map((id) => [id, regionLabel(id, regions)]));
   const pages = found ? pageCount(found.total) : 1;
   const first = state ? (state.page - 1) * PAGE_SIZE : 0;

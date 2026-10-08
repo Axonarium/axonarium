@@ -4,7 +4,7 @@ import type { BrainEdge } from "./brain";
 import { reachable, shortestRoute } from "./route";
 
 const edge = (source: string, target: string, density: number | null): BrainEdge => ({
-  id: `${source}|projects_to|${target}`, source, target, density, claims: 1, accepted: 1,
+  id: `${source}|projects_to|${target}`, source, target, density, claims: 1, accepted: 1, papers: 0,
 });
 const path = (hops: BrainEdge[] | null) => hops && [hops[0].source, ...hops.map((h) => h.target)].join(" → ");
 

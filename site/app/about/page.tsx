@@ -26,10 +26,20 @@ export default function About() {
         region by region. Regions come from the Allen mouse and human atlases via BrainGlobe, mapped to UBERON (
         <Link href="/atlases">Atlases</Link>).
       </p>
+      <h2>Claims from published papers</h2>
+      <p>
+        The rest comes from the literature, read paper by paper. An AI model reads each open-access paper&apos;s
+        methods, results and figure captions, after a screen for hidden instructions, and drafts a claim for each
+        connection the paper&apos;s own experiments test: the regions, the species, the method, what was found and where
+        in the paper. A second model then checks each claim against the paper, without seeing how the first one
+        reasoned. Every claim names both models, their prompt versions and the paper. Rat claims name UBERON&apos;s
+        cross-species terms, because rat papers follow different atlases. Until people have audited a sample of them, these claims stay{" "}
+        <em>proposed</em>, and each shows what the check said.
+      </p>
       <h2>Reading the evidence</h2>
       <p>
-        A connection is never typed by hand: it is computed from its claims, and opens them. A claim is{" "}
-        <em>accepted</em> when at least half of the injected tracer was in the region it names, and{" "}
+        A connection is never typed by hand: it is computed from its claims, and opens them, whatever their source.
+        An Allen claim is <em>accepted</em> when at least half of the injected tracer was in the region it names, and{" "}
         <em>proposed</em> when most of it spread elsewhere; regions that received tracer themselves are never
         counted as targets. Densities pool both hemispheres. Claims from the Allen atlas are made when the site is
         built and shown here with their citation, but are not redistributed in the downloadable data, following the
@@ -37,8 +47,8 @@ export default function About() {
       </p>
       <h2>What comes next</h2>
       <p>
-        Rat connectivity, human homology, cell-type-specific connections, and claims from the published literature,
-        drafted by AI agents and checked by independent verifier agents and human audit. Progress is tracked in the{" "}
+        More of the literature, human homology, cell-type-specific connections, and human audit of the claims drafted
+        from papers. Progress is tracked in the{" "}
         <a href={`${REPO}/blob/main/STATUS.md`}>status page</a> and the sprint cards on GitHub.
       </p>
       <h2>How it is built</h2>

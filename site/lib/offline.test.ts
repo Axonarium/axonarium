@@ -77,9 +77,19 @@ describe("the snapshot answers like the database", () => {
   });
 
   it("names regions, leaving out IDs that aren't regions", () => {
-    expect(offline.regionNames(tables, ["MBA:295", "UBERON:0001876"])).toEqual({
+    expect(offline.regionNames(tables, ["MBA:295", "UBERON:0006107"])).toEqual({
       "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true },
     });
+  });
+
+  it("names regions, the UBERON terms regions map to and neuron types for display, leaving out IDs it can't name", () => {
+    const withTypes: Tables = { ...tables, neuron_types: [{ id: "nt-3kvfdzf7wn", name: "MEA glutamatergic neurons" }] };
+    expect(offline.names(withTypes, ["MBA:295", "UBERON:0006107", "UBERON:0001876", "nt-3kvfdzf7wn", "nt-unknown"])).toEqual({
+      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true },
+      "UBERON:0006107": { id: "UBERON:0006107", acronym: "BLA", name: "basolateral amygdaloid nuclear complex", kind: "uberon" },
+      "nt-3kvfdzf7wn": { id: "nt-3kvfdzf7wn", acronym: null, name: "MEA glutamatergic neurons", kind: "neuron_type" },
+    });
+    expect(offline.names(tables, ["nt-3kvfdzf7wn"])).toEqual({}); // a snapshot without neuron types
   });
 
   it("gives each atlas its region count and amygdala regions", () => {
@@ -92,8 +102,8 @@ describe("the snapshot answers like the database", () => {
   it("draws the brain's connections from claims that found them, not retracted ones", () => {
     const drawn = offline.brain(tables, ATLAS);
     expect(drawn).toEqual([
-      { id: tables.edges[1].id, source: "MBA:295", target: "MBA:536", density: null, claims: 1, accepted: 1 },
-      { id: tables.edges[0].id, source: "MBA:295", target: "MBA:672", density: 0.4, claims: 2, accepted: 1 },
+      { id: tables.edges[1].id, source: "MBA:295", target: "MBA:536", density: null, claims: 1, accepted: 1, papers: 0 },
+      { id: tables.edges[0].id, source: "MBA:295", target: "MBA:672", density: 0.4, claims: 2, accepted: 1, papers: 0 },
     ]);
     expect(offline.brain(tables, "waxholm-sd-rat-v4")).toEqual([]);
   });

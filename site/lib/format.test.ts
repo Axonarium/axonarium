@@ -1,12 +1,17 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  checkedBy,
+  checkNote,
   citationLinks,
   citationParts,
   edgeFromParam,
   edgeHref,
   formatMeasurement,
+  madeBy,
+  namesInPaper,
   predicateLabel,
+  proposedBecause,
   regionHref,
   speciesName,
   strongestFirst,
@@ -113,5 +118,32 @@ describe("strongestFirst", () => {
   it("puts the densest connections first and those without a density last", () => {
     const edges = [{ id: "c", density: null }, { id: "b", density: 0.1 }, { id: "a", density: 0.5 }, { id: "d", density: 0.1 }];
     expect(edges.sort(strongestFirst).map((e) => e.id)).toEqual(["a", "b", "d", "c"]);
+  });
+});
+
+describe("provenance", () => {
+  const extracted = {
+    curation: { by: "agent", role: "extractor", model: "claude-opus-5-5", prompt: "extract@0.2.0" },
+    verification: { by: "agent", model: "claude-opus-5-5", verdict: "disagree" },
+    status: "proposed",
+    extra: { "extract.subject_name": "BLA complex", "extract.object_name": "CeA", "verify.note": "The paper traced the reverse direction." },
+  };
+  const allen = { curation: { by: "agent", role: "ingester", model: "deterministic-adapter", prompt: "allen-connectivity@1.3.0" }, status: "proposed", extra: { "allen.experiment": 1 } };
+
+  it("says who made a claim and who checked it", () => {
+    expect(madeBy(extracted)).toBe("an AI model reading the paper (claude-opus-5-5, extract@0.2.0)");
+    expect(madeBy(allen)).toBe("an adapter reading a database (allen-connectivity@1.3.0)");
+    expect(madeBy({ curation: { by: "human", role: "curator", orcid: "0000-0002-1825-0097" }, status: "accepted" })).toBe("a curator (ORCID 0000-0002-1825-0097)");
+    expect(checkedBy(extracted)).toBe("a second AI model (claude-opus-5-5) disagrees");
+    expect(checkedBy(allen)).toBeNull();
+    expect(checkNote(extracted)).toBe("The paper traced the reverse direction.");
+    expect(namesInPaper(extracted)).toEqual(["BLA complex", "CeA"]);
+    expect(namesInPaper(allen)).toBeNull();
+  });
+
+  it("explains why a claim is still proposed", () => {
+    expect(proposedBecause(extracted)).toMatch(/^Drafted and checked by AI models/);
+    expect(proposedBecause(allen)).toBe("Most of the injected tracer landed outside the region it names.");
+    expect(proposedBecause({ ...allen, status: "accepted" })).toBeNull();
   });
 });

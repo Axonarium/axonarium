@@ -96,7 +96,7 @@ describe("the read API's shapes", () => {
     const detail = regionDetail({
       region,
       children: [{ id: "MBA:303", acronym: "BLAa", name: "Basolateral amygdalar nucleus, anterior part" }],
-      outputs: [{ id: edge.id, source: "MBA:295", target: "MBA:672", density: 0.42, claims: 2, accepted: 1 }],
+      outputs: [{ id: edge.id, source: "MBA:295", target: "MBA:672", density: 0.42, claims: 2, accepted: 1, papers: 0 }],
       inputs: [],
       names: { "MBA:672": { id: "MBA:672", acronym: "CP", name: "Caudoputamen" } },
     });
