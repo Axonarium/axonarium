@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gold curation</title>
+<style>
+  :root { --bg: #fff; --fg: #0f172a; --muted: #64748b; --line: #e2e8f0; --accent: #0f766e; --bad: #b91c1c; --soft: #f1f5f9; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b1020; --fg: #e2e8f0; --muted: #94a3b8; --line: #1e293b; --accent: #2dd4bf; --bad: #f87171; --soft: #111827; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.5 system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+  header { display: flex; gap: 8px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header h1 { font-size: 15px; margin: 0 12px 0 0; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 420px; height: calc(100vh - 53px); }
+  #paper { overflow-y: auto; padding: 16px 24px; border-right: 1px solid var(--line); }
+  #paper p { margin: 0 0 10px; }
+  #paper p.h { font-weight: 600; margin-top: 18px; }
+  #paper mark { background: #fde68a; color: #0f172a; }
+  aside { overflow-y: auto; padding: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 2px; }
+  input, select, button { font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+  input, select { width: 100%; }
+  button { cursor: pointer; } button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .results { border: 1px solid var(--line); border-radius: 6px; max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  .results div { padding: 4px 8px; cursor: pointer; } .results div:hover { background: var(--soft); }
+  .picked { font-size: 12px; margin-top: 3px; color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+  td { border-top: 1px solid var(--line); padding: 4px 2px; vertical-align: top; }
+  #status { font-size: 12px; margin-top: 8px; } #status.bad { color: var(--bad); }
+  .muted { color: var(--muted); font-size: 12px; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; height: auto; } #paper { border-right: 0; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Gold curation</h1>
+  <input id="pmcid" placeholder="PMC ID, such as PMC8129205" style="width: 220px">
+  <button id="load">Load paper</button>
+  <input id="find" placeholder="Find in the paper" style="width: 200px">
+  <select id="drafts" style="width: 200px"><option value="">Open a saved draft…</option></select>
+</header>
+<main>
+  <section id="paper"><p class="muted">Load a paper by its PMC ID. Its full text comes from Europe PMC.</p></section>
+  <aside>
+    <div class="row">
+      <div><label for="name">Draft name</label><input id="name" placeholder="hintiryan-2021"></div>
+      <div><label for="species">Species</label><select id="species"></select></div>
+    </div>
+    <label>Source</label>
+    <div class="row"><input id="doi" placeholder="DOI"><input id="pmid" placeholder="PubMed ID"></div>
+
+    <h3 style="margin: 16px 0 0; font-size: 14px">Claim</h3>
+    <label for="subject-q">Subject: sends the axons or the input</label>
+    <input id="subject-q" placeholder="Search regions and neuron types" autocomplete="off">
+    <div id="subject-results" class="results" hidden></div><div id="subject-picked" class="picked"></div>
+    <label for="predicate">Predicate</label><select id="predicate"></select>
+    <label for="object-q">Object: receives them</label>
+    <input id="object-q" placeholder="Search regions and neuron types" autocomplete="off">
+    <div id="object-results" class="results" hidden></div><div id="object-picked" class="picked"></div>
+    <div class="row">
+      <div><label for="evidence">Evidence</label><select id="evidence"></select></div>
+      <div><label for="result">Result</label><select id="result"></select></div>
+    </div>
+    <div class="row">
+      <div><label for="sign">Sign</label><select id="sign"></select></div>
+      <div><label for="locator">Locator</label><input id="locator" placeholder="Fig. 3B"></div>
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 12px">
+      <button id="add" class="primary">Add claim</button>
+      <button id="save">Save draft</button>
+    </div>
+    <div id="status"></div>
+    <table><tbody id="claims"></tbody></table>
+    <p class="muted" id="where"></p>
+  </aside>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const state = { claims: [], picked: { subject: null, object: null }, enums: null, blocks: [] };
+
+function status(text, bad = false) { $("status").textContent = text; $("status").className = bad ? "bad" : ""; }
+async function api(path, options) {
+  const response = await fetch(path, options);
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error || response.statusText);
+  return body;
+}
+function fill(select, values, labels = {}) {
+  select.replaceChildren(...values.map((v) => Object.assign(document.createElement("option"), { value: v, textContent: labels[v] || v })));
+}
+
+async function start() {
+  state.enums = await api("/api/enums");
+  fill($("species"), Object.values(state.enums.species), Object.fromEntries(Object.entries(state.enums.species).map(([k, v]) => [v, k])));
+  fill($("predicate"), state.enums.predicate);
+  fill($("result"), state.enums.result);
+  fill($("sign"), state.enums.sign);
+  $("sign").value = "unknown";
+  evidenceFor();
+  const drafts = await api("/api/drafts");
+  for (const name of drafts.drafts) $("drafts").append(Object.assign(document.createElement("option"), { value: name, textContent: name }));
+  $("where").textContent = `Drafts are saved in ${drafts.out}.` + (drafts.lexicon ? "" : " No region lexicon: search is off.");
+}
+function evidenceFor() { fill($("evidence"), state.enums.evidence_for[$("predicate").value]); }
+
+function showPaper(paper) {
+  state.blocks = paper.blocks;
+  if (paper.source.doi) $("doi").value = paper.source.doi;
+  if (paper.source.pmid) $("pmid").value = paper.source.pmid;
+  render();
+}
+function render() {
+  const query = $("find").value.trim().toLowerCase();
+  const nodes = state.blocks.map((block) => {
+    const p = document.createElement("p");
+    if (block.heading) p.className = "h";
+    const at = query ? block.text.toLowerCase().indexOf(query) : -1;
+    if (at < 0) { p.textContent = block.text; return p; }  // text, never HTML: the paper is untrusted
+    p.append(block.text.slice(0, at), Object.assign(document.createElement("mark"), { textContent: block.text.slice(at, at + query.length) }), block.text.slice(at + query.length));
+    return p;
+  });
+  $("paper").replaceChildren(...nodes);
+  const first = $("paper").querySelector("mark");
+  if (first) first.scrollIntoView({ block: "center" });
+}
+
+function searchBox(side) {
+  let timer;
+  $(`${side}-q`).addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const q = $(`${side}-q`).value;
+      const found = q.trim() ? await api(`/api/regions?q=${encodeURIComponent(q)}&species=${encodeURIComponent($("species").value)}`) : [];
+      const box = $(`${side}-results`);
+      box.replaceChildren(...found.map((f) => {
+        const row = document.createElement("div");
+        row.textContent = `${f.id} · ${f.label}`;
+        row.addEventListener("click", () => {
+          state.picked[side] = f;
+          $(`${side}-picked`).textContent = `${f.type === "region" ? "Region" : "Neuron type"} ${f.id}: ${f.label}`;
+          box.hidden = true;
+          $(`${side}-q`).value = "";
+        });
+        return row;
+      }));
+      box.hidden = !found.length;
+    }, 150);
+  });
+}
+
+function drawClaims() {
+  $("claims").replaceChildren(...state.claims.map((c, i) => {
+    const tr = document.createElement("tr");
+    const text = `${c.subject.id} ${c.predicate} ${c.object.id} · ${c.evidence_class} · ${c.result}${c.sign !== "unknown" ? " · " + c.sign : ""} · ${c.locator}`;
+    const remove = Object.assign(document.createElement("button"), { textContent: "Remove" });
+    remove.addEventListener("click", () => { state.claims.splice(i, 1); drawClaims(); });
+    tr.append(Object.assign(document.createElement("td"), { textContent: `${i + 1}.` }),
+              Object.assign(document.createElement("td"), { textContent: text }), Object.assign(document.createElement("td")), );
+    tr.lastChild.append(remove);
+    return tr;
+  }));
+}
+
+$("load").addEventListener("click", async () => {
+  try { status("Loading…"); showPaper(await api(`/api/paper?pmcid=${encodeURIComponent($("pmcid").value.trim())}`)); status(""); }
+  catch (error) { status(error.message, true); }
+});
+$("find").addEventListener("input", render);
+$("predicate").addEventListener("change", evidenceFor);
+$("result").addEventListener("change", () => { if ($("result").value === "absent") $("sign").value = "unknown"; });
+searchBox("subject"); searchBox("object");
+$("add").addEventListener("click", () => {
+  const { subject, object } = state.picked;
+  if (!subject || !object) return status("Pick a subject and an object.", true);
+  if (!$("locator").value.trim()) return status("Give a locator, such as Fig. 3B.", true);
+  state.claims.push({ subject: { type: subject.type, id: subject.id }, predicate: $("predicate").value,
+                      object: { type: object.type, id: object.id }, species: $("species").value,
+                      evidence_class: $("evidence").value, result: $("result").value, sign: $("sign").value,
+                      locator: $("locator").value.trim() });
+  drawClaims();
+  status(`${state.claims.length} claim(s). Remember to save.`);
+});
+$("save").addEventListener("click", async () => {
+  const source = { doi: $("doi").value.trim(), pmid: $("pmid").value.trim(), pmcid: $("pmcid").value.trim() };
+  try {
+    const saved = await api("/api/save", { method: "POST", headers: { "Content-Type": "application/json" },
+                                           body: JSON.stringify({ name: $("name").value.trim(), source, claims: state.claims }) });
+    status(`Saved ${saved.saved}`);
+  } catch (error) { status(error.message, true); }
+});
+$("drafts").addEventListener("change", async () => {
+  if (!$("drafts").value) return;
+  try {
+    const draft = await api(`/api/draft?name=${encodeURIComponent($("drafts").value)}`);
+    $("name").value = draft.name;
+    state.claims = draft.claims || [];
+    drawClaims();
+    $("pmcid").value = draft.source.pmcid || "";
+    $("doi").value = draft.source.doi || ""; $("pmid").value = draft.source.pmid || "";
+    if (draft.claims && draft.claims[0]) $("species").value = draft.claims[0].species;
+    if (draft.source.pmcid) showPaper(await api(`/api/paper?pmcid=${encodeURIComponent(draft.source.pmcid)}`));
+    status(`Opened ${draft.name}.`);
+  } catch (error) { status(error.message, true); }
+});
+start().catch((error) => status(error.message, true));
+</script>
+</body>
+</html>
