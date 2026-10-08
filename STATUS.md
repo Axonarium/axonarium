@@ -16,9 +16,10 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.2 Schema v0.1 in LinkML | Done |
 | 0.3 Validation CI, 0.3b online identifier checks, 0.3c retraction status without a DOI, 0.3d standard HTTP packages | Done |
 | 0.4 Rebuild pipeline | Done |
-| 0.5 Gold set ([#6](https://github.com/axonarium/axonarium/issues/6)) | Waiting on the maintainer, who curates it into `agents/evals/gold/v1/` |
-| 0.5a Gold curation tool ([#82](https://github.com/axonarium/axonarium/issues/82)) | Next: a local page that makes curating gold v1 quick |
+| 0.5 Gold set ([#6](https://github.com/axonarium/axonarium/issues/6)) | Waiting on the maintainer, who curates it into `agents/evals/gold/v1/`, with the tool from 0.5a |
+| 0.5a Gold curation tool ([#82](https://github.com/axonarium/axonarium/issues/82)) | Built: `cd agents && uv run python -m curate` serves a local page with a paper beside a claim form and region search, and saves drafts in the gold format to `.cache/gold-drafts/` |
 | 0.6 Eval harness ([#7](https://github.com/axonarium/axonarium/issues/7)) | Built ahead of gold v1 ([#63](https://github.com/axonarium/axonarium/pull/63)); "two models scored" waits on gold v1 |
+| 0.6a Harness parity ([#92](https://github.com/axonarium/axonarium/issues/92)) | Next: the harness gives the extractor the lexicon and pruned text the pipeline does, so gold scores predict pipeline runs; a human-owned path, so it waits on the maintainer's review |
 | 1.1 Licence audit | Done |
 | 1.2 Atlas layer | Done |
 | 1.3 Allen mouse connectivity | Done: 2,053 build-time claims (717 accepted), 1,039 connections, the amygdala's outputs and inputs |
@@ -26,10 +27,10 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 1.5 SCKAN adapter ([#12](https://github.com/axonarium/axonarium/issues/12)) | Moved to Phase 7a, the vagal gut–brain module (maintainer, 4 October 2026) |
 | 1.6 Reconciliation report ([#13](https://github.com/axonarium/axonarium/issues/13)) | Done ([#58](https://github.com/axonarium/axonarium/pull/58)): Allen and the literature; CI publishes the report with every run |
 | 1.7 Allen Cre-line experiments ([#83](https://github.com/axonarium/axonarium/issues/83)) | Done: region-level claims from Cre-line experiments too, each recording its line ([ADR 0029](docs/decisions/0029-allen-cre-lines.md)) |
-| 1.8 Single-neuron reconstructions ([#84](https://github.com/axonarium/axonarium/issues/84)), 1.9 WhiteText statements ([#85](https://github.com/axonarium/axonarium/issues/85)) | Planned: more data without model costs |
+| 1.8 Single-neuron reconstructions ([#84](https://github.com/axonarium/axonarium/issues/84)), 1.9 WhiteText statements ([#85](https://github.com/axonarium/axonarium/issues/85)) | Planned: more data without model costs. Both need their files' real formats checked first (MouseLight's export, WhiteText's XML); the agents' sandbox can't reach figshare or Janelia yet |
 | 2.1 Amygdala inventory ([#59](https://github.com/axonarium/axonarium/issues/59)) | Drafted ([#60](https://github.com/axonarium/axonarium/pull/60)): 26 neuron types and the region naming traps; its open questions wait on the maintainer |
 | 2.2 Literature corpus ([#61](https://github.com/axonarium/axonarium/issues/61)) | Done ([#62](https://github.com/axonarium/axonarium/pull/62)): the first Scout run's 2,079 papers are in `corpus/manifest.csv` ([#68](https://github.com/axonarium/axonarium/pull/68)) |
-| 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | In progress: one pipeline on the Batch API, run from the **Literature** workflow ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). Claims stay proposed until Gate 2 |
+| 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | Built ([#88](https://github.com/axonarium/axonarium/pull/88), [#90](https://github.com/axonarium/axonarium/pull/90), [#91](https://github.com/axonarium/axonarium/pull/91)): one pipeline on the Batch API, run from the **Literature** workflow or locally ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). The first real run waits on the `models` key. Claims stay proposed until Gate 2 |
 | 2.5 Audit, 2.6 homology | Not started: the audit needs gold v1 and extracted claims |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract and reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
@@ -71,31 +72,28 @@ Later phases get cards when they start.
 - Gap mode: the build suggests outputs for amygdala regions no claim reports outputs for, from their neighbours' targets. Species gaps join once rat and homology claims exist ([ADR 0027](docs/decisions/0027-gap-mode.md)).
 - The literature pipeline: triage, extraction and verification on the Batch API, run by hand from GitHub Actions or locally, paid from $1,000 of promotional API credits; extracted claims stay proposed until Gate 2 ([ADR 0028](docs/decisions/0028-literature-pipeline.md)).
 
-## Handoff (5 October 2026, third session)
+## Handoff (8 October 2026, fourth session)
 
-**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas, shown in 3D and as a network (`/brain`), in a table (`/explore`), region by region (`/regions`), through the read API (`/api/v1`) and through the MCP server. In `/brain`, figures download as PNG and SVG, the path finder draws a route hop by hop with its citations, and gap mode suggests untested outputs. The site answers from a snapshot of the database when Supabase can't.
+**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas, now from Cre-line injections too. They are shown in 3D and as a network (`/brain`), in a table (`/explore`), region by region (`/regions`), through the read API (`/api/v1`) and through the MCP server. In `/brain`, figures download as PNG and SVG, the path finder draws a route hop by hop with its citations, and gap mode suggests untested outputs.
 
-**Done and merged this session**, each with CI green on main and a successful deploy after it:
-- [#71](https://github.com/axonarium/axonarium/pull/71) C.5: the hidden-text screen. Every paper is screened before a model reads it (ADR 0023).
-- [#73](https://github.com/axonarium/axonarium/pull/73) C.3: the Supports and Contradicts buttons, with Turnstile and rate limits, hidden until the keys are set (ADR 0024).
-- [#75](https://github.com/axonarium/axonarium/pull/75) 3.5: accessibility and performance budgets in CI (ADR 0025).
-- [#76](https://github.com/axonarium/axonarium/pull/76) 3.5: figure export.
-- [#77](https://github.com/axonarium/axonarium/pull/77) 3.5: the path finder (ADR 0026).
-- [#78](https://github.com/axonarium/axonarium/pull/78) 3.5: gap mode (ADR 0027).
+**Done and merged this session**, each with CI green:
+- [#76](https://github.com/axonarium/axonarium/pull/76), [#77](https://github.com/axonarium/axonarium/pull/77), [#78](https://github.com/axonarium/axonarium/pull/78) 3.5: figure export, the path finder and gap mode.
+- [#87](https://github.com/axonarium/axonarium/pull/87): the literature pipeline's plan (ADR 0028) and sprint cards #79–#86.
+- [#88](https://github.com/axonarium/axonarium/pull/88) 2.2a, [#90](https://github.com/axonarium/axonarium/pull/90) 2.3, [#91](https://github.com/axonarium/axonarium/pull/91) 2.4: triage, extraction and verification, run by `python -m pipeline` and the **Literature** workflow.
+- [#89](https://github.com/axonarium/axonarium/pull/89) 1.7: Allen's Cre-line experiments (ADR 0029).
+- 0.5a: the gold curation tool (`python -m curate`).
 
-The previous sessions' work (#53–#69: the allowlist, releases, the static fallback, the reconciliation report, the inventory draft, the corpus, the eval harness, the inbox and the merge rule) is in the git history.
-
-**Not done:** the look of sprint 3.5 (tokens, motion), which needs the maintainer's eye; the gold set (0.5); extraction, verification and audit (2.3–2.5); homology claims (2.6); triage (C.4); BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
+**Not done:**
+- No model has been called yet: the first real run waits on the `models` key (below).
+- Gold v1 (0.5), and with it the harness scores (0.6, 0.6a #92) and the audit (2.5).
+- 1.8 and 1.9: their files' formats need checking from a machine that can reach figshare and Janelia.
+- The look of 3.5; homology (2.6); C.4; BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
 
 **Surprises:**
-- CI's runners have no GPU. WebGL renders in software on every frame, so Lighthouse can't judge blocking time on the 3D pages; their budget holds their layout and weight instead (ADR 0025).
-- The budgets found real faults:
-  - `/explore` built all 1,039 rows in the browser, so it now pages on the server.
-  - postgrest-js's retries made each snapshot fallback take about 7 s.
-- drei's `<Html>` labels threw on unmount when they mounted before the canvas connected its events, as a route opened from its URL does. They now wait for it (#77).
-- This session's sandbox couldn't reach the Allen API, Hugging Face or the live site. The screen's classifier runs in CI's `screen` job. Gap mode was tested on synthetic data; the build prints how many gaps the real data gives.
+- The eval harness doesn't give the extractor the region lexicon or the pruned text, so its scores wouldn't match pipeline runs (#92).
+- This session's sandbox couldn't reach the Anthropic API, Europe PMC, the Allen API, Hugging Face, figshare or Janelia. The pipeline was tested with replayed answers and a synthetic article, so the first real run is its real test.
 
-**Next step:** the maintainer's look review closes 3.5 (#74). Then enable Zenodo and run **Release**, and curate gold v1. With gold v1 and an API key, score two models (0.6) and start extraction (2.3) on the corpus's open-access papers.
+**Next step:** once the key is in place, run **Literature** with step `triage` and limit 20, and read the report: the verdicts, the tokens and the cost. If they look right, triage the rest; then run `extract` on a few papers, then `verify`. Each run pushes a `literature/…` branch to open a pull request from. Rough cost at batch prices for the open-access backlog (about 2,000 abstracts, then the few hundred open papers triage keeps): $100–200 in all. This is an estimate; each run's report gives the real figure.
 
 ## Waiting on the maintainer
 
