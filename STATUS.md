@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 4 October 2026 (second session).
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 8 October 2026.
 
 ## Phase
 
@@ -17,16 +17,19 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.3 Validation CI, 0.3b online identifier checks, 0.3c retraction status without a DOI, 0.3d standard HTTP packages | Done |
 | 0.4 Rebuild pipeline | Done |
 | 0.5 Gold set ([#6](https://github.com/axonarium/axonarium/issues/6)) | Waiting on the maintainer, who curates it into `agents/evals/gold/v1/` |
-| 0.6 Eval harness ([#7](https://github.com/axonarium/axonarium/issues/7)) | Built ahead of gold v1 ([#63](https://github.com/axonarium/axonarium/pull/63)); "two models scored" waits on gold v1 and an API key |
+| 0.5a Gold curation tool ([#82](https://github.com/axonarium/axonarium/issues/82)) | Next: a local page that makes curating gold v1 quick |
+| 0.6 Eval harness ([#7](https://github.com/axonarium/axonarium/issues/7)) | Built ahead of gold v1 ([#63](https://github.com/axonarium/axonarium/pull/63)); "two models scored" waits on gold v1 |
 | 1.1 Licence audit | Done |
 | 1.2 Atlas layer | Done |
 | 1.3 Allen mouse connectivity | Done: 2,053 build-time claims (717 accepted), 1,039 connections, the amygdala's outputs and inputs |
 | 1.4 BAMS rat adapter ([#11](https://github.com/axonarium/axonarium/issues/11)) | Blocked until BAMS grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)) |
 | 1.5 SCKAN adapter ([#12](https://github.com/axonarium/axonarium/issues/12)) | Moved to Phase 7a, the vagal gut–brain module (maintainer, 4 October 2026) |
 | 1.6 Reconciliation report ([#13](https://github.com/axonarium/axonarium/issues/13)) | Done ([#58](https://github.com/axonarium/axonarium/pull/58)): Allen and the literature; CI publishes the report with every run |
+| 1.7 Allen Cre-line experiments ([#83](https://github.com/axonarium/axonarium/issues/83)), 1.8 single-neuron reconstructions ([#84](https://github.com/axonarium/axonarium/issues/84)), 1.9 WhiteText statements ([#85](https://github.com/axonarium/axonarium/issues/85)) | Planned: more data without model costs |
 | 2.1 Amygdala inventory ([#59](https://github.com/axonarium/axonarium/issues/59)) | Drafted ([#60](https://github.com/axonarium/axonarium/pull/60)): 26 neuron types and the region naming traps; its open questions wait on the maintainer |
 | 2.2 Literature corpus ([#61](https://github.com/axonarium/axonarium/issues/61)) | Done ([#62](https://github.com/axonarium/axonarium/pull/62)): the first Scout run's 2,079 papers are in `corpus/manifest.csv` ([#68](https://github.com/axonarium/axonarium/pull/68)) |
-| 2.3–2.6 Extraction, verification, audit, homology | Not started: extraction waits on 0.6 and 2.2 |
+| 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | In progress: one pipeline on the Batch API, run from the **Literature** workflow ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). Claims stay proposed until Gate 2 |
+| 2.5 Audit, 2.6 homology | Not started: the audit needs gold v1 and extracted claims |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract and reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
 | 3.3 Explorer v1 | Done: site shell, 3D brain, network view, region pages, and the static fallback ([#57](https://github.com/axonarium/axonarium/pull/57)) |
@@ -37,6 +40,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | C.2 Allowlist ([#14](https://github.com/axonarium/axonarium/issues/14)) | Done ([#54](https://github.com/axonarium/axonarium/pull/54)) |
 | C.3 Evidence buttons ([#72](https://github.com/axonarium/axonarium/issues/72)) | Built ([#73](https://github.com/axonarium/axonarium/pull/73)): Supports and Contradicts on each claim page, with Turnstile and rate limits ([ADR 0024](docs/decisions/0024-evidence-buttons.md)). Hidden until the maintainer sets the keys |
 | C.4 Triage | Not started: waits on 2.4 |
+| 6.1 Autopilot ([#86](https://github.com/axonarium/axonarium/issues/86)) | Planned: weekly Scout, triage, extraction and verification with a spend cap and a kill switch |
 | C.5 Hidden-text screen ([#70](https://github.com/axonarium/axonarium/issues/70)) | Done ([#71](https://github.com/axonarium/axonarium/pull/71)): every paper is screened before a model reads it, and a flagged one never is ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)) |
 
 Later phases get cards when they start.
@@ -64,6 +68,7 @@ Later phases get cards when they start.
 - Site budgets: axe-core (WCAG 2.1 AA, no violations) on every page type at phone and desktop sizes, and Lighthouse on a mid-range phone, in CI on real data ([ADR 0025](docs/decisions/0025-site-budgets.md)).
 - Routes are found in the browser over the connections the brain page loads: the fewest hops, then the strongest weakest hop ([ADR 0026](docs/decisions/0026-routes-in-the-browser.md)).
 - Gap mode: the build suggests outputs for amygdala regions no claim reports outputs for, from their neighbours' targets. Species gaps join once rat and homology claims exist ([ADR 0027](docs/decisions/0027-gap-mode.md)).
+- The literature pipeline: triage, extraction and verification on the Batch API, run by hand from GitHub Actions or locally, paid from $1,000 of promotional API credits; extracted claims stay proposed until Gate 2 ([ADR 0028](docs/decisions/0028-literature-pipeline.md)).
 
 ## Handoff (5 October 2026, third session)
 
@@ -96,7 +101,7 @@ The previous sessions' work (#53–#69: the allowlist, releases, the static fall
 - [ ] The look review for sprint 3.5 ([#74](https://github.com/axonarium/axonarium/issues/74)): design tokens, motion, and whether phones get a lighter home preview (it costs a phone 0.3–0.5 s of blocking time; ADR 0025). Then #74 can close.
 - [ ] Gap mode's rule (ADR 0027): whether suggestions from neighbouring subdivisions are the research prompts you want. Also whether routes and gaps should join the read API and the MCP server: two of the plan's acceptance questions ask for them.
 - [ ] Gold-set curation (sprint 0.5): the maintainer alone, or with a second curator? Its format is in `agents/evals/README.md`.
-- [ ] An LLM API key with a spending cap (`ANTHROPIC_API_KEY`, and `OPENAI_API_KEY` for a second model family), for the eval harness and extraction.
+- [ ] The pipeline's key (ADR 0028): in the Anthropic Console, create an API key in the workspace holding the credits and set a monthly spend limit there. Then in GitHub, under Settings → Environments, create an environment named `models`, limit it to the `main` branch, and add the key as the secret `ANTHROPIC_API_KEY`. An `OPENAI_API_KEY` there too would let the verifier come from a second model family.
 - [ ] Zenodo: switch on `axonarium/axonarium` in Zenodo's GitHub settings, run **Release**, then add the concept DOI to `README.md`, `CITATION.cff` and `SUCCESSION.md` (ADR 0016). Also whether `CITATION.cff` should list CC BY 4.0 beside Apache-2.0.
 - [ ] Whether to annotate `corpus/` as CC0-1.0 in `REUSE.toml` (ADR 0019). Later Scout runs: run it from the Actions tab and open a pull request from the branch it pushes.
 - [ ] The inventory draft's open questions (spec for 2.1): where the lexicon lives, whether neuron types cite papers, how Cre-line experiments map to them.
@@ -126,7 +131,7 @@ From plan Part 3.5:
 | Vercel | Done: team and project `axonarium`, deployed from GitHub Actions |
 | Zenodo | Not started; needed for release DOIs (3.2) |
 | Supabase | Done: the serving database, rebuilt by every deploy; the site falls back to a snapshot when it can't answer |
-| LLM API key with a spending cap | Not started; needed to score models (0.6) and to extract (2.3) |
+| LLM API key with a spending cap | $1,000 of promotional API credits (8 October 2026); the key goes in the `models` environment (ADR 0028) |
 | PyPI and npm | npm scope held; PyPI project name unclaimed |
 
 ## Metrics

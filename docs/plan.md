@@ -308,16 +308,21 @@ Phases 2 and 3 run side by side; autopilot begins once the API and dumps are liv
 | 0.4 | Rebuild pipeline: files to Postgres and dumps | 0.2 | One command rebuilds from an empty database in CI | Agent |
 | 0.5 | Gold set: about 150 amygdala claims plus about 30 known-absent pairs | 0.2 | Reviewed and frozen as gold v1 | Maintainer |
 | 0.6 | Eval harness: score any model and prompt against the gold set | 0.5 | Two different models scored and reported | Agent |
+| 0.5a | Gold curation tool: a local page that shows a paper beside a claim form with atlas-region search, and writes the gold set's files | 0.6 | The maintainer curates a paper with it | Agent + review |
 | 1.1 | License audit of candidate sources | 0.1 | Reuse terms per source recorded in an ADR | Agent + review |
 | 1.2 | Atlas layer via BrainGlobe: mouse, rat and human hierarchies and meshes, UBERON mappings, pinned versions | 0.2 | Every amygdala region resolves in each atlas | Agent + review |
 | 1.3 | Allen mouse connectivity adapter | 1.1, 1.2 | Region-level claims ingested; rerun is idempotent | Agent |
 | 1.4 | BAMS rat adapter, if licensed | 1.1, 1.2 | As 1.3 | Agent |
 | 1.5 | SCKAN adapter for vagal pathways | 1.1, 1.2 | RDF converted to claims; round-trip test passes | Agent |
 | 1.6 | Reconciliation report | 1.3–1.5 | Agreement, conflict and silence between sources, as a figure in the repo | Agent + review |
+| 1.7 | Allen Cre-line experiments: region-level claims from transgenic injections, recording the labelled population | 1.3 | Claims ingested; each records its Cre line for neuron-type mapping | Agent |
+| 1.8 | Single-neuron reconstructions: MouseLight's CC BY neurons, and SEU-Allen's after a licence check, as `single_neuron_reconstruction` claims | 1.2 | Neuron-level claims ingested, each neuron's licence respected | Agent + review |
+| 1.9 | WhiteText connectivity statements: hand-annotated abstract statements mapped to atlas regions | 1.2 | Mapped statements ingested as proposed claims | Agent + review |
 | 2.1 | Amygdala inventory: nuclei, subdivisions, neuron types, synonyms | 1.2 | Rat and mouse entities merged to main | Maintainer + agent |
 | 2.2 | Literature corpus: saved PubMed queries, open-access full text, dedup | 2.1 | Corpus manifest committed | Agent |
-| 2.3 | Extraction in batches of about 50 papers | 0.6, 2.2 | Each batch is a PR with provenance | Agent |
-| 2.4 | Independent verification pass | 2.3 | Every extracted claim has a verdict | Agent |
+| 2.2a | Abstract triage: does each corpus paper's own data test a connection? | 2.2 | Every corpus paper has a verdict | Agent |
+| 2.3 | Extraction pipeline and batches: targeted full text, screened, on the Batch API ([ADR 0028](decisions/0028-literature-pipeline.md)); claims stay proposed until Gate 2 | 2.2a, C.5 | Each batch is a PR with provenance | Agent |
+| 2.4 | Independent verification pass: a separate prompt checks each claim against the paper | 2.3 | Every extracted claim has a verdict | Agent |
 | 2.5 | Audit sprint: stratified sample, measure precision, revise prompts | 2.4 | Audit precision recorded in STATUS.md | Maintainer |
 | 2.6 | Homology claims for amygdala nuclei, rat to mouse to human | 2.1 | Each claim has evidence and a confidence | Agent + review |
 | 3.1 | Read API with OpenAPI spec | 0.4 | Endpoints documented and tested against the dump | Agent |
@@ -336,7 +341,7 @@ The community-input sprints (C.1–C.5) are listed in Part 3.
 
 **Phase 6, autopilot** (continuous, after the Phase 3 gate):
 
-- Weekly: scout, extract, verify, open PRs.
+- Weekly: scout, triage, extract, verify, open PRs (sprint 6.1: the workflows, with a spend cap and a kill switch).
 - Monthly: release with a Zenodo DOI; audit sample reviewed.
 - Quarterly: re-run evals on the current model and candidates; swap only if a candidate matches or beats it.
 - Ongoing: dependency updates, link checks, STATUS.md regenerated, community inbox triaged.
