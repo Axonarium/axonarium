@@ -1,4 +1,5 @@
-"""Command line: `python -m pipeline <step> [--limit N] [--model provider:model] [--effort level] [--now]`."""
+"""Command line: `python -m pipeline <step> [--limit N] [--model provider:model] [--fallback provider:model] [--effort level]
+[--now]`."""
 
 import argparse
 import json
@@ -7,9 +8,12 @@ import sys
 
 from pipeline import branches, extract, triage, verify
 from pipeline.corpus import ROOT, Redo, read_manifest
-from pipeline.llm import BatchPending, runner
+from pipeline.llm import BatchPending, FallbackRunner, runner
 
 DEFAULT_MODEL = "anthropic:claude-opus-5-5"
+# Where a model's refused requests go by default. Claude Opus 5 runs no bio classifier, which in Claude Opus 5.5 refuses
+# some papers on viral tracers (rabies, pseudorabies, herpes simplex) and on drugs.
+FALLBACKS = {"anthropic:claude-opus-5-5": "anthropic:claude-opus-5"}
 LEXICON = ROOT / ".cache" / "lexicon.json"
 SHOWN = 30  # list entries (dropped drafts, screen findings) shown in a report
 
@@ -44,6 +48,9 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     parser.add_argument("step", choices=["triage", "extract", "verify"], help="which step to run")
     parser.add_argument("--limit", type=int, default=50, help="at most this many papers (default 50)")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"anthropic:<model> or replay:<folder> (default {DEFAULT_MODEL})")
+    parser.add_argument("--fallback", default="auto",
+                        help="where refused requests go in the same run: provider:model, 'none', or 'auto' "
+                             f"({', '.join(f'{k} to {v}' for k, v in FALLBACKS.items())}; none for other models)")
     parser.add_argument("--effort", help="the model's effort level (default: the step's own); 'none' to leave it unset")
     parser.add_argument("--now", action="store_true", help="live calls at full price instead of a batch, for small trials")
     parser.add_argument("--collect", metavar="BATCH_ID",
@@ -60,6 +67,9 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     redo = Redo(tuple(args.redo))
     try:
         run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect)
+        fallback = FALLBACKS.get(args.model) if args.fallback == "auto" else None if args.fallback == "none" else args.fallback
+        if fallback:
+            run = FallbackRunner(run, runner(fallback, schema, effort, step.MAX_TOKENS, batch=not args.now))
         if args.collect is None:  # collecting sends nothing, so it can't pay twice
             elsewhere = branches.waiting(step.LEDGER)
             if elsewhere:
@@ -87,7 +97,13 @@ def main(argv: list[str] | None = None, classify=None) -> int:
         print(f"{args.step} stopped: {error}")
         summarize(f"**{args.step}** stopped: {error}\n")
         return 1
+    if isinstance(run, FallbackRunner):
+        summary["refusals_sent_to_fallback"] = run.retried
     text = report(summary)
+    if isinstance(run, FallbackRunner) and run.pending:
+        text += (f"\nThe refusals went to {run.fallback.name} in batch `{run.pending}`, still running when the wait ran out, "
+                 f"so they are recorded as refusals. Collect its answers later with `--collect {run.pending} --model "
+                 f"{run.fallback.name}` (the Literature workflow's `collect` and `model` inputs), at no further cost.\n")
     print(text)
     summarize(text)
     print(json.dumps(summary), file=sys.stderr)

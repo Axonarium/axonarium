@@ -29,7 +29,7 @@ from evals.harness.models import DraftClaim, values
 from evals.harness.run import read_prompt
 from pipeline import europepmc, sections
 from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, recorded, set_aside
-from pipeline.llm import Request, choose, cost, request_id
+from pipeline.llm import Request, choose, request_id, spend
 from pipeline.triage import LEDGER as TRIAGE
 from screen import Screened, screen_jats
 
@@ -272,13 +272,14 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     for request in requests:
         paper, base = sent[request.id]
         result = results[request.id]
-        base = {**base, "attempts": attempts(recorded(before, paper), result.stop)}
+        answered_by = result.model or model
+        base = {**base, "attempts": attempts(recorded(before, paper), result.stop), "model": answered_by}
         if result.parsed is None:
             rows.append({**base, "outcome": result.stop})
             continue
         kept, dropped = {}, 0
         for draft in result.parsed.claims:
-            record, problem = claim(draft, paper, lexicon, model, prompt_id, today, numbers_left_out)
+            record, problem = claim(draft, paper, lexicon, answered_by, prompt_id, today, numbers_left_out)
             if record is None:
                 dropped += 1
                 dropped_reasons.append(f"{paper['key']}: {problem}")
@@ -289,13 +290,12 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
         written += len(kept)
         rows.append({**base, "outcome": "claims" if kept else "none", "claims": str(len(kept)), "dropped": str(dropped)})
     ledger.update(rows)
-    usage = {kind: sum(results[r.id].usage.get(kind, 0) for r in requests) for kind in ("input_tokens", "output_tokens",
-             "cache_read_input_tokens", "cache_creation_input_tokens")}
+    usage, dollars = spend((results[r.id] for r in requests), model, getattr(run, "batch", False))
     outcomes = [r["outcome"] for r in rows]
     return {"step": "extract", "model": run.name, "prompt": prompt_id, "papers": len(rows), "sent": len(requests),
             "claims_written": written, "drafts_dropped": len(dropped_reasons),
             **{f"papers_{outcome}": outcomes.count(outcome) for outcome in sorted(set(outcomes))},
-            "usage": usage, "cost": cost(model, usage, getattr(run, "batch", False)),
+            "usage": usage, "cost": dollars,
             "remaining": len(candidates(manifest, triaged, ledger.read(), prompt_id)),
             "set_aside": set_aside([p for p in manifest if (recorded(triaged, p) or {}).get("verdict") == "in"], ledger.read(),
                                    "outcome", DONE),

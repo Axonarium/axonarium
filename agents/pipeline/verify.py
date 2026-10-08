@@ -21,7 +21,7 @@ from evals.harness.run import read_prompt
 from pipeline import extract
 from pipeline.corpus import CORPUS, MAX_ATTEMPTS, Ledger, Redo, attempts, recorded
 from pipeline.extract import Lexicon
-from pipeline.llm import Request, choose, cost, request_id
+from pipeline.llm import Request, choose, request_id, spend
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "verifier.md"
 LEDGER = Ledger(CORPUS / "verified.csv", ("key", "outcome", "claims", "judged", "listed", "attempts", "model", "prompt", "date"))
@@ -154,9 +154,9 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
                     run, limit, key=request_key)
     requests, sent, skipped, rows = [], {}, [], []
 
-    def ledger_row(found, outcome: str, stop: str | None, judged: int = 0) -> dict:
+    def ledger_row(found, outcome: str, stop: str | None, judged: int = 0, answered_by: str | None = None) -> dict:
         return {"key": found[0]["key"], "outcome": outcome, "claims": str(len(found[1])), "judged": str(judged),
-                "listed": listed(found), "attempts": attempts(last_try(before, found), stop), "model": model,
+                "listed": listed(found), "attempts": attempts(last_try(before, found), stop), "model": answered_by or model,
                 "prompt": prompt_id, "date": today}
 
     for paper, claims in papers:
@@ -182,7 +182,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
         result = results[request.id]
         if result.parsed is None:
             unjudged.append(f"{paper['key']}: {result.stop}")
-            rows.append(ledger_row((paper, claims), result.stop, result.stop))
+            rows.append(ledger_row((paper, claims), result.stop, result.stop, answered_by=result.model))
             continue
         by_number = {v.claim: v for v in result.parsed.verdicts}
         judged = 0
@@ -191,17 +191,16 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
             if verdict is None:
                 unjudged.append(f"{paper['key']}: claim {record['id']} got no verdict")
                 continue
-            record_verdict(path, record, verdict, model, prompt_id, today)
+            record_verdict(path, record, verdict, result.model or model, prompt_id, today)
             counts[verdict.verdict] += 1
             judged += 1
-        rows.append(ledger_row((paper, claims), "judged", result.stop, judged))
+        rows.append(ledger_row((paper, claims), "judged", result.stop, judged, result.model))
     ledger.update(rows)
     after = ledger.read()
     left = list(unverified(claims_dir, prompt_id, index).values())
-    usage = {kind: sum(results[r.id].usage.get(kind, 0) for r in requests) for kind in ("input_tokens", "output_tokens",
-             "cache_read_input_tokens", "cache_creation_input_tokens")}
+    usage, dollars = spend((results[r.id] for r in requests), model, getattr(run, "batch", False))
     return {"step": "verify", "model": run.name, "prompt": prompt_id, "papers": len(papers), "sent": len(requests),
-            **counts, "usage": usage, "cost": cost(model, usage, getattr(run, "batch", False)),
+            **counts, "usage": usage, "cost": dollars,
             "remaining": sum(due(f, after, prompt_id, Redo()) for f in left),
             "skipped": skipped, "unjudged": unjudged,
             "set_aside": [f"{f[0]['key']}: {len(f[1])} claim(s)" for f in left if not due(f, after, prompt_id, Redo())]}

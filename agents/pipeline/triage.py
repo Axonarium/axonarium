@@ -18,7 +18,7 @@ from evals.harness.models import EvidenceClass
 from evals.harness.run import read_prompt
 from pipeline import europepmc
 from pipeline.corpus import CORPUS, Ledger, Redo, attempts, due, recorded, set_aside
-from pipeline.llm import Request, Result, choose, cost, request_id
+from pipeline.llm import Request, Result, choose, request_id, spend
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "triage.md"
 LEDGER = Ledger(CORPUS / "triage.csv", ("key", "verdict", "basis", "evidence", "species", "reason", "attempts", "model", "prompt",
@@ -50,8 +50,9 @@ def request_text(paper: dict, abstract: str) -> str:
 
 def row(paper: dict, result: Result, basis: str, model: str, prompt_id: str, today: str, previous: dict | None = None) -> dict:
     found, tries = result.parsed, attempts(previous, result.stop)
-    if found is None:
-        return {"key": paper["key"], "verdict": result.stop, "basis": basis, "attempts": tries, "model": model,
+    if found is None:  # the reason is a refusal's category, such as bio
+        return {"key": paper["key"], "verdict": result.stop, "basis": basis,
+                "reason": result.detail or "" if result.stop == "refusal" else "", "attempts": tries, "model": model,
                 "prompt": prompt_id, "date": today}
     return {"key": paper["key"], "verdict": "in" if found.tests_connections else "out", "basis": basis,
             "evidence": ";".join(sorted(set(found.evidence))), "species": ";".join(sorted(set(found.species))),
@@ -79,16 +80,15 @@ def triage(manifest: list[dict], run, limit: int, today: str | None = None, ledg
     requests = [Request(request_id(p["key"]), system, request_text(p, a)) for p, a in fetched]
     results = run.run(requests)
     model = getattr(run, "model", "replay")
-    rows = [row(p, results[r.id], "abstract" if a else "title", model, prompt_id, today, recorded(before, p))
-            for (p, a), r in zip(fetched, requests, strict=True)]
+    rows = [row(p, results[r.id], "abstract" if a else "title", results[r.id].model or model, prompt_id, today,
+                recorded(before, p)) for (p, a), r in zip(fetched, requests, strict=True)]
     ledger.update(rows)
-    usage = {kind: sum(results[r.id].usage.get(kind, 0) for r in requests) for kind in ("input_tokens", "output_tokens",
-             "cache_read_input_tokens", "cache_creation_input_tokens")}
+    usage, dollars = spend((results[r.id] for r in requests), model, getattr(run, "batch", False))
     verdicts = [r["verdict"] for r in rows]
     return {"step": "triage", "model": run.name, "prompt": prompt_id, "papers": len(rows),
             "in": verdicts.count("in"), "out": verdicts.count("out"),
             "failed": len(verdicts) - verdicts.count("in") - verdicts.count("out"),
             "unfetched": len(papers) - len(fetched), "without_abstract": sum(1 for _, a in fetched if not a),
-            "usage": usage, "cost": cost(model, usage, getattr(run, "batch", False)),
+            "usage": usage, "cost": dollars,
             "remaining": len(pending(manifest, ledger.read(), prompt_id)),
             "set_aside": set_aside(manifest, ledger.read(), "verdict", DECIDED)}
