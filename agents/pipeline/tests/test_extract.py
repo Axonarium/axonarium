@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from evals.harness.models import DraftClaim, Entity, Extraction
+from evals.harness.models import Entity
 from pipeline import cli, europepmc, extract, sections
 from pipeline.corpus import Ledger, Redo
 from pipeline.llm import Result, request_id
@@ -37,15 +37,17 @@ TRIAGED = {p["key"]: {"verdict": "out" if p["key"].endswith("f") else "in"} for 
 
 
 def draft(subject: str, target: str, species: str = MOUSE, evidence: str = "anterograde_tracer", predicate: str = "projects_to",
-          result: str = "present", sign: str = "unknown", subject_type: str = "region", locator: str = "Fig. 1") -> DraftClaim:
-    return DraftClaim(subject=Entity(type=subject_type, id=subject, name_in_paper=f"name of {subject}"), predicate=predicate,
+          result: str = "present", sign: str = "unknown", subject_type: str = "region", locator: str = "Fig. 1",
+          strength: str | None = None, measurements: list | None = None) -> extract.Draft:
+    return extract.Draft(subject=Entity(type=subject_type, id=subject, name_in_paper=f"name of {subject}"), predicate=predicate,
+                         strength=strength, measurements=measurements or [],
                       object=Entity(type="region", id=target, name_in_paper=f"name of {target}"), species=species,
                       evidence_class=evidence, result=result, sign=sign, locator=locator,
                       paraphrase="  An anterograde tracer in the  BLA labelled axons in the CeA. ")
 
 
 ANSWERS = {
-    "PMC1": Extraction(claims=[
+    "PMC1": extract.PaperClaims(claims=[
         draft("MBA:295", "MBA:536"),
         draft("MBA:295", "MBA:536"),  # drafted twice: one file
         draft("MBA:295", "MBA:672", result="absent", sign="excitatory", locator="Fig. 2"),
@@ -58,7 +60,7 @@ ANSWERS = {
         draft("MBA:295", "MBA:295"),  # to itself
         draft("MBA:295", "MBA:536", species="NCBITaxon:9544"),  # a macaque
     ]),
-    "PMC3": Extraction(claims=[]),
+    "PMC3": extract.PaperClaims(claims=[]),
 }
 
 
@@ -105,7 +107,7 @@ def test_extraction_writes_checked_proposed_claims(tmp_path):
         "species": MOUSE, "evidence_class": "anterograde_tracer", "result": "present", "sign": "unknown",
         "source": {"doi": "10.1/a", "pmid": "1", "pmcid": "PMC1", "locator": "Fig. 1"},
         "paraphrase": "An anterograde tracer in the BLA labelled axons in the CeA.",
-        "curation": {"by": "agent", "role": "extractor", "model": "claude-opus-5-5", "prompt": "extract@0.2.0", "date": "2026-10-08"},
+        "curation": {"by": "agent", "role": "extractor", "model": "claude-opus-5-5", "prompt": "extract@0.3.0", "date": "2026-10-08"},
         "status": "proposed",
         "extra": {"extract.subject_name": "name of MBA:295", "extract.object_name": "name of MBA:536"},
     }
@@ -180,7 +182,7 @@ def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
     lexicon.write_text(json.dumps(LEXICON), encoding="utf-8")
     answers = tmp_path / "answers"
     answers.mkdir()
-    (answers / f"{request_id('doi:10.1/a')}.json").write_text(Extraction(claims=[draft("MBA:295", "MBA:536")]).model_dump_json(), encoding="utf-8")
+    (answers / f"{request_id('doi:10.1/a')}.json").write_text(extract.PaperClaims(claims=[draft("MBA:295", "MBA:536")]).model_dump_json(), encoding="utf-8")
     monkeypatch.setattr(cli, "read_manifest", lambda: PAPERS[:1])
     monkeypatch.setattr(extract, "LEDGER", Ledger(tmp_path / "extracted.csv", extract.LEDGER.columns))
     monkeypatch.setattr(extract, "CLAIMS", tmp_path / "claims")
@@ -194,3 +196,32 @@ def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr("screen.preflight", lambda classify: [])
     assert cli.main(["extract", "--model", f"replay:{answers}", "--lexicon", str(lexicon)], classify=clean) == 0
     assert len(list((tmp_path / "claims").glob("*.yaml"))) == 1 and "claims written: 1" in capsys.readouterr().out
+
+
+def number(quantity: str, value: float, **parts) -> extract.DraftMeasurement:
+    return extract.DraftMeasurement(quantity=quantity, value=value, **{k: parts.get(k) for k in ("sd", "sem", "ci_low", "ci_high", "n")})
+
+
+def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():
+    lexicon = extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"])
+    paper = PAPERS[0]
+    found = draft("MBA:295", "MBA:536", strength="strong", measurements=[
+        number("connection_probability", 0.4, n=30),
+        number("fraction_of_labelled_neurons", 35.0),  # a percent: left out, with a note
+        number("conduction_delay", 3.2, sem=0.4, n=12),
+        number("synapse_count", 5.0, ci_low=4.0),  # half an interval
+    ])
+    notes: list[str] = []
+    record, problem = extract.claim(found, paper, lexicon, "m", "extract@0.3.0", "2026-10-09", notes)
+    assert problem is None and record["strength"] == "strong"
+    assert record["measurements"] == [
+        {"quantity": "connection_probability", "value": 0.4, "unit": "1", "n": 30},
+        {"quantity": "conduction_delay", "value": 3.2, "unit": "ms", "sem": 0.4, "n": 12},
+    ]
+    assert notes == ["doi:10.1/a: MBA:295 → MBA:536: fraction_of_labelled_neurons 35.0 is outside [0.0, 1.0], perhaps a percent",
+                     "doi:10.1/a: MBA:295 → MBA:536: synapse_count needs both ends of its interval"]
+    assert list(record)[:10] == ["id", "subject", "predicate", "object", "species", "evidence_class", "result", "sign", "strength", "measurements"]
+
+    absent, _ = extract.claim(draft("MBA:295", "MBA:672", result="absent", strength="weak", measurements=[number("connection_probability", 0.0)]),
+                              paper, lexicon, "m", "extract@0.3.0", "2026-10-09", notes)
+    assert "strength" not in absent and "measurements" not in absent

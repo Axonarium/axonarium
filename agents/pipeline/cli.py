@@ -5,7 +5,6 @@ import json
 import os
 import sys
 
-from evals.harness.models import Extraction
 from pipeline import branches, extract, triage, verify
 from pipeline.corpus import ROOT, Redo, read_manifest
 from pipeline.llm import BatchPending, runner
@@ -57,7 +56,7 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     args = parser.parse_args(argv)
     step = {"triage": triage, "extract": extract, "verify": verify}[args.step]
     effort = None if args.effort == "none" else args.effort or step.EFFORT
-    schema = {"triage": triage.Verdict, "extract": Extraction, "verify": verify.Verdicts}[args.step]
+    schema = {"triage": triage.Verdict, "extract": extract.PaperClaims, "verify": verify.Verdicts}[args.step]
     redo = Redo(tuple(args.redo))
     try:
         run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect)
