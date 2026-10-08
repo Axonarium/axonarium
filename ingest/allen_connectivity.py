@@ -2,8 +2,9 @@
 
 Allen terms allow non-commercial use but not commercial redistribution, so these claims are never committed and
 never dumped (ADR 0005); the live site shows them with the citation. Each claim is one experiment's projection
-into one target, from wild-type mice: every target of injections in the amygdala (its outputs), and the amygdala
-targets of injections anywhere else (its inputs).
+into one target, from wild-type and Cre-line mice (ADR 0029): every target of injections in the amygdala (its
+outputs), and the amygdala targets of injections anywhere else (its inputs). A Cre-line experiment's claim records its
+line, so the labelled population can be mapped to a neuron type later.
 """
 
 import hashlib
@@ -28,8 +29,8 @@ SOURCE = {"doi": "10.1038/nature13186"}  # Oh et al. 2014, "A mesoscale connecto
 # Ingesters are agents without a language model: `model` says so, and `prompt` is the adapter's versioned procedure.
 # Bump the version whenever the adapter's output changes; it and the date keep reruns identical (ADR 0010).
 MODEL = "deterministic-adapter"
-PROCEDURE = "allen-connectivity@1.2.0"
-ADAPTER_DATE = "2026-10-03"
+PROCEDURE = "allen-connectivity@1.3.0"
+ADAPTER_DATE = "2026-10-08"
 CROCKFORD = "0123456789abcdefghjkmnpqrstvwxyz"
 USER_AGENT = {"User-Agent": "axonarium-build (https://github.com/axonarium/axonarium)"}
 
@@ -76,17 +77,18 @@ def paged(get: Callable, criteria: str, page: int = PAGE) -> list[dict]:
 
 
 def experiments(get: Callable) -> list[dict]:
-    """Wild-type projection experiments that passed QC and have one injection, with its primary structure."""
+    """Projection experiments that passed QC and have one injection, with its primary structure and the mouse's
+    transgenic lines (none for a wild-type mouse)."""
     criteria = (f"model::SectionDataSet,rma::criteria,[failed$eqfalse],products[id$eq{PROJECTION_PRODUCT}],"
                 "rma::include,specimen(donor(transgenic_lines)),specimen(stereotaxic_injections(primary_injection_structure))")
     found = []
     for row in paged(get, criteria):
         specimen = row["specimen"]
-        if specimen["donor"].get("transgenic_lines"):
-            continue  # Cre lines label cell types: neuron-type claims, a later sprint.
         if len(specimen["stereotaxic_injections"]) != 1:
             continue  # Labelling couldn't be attributed to one injection site.
-        found.append({"id": row["id"], "injection": specimen["stereotaxic_injections"][0]["primary_injection_structure"]["id"]})
+        lines = ";".join(sorted(line["name"] for line in specimen["donor"].get("transgenic_lines") or []))
+        found.append({"id": row["id"], "injection": specimen["stereotaxic_injections"][0]["primary_injection_structure"]["id"],
+                      "line": lines or None})
     return sorted(found, key=lambda e: e["id"])
 
 
@@ -143,6 +145,9 @@ def build_claims(atlas: str, found: list[dict], summary: set[int], projected: di
                     or density < DENSITY_MIN:
                 continue
             value = round(density, 6)
+            line = experiment.get("line")
+            mouse = f"a {line} mouse, the tracer Cre-dependent" if line else "a wild-type mouse"
+            extra = {"allen.experiment": experiment["id"], "allen.injection_share": round(experiment["share"], 2)}
             claims.append({
                 "id": claim_id(experiment["id"], target),
                 "subject": {"type": "region", "id": f"MBA:{injection}", "atlas": atlas},
@@ -155,18 +160,18 @@ def build_claims(atlas: str, found: list[dict], summary: set[int], projected: di
                 "measurements": [{"quantity": "projection_density", "value": value, "unit": "1"}],
                 "source": {**SOURCE, "locator": f"Allen Mouse Brain Connectivity Atlas, experiment {experiment['id']}"},
                 "paraphrase": (f"In Allen Mouse Brain Connectivity Atlas experiment {experiment['id']}, an anterograde "
-                               f"tracer injected into {acronyms.get(injection, injection)} of a wild-type mouse "
+                               f"tracer injected into {acronyms.get(injection, injection)} of {mouse} "
                                f"({experiment['share']:.0%} of the injection in {acronyms.get(injection, injection)}) "
                                f"labelled axons in {acronyms.get(target, target)} (projection density {value:.3f})."),
                 "curation": {"by": "agent", "role": "ingester", "model": MODEL, "prompt": PROCEDURE, "date": ADAPTER_DATE},
                 "status": "accepted" if experiment["share"] >= SHARE_MIN else "proposed",
-                "extra": {"allen.experiment": experiment["id"], "allen.injection_share": round(experiment["share"], 2)},
+                "extra": extra | ({"allen.transgenic_line": line} if line else {}),
             })
     return sorted(claims, key=lambda claim: claim["id"])
 
 
 def load_claims(atlas: str, structure_ids: list[int], acronyms: dict[int, str], get: Callable | None = None) -> list[dict]:
-    """The claims for these structures (the amygdala and its subdivisions): every target of wild-type injections
+    """The claims for these structures (the amygdala and its subdivisions): every target of injections
     into them, and every one of them that injections elsewhere reach."""
     if not structure_ids:
         return []

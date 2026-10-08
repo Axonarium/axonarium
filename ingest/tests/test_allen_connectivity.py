@@ -38,10 +38,12 @@ ANSWERS = {
     "[is_injection$eqtrue]": [{"section_data_set_id": 1, "structure_id": 997, "projection_volume": 0.1},
                               {"section_data_set_id": 1, "structure_id": 295, "projection_volume": 0.06},
                               {"section_data_set_id": 1, "structure_id": 131, "projection_volume": 0.04},
+                              {"section_data_set_id": 2, "structure_id": 997, "projection_volume": 0.1},
+                              {"section_data_set_id": 2, "structure_id": 295, "projection_volume": 0.08},
                               {"section_data_set_id": 3, "structure_id": 997, "projection_volume": 0.2},
                               {"section_data_set_id": 3, "structure_id": 972, "projection_volume": 0.2}],
-    # Inputs: projections into amygdala structures from every experiment; only wild-type ones not injected in
-    # the amygdala are used.
+    # Inputs: projections into amygdala structures from every experiment; only those not injected in the amygdala
+    # are inputs.
     "[projection_density$ge": [{"section_data_set_id": 3, "structure_id": 295, "projection_density": 0.05},
                                {"section_data_set_id": 3, "structure_id": 536, "projection_density": 0.001},
                                {"section_data_set_id": 2, "structure_id": 536, "projection_density": 0.4},
@@ -50,12 +52,14 @@ ANSWERS = {
                                  {"structure_id": 131, "projection_density": 0.004},
                                  {"structure_id": 295, "projection_density": 0.9},
                                  {"structure_id": 997, "projection_density": 0.5}],
+    "section_data_set_id$eq2],[is_injection$eqfalse]": [{"structure_id": 536, "projection_density": 0.4}],
 }
 
 
-def test_wild_type_single_injections_only():
+def test_single_injections_with_their_lines():
     found = experiments(fake_get(ANSWERS))
-    assert found == [{"id": 1, "injection": 295}, {"id": 3, "injection": 972}, {"id": 5, "injection": 12345}]
+    assert found == [{"id": 1, "injection": 295, "line": None}, {"id": 2, "injection": 295, "line": "Slc32a1-IRES-Cre"},
+                     {"id": 3, "injection": 972, "line": None}, {"id": 5, "injection": 12345, "line": None}]
 
 
 def test_paged_reads_every_page_in_a_stable_order():
@@ -72,14 +76,15 @@ def test_paged_reads_every_page_in_a_stable_order():
 def test_inputs_to_the_amygdala():
     claims = load_claims(ATLAS, [295, 536, 131], ACRONYMS, get=fake_get(ANSWERS))
     pairs = [(c["subject"]["id"], c["object"]["id"]) for c in claims]
-    # PL -> BLA from experiment 3; its weak CEA density and the Cre line's are left out.
+    # PL -> BLA from experiment 3; its weak CEA density is left out.
     assert ("MBA:972", "MBA:295") in pairs and ("MBA:972", "MBA:536") not in pairs
     pl = next(c for c in claims if c["subject"]["id"] == "MBA:972")
     assert pl["extra"] == {"allen.experiment": 3, "allen.injection_share": 1.0} and pl["status"] == "accepted"
 
 
 def test_targets():
-    claims = [c for c in load_claims(ATLAS, [295], ACRONYMS, get=fake_get(ANSWERS)) if c["subject"]["id"] == "MBA:295"]
+    claims = [c for c in load_claims(ATLAS, [295], ACRONYMS, get=fake_get(ANSWERS))
+              if c["subject"]["id"] == "MBA:295" and c["extra"]["allen.experiment"] == 1]
     # CEA only: LA is below 0.01, BLA is the injection structure, root isn't a summary structure.
     assert [(c["subject"]["id"], c["object"]["id"]) for c in claims] == [("MBA:295", "MBA:536")]
     claim = claims[0]
@@ -154,3 +159,12 @@ def test_failed_query_not_cached(tmp_path):
     with pytest.raises(RuntimeError, match="busy"):
         _get("model::Structure,rma::criteria,[id$eq1]", 10, http)
     assert _get("model::Structure,rma::criteria,[id$eq1]", 10, http) == [{"id": 1}] and answers == []
+
+
+def test_cre_line_experiments_record_their_line():
+    claims = [c for c in load_claims(ATLAS, [295], ACRONYMS, get=fake_get(ANSWERS)) if c["extra"]["allen.experiment"] == 2]
+    assert [(c["subject"]["id"], c["object"]["id"]) for c in claims] == [("MBA:295", "MBA:536")]
+    assert claims[0]["extra"] == {"allen.experiment": 2, "allen.injection_share": 0.8, "allen.transgenic_line": "Slc32a1-IRES-Cre"}
+    assert "of a Slc32a1-IRES-Cre mouse, the tracer Cre-dependent" in claims[0]["paraphrase"]
+    assert claims[0]["curation"]["prompt"] == "allen-connectivity@1.3.0"
+    assert check_file(Record(Path(f"{claims[0]['id']}.yaml"), "ConnectivityClaim", claims[0])) == []

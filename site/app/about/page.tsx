@@ -19,8 +19,9 @@ export default function About() {
         The mouse amygdala&apos;s connections at the level of brain regions, from the{" "}
         <a href="https://connectivity.brain-map.org/">Allen Mouse Brain Connectivity Atlas</a> (
         <a href="https://doi.org/10.1038/nature13186">Oh et al. 2014</a>): every target of anterograde tracer
-        injected into an amygdala nucleus of a wild-type mouse, and every amygdala nucleus that injections elsewhere
-        label. Each experiment and target is one claim, with its projection density. See them on the{" "}
+        injected into an amygdala nucleus, and every amygdala nucleus that injections elsewhere label, in wild-type
+        mice and Cre lines (whose claims name the line). Each experiment and target is one claim, with its projection
+        density. See them on the{" "}
         <Link href="/brain">3D brain and network</Link>, in the <Link href="/explore">connection table</Link>, or
         region by region. Regions come from the Allen mouse and human atlases via BrainGlobe, mapped to UBERON (
         <Link href="/atlases">Atlases</Link>).
