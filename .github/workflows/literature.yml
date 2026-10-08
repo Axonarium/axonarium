@@ -1,0 +1,70 @@
+name: Literature
+
+# The literature pipeline (ADR 0028): one step on up to `limit` papers, on the Batch API, then a literature/<step>
+# branch for review. Started by hand from the Actions tab on main. The key is the `models` environment's secret, which
+# only main may use, so pull requests never see it. A pull request opened with this workflow's token wouldn't run CI,
+# so it is opened from the branch.
+on:
+  workflow_dispatch:
+    inputs:
+      step:
+        description: Which step
+        type: choice
+        options: [triage]
+        default: triage
+      limit:
+        description: At most this many papers
+        type: number
+        default: 50
+      model:
+        description: provider:model
+        type: string
+        default: anthropic:claude-opus-5-5
+
+permissions: {}
+
+concurrency:
+  group: literature
+  cancel-in-progress: false
+
+jobs:
+  run:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # a batch can take hours; most finish within one
+    environment: models
+    permissions:
+      contents: write  # to push the literature/<step> branch; never main
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.12.22"
+          enable-cache: false
+      - name: Run the step
+        working-directory: agents
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          STEP: ${{ inputs.step }}
+          LIMIT: ${{ inputs.limit }}
+          MODEL: ${{ inputs.model }}
+        run: uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL"
+      - name: Push the results to a branch for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STEP: ${{ inputs.step }}
+        run: |
+          if [ -z "$(git status --porcelain -- corpus data)" ]; then
+            echo "Nothing changed." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          branch="literature/${STEP}-$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add corpus data
+          git commit -q -m "Literature: ${STEP} of $(date -u +%Y-%m-%d)" -m "Run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          git push -q "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$branch"
+          echo "Pushed **${branch}**: open a pull request from it." >> "$GITHUB_STEP_SUMMARY"

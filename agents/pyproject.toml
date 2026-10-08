@@ -22,5 +22,5 @@ dev = ["pytest==9.1.1"]
 package = false
 
 [tool.pytest.ini_options]
-testpaths = ["evals/tests", "screen/tests"]
+testpaths = ["evals/tests", "pipeline/tests", "screen/tests"]
 pythonpath = ["."]

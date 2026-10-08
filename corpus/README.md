@@ -6,6 +6,7 @@ The literature the amygdala module reads (sprint 2.2, [ADR 0019](../docs/decisio
 | --- | --- |
 | `queries.yaml` | The saved searches, in Europe PMC's syntax, each with why it exists. Changes need the maintainer's review |
 | `manifest.csv` | Every paper the searches find, one row each, written by the scout. Never edited by hand |
+| `triage.csv` | The pipeline's triage verdict for each paper: whether its own data test a connection ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)). Written by `python -m pipeline triage` |
 
 Run the scout from the repository root, or with the **Scout** workflow in the Actions tab, which pushes the result to a `scout/<date>` branch to open a pull request from:
 
@@ -28,5 +29,17 @@ One row per paper, sorted by `key`: its DOI, else PubMed ID, else PubMed Central
 | `first_seen` | The day the scout first found it: a run's new papers are the extractor's next batch |
 
 Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3) reads open-access full text from Europe PMC when it needs it.
+
+## Triage
+
+`triage.csv` has one row per paper, sorted by `key`, from sprint 2.2a. A paper is triaged once per version of the triage prompt; a failed request is tried again on the next run.
+
+| Column | Holds |
+| --- | --- |
+| `verdict` | `in` (worth reading for claims), `out`, or why the request failed (`refusal`, `invalid`, `errored`, `expired`, …) |
+| `basis` | `abstract`, or `title` when Europe PMC has no abstract |
+| `evidence`, `species` | The kinds of evidence and the species the abstract describes, `;`-separated |
+| `reason` | One sentence in the model's own words, never the abstract's |
+| `model`, `prompt`, `date` | Which model and prompt version decided, and when |
 
 The manifest grows with every run, past pre-commit's 500 KB limit for added files, so that check skips it. It stays one file, so a run's diff shows which papers came and went.
