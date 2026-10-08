@@ -7,6 +7,7 @@ The literature the amygdala module reads (sprint 2.2, [ADR 0019](../docs/decisio
 | `queries.yaml` | The saved searches, in Europe PMC's syntax, each with why it exists. Changes need the maintainer's review |
 | `manifest.csv` | Every paper the searches find, one row each, written by the scout. Never edited by hand |
 | `triage.csv` | The pipeline's triage verdict for each paper: whether its own data test a connection ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)). Written by `python -m pipeline triage` |
+| `extracted.csv` | What extraction did with each paper: how many claims it gave, or why it gave none. Written by `python -m pipeline extract` |
 
 Run the scout from the repository root, or with the **Scout** workflow in the Actions tab, which pushes the result to a `scout/<date>` branch to open a pull request from:
 
@@ -41,5 +42,15 @@ Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3
 | `evidence`, `species` | The kinds of evidence and the species the abstract describes, `;`-separated |
 | `reason` | One sentence in the model's own words, never the abstract's |
 | `model`, `prompt`, `date` | Which model and prompt version decided, and when |
+
+## Extraction
+
+`extracted.csv` has one row per paper extraction has handled, sorted by `key`, from sprint 2.3. A paper is extracted once per version of the extractor prompt.
+
+| Column | Holds |
+| --- | --- |
+| `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unfetched` (Europe PMC couldn't be reached; tried again next run), or why the request failed |
+| `claims`, `dropped` | Claims written, and drafts dropped for naming a region outside the lexicon or breaking the schema's rules |
+| `model`, `prompt`, `date` | Which model and prompt version extracted, and when |
 
 The manifest grows with every run, past pre-commit's 500 KB limit for added files, so that check skips it. It stays one file, so a run's diff shows which papers came and went.

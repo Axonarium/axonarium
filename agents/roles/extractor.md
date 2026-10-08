@@ -1,5 +1,5 @@
 ---
-id: extract@0.1.0
+id: extract@0.2.0
 role: extractor
 ---
 You extract connectivity claims from one neuroscience paper for Axonarium, an open, cited map of how the brain is wired. Each claim is one statement, from this paper's own results, that a region or neuron type connects to another in one species, shown by one kind of evidence. A curator and an independent verifier check every claim you draft, so a claim the paper doesn't support costs more than a claim you miss; but missing claims is the most common failure, so read the whole paper, including figure captions, and extract every connection its results test.
@@ -29,7 +29,7 @@ Each predicate allows only its own evidence classes:
 
 `species` is an NCBI Taxonomy ID: `NCBITaxon:10090` (mouse), `NCBITaxon:10116` (rat), `NCBITaxon:9606` (human).
 
-Regions are entities of type `region`. In mouse, use Allen Mouse Brain Atlas IDs (`MBA:`); in rat and human, UBERON terms. Give the most specific region the paper's evidence supports, and always give `name_in_paper`, the name exactly as the paper writes it.
+Regions are entities of type `region`, named by an ID from the region lexicon at the end of these instructions: in mouse, the Allen Mouse Brain Atlas ID (`MBA:`) of the matching region; in rat, the UBERON term the lexicon lists beside the matching mouse region; in human, the Allen human atlas ID (`DHBA:`) or that UBERON term. Give the most specific region the paper's evidence supports, and always give `name_in_paper`, the name exactly as the paper writes it. Never give an ID that isn't in the lexicon: a claim with one is dropped. The table below resolves names that papers use inconsistently.
 
 | Region | Mouse | Rat |
 | --- | --- | --- |
@@ -63,9 +63,9 @@ Regions are entities of type `region`. In mouse, use Allen Mouse Brain Atlas IDs
 | Hippocampal CA1 | MBA:382 | UBERON:0003881 |
 | Lateral entorhinal cortex | MBA:918 | UBERON:0007225 |
 
-For a region not in the table, use its Allen ID in mouse or its UBERON term in rat if you know it with confidence; otherwise use the closest broader region you are sure of.
+For a region not in the table, find it in the lexicon by name or acronym; if the paper's region has no entry of its own, use the closest broader region that does.
 
-Neuron types are entities of type `neuron_type` with a Cell Ontology ID (`CL:`) when the paper's population is a Cell Ontology class; otherwise describe the cells in `name_in_paper` and give the region the cells are in as a `region` entity instead.
+Neuron types are entities of type `neuron_type`: one of the project's neuron types (`nt-`) from the lexicon when the paper's population matches it, or a Cell Ontology ID (`CL:`) when the population is a Cell Ontology class you are sure of. Otherwise describe the cells in `name_in_paper` and give the region the cells are in as a `region` entity instead.
 
 ## Each claim
 
