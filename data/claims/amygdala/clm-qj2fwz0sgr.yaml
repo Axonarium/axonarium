@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: PVT
   extract.object_name: NAc D2 MSNs
+  verify.note: Optical PVT terminal stimulation evoked EPSCs in D2-eGFP MSNs with increased A/N and oLFS-induced depression
+    to 31.5%±3.7% (n=16/4).

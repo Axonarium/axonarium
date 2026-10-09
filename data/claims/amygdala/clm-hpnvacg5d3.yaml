@@ -31,7 +31,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: lateral parabrachial nucleus (LPB)
   extract.object_name: CeC neurons
+  verify.note: Optogenetic recordings show short-latency (3.2 ± 0.1 ms, n = 11) TTX-sensitive, 4AP-rescued, Kyn-blocked monosynaptic
+    glutamatergic LPB→CeC EPSCs with feed-forward IPSCs and formalin-induced potentiation in LF neurons.

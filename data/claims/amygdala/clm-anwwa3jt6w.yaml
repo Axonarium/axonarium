@@ -34,7 +34,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: PrL
   extract.object_name: l/vlPAG
+  verify.note: Retrograde AAV from l/vlPAG labelled CaMKIIα PrL neurons with ~93% in layer 5 and 3.6% in layer 2/3, n=20 slices,
+    as stated.

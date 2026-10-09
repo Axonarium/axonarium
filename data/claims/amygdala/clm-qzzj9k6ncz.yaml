@@ -35,7 +35,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: PRCPV neurons
   extract.object_name: pBLA glutamatergic neurons (pBLAGlut)
+  verify.note: WGA-iCre transsynaptic labeling showed 96.6% glutamatergic pBLA neurons (76.9% Vglut1, 19.7% Vglut2), correctly
+    converted to fractions.

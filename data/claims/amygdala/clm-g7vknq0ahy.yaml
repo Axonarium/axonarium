@@ -34,7 +34,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: MGm
   extract.object_name: LA pyramidal neurons
+  verify.note: MGm-only infection yielded EPSCs in 89% of LA pyramidal neurons, blocked by kynurenic acid, with ~12 ms LA
+    field-potential latency in vivo.

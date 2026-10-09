@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: lateral parabrachial nucleus (LPB)
   extract.object_name: CeM neurons
+  verify.note: Light stimulation of LPB fibers evoked inward and large multi-peak outward currents in CeM neurons, with the
+    reported outward/inward charge ratios of 9.22 vs 2.40.

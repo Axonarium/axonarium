@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: lateral parabrachial nucleus (LPB)
   extract.object_name: capsular part of the central amygdala (CeC)
+  verify.note: Viral AAV-ChR2-EYFP anterograde labeling from LPB produced dense EYFP fibers in ipsilateral CeC/CeL, with weak
+    CeC labeling when injections were medial to LPB.
