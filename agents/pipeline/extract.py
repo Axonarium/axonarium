@@ -247,6 +247,13 @@ def fetch_failure(error: Exception) -> str:
     return "unavailable" if isinstance(error, HTTPError) and error.code == 404 else "unfetched"
 
 
+def why(error: Exception) -> str:
+    """A failed fetch's cause for the run's report, such as `HTTPError 429` or `URLError: timed out`."""
+    if isinstance(error, HTTPError):
+        return f"HTTPError {error.code}"
+    return f"{type(error).__name__}: {str(error)[:120]}" if str(error) else type(error).__name__
+
+
 def full_text(paper: dict, classify, fetch: Callable[[str], bytes] | None = None) -> Screened:
     return screen_jats((fetch or europepmc.full_text)(paper["pmcid"]), classify, prune=sections.prune)
 
@@ -263,7 +270,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     model = getattr(run, "model", "replay")
     before = ledger.read()
     papers = choose(candidates(manifest, triaged, before, prompt_id, redo), run, limit)
-    rows, requests, sent, flagged = [], [], {}, []
+    rows, requests, sent, flagged, failed = [], [], {}, [], []
     for paper in papers:
         base = {"key": paper["key"], "attempts": attempts(recorded(before, paper), None), "model": model, "prompt": prompt_id,
                 "date": today}
@@ -271,6 +278,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             screened = (text or (lambda p: full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:  # unreachable, or XML that won't parse (ParseError)
             rows.append({**base, "outcome": fetch_failure(error)})
+            failed.append(f"{paper['key']}: {why(error)}")
             continue
         if screened.flagged:  # never sent; its findings go to the maintainer in the run's report
             rows.append({**base, "outcome": "screened"})
@@ -311,4 +319,5 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             "remaining": len(candidates(manifest, triaged, ledger.read(), prompt_id)),
             "set_aside": set_aside([p for p in manifest if (recorded(triaged, p) or {}).get("verdict") == "in"], ledger.read(),
                                    "outcome", DONE),
-            "dropped": dropped_reasons, "numbers_left_out": numbers_left_out, "screen_findings": flagged}
+            "dropped": dropped_reasons, "numbers_left_out": numbers_left_out, "screen_findings": flagged,
+            "not_read": failed}
