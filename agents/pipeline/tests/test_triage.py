@@ -279,23 +279,51 @@ def test_collecting_a_batch_still_running_sends_nothing():
         run.known()
 
 
-def test_the_latest_batch_is_collected_when_its_id_is_lost(tmp_path, capsys):
-    from datetime import datetime, timezone
+class Workspace(FakeBatches):
+    """A workspace's recent batches: a triage batch, another step's, and one a fallback model answered."""
 
-    batches = EarlierBatch(["doi:10.1/a"])
-    batches.list = lambda limit: SimpleNamespace(data=[
-        SimpleNamespace(id="msgbatch_old", created_at=datetime(2026, 10, 7, tzinfo=timezone.utc), processing_status="ended"),
-        SimpleNamespace(id="msgbatch_new", created_at=datetime(2026, 10, 8, 21, 37, tzinfo=timezone.utc),
-                        processing_status="in_progress")])
-    asked = []
-    retrieve = batches.retrieve
-    batches.retrieve = lambda batch_id: asked.append(batch_id) or retrieve(batch_id)
-    ledger = Ledger(tmp_path / "triage.csv", triage.LEDGER.columns)
-    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, "low", 8000, client=client(batches), sleep=lambda s: None,
+    def __init__(self):
+        super().__init__(ends_after=0)
+        verdict = '{"tests_connections": true, "evidence": ["retrograde_tracer"], "species": ["rat"], "reason": "Traces."}'
+        claims = '{"claims": []}'
+        self.answers = {"msgbatch_triage": [("doi:10.1/a", verdict, "claude-opus-5-5-20260901")],
+                        "msgbatch_extract": [("doi:10.1/b", claims, "claude-opus-5-5")],
+                        "msgbatch_fallback": [("doi:10.1/c", verdict, "claude-opus-5")],
+                        "msgbatch_other": [("doi:10.1/d", claims, "claude-opus-5-5")]}
+
+    def list(self, limit):
+        from datetime import datetime, timezone
+
+        sent = {"msgbatch_other": 1, "msgbatch_triage": 2, "msgbatch_extract": 3, "msgbatch_fallback": 4}
+        return SimpleNamespace(data=[SimpleNamespace(id=i, created_at=datetime(2026, 10, 8, h, tzinfo=timezone.utc),
+                                                     processing_status="ended") for i, h in sent.items()])
+
+    def results(self, batch_id):
+        for key, text, model in self.answers[batch_id]:
+            answer = SimpleNamespace(**vars(message(text)), model=model)
+            yield SimpleNamespace(custom_id=request_id(key), result=SimpleNamespace(type="succeeded", message=answer))
+
+
+def test_the_latest_batch_is_this_steps_own_from_its_own_model(capsys):
+    workspace = Workspace()
+    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, "low", 8000, client=client(workspace), sleep=lambda s: None,
                           collect_batch="latest")
-    triage.triage(PAPERS, run, limit=1, today="2026-10-08", ledger=ledger, abstract=fetch)
-    assert set(asked) == {"msgbatch_new"} and ledger.read()["doi:10.1/a"]["verdict"] == "in"
-    assert "latest batch: msgbatch_new, sent 2026-10-08 21:37 UTC" in capsys.readouterr().out
+    # Newest first: the fallback's batch (another model) and extraction's (another schema) are passed over.
+    assert run.known() == {request_id("doi:10.1/a")} and run.collect_batch == "msgbatch_triage"
+    assert run.collected()[request_id("doi:10.1/a")].model == "claude-opus-5-5-20260901"
+    out = capsys.readouterr().out
+    assert "msgbatch_fallback, sent 2026-10-08 04:00 UTC: answered by claude-opus-5" in out
+    assert "msgbatch_extract, sent 2026-10-08 03:00 UTC: another step's" in out
+    assert "msgbatch_triage, sent 2026-10-08 02:00 UTC: this step's" in out and "msgbatch_other" not in out
+
+    extraction = AnthropicRunner("claude-opus-5-5", extract.PaperClaims, "high", 8000, client=client(workspace),
+                                 sleep=lambda s: None, collect_batch="latest")
+    assert extraction.known() == {request_id("doi:10.1/b")} and extraction.collect_batch == "msgbatch_extract"
+    sonnet = AnthropicRunner("claude-sonnet-5-5", triage.Verdict, "low", 8000, client=client(workspace),
+                             sleep=lambda s: None, collect_batch="latest")
+    with pytest.raises(ValueError, match="none of the workspace's 4 latest batches"):
+        sonnet.known()
+    assert cost("claude-opus-5-5-20260901", {"input_tokens": 1_000_000}, batch=False) == 4
 
 
 def test_a_batch_of_another_steps_answers_is_refused():

@@ -58,7 +58,7 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     parser.add_argument("--now", action="store_true", help="live calls at full price instead of a batch, for small trials")
     parser.add_argument("--collect", metavar="BATCH_ID",
                         help="collect an earlier batch's results instead of sending a new one (they are paid for already); "
-                             "its papers are taken whatever --limit says. `latest` takes the batch the workspace sent last")
+                             "its papers are taken whatever --limit says. `latest` takes the batch this step last sent to its model")
     parser.add_argument("--redo", action="append", default=[], metavar="PAPERS",
                         help="send papers again although this step has finished them: keys, DOIs, PubMed IDs or PMC IDs, "
                              "'older' for those an earlier version of the prompt finished, or 'all'; repeatable")

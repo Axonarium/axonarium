@@ -74,9 +74,14 @@ def spend(results: Iterable[Result], model: str, batch: bool) -> tuple[dict[str,
     return usage, None if None in dollars else sum(dollars)
 
 
+def base_model(model: str) -> str:
+    """A model ID without a snapshot date, as the API may name the model that answered: claude-x-20260101 → claude-x."""
+    return re.sub(r"-\d{8}$", "", model)
+
+
 def cost(model: str, usage: dict[str, int], batch: bool) -> float | None:
     """Dollars for this usage at list price (half for a batch), or None for a model without a known price."""
-    price = PRICES.get(model)
+    price = PRICES.get(base_model(model))
     if price is None:
         return None
     dollars = sum(usage.get(kind, 0) * rate for kind, rate in zip(USAGE, price, strict=True)) / 1_000_000
@@ -88,18 +93,19 @@ def _usage(message) -> dict[str, int]:
 
 
 def parse(message, schema: type[BaseModel]) -> Result:
-    """A finished message as a Result: its text validated against the schema, or why it can't be."""
-    usage = _usage(message)
+    """A finished message as a Result: its text validated against the schema, or why it can't be, with the model the
+    API says answered."""
+    usage, model = _usage(message), getattr(message, "model", None)
     if message.stop_reason == "refusal":
         details = getattr(message, "stop_details", None)
-        return Result(None, "refusal", usage, getattr(details, "category", None))
+        return Result(None, "refusal", usage, getattr(details, "category", None), model)
     if message.stop_reason == "max_tokens":
-        return Result(None, "max_tokens", usage)
+        return Result(None, "max_tokens", usage, model=model)
     text = next((block.text for block in message.content if block.type == "text"), "")
     try:
-        return Result(schema.model_validate_json(text), message.stop_reason or "end_turn", usage)
+        return Result(schema.model_validate_json(text), message.stop_reason or "end_turn", usage, model=model)
     except ValidationError as error:
-        return Result(None, "invalid", usage, str(error)[:500])
+        return Result(None, "invalid", usage, str(error)[:500], model)
 
 
 class BatchPending(Exception):
@@ -147,21 +153,33 @@ class AnthropicRunner:
             "output_config": output_config,
         }
 
-    def latest(self) -> str:
-        """The ID of the batch this workspace sent last, for when a run's log, and the ID in it, is lost."""
-        batches = sorted(self.client.messages.batches.list(limit=20).data, key=lambda b: b.created_at, reverse=True)
-        if not batches:
-            raise ValueError("this workspace has no batches to collect")
-        print(f"latest batch: {batches[0].id}, sent {batches[0].created_at:%Y-%m-%d %H:%M} UTC, "
-              f"{batches[0].processing_status}", flush=True)
-        return batches[0].id
+    def latest(self) -> tuple[str, dict[str, Result]]:
+        """The batch this step last sent to this model, and its results, for when a run's log, and the batch ID in it,
+        is lost. It is the newest of the workspace's recent batches that holds answers this step can read and that this
+        model gave: another step's batch, or one sent to a fallback model, is passed over. A batch still running is
+        waited for, as it may be this step's."""
+        listed = sorted(self.client.messages.batches.list(limit=20).data, key=lambda b: b.created_at, reverse=True)
+        for batch in listed:
+            found = self.collect(batch.id)
+            answered = [r for r in found.values() if r.stop not in UNANSWERED]
+            readable = any(r.parsed is not None for r in answered)
+            models = sorted({base_model(r.model) for r in answered if r.model})
+            mine = readable and models == [base_model(self.model)]
+            print(f"batch {batch.id}, sent {batch.created_at:%Y-%m-%d %H:%M} UTC: "
+                  + ("this step's, from " + self.model if mine
+                     else "answered by " + ", ".join(models) if readable else "another step's" if answered else "no answers"),
+                  flush=True)
+            if mine:
+                return batch.id, found
+        raise ValueError(f"none of the workspace's {len(listed)} latest batches holds this step's answers from {self.model}")
 
     def collected(self) -> dict[str, Result]:
         """The results of the batch being collected, once; a batch none of whose answers fit this step's schema is
         another step's, and is refused before anything is written."""
         if self._collected is None:
             if self.collect_batch == "latest":
-                self.collect_batch = self.latest()
+                self.collect_batch, self._collected = self.latest()
+                return self._collected
             found = self.collect(self.collect_batch)
             answered = [r for r in found.values() if r.stop not in UNANSWERED]
             if answered and all(r.stop == "invalid" for r in answered):
@@ -190,7 +208,7 @@ class AnthropicRunner:
             for request in requests:
                 with self.client.messages.stream(**self.params(request)) as stream:
                     results[request.id] = parse(stream.get_final_message(), self.schema)
-                results[request.id].model = self.model
+                results[request.id].model = results[request.id].model or self.model
             return results
         batch = self.client.messages.batches.create(
             requests=[{"custom_id": request.id, "params": self.params(request)} for request in requests])
@@ -213,7 +231,7 @@ class AnthropicRunner:
                 results[entry.custom_id] = Result(None, "errored", detail=str(getattr(error, "error", error))[:500])
             else:  # canceled or expired
                 results[entry.custom_id] = Result(None, outcome.type)
-            results[entry.custom_id].model = self.model
+            results[entry.custom_id].model = results[entry.custom_id].model or self.model
         return results
 
 
