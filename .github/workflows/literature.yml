@@ -92,13 +92,14 @@ jobs:
             exit 1
           fi
           uv run --frozen python -m pipeline extract --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"}
-          # Extraction's claims are paid for: if verification's batch outlives the job, they are still pushed, unverified.
+          # Extraction's claims are paid for, so they are pushed whatever happens to verification: its batch may outlive
+          # the job (exit 3), or it may stop, for one because another branch holds verification results not yet merged.
           status=0
           uv run --frozen python -m pipeline verify --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"} || status=$?
           if [ "$status" -eq 3 ]; then
             echo "The extracted claims are pushed unverified. Once their pull request merges, run **verify** with that batch's ID as its collect input." >> "$GITHUB_STEP_SUMMARY"
           elif [ "$status" -ne 0 ]; then
-            exit "$status"
+            echo "Verification stopped (exit $status; see its message above). The extracted claims are pushed unverified: once their pull request merges, run **verify**." >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Source records for newly cited papers, then the data checks
         if: inputs.step != 'triage'
