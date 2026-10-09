@@ -382,21 +382,33 @@ def test_results_waiting_on_another_branch_are_found(tmp_path):
     from pipeline import branches
 
     ledger = Ledger(tmp_path / "triage.csv", triage.LEDGER.columns)
-    ledger.update([{"key": "doi:10.1/a", "verdict": "in", "attempts": "1", "date": "2026-10-08"}])
+    ledger.update([{"key": "doi:10.1/a", "verdict": "in", "attempts": "2", "date": "2026-10-08"}])  # read again since
     header = ",".join(triage.LEDGER.columns)
-    merged = f"{header}\ndoi:10.1/a,in,,,,,1,,,2026-10-08\n"  # its pull request merged: nothing new
-    unmerged = merged + "doi:10.1/b,out,,,,,1,,,2026-10-09\n"
+    base = f"{header}\ndoi:10.1/a,in,,,,,1,,,2026-10-08\n"  # where every branch split from this checkout's history
+    unmerged = base + "doi:10.1/b,out,,,,,1,,,2026-10-09\n"
 
     def git(args, **kwargs):
         if "for-each-ref" in args:
-            return SimpleNamespace(returncode=0, stdout="origin\norigin/main\norigin/literature/triage-1\norigin/literature/triage-2\n")
-        shown = {"origin/main:triage.csv": merged, "origin/literature/triage-1:triage.csv": merged,
-                 "origin/literature/triage-2:triage.csv": unmerged}.get(args[-1])
+            return SimpleNamespace(returncode=0, stdout="origin\norigin/main\norigin/literature/triage-1\n"
+                                                        "origin/literature/triage-2\norigin/claude/code\n")
+        if "merge-base" in args:
+            return SimpleNamespace(returncode=0, stdout="base\n", stderr="")
+        shown = {"base:triage.csv": base, "origin/main:triage.csv": base, "origin/literature/triage-1:triage.csv": base,
+                 "origin/literature/triage-2:triage.csv": unmerged,
+                 "origin/claude/code:triage.csv": base}.get(args[-1])  # a code branch's stale copy of the ledger
         return SimpleNamespace(returncode=0 if shown else 128, stdout=shown or "", stderr="")
 
     assert branches.waiting(ledger, run=git) == {"origin/literature/triage-2": 1}
     assert "origin/literature/triage-2 (1 paper(s))" in branches.refusal("triage", {"origin/literature/triage-2": 1})
     assert branches.waiting(ledger, run=lambda args, **kwargs: SimpleNamespace(returncode=128, stdout="", stderr="no")) == {}
+
+    def unrelated(args, **kwargs):  # no common history: every row that differs counts, as before
+        if "merge-base" in args:
+            return SimpleNamespace(returncode=1, stdout="", stderr="")
+        return git(args, **kwargs)
+
+    assert branches.waiting(ledger, run=unrelated) == {"origin/literature/triage-1": 1, "origin/literature/triage-2": 2,
+                                                       "origin/main": 1, "origin/claude/code": 1}
 
 
 def test_cli_refuses_while_another_branch_holds_results(tmp_path, monkeypatch, capsys):
