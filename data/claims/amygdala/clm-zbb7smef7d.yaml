@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: dorsal raphe nucleus
   extract.object_name: ventral pallidum
+  verify.note: The Fig. 2B axon has few varicosities in the ventral pallidum, but the Fig. 3B axon appears to innervate it
+    profusely, so the 'weak' strength is doubtful.

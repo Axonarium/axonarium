@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: basolateral amygdala (BLA)
   extract.object_name: IL cortex (L5 IL-CP neurons, L2 and L3/5 IL-CA neurons)
+  verify.note: IL EPSCs largely survived the blockers and IPSCs were abolished, and the paired comparisons favour L5 CP over
+    L3/5 CA and L3/5 CA over L2 CA.

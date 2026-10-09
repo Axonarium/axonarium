@@ -24,7 +24,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: subthalamic nucleus
   extract.object_name: D2 MSNs in the dorsal striatum
+  verify.note: The subthalamic nucleus appears only in figure abbreviation lists; the text gives no labelling result for it.

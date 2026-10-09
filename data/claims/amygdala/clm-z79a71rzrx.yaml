@@ -23,7 +23,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: trigeminal nucleus caudalis (TNC)
   extract.object_name: parabrachial nucleus (PB)
+  verify.note: Rat PB Ad-Cre injection rendered BA2001 competent in TNC neurons, demonstrating the TNC-to-PB projection.

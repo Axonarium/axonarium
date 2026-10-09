@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: auditory cortex (Actx)
   extract.object_name: MGn
+  verify.note: Retrograde AAV2 in MGn labeled numerous auditory cortex neurons, consistent with corticothalamic input.
