@@ -241,10 +241,17 @@ def candidates(manifest: list[dict], triaged: dict[str, dict], done: dict[str, d
 
 def fetch_failure(error: Exception) -> str:
     """A ledger outcome for a full text that couldn't be read: `unreadable` XML, `unavailable` text (Europe PMC answers
-    that it has none), or `unfetched` (Europe PMC unreachable; tried again next run)."""
+    that it has none), or `unfetched` (Europe PMC failed or couldn't be reached; tried again next run)."""
     if isinstance(error, SyntaxError):
         return "unreadable"
     return "unavailable" if isinstance(error, HTTPError) and error.code == 404 else "unfetched"
+
+
+def counts_as_read(error: Exception) -> bool:
+    """Whether a failed fetch counts towards the paper's tries. Europe PMC answers some papers' full text with an
+    internal server error every time; counted, such a paper is set aside after MAX_ATTEMPTS runs rather than taking a
+    place in every run. Gateway errors and timeouts pass, so they don't count."""
+    return isinstance(error, HTTPError) and error.code == 500
 
 
 def why(error: Exception) -> str:
@@ -277,7 +284,8 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
         try:
             screened = (text or (lambda p: full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:  # unreachable, or XML that won't parse (ParseError)
-            rows.append({**base, "outcome": fetch_failure(error)})
+            tries = attempts(recorded(before, paper), "unfetched" if counts_as_read(error) else None)
+            rows.append({**base, "outcome": fetch_failure(error), "attempts": tries})
             failed.append(f"{paper['key']}: {why(error)}")
             continue
         if screened.flagged:  # never sent; its findings go to the maintainer in the run's report

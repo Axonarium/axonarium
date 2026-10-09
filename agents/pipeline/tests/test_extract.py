@@ -244,5 +244,24 @@ def test_only_open_access_papers_are_read_and_a_missing_text_is_not_asked_for_ag
                               triaged=TRIAGED, claims_dir=tmp_path / "claims", text=missing)
     assert {k: r["outcome"] for k, r in ledger.read().items()} == {"doi:10.1/a": "unavailable", "doi:10.1/e": "unfetched"}
     assert summary["not_read"] == ["doi:10.1/a: HTTPError 404", "doi:10.1/e: OSError: unreachable"]
+
+
+def test_a_paper_europe_pmc_always_fails_on_is_set_aside(tmp_path):
+    def failing(paper):
+        code = {"PMC1": 500, "PMC3": 503}.get(paper["pmcid"])
+        if code:
+            raise HTTPError("https://www.ebi.ac.uk/…/fullTextXML", code, "error", None, None)
+        return Screened(paper["pmcid"], ())
+
+    ledger = Ledger(tmp_path / "extracted.csv", extract.LEDGER.columns)
+    run = SimpleNamespace(model="m", name="m", batch=False, run=lambda requests: {r.id: Result(None, "refusal") for r in requests})
+    lexicon = extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"])
+    for day in ("2026-10-08", "2026-10-09"):
+        extract.extract([PAPERS[0], PAPERS[2]], run, 10, lexicon, classify=None, today=day, ledger=ledger, triaged=TRIAGED,
+                        claims_dir=tmp_path / "claims", text=failing)
+    rows = ledger.read()
+    assert rows["doi:10.1/a"]["attempts"] == "2" and rows["doi:10.1/c"]["attempts"] == "0"  # a 503 passes; a 500 counts
+    assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, rows, "extract@0.3.0")] == [
+        "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]
     assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, ledger.read(), "extract@0.3.0")] == [
         "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]  # unfetched is tried again; unavailable is done
