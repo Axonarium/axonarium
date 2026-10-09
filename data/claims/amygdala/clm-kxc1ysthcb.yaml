@@ -1,0 +1,40 @@
+id: clm-kxc1ysthcb
+subject:
+  type: region
+  id: MBA:989
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:895
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: moderate
+source:
+  doi: 10.1038/s41467-023-41744-2
+  pmid: '37752149'
+  pmcid: PMC10522595
+  locator: Fig. 7c4, 7e1; Supplementary Fig. 5
+paraphrase: Moderate labelling of axons was observed in ectorhinal cortex, a second-order target downstream of the fastigial
+  nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: fastigial nucleus (FN)
+  extract.object_name: ectorhinal cortex (Ect)
+  verify.note: Moderate labelling in Ect is reported.

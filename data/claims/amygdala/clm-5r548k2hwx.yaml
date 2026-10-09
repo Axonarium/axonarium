@@ -1,0 +1,39 @@
+id: clm-5r548k2hwx
+subject:
+  type: region
+  id: MBA:475
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-019-56092-9
+  pmid: '31873139'
+  pmcid: PMC6928164
+  locator: Supplemental Fig. 2
+paraphrase: As a positive control, CTB injections into AAF and DM retrogradely labelled many neurons in the auditory thalamus
+  (MGB).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial geniculate body (MGB)
+  extract.object_name: AAF and DM
+  verify.note: Supplemental Fig. 2 is cited as a positive control showing many labelled MGB neurons after AAF and DM injections.

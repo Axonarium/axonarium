@@ -1,0 +1,40 @@
+id: clm-6bh4p6nkmg
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 9c, d
+paraphrase: Projection-specific monosynaptic rabies tracing from adBNST-projecting anterior BLA neurons labelled presynaptic
+  cells in auditory cortical areas; the share of labelled cells there differed from that for ovBNST-projecting posterior BLA
+  neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AUD (auditory areas)
+  extract.object_name: aBLA→adBNST PNs
+  verify.note: Projection-specific rabies tracing labelled auditory-area inputs to aBLA→adBNST cells.

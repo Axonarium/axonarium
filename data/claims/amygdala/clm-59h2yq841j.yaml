@@ -1,0 +1,40 @@
+id: clm-59h2yq841j
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-025-57230-w
+  pmid: '39994222'
+  pmcid: PMC11850870
+  locator: Fig. 5d, e; Results, PAG-projecting ACC neurons section
+paraphrase: Injecting retrograde AAV-Cre into the right PAG, combined with Cre-dependent GCaMP8f in the right ACC, labelled
+  ACC neurons that project to the PAG; 312 such neurons were imaged across mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior cingulate cortex (ACC)
+  extract.object_name: periaqueductal gray (PAG)
+  verify.note: The paper put retrograde Cre into the PAG and Cre-dependent GCaMP8f into the ACC, and reports 312 PAG-projecting
+    ACC neurons in mice.

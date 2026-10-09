@@ -1,0 +1,40 @@
+id: clm-zcbhjjf6pb
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 8c–e, i
+paraphrase: Photostimulating ChR2-expressing adBNST-projecting anterior BLA principal neurons reduced the firing of ovBNST-projecting
+  lateral posterior BLA principal neurons; the suppression was abolished by the GABA-A antagonist picrotoxin, showing it is
+  mediated by local interneurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: aBLA→adBNST PNs
+  extract.object_name: lpBLA→ovBNST PNs
+  verify.note: aBLA→adBNST PN activation reduced lpBLA→ovBNST PN firing, abolished by picrotoxin.

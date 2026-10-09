@@ -1,0 +1,42 @@
+id: clm-sdddn7yjhg
+subject:
+  type: region
+  id: MBA:741
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1057
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-025-63464-5
+  pmid: '41006304'
+  pmcid: PMC12475432
+  locator: Fig. 6a–d; Supplementary Fig. 10
+paraphrase: Small Cre-dependent YFP and synaptophysin-mCherry injections into the VPMpc of CckCre mice produced a strong axonal
+  projection to the medial and posterior insular cortex. The terminals formed one band in layer 1 and a larger band in layers
+  3–4.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CCKVPMpc neurons
+  extract.object_name: insular cortex (IC)
+  verify.note: Restricted Cre-dependent YFP and synaptophysin injections showed a strong IC projection with bands in layer
+    1 and layers 3–4.

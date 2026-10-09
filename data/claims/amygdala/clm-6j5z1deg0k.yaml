@@ -1,0 +1,40 @@
+id: clm-6j5z1deg0k
+subject:
+  type: region
+  id: MBA:989
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:830
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1038/s41467-023-41744-2
+  pmid: '37752149'
+  pmcid: PMC10522595
+  locator: Fig. 6c (bottom)
+paraphrase: Sparse tdTomato-expressing neurons were scattered in the dorsomedial hypothalamus after fastigial injection of
+  the anterograde AAV1-hSyn-Cre.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: fastigial nucleus (FN)
+  extract.object_name: dorsomedial hypothalamus (part of mHA)
+  verify.note: Sparse tdTomato neurons in the dorsomedial hypothalamus are reported in the bottom panels of Fig. 6c.

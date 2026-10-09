@@ -1,0 +1,42 @@
+id: clm-wvgkyvq87h
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-08612-z
+  pmid: '40691451'
+  pmcid: PMC12280202
+  locator: Figs. 3A–E, 7A–E
+paraphrase: Channelrhodopsin was expressed in itch-activated PBN neurons and blue light was delivered through a fibre over
+  the CeA; illuminating the PBN axons in the CeA triggered scratching in serotonin-TRAPed but not control mice, and inhibiting
+  the same terminals with ArchT reduced spontaneous scratching in the atopic dermatitis model, demonstrating a functional
+  PBN terminal field in the CeA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBN
+  extract.object_name: CeA
+  verify.note: ChR2 activation and ArchT inhibition of PBN terminals in the CeA altered scratching, supporting a functional
+    PBN→CeA projection.

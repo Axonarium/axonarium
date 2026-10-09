@@ -1,0 +1,41 @@
+id: clm-7cz07e4m81
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 2h–j; Fig. 3c, e, f; Supplementary Fig. 3, 5
+paraphrase: Although posterior BLA terminals produced monosynaptic excitatory currents in adBNST neurons, the disynaptic GABAergic
+  currents they recruited were larger, giving a high inhibition/excitation ratio and a net suppression of adBNST firing that
+  was reversed by GABA-A receptor blockade; chemogenetic activation of pBLA to dBNST neurons likewise lowered adBNST calcium
+  signals in vivo.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pBLA
+  extract.object_name: adBNST
+  verify.note: Net suppression of adBNST firing with high I/E ratio, GABA-dependent, confirmed in vivo.

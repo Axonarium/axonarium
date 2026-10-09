@@ -1,0 +1,40 @@
+id: clm-z6s5hvtv0e
+subject:
+  type: region
+  id: MBA:989
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-023-41744-2
+  pmid: '37752149'
+  pmcid: PMC10522595
+  locator: Fig. 7b1, 7a1; Supplementary Fig. 5
+paraphrase: Dense second-order axonal labelling was found in the anterior cingulate cortex after fastigial injection of the
+  anterograde transsynaptic virus; labelling in the rostral cingulate subregion (Acg) was moderate.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: fastigial nucleus (FN)
+  extract.object_name: anterior cingulate cortex (ACC); anterior cingulate cortex rostral (Acg)
+  verify.note: Labelling was high density in ACC and moderate in Acg, as the claim states.

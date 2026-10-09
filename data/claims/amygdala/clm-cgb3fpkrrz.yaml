@@ -1,0 +1,42 @@
+id: clm-cgb3fpkrrz
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-023-44322-8
+  pmid: '38191518'
+  pmcid: PMC10774417
+  locator: Fig. 2j,k; Fig. 6a-c
+paraphrase: Light activation of ChR2-expressing BLA axons evoked excitatory postsynaptic currents in D1-expressing medium
+  spiny neurons of the dorsomedial striatum, which were larger than those in D2 neurons across stimulation intensities; the
+  AMPA/NMDA ratio of these BLA-evoked currents in D1 neurons increased after chronic circuit activation (9 cells from 3 control
+  mice vs 5 cells from 4 CNO-treated mice).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: D1-MSNs (tdTomato+) in the DMS
+  verify.note: Optogenetically evoked EPSCs in D1-MSNs and the increased AMPA/NMDA ratio after chronic activation match the
+    paper's Fig. 2k and 6c numbers.

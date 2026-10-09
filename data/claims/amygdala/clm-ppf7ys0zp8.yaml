@@ -1,0 +1,39 @@
+id: clm-ppf7ys0zp8
+subject:
+  type: region
+  id: MBA:989
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1080
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-41744-2
+  pmid: '37752149'
+  pmcid: PMC10522595
+  locator: Fig. 7d1–d3; Supplementary Fig. 5
+paraphrase: Labelling was scarce in hippocampal subfields after fastigial injection of the anterograde transsynaptic virus,
+  which the authors took as evidence against mono- or disynaptic fastigial innervation of the hippocampus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: fastigial nucleus (FN)
+  extract.object_name: hippocampus (CA1, CA2/3, DG)
+  verify.note: Labelling was scarce in the hippocampus, and the authors conclude no mono- or disynaptic FN innervation.

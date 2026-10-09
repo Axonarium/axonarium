@@ -1,0 +1,38 @@
+id: clm-a8xdhn5xvm
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-41744-2
+  pmid: '37752149'
+  pmcid: PMC10522595
+  locator: Fig. 8h2
+paraphrase: EGFP-expressing somata were observed in orbitofrontal cortex following retrograde virus injection into the BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: orbitofrontal cortex (OFC)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: EGFP somas in OFC are noted, with OFC shown in Fig. 8h2.

@@ -1,0 +1,41 @@
+id: clm-1e4m5swwee
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s42003-026-10089-z
+  pmid: '42026195'
+  pmcid: PMC13316100
+  locator: Fig. 3f
+paraphrase: Cre delivered from the BLA together with a Cre-dependent reporter in PL labelled most prelimbic neurons, with
+  especially heavy labelling of superficial layers, indicating BLA innervation of PL cells that converges with PVN input on
+  the same neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PL
+  verify.note: Fig. 3f Cre-from-BLA/reporter-in-PL labelled most PL neurons with dense superficial labelling, as paraphrased.

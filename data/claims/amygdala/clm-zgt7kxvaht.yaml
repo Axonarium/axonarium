@@ -1,0 +1,41 @@
+id: clm-zgt7kxvaht
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-39081-5
+  pmid: '37400435'
+  pmcid: PMC10318047
+  locator: Fig. 6i–p; Results, 'Physiological activity in the vmPFC during inhibition of the ACC-vmPFC and BLA-vmPFC pathways'
+paraphrase: Halorhodopsin silencing of BLA axon terminals in the vmPFC changed vmPFC calcium activity during observational
+  fear. Shock-suppressed neurons lost their positive freezing correlation, and freezing-positive neurons lost their negative
+  correlation with shock timing. This indicates BLA input shapes the freezing-positive/shock-suppressed subpopulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: vmPFC
+  verify.note: Fig. 6i–p shows that BLA terminal silencing removed the positive freezing correlation of shock-suppressed neurons
+    and the negative shock correlation of freezing-positive neurons.

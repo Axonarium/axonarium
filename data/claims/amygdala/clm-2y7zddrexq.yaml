@@ -1,0 +1,38 @@
+id: clm-2y7zddrexq
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41593-020-0632-8
+  pmid: '32424286'
+  pmcid: PMC7329612
+  locator: Fig. 7a-e
+paraphrase: ChR2 activation of CeAGA neurons reduced formalin-evoked Fos+ cells in nucleus accumbens.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeAGA neurons
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The Fig. 7e legend reports a significant reduction of formalin Fos in NAc with CeAGA activation.

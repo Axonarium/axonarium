@@ -1,0 +1,40 @@
+id: clm-4arhdncz2p
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s42003-026-10089-z
+  pmid: '42026195'
+  pmcid: PMC13316100
+  locator: Fig. 3d
+paraphrase: After injecting an AAV expressing mCherry under the hSyn promoter into the basolateral amygdala of naive mice,
+  abundant labelled axonal fibres were seen across the prelimbic prefrontal cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PL
+  verify.note: hSyn-mCherry in BLA gave dense fibres in PL (Fig. 3d).

@@ -1,0 +1,42 @@
+id: clm-rmc6b0rcgn
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-44322-8
+  pmid: '38191518'
+  pmcid: PMC10774417
+  locator: Fig. 3h,i
+paraphrase: An anterogradely transsynaptic AAV2/1-Flpo injected into the BLA, combined with a Flp-dependent reporter in the
+  dorsomedial striatum, labelled numerous striatal (D1) neurons, indicating transsynaptic transfer across BLA-to-DMS synapses;
+  restricting inhibitory DREADD expression to these BLA-innervated D1 neurons blocked the behavioural effects of BLA terminal
+  stimulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: D1-MSNs in the DMS
+  verify.note: AAV2/1-Flpo from BLA with fDIO reporter in DMS labelled many striatal neurons, supporting transsynaptic BLA-to-D1-MSN
+    connectivity.

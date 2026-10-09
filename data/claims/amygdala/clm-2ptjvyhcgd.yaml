@@ -1,0 +1,42 @@
+id: clm-2ptjvyhcgd
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-44322-8
+  pmid: '38191518'
+  pmcid: PMC10774417
+  locator: Fig. 2a (bottom), Fig. 2h,i
+paraphrase: Anterograde viral tracing from the BLA (AAV-tdTomato / AAV-ChR2-EYFP) produced labelled axon terminals in the
+  dorsomedial striatum; the terminal field formed a patch-like pattern overlapping mu-opioid-receptor-positive striosomes
+  and overlapped the somata of D1-expressing medium spiny neurons much more than those of D2 neurons (657 D1 cells from 5
+  mice vs 276 D2 cells from 4 mice).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: DMS
+  verify.note: Anterograde viral tracing showing BLA terminals in DMS overlapping D1 somata and MOR striosomes is this paper's
+    own result with the cited cell/mouse numbers.

@@ -1,0 +1,41 @@
+id: clm-1c0e4e0a9x
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-bqdbjsy396
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-026-70364-9
+  pmid: '41807404'
+  pmcid: PMC13319269
+  locator: Fig. 1A, H–K; Fig. 2A, B
+paraphrase: In UCN3-Cre::VGAT-Flpo mice expressing Chrimson in MePD UCN3 neurons and GCaMP6s in MePD GABA neurons, pulsed
+  10 Hz optogenetic activation of the UCN3 cells (with UCN3-co-expressing GABA cells removed from analysis) changed the calcium
+  activity and pairwise correlation structure of the GABA population relative to baseline and to non-opsin controls, splitting
+  GABA cells into two anti-correlated clusters; 5 Hz stimulation produced no significant change while 10 Hz did.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MePD UCN3 neurons
+  extract.object_name: MePD GABA neurons
+  verify.note: Paper's imaging plus UCN3 optogenetics shows MePD UCN3 activation reorganizes MePD GABA activity/correlations,
+    with the frequency dependence in supplementary figures.

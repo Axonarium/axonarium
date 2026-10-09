@@ -1,0 +1,40 @@
+id: clm-kszczyhy43
+subject:
+  type: region
+  id: UBERON:0001941
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002043
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41598-025-99181-8
+  pmid: '40275074'
+  pmcid: PMC12022358
+  locator: Fig. 5E–H; Fig. 6F–G
+paraphrase: Photostimulation of ChR2-expressing lateral habenula fibres in DRN evoked monosynaptic excitatory currents in
+  CeA-projecting 5-HT neurons; amplitudes (about 51 pA in controls) did not differ significantly from prenatal-ethanol rats,
+  but the paired-pulse ratio was strongly reduced after prenatal ethanol, and the NO donor SNAP potentiated these currents
+  only in controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LHb
+  extract.object_name: DRNCeA 5-HT neurons
+  verify.note: LHb photostimulation evoked monosynaptic oEPSCs in DRNCeA 5-HT neurons with unchanged amplitude, reduced PPR,
+    and SNAP effect only in controls.

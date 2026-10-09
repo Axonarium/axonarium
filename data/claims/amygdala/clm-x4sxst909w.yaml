@@ -1,0 +1,39 @@
+id: clm-x4sxst909w
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 9c, d
+paraphrase: Rabies-based input mapping of adBNST-projecting anterior BLA neurons revealed labelled presynaptic cells in the
+  agranular insular cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AI (agranular insular area)
+  extract.object_name: aBLA→adBNST PNs
+  verify.note: Insular inputs to aBLA→adBNST PNs were labelled by rabies tracing.

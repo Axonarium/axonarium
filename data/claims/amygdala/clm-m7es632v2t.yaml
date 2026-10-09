@@ -1,0 +1,39 @@
+id: clm-m7es632v2t
+subject:
+  type: region
+  id: MBA:655
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:223
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41586-024-08540-4
+  pmid: '39939764'
+  pmcid: PMC11946885
+  locator: Fig. 5a
+paraphrase: The regions shown as receiving HSV-1 trans-synaptic input from COApl Esr1 cells include the arcuate hypothalamic
+  nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: COAplEsr1 neurons
+  extract.object_name: ARH
+  verify.note: ARH appears only in the Fig. 5 abbreviation list, with no stated labelling result.

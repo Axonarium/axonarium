@@ -1,0 +1,38 @@
+id: clm-5bz578n2vj
+subject:
+  type: region
+  id: UBERON:0001393
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002886
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-017-19074-3
+  pmid: '29323226'
+  pmcid: PMC5765149
+  locator: Fig. 5e,g; Methods, Virus-mediated gene expression
+paraphrase: Several weeks after a CaMKIIa-driven eNpHR3.0-mCherry AAV was injected into Te2, mCherry-labelled Te2 axon terminals
+  were seen in the lateral amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: Te2 (secondary auditory cortex)
+  extract.object_name: LA
+  verify.note: After the Te2 AAV injection, the paper's own Fig. 5e,g and Methods show mCherry-labelled Te2 terminals in LA
+    of rats.

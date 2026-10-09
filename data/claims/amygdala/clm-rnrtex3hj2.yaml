@@ -1,0 +1,39 @@
+id: clm-rnrtex3hj2
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/s41598-024-73483-9
+  pmid: '39333236'
+  pmcid: PMC11437048
+  locator: Results, projection tracing section (Fig. 6)
+paraphrase: Although the lateral hypothalamus was examined as a candidate target, no tdTomato-labelled projections from NPY2R-positive
+  CeA neurons were seen there.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: NPY2R+ CeA neurons (central nucleus of the amygdala)
+  extract.object_name: lateral hypothalamus (LH)
+  verify.note: Paper states tdTomato expression was not observed in the LH, supporting an absent result.

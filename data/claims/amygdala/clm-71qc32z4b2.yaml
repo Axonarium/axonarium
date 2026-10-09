@@ -1,0 +1,39 @@
+id: clm-71qc32z4b2
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 8j–n, r
+paraphrase: Photostimulating ovBNST-projecting lateral posterior BLA principal neurons robustly suppressed firing of adBNST-projecting
+  anterior BLA principal neurons, an effect dependent on GABA-A receptors.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lpBLA→ovBNST PNs
+  extract.object_name: aBLA→adBNST PNs
+  verify.note: Photoactivating lpBLA→ovBNST PNs suppressed aBLA→adBNST PN firing in a GABAA-dependent manner.

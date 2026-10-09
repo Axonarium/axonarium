@@ -1,0 +1,49 @@
+id: clm-6gqj010r7a
+subject:
+  type: region
+  id: MBA:151
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 3.9
+  unit: ms
+  n: 7
+- quantity: connection_probability
+  value: 0.93
+  unit: '1'
+source:
+  doi: 10.1038/s41598-020-62457-2
+  pmid: '32245993'
+  pmcid: PMC7125095
+  locator: Fig. 2B, 2E; Fig. 6; Results, 'Postnatal increase in ACP responses to evoked AOB-MC input'
+paraphrase: Electrical stimulation of PmCo layer Ia fibers, mostly AOB afferents, evoked fast EPSCs in Ct-b-labelled ACPs
+  that were blocked by glutamate receptor antagonists; the proportion of responding ACPs increased with age, reaching 93%
+  around postnatal days 40-50.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AOB afferents (PmCo layer Ia fibers)
+  extract.object_name: ACPs in the PmCo
+  verify.note: Layer Ia electrical stimulation gave glutamatergic EPSCs with 3.9 ms onset (N = 7), and the responding fraction
+    reached 93% at later ages.

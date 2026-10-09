@@ -1,0 +1,49 @@
+id: clm-b2eqz8hk4d
+subject:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 4.41
+  unit: ms
+  n: 11
+- quantity: connection_probability
+  value: 1.0
+  unit: '1'
+source:
+  doi: 10.1038/s41598-020-62457-2
+  pmid: '32245993'
+  pmcid: PMC7125095
+  locator: Fig. 2C-F; Results, 'Postnatal increase in ACP responses to evoked AOB-MC input'
+paraphrase: Light activation of ChR2-expressing mitral cell axons (Pcdh21-cre;ChR2) in PmCo layers I-III evoked glutamatergic
+  EPSCs in Ct-b-labelled ACPs, blocked by DNQX and AP5; the fraction of responding ACPs rose with age, reaching all cells
+  tested around postnatal days 25-30.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AOB mitral cells (MCs)
+  extract.object_name: ACPs (amygdala corticobulbar projection neurons) in the PmCo
+  verify.note: Light activation of ChR2 in mitral-cell axons gave glutamate-blocked EPSCs with 4.41 ms onset (N = 11), and
+    all ACPs responded by about P25-30.

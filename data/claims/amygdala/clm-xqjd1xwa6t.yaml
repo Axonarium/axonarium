@@ -1,0 +1,39 @@
+id: clm-xqjd1xwa6t
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s42003-025-08140-6
+  pmid: '40467858'
+  pmcid: PMC12137600
+  locator: Fig. 3B; Supplementary Fig. 7
+paraphrase: Insular cortex showed retrograde labelling, the least intense among the clearly labelled input regions, after
+  AAV2-retro injection into BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: insular cortex (InC)
+  extract.object_name: BLA
+  verify.note: Insular cortex is listed last in the intensity ranking of labeled inputs.

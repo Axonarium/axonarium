@@ -1,0 +1,40 @@
+id: clm-na1h1z5tsn
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-41744-2
+  pmid: '37752149'
+  pmcid: PMC10522595
+  locator: Fig. 8g
+paraphrase: In mice with virus injected in the BLA, EGFP-labelled axons without labelled somata filled the nucleus accumbens,
+  indicating that the accumbens is a BLA output target.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The NAc axons came from the retrograde AAVrg virus injected into the BLA, not from an anterograde tracer, so
+    the evidence type is wrong.

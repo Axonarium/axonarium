@@ -1,0 +1,40 @@
+id: clm-nytj00qpd3
+subject:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s42003-026-10089-z
+  pmid: '42026195'
+  pmcid: PMC13316100
+  locator: Fig. 3e; Fig. 5a, g
+paraphrase: Retrograde AAV-hSyn-EGFP injected into the prelimbic cortex labelled neurons in the paraventricular hypothalamic
+  nucleus; retrograde Cre viruses (hSyn-Cre or OXT-Cre) delivered to PL also drove Cre-dependent expression in PVN neurons,
+  including oxytocinergic ones.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PVN
+  extract.object_name: PL
+  verify.note: Retro-AAV in PL labelled PVN neurons, and retrograde Cre viruses drove PVN expression.

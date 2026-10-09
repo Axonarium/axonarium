@@ -1,0 +1,39 @@
+id: clm-vsd2e2k9nv
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-18411-1
+  pmid: '41022937'
+  pmcid: PMC12479884
+  locator: Fig. 3B; Supplementary Fig. S4
+paraphrase: In rostral and caudal segments of the basal nucleus, labelled insular cortex axons targeted both BA subnuclei,
+  including the BAa, complementary to mPFC axons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: insular cortex (IC)
+  extract.object_name: BAa
+  verify.note: In rostral and caudal segments, insular axons targeted both the BAa and the BAp, complementary to mPFC axons.

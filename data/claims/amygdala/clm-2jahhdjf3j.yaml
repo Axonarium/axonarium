@@ -1,0 +1,40 @@
+id: clm-2jahhdjf3j
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41593-019-0506-0
+  pmid: '31611706'
+  pmcid: PMC6858554
+  locator: Fig. 7d-g
+paraphrase: Glutamatergic currents from optogenetically activated VTA dopaminergic terminals were more frequent and larger
+  in fast-spiking BA interneurons than in excitatory neurons, and were often strong enough to make them fire action potentials.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTADA➜BA axons
+  extract.object_name: fast-spiking inhibitory interneurons (FS INs) in BA
+  verify.note: Slice ChR2 mapping showed larger, more frequent glutamatergic currents in BA fast-spiking interneurons, sometimes
+    driving spikes, as the locator panels show.

@@ -1,0 +1,39 @@
+id: clm-f251w35wy6
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s42003-025-08140-6
+  pmid: '40467858'
+  pmcid: PMC12137600
+  locator: Supplementary Fig. 10 (Methods, synaptophysin-Venus quantification)
+paraphrase: Terminal fields of activity-tagged BLA neurons labelled with synaptophysin-Venus were measured in the prefrontal
+  cortex as well as in central amygdala and accumbens, showing a BLA axonal projection to prefrontal cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PFC
+  verify.note: Only Methods mention measuring Syn-Venus signal in PFC; no result for BLA→PFC is reported in the text.
