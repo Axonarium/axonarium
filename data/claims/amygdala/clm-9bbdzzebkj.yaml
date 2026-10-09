@@ -14,7 +14,6 @@ sign: excitatory
 source:
   doi: 10.1016/j.neuron.2015.09.001
   pmid: '26412489'
-  pmcid: PMC4914206
   locator: Main text, paragraphs 3–4; Fig. 1A
 paraphrase: In mouse slices, stimulating the LA pathway gave monosynaptic glutamatergic responses in dorsal ITC neurons. STDP
   stimulation of this pathway produced LTD after weak but not strong fear conditioning, and the LTD depended on D4R.
