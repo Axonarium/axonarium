@@ -1,0 +1,30 @@
+id: clm-9bj0yfdhq3
+subject:
+  type: region
+  id: MBA:922
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:564
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1073/pnas.2603853123
+  pmid: '42611993'
+  pmcid: PMC13506056
+  locator: SI Appendix, Fig. S14A
+paraphrase: Anterograde tracing from perirhinal parvalbumin interneurons showed axonal labelling in the medial septum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PRCPV neurons
+  extract.object_name: medial septum (MS)

@@ -1,0 +1,40 @@
+id: clm-np3yc8qhsv
+subject:
+  type: region
+  id: MBA:1080
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1093/nsr/nwab004
+  pmid: '34691732'
+  pmcid: PMC8433092
+  locator: Fig. 2H–L
+paraphrase: AAV1-Cre anterograde transsynaptic tracing from vHPC labelled a low proportion of central amygdala neurons. None
+  of these labelled neurons received convergent ACx input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: vHPC
+  extract.object_name: CeA
+  verify.note: A low proportion of CeA neurons were vHPC recipients, and none of them received convergent ACx input.

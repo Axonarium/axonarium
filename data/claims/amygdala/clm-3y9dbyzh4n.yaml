@@ -1,0 +1,40 @@
+id: clm-3y9dbyzh4n
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1073/pnas.2502127122
+  pmid: '40478871'
+  pmcid: PMC12168007
+  locator: Fig. 3C; SI Appendix Fig. S3 A–D
+paraphrase: Retrograde AAV-GFP injected into the BLA labelled neurons in ventral CA1, which were quantified among the BLA-projecting
+  regions.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ventral CA1 (vCA1)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: vCA1 is one of the regions quantified in Fig. 3C as containing BLA-projecting cells labelled by the retrograde
+    AAV from the BLA.

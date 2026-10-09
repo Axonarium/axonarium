@@ -1,0 +1,40 @@
+id: clm-2a4ayqq5vw
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1093/ijnp/pyx029
+  pmid: '28453642'
+  pmcid: PMC5570099
+  locator: Fig. 1E–G; Results, section 1
+paraphrase: Retrobeads of a different colour injected into the infralimbic cortex labelled a distinct set of basolateral amygdala
+  projection neurons; these IL-projecting cells showed increased c-Fos after OX1R antagonist treatment during extinction.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: infralimbic medial prefrontal cortex (IL)
+  verify.note: Retrobeads injected into IL labelled BLA projection neurons in mice, and the paper reports this labelling as
+    its own result in Fig. 1E–G and Results section 1.

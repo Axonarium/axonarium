@@ -1,0 +1,39 @@
+id: clm-kgwvnd94av
+subject:
+  type: region
+  id: UBERON:0001927
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002886
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1093/ijnp/pyv015
+  pmid: '25716776'
+  pmcid: PMC4571626
+  locator: Methods (Electrically Evoked Responses); Results, Figs. 3A1, 4A1
+paraphrase: Bipolar electrical stimulation of the medial geniculate nucleus in anesthetized rats evoked short-latency spikes
+  (onset <20 ms, presumed monosynaptic) in putative lateral amygdala projection neurons recorded extracellularly; stimulus
+  current was titrated so that roughly half of 50 trials produced an evoked spike.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MGN
+  extract.object_name: LA
+  verify.note: Methods and Results show that MGN stimulation evoked short-latency spikes in putative LA projection neurons
+    at a titrated ~50% baseline, and the legends call these excitatory inputs.

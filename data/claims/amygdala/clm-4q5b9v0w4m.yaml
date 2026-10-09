@@ -1,0 +1,36 @@
+id: clm-4q5b9v0w4m
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.587
+  unit: '1'
+  n: 3
+source:
+  doi: 10.1073/pnas.1811664115
+  pmid: '30348762'
+  pmcid: PMC6233075
+  locator: Fig. 3 D and E; SI Appendix, Fig. S9
+paraphrase: Cholera toxin B injected into the BNST of D2R-EGFP mice labelled CeA neurons, with roughly 59% of the EGFP-positive
+  CeA cells also tracer-positive; DiI injections into BNST gave similar results.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA (D2R-EGFP neurons)
+  extract.object_name: BNST

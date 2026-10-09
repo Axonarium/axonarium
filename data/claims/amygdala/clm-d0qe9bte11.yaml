@@ -1,0 +1,31 @@
+id: clm-d0qe9bte11
+subject:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: modulatory
+source:
+  doi: 10.1126/sciadv.aeb0400
+  pmid: '42341137'
+  pmcid: PMC13292991
+  locator: fig. S3, F and G
+paraphrase: Light stimulation of ChrimsonR-expressing PVN oxytocin axons in the accumbens produced a rapid rise of the OXT1.7
+  sensor signal there, indicating oxytocin release from this pathway.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PVN
+  extract.object_name: NAc

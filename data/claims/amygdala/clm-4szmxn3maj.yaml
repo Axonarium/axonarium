@@ -1,0 +1,39 @@
+id: clm-4szmxn3maj
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0000956
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1093/ijnp/pyz065
+  pmid: '31800046'
+  pmcid: PMC7094000
+  locator: Fig. 2A–C; Results, section 1
+paraphrase: BDA injected into the basolateral amygdala produced labelled fibres in the prefrontal cortex, and BDA-positive
+  PFC synaptosomes were found, some of them co-labelled for CRFR2 (about 11.6% of synaptosomes from BDA-injected rats, n =
+  3).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PFC
+  verify.note: BDA injected into the rat BLA labelled fibres and synaptosomes in the PFC, and the 11.6% figure with n = 3
+    matches Fig. 2 and the first Results section.

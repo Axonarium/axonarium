@@ -1,0 +1,30 @@
+id: clm-cvynm7xqv1
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1093/texcom/tgab026
+  pmid: '34296171'
+  pmcid: PMC8152946
+  locator: Fig. 7A–C, F; Methods (CTB infusions)
+paraphrase: Cholera Toxin B conjugated to a green fluorophore injected into the central amygdala retrogradely labelled neurons
+  in the basolateral amygdala; labelled cell numbers were comparable across stimulation groups, and about 54% of odor-activated
+  BLA cells were CeA-labelled after 25-Hz tonic LC stimulation versus about 11% in no-light controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CeA

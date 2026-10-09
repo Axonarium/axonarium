@@ -1,0 +1,39 @@
+id: clm-ng0g27t9v5
+subject:
+  type: region
+  id: UBERON:0001393
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1093/ijnp/pyv015
+  pmid: '25716776'
+  pmcid: PMC4571626
+  locator: Results, Figs. 3B and 4B (distribution of recorded neurons)
+paraphrase: Among the neurons driven by MGN or Te3 electrical stimulation, a few recording sites were verified inside the
+  basolateral nucleus of the amygdala, showing that cortical auditory stimulation can evoke spiking in basolateral neurons
+  as well as lateral nucleus neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: Te3 (auditory association cortex)
+  extract.object_name: BLA, basolateral nucleus of the amygdala
+  verify.note: The text gives BLA cell counts pooled across MGN and Te3 stimulation, so whether any BLA cell was driven by
+    Te3 rests on figures whose captions don't say.

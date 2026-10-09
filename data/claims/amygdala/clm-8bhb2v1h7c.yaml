@@ -1,0 +1,30 @@
+id: clm-8bhb2v1h7c
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001880
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1126/sciadv.adv3737
+  pmid: '41191754'
+  pmcid: PMC12588290
+  locator: Fig. 3, A to H; fig. S3
+paraphrase: Anterograde viral labelling of BLA CaMKII neurons revealed marked axonal eGFP in the bed nucleus of the stria
+  terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: BST

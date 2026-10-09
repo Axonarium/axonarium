@@ -1,0 +1,32 @@
+id: clm-xtsng0e9n3
+subject:
+  type: region
+  id: MBA:463
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1126/sciadv.adp5239
+  pmid: '39028822'
+  pmcid: PMC11259178
+  locator: Fig. 7, G to I; Methods, field recordings
+paraphrase: In acute hippocampal slices, bipolar stimulation of the Schaffer collateral fibers evoked field excitatory postsynaptic
+  potentials in the CA1 stratum radiatum, and theta-burst stimulation of these afferents induced long-term potentiation, which
+  was compared between young and aged mice treated with a beta2-adrenergic antagonist.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: Schaffer collateral (CA3)
+  extract.object_name: CA1

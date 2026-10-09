@@ -1,0 +1,31 @@
+id: clm-xg7qsxapng
+subject:
+  type: region
+  id: MBA:1088
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1101/lm.035816.114
+  pmid: '25322798'
+  pmcid: PMC4201812
+  locator: Fig. 1E; Results, first section
+paraphrase: Fluorescence from the ChR2-Venus labelled auditory thalamic projection was barely detectable in the central amygdala
+  and did not differ from the piriform-cortex background level.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MGm
+  extract.object_name: CE (central amygdala)

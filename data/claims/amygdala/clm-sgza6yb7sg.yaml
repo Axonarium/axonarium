@@ -1,0 +1,33 @@
+id: clm-sgza6yb7sg
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: modulatory
+strength: strong
+source:
+  doi: 10.1177/17448069221145096
+  pmid: '36464669'
+  pmcid: PMC9742700
+  locator: Fig. 3(a)-(b); Results, 'DAergic projections from the VTA to the CeA in mice'
+paraphrase: Fluorogold injected into the central amygdala retrogradely labelled numerous neurons in the ventral tegmental
+  area, bilaterally but mostly ipsilaterally; these labelled cells were also tyrosine hydroxylase positive, indicating a dopaminergic
+  VTA input to the CeA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTA
+  extract.object_name: CeA

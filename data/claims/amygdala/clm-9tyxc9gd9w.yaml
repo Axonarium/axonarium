@@ -1,0 +1,29 @@
+id: clm-9tyxc9gd9w
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1177/17448069241226960
+  pmid: '38172075'
+  pmcid: PMC10851759
+  locator: Sup. Figure 2
+paraphrase: Photostimulation of ChR2-expressing IL axons in slices evoked EPSCs and IPSCs in BLA neurons; unlike the CeLC,
+  these amplitudes and their ratio were unchanged by opioid-induced hyperalgesia.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IL
+  extract.object_name: BLA

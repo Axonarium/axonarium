@@ -1,0 +1,41 @@
+id: clm-srg51y2426
+subject:
+  type: region
+  id: MBA:1080
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1093/nsr/nwab004
+  pmid: '34691732'
+  pmcid: PMC8433092
+  locator: Fig. 3A–H; Supplementary Fig. 7A–C; Fig. 5C–F
+paraphrase: Photostimulating ChR2-expressing vHPC terminals evoked AMPAR- and NMDAR-mediated EPSCs in every recorded LA neuron.
+  The responses were abolished by TTX and restored by 4-AP, which indicates monosynaptic input. Feedforward IPSCs were also
+  evoked.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: vHPC
+  extract.object_name: LA
+  verify.note: Every recorded LA cell showed vHPC oEPSCs that were TTX-sensitive and 4-AP-restored, with AMPAR and NMDAR components
+    and feedforward oIPSCs.

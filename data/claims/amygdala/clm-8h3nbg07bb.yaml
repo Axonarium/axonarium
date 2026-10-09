@@ -1,0 +1,31 @@
+id: clm-8h3nbg07bb
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:895
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1073/pnas.2603853123
+  pmid: '42611993'
+  pmcid: PMC13506056
+  locator: SI Appendix, Fig. S6B
+paraphrase: The ectorhinal cortex was among the top five limbic-cortical regions containing labelled axons after anterograde
+  tracer injection into the olfactory bulb.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OB
+  extract.object_name: ectorhinal cortex

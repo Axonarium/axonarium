@@ -1,0 +1,38 @@
+id: clm-e5qy78d11p
+subject:
+  type: region
+  id: UBERON:0001940
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001885
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.1400177
+  pmid: '26601158'
+  pmcid: PMC4640625
+  locator: Fig. 5K
+paraphrase: After CTb was injected into the supramammillary nucleus, many anterogradely labeled fibers were seen in the dentate
+  gyrus close to FOS-positive neurons in REM sleep hypersomniac rats.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: SUML
+  extract.object_name: dentate gyrus
+  verify.note: The authors themselves observed many CTb-labeled fibers in the dentate gyrus after an SUML injection (Fig.
+    5K).

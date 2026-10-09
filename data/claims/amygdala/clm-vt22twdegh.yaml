@@ -1,0 +1,31 @@
+id: clm-vt22twdegh
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1172/jci163266
+  pmid: '37561576'
+  pmcid: PMC10503809
+  locator: Fig. 3D-G; Fig. 6A-C
+paraphrase: Fluorogold deposited in the nucleus accumbens labelled neurons in the paraventricular thalamic nucleus, which
+  were co-labelled for c-Fos and probed for KOR mRNA, indicating a PVT projection to NAc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PVT
+  extract.object_name: NAc

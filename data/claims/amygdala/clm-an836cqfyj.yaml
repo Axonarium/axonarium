@@ -1,0 +1,33 @@
+id: clm-an836cqfyj
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:922
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1073/pnas.2603853123
+  pmid: '42611993'
+  pmcid: PMC13506056
+  locator: SI Appendix, Fig. S6 A–C; SI Appendix, Fig. S9 C and D
+paraphrase: Injection of an anterograde AAV expressing EGFP into the olfactory bulb produced labelled fibres in the anterior
+  perirhinal cortex, which ranked among the densest limbic-cortical targets by cell-density quantification. Fibre terminals
+  in PRC colocalized more densely with parvalbumin-positive than with somatostatin-positive interneurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OB
+  extract.object_name: anterior PRC

@@ -1,0 +1,37 @@
+id: clm-2yysy1ybz5
+subject:
+  type: region
+  id: UBERON:0008933
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002191
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1093/cercor/bhx359
+  pmid: '29373631'
+  pmcid: PMC6093453
+  locator: Results, Consistent Subcortical Projections, Inconsistent Projections and Absence of Projections
+paraphrase: Weak label in the dorsal subiculum was seen in a majority, but not all, of genital cortex injections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: genital cortex
+  extract.object_name: dorsal subiculum
+  verify.note: Dorsal subiculum is listed among weak, less consistent targets seen in most but not all animals.

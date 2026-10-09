@@ -1,0 +1,32 @@
+id: clm-20p6v6c0wd
+subject:
+  type: neuron_type
+  id: nt-vpnb3tg80r
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:978
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1172/jci167725
+  pmid: '37847562'
+  pmcid: PMC10721160
+  locator: Fig. 7A-D
+paraphrase: Cre-dependent helper AAVs plus a Dbh-Cre virus were placed in the LPGi and then pseudotyped, glycoprotein-deleted
+  rabies virus was injected at the same site; retrogradely labelled starter-connected neurons appeared in the CeM, and most
+  of these labelled CeM cells were immunopositive for CRH, indicating a direct monosynaptic input from CeM CRH cells onto
+  LPGi catecholaminergic neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeMCRH neurons
+  extract.object_name: LPGi (lateral paragigantocellular nucleus)

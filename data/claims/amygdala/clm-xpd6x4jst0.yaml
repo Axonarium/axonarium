@@ -1,0 +1,31 @@
+id: clm-xpd6x4jst0
+subject:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1098/rsob.240387
+  pmid: '40858267'
+  pmcid: PMC12380489
+  locator: Fig. 5G,H
+paraphrase: Retrograde oxytocin-promoter AAV injected into the MeA labelled oxytocin-positive PVN neurons, mostly in the caudal
+  PVN, with comparable densities in B6 and BTBR mice (no strain difference, F(1,39) = 1.13, p = 0.294).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PVN (OXTPVN neurons)
+  extract.object_name: MeA

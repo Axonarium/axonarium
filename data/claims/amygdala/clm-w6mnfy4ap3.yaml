@@ -1,0 +1,39 @@
+id: clm-w6mnfy4ap3
+subject:
+  type: region
+  id: MBA:147
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1172/jci.insight.161874
+  pmid: '37200091'
+  pmcid: PMC10371239
+  locator: Fig. 6D–F
+paraphrase: Cre-dependent helper AAV (FLEX-TVA-GFP) injected into the LC of DBH-Cre mice produced GFP-labelled axonal fibres
+  in the BLA, showing that noradrenergic LC neurons send axons there.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LC
+  extract.object_name: BLA
+  verify.note: The Cre-dependent TVA-GFP expressed in DBH-Cre LC neurons revealed GFP axon fibers in the BLA (Fig. 6D–F).

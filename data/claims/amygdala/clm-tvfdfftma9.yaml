@@ -1,0 +1,31 @@
+id: clm-tvfdfftma9
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.aed8901
+  pmid: '42585325'
+  pmcid: PMC13464479
+  locator: Fig. 3A-B
+paraphrase: The same Cre-dependent retrograde tracing from the mPFC in GRP-Cre mice labelled GRP-expressing somata in ventral
+  CA1, identifying vCA1 as one of three sources of GRP input to the mPFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ventral CA1 hippocampus (vCA1)
+  extract.object_name: mPFC

@@ -1,0 +1,40 @@
+id: clm-86e3t8g30s
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:583
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.abi6375
+  pmid: '35302853'
+  pmcid: PMC8932664
+  locator: Fig. S6, B to K
+paraphrase: Retrograde tracing from the claustrum labelled CLA-projecting neurons in the prelimbic/infralimbic region of medial
+  prefrontal cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: prelimbic/infralimbic areas
+  extract.object_name: CLA
+  verify.note: Retrograde labeling from the CLA was reported in the prelimbic/infralimbic areas, which includes the infralimbic
+    cortex.

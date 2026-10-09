@@ -1,0 +1,30 @@
+id: clm-v9h2y2zrca
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1152/jn.00946.2015
+  pmid: '26888105'
+  pmcid: PMC4922599
+  locator: Results, Fig. 7C-D
+paraphrase: In horizontal slices, light stimulation of LPB-derived fibers evoked inward and outward postsynaptic currents
+  with multiple peaks in most of the 10 CeM neurons recorded. The outward (inhibitory) component was relatively large; the
+  outward-to-inward charge ratio was about 9.2 in CeM versus 2.4 in CeC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral parabrachial nucleus (LPB)
+  extract.object_name: CeM neurons

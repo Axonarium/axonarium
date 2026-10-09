@@ -1,0 +1,38 @@
+id: clm-72fs2b90x1
+subject:
+  type: region
+  id: UBERON:0002430
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0009835
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.1400177
+  pmid: '26601158'
+  pmcid: PMC4640625
+  locator: Results, 'Subcortical structures activating the cortex during REM sleep'; Fig. 5J
+paraphrase: The lateral hypothalamic area contained retrogradely labeled cells after the anterior cingulate fluorogold injection.
+  Few were FOS-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral hypothalamic area
+  extract.object_name: anterior cingulate cortex
+  verify.note: The lateral hypothalamic area is reported as retrogradely labeled after all tracer injections, the anterior
+    cingulate included, with few FOS+ cells.

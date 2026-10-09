@@ -1,0 +1,33 @@
+id: clm-ar2fmfj9gd
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0006107
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.1093/ijnp/pyx027
+  pmid: '28444246'
+  pmcid: PMC5492808
+  locator: Methods (electrically evoked responses); Results Exp 1 and 2; Fig. 2A, Fig. 3A
+paraphrase: Bipolar electrical stimulation of the medial prefrontal cortex (electrode in infralimbic cortex, possible spread
+  to prelimbic) reliably evoked single spikes in putative projection neurons of the lateral and basolateral amygdala in anesthetized
+  rats; 11 responsive neurons were found in Exp 1 and 9 in Exp 2. Only units with onset latencies under 30 ms, little latency
+  shift with increasing intensity and low jitter were kept, which the authors take as monosynaptic and not antidromic; stimulus
+  current was titrated so that baseline evoked spike probability was about 0.5 of 50 trials (49.3 ± 3.6% before and 50.3 ±
+  7.6% after drug application in 6 neurons).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC; IL, possible PL spread)
+  extract.object_name: LA/BLA

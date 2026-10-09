@@ -1,0 +1,44 @@
+id: clm-477eq86xa0
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.615
+  unit: '1'
+  n: 13
+source:
+  doi: 10.1097/j.pain.0000000000001691
+  pmid: '31479066'
+  pmcid: PMC6940027
+  locator: Fig. 3G–I; Results 3.2
+paraphrase: Eight of thirteen somatostatin-negative neurons in the medial central amygdala showed monosynaptic parabrachial
+  EPSCs, with smaller mean amplitude (~64 pA) than paired SOM-positive cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBn
+  extract.object_name: SOM− CeM neurons
+  verify.note: Eight of 13 SOM− CeM neurons responded (0.615), with a mean near 64 pA, smaller than paired SOM+ cells.

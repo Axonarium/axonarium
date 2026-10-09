@@ -1,0 +1,40 @@
+id: clm-anwwa3jt6w
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.93
+  unit: '1'
+  n: 20
+- quantity: fraction_of_labelled_neurons
+  value: 0.036
+  unit: '1'
+  n: 20
+source:
+  doi: 10.1172/jci166356
+  pmid: '36917193'
+  pmcid: PMC10145931
+  locator: Fig. 1A–C; Supplemental Fig. 1A–G
+paraphrase: Retrograde AAV2/R carrying mCherry injected into the lateral/ventrolateral PAG labelled CaMKIIα-positive PrL neurons,
+  almost all of them in layer 5 and distinct from the BLA-projecting population.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PrL
+  extract.object_name: l/vlPAG

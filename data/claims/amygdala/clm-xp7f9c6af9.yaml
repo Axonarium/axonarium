@@ -1,0 +1,30 @@
+id: clm-xp7f9c6af9
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: present
+sign: excitatory
+source:
+  doi: 10.1177/17448069241226960
+  pmid: '38172075'
+  pmcid: PMC10851759
+  locator: Fig. 3(a), (b)
+paraphrase: An anterograde transsynaptic AAV1/2 expressing Cre-EGFP under the CaMKIIa promoter was placed in the right infralimbic
+  cortex; four weeks later EGFP appeared in a subset of CeLC neurons, indicating they receive direct synaptic input from IL
+  glutamatergic pyramidal cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IL
+  extract.object_name: CeLC

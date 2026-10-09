@@ -1,0 +1,40 @@
+id: clm-c2yc7yenpa
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:583
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.abi6375
+  pmid: '35302853'
+  pmcid: PMC8932664
+  locator: Fig. S6, B to M
+paraphrase: Retrograde AAV injected into the anterior claustrum of TRAP2 mice labelled neurons in the basolateral amygdala.
+  About 20% of the CLA-projecting BLA neurons were also tagged by social defeat stress, the highest share of any region examined.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CLA
+  verify.note: Retrograde CLA tracing labeled BLA neurons, about 20% of them stress-tagged, the highest ratio of the areas
+    examined (fig. S6, L and M).

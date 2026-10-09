@@ -1,0 +1,38 @@
+id: clm-yg4kvfw3cc
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1093/nsr/nwab004
+  pmid: '34691732'
+  pmcid: PMC8433092
+  locator: Fig. 2D–F
+paraphrase: Retrograde AAV injected into the LA also labelled LA-projecting neurons in the auditory cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: auditory cortex (ACx)
+  extract.object_name: lateral amygdala (LA)
+  verify.note: Retrograde AAV injected into LA labelled ACx neurons (Fig. 2D–F).

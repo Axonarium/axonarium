@@ -1,0 +1,32 @@
+id: clm-p6qk8wv8ew
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:961
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1073/pnas.2603853123
+  pmid: '42611993'
+  pmcid: PMC13506056
+  locator: SI Appendix, Fig. S6 A–C
+paraphrase: Anterograde EGFP tracing from the olfactory bulb labelled dense projections in both the anterior and posterior
+  piriform cortex, which together with PRC received the highest input density among limbic cortical areas.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OB
+  extract.object_name: anterior and posterior piriform cortex (APC, PPC)
