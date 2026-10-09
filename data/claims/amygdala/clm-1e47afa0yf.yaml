@@ -1,0 +1,30 @@
+id: clm-1e47afa0yf
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0002-16.2016
+  pmid: '27022632'
+  pmcid: PMC4804386
+  locator: Fig. 3I-J; Fig. 4A,C
+paraphrase: CTB-AlexaFluor 647 injected into the BLA retrogradely labelled corticoamygdalar neurons in layer 2 of PL cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL cortex (L2 PL-CA neurons)
+  extract.object_name: basolateral amygdala (BLA)

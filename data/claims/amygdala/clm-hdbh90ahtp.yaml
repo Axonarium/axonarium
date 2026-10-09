@@ -1,0 +1,36 @@
+id: clm-hdbh90ahtp
+subject:
+  type: region
+  id: MBA:362
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.964
+  unit: '1'
+  n: 27
+source:
+  doi: 10.1186/s13041-025-01188-9
+  pmid: '40001162'
+  pmcid: PMC11853286
+  locator: Fig. 3a-b
+paraphrase: Halorhodopsin inhibition of MD axon terminals in the ACC, applied during the demonstrator's foot shocks, removed
+  the shock-related calcium responses in nearly all ACC shock-responding cells imaged in observer mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mediodorsal thalamus (MD)
+  extract.object_name: anterior cingulate cortex (ACC)

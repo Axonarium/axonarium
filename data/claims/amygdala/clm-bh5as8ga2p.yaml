@@ -1,0 +1,32 @@
+id: clm-bh5as8ga2p
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:302
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/s13041-023-01053-7
+  pmid: '37715263'
+  pmcid: PMC10504749
+  locator: Fig. 1C–G
+paraphrase: Injection of the self-complementary AAV1 carrying GFP under the short-CAG promoter into the eye produced anterograde
+  transneuronal GFP labeling of cell bodies in the superior colliculus, abundant in the contralateral SC and only very sparse
+  ipsilaterally; the hSyn-driven version gave significantly fewer labelled SC neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: retina
+  extract.object_name: superior colliculus (SC)

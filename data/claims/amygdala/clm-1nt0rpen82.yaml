@@ -1,0 +1,31 @@
+id: clm-1nt0rpen82
+subject:
+  type: region
+  id: MBA:169
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:429
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Results, inputs to TNC projection neurons (data not shown)
+paraphrase: The authors report GFP-positive neurons in the nucleus prepositus hypoglossi after transneuronal pseudorabies
+  labelling from PB-projecting TNC neurons, though the images are not shown.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: nucleus praepositus hypoglossi
+  extract.object_name: projection neurons of the trigeminal nucleus caudalis (TNC)

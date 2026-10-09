@@ -1,0 +1,29 @@
+id: clm-z79a71rzrx
+subject:
+  type: region
+  id: UBERON:0002866
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0007634
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 6; Results, inputs to projection neurons in the rat
+paraphrase: In rats, Ad-Cre injected in the parabrachial nucleus was retrogradely transported to trigeminal nucleus caudalis
+  neurons, which then supported replication and GFP expression of the Cre-dependent pseudorabies vector injected in TNC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: trigeminal nucleus caudalis (TNC)
+  extract.object_name: parabrachial nucleus (PB)

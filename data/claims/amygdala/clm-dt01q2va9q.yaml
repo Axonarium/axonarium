@@ -1,0 +1,29 @@
+id: clm-dt01q2va9q
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001883
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/1471-2202-8-103
+  pmid: '18047654'
+  pmcid: PMC2216080
+  locator: Results, Injections in the ventral striatum (case 1207; not shown)
+paraphrase: Fluoro-Gold injected into the caudal olfactory tubercle also retrogradely labelled cells in the basolateral amygdaloid
+  complex. The paper reports this but does not illustrate it.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdaloid complex
+  extract.object_name: olfactory tubercle

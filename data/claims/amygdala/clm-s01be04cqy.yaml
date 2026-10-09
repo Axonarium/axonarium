@@ -1,0 +1,30 @@
+id: clm-s01be04cqy
+subject:
+  type: region
+  id: MBA:703
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0119-24.2024
+  pmid: '38811163'
+  pmcid: PMC11208988
+  locator: Fig. 5B, Fig. 8
+paraphrase: PL fibres reached the hypothalamus and left putative synaptic terminals in the lateral hypothalamus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL
+  extract.object_name: lateral hypothalamus

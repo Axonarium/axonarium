@@ -1,0 +1,32 @@
+id: clm-nc9ptsv0g6
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: inhibitory
+source:
+  doi: 10.1186/s13229-025-00699-5
+  pmid: '41491494'
+  pmcid: PMC12829049
+  locator: Fig. 5a
+paraphrase: Bursts of high-frequency electrical stimuli delivered at the cortical edge of the lateral amygdala, with AMPA,
+  NMDA and GABA-A receptors blocked, produced a slow outward current in lateral amygdala principal neurons that was abolished
+  by the GABA-B antagonist CGP 55845, showing local intra-LA interneuron input mediating slow inhibition; this response was
+  smaller in mice lacking Mecp2 in PV cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral amygdala (LA)
+  extract.object_name: principal neurons (PNs) in the lateral amygdala

@@ -1,0 +1,32 @@
+id: clm-xkzydkw9hj
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:475
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/s13041-023-01053-7
+  pmid: '37715263'
+  pmcid: PMC10504749
+  locator: 'Additional file 1: Fig. S1A, B, D'
+paraphrase: The retrograde AAV2-mRuby injected into the medial geniculate nucleus labelled numerous neuronal somata in the
+  auditory cortex, demonstrating a corticothalamic projection to the MGn.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: auditory cortex (Actx)
+  extract.object_name: MGn

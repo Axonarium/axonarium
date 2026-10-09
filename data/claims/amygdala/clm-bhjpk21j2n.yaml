@@ -1,0 +1,32 @@
+id: clm-bhjpk21j2n
+subject:
+  type: region
+  id: MBA:429
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 2E-2G
+paraphrase: A Cre-expressing adenovirus injected into the parabrachial nucleus of a Cre-reporter mouse produced reporter-positive
+  cell bodies in lamina I of the trigeminal nucleus caudalis seven days later, showing retrograde uptake by trigeminal neurons
+  whose terminals lie in PB.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: trigeminal nucleus caudalis (TNC), lamina I
+  extract.object_name: parabrachial nucleus (PB)

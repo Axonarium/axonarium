@@ -1,0 +1,31 @@
+id: clm-yaja6f03x4
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s13024-016-0113-4
+  pmid: '27363576'
+  pmcid: PMC4929736
+  locator: 'Study 2, Fig. 3a; Additional file 1: Table S2'
+paraphrase: FluoroGold infused into the OB/AON labelled CA1 neurons, confirming first-order CA1 afferents to the injection
+  site, whereas CA2/CA3 were unlabelled.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: hippocampal CA1
+  extract.object_name: OB/AON

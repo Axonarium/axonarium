@@ -1,0 +1,30 @@
+id: clm-fzkjgcjxsy
+subject:
+  type: region
+  id: UBERON:0002043
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0005382
+species: NCBITaxon:10116
+evidence_class: single_neuron_reconstruction
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1371/journal.pone.0087709
+  pmid: '24504335'
+  pmcid: PMC3913638
+  locator: Fig. 2A, 2B; Results, Striatum
+paraphrase: Individually BDA-filled DRN axons were traced into the dorsolateral (sensorimotor) striatum, where they broke
+  into many terminal collaterals. One axon bore about 2,131 varicosities there.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dorsal raphe nucleus
+  extract.object_name: dorsolateral striatum

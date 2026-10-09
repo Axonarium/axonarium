@@ -1,0 +1,31 @@
+id: clm-vc8mvs3yfk
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s10194-026-02285-3
+  pmid: '41652327'
+  pmcid: PMC12977853
+  locator: Fig. 4F-H
+paraphrase: mRuby-labelled terminals from activity-tagged pPVT neurons were present in the lateral part of the CeA, and were
+  denser in the chronic migraine model group.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pPVT
+  extract.object_name: CeL

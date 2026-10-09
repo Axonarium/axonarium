@@ -1,0 +1,31 @@
+id: clm-sve9s439j0
+subject:
+  type: region
+  id: MBA:147
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:429
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 3C, S1 Fig
+paraphrase: Retrograde transneuronal transfer of the conditionally replicating pseudorabies vector from PB-projecting TNC
+  neurons labelled catecholaminergic neurons of the locus coeruleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: locus coeruleus (LC)
+  extract.object_name: projection neurons of the trigeminal nucleus caudalis (TNC)

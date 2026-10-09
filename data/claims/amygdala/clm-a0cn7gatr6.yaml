@@ -1,0 +1,31 @@
+id: clm-a0cn7gatr6
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0078-15.2015
+  pmid: '26478911'
+  pmcid: PMC4603255
+  locator: Results, Experiment 1; Fig. 3C; Fig. 4A,C,I
+paraphrase: After cholera toxin B was injected into the medial olfactory tubercle of female mice, retrogradely labeled cell
+  bodies appeared in the anterior medial amygdala. A subset of these cells also expressed Fos after exposure to male odors.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior Me (MeA)
+  extract.object_name: medial olfactory tubercle (mOT)

@@ -1,0 +1,30 @@
+id: clm-qt74hjngp5
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:170
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1186/s13041-023-01053-7
+  pmid: '37715263'
+  pmcid: PMC10504749
+  locator: Fig. 1H; Results
+paraphrase: After retinal delivery of the scAAV1 GFP vector, no GFP-labelled somata were detected in the lateral geniculate
+  nucleus, in contrast to the clear transneuronal labeling seen in the superior colliculus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: retina
+  extract.object_name: lateral geniculate nucleus (LGN)

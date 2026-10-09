@@ -1,0 +1,31 @@
+id: clm-j2cpa05wkj
+subject:
+  type: region
+  id: MBA:619
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:703
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0119-24.2024
+  pmid: '38811163'
+  pmcid: PMC11208988
+  locator: Fig. 3B,C
+paraphrase: PL retrograde injections labelled input neurons in the nucleus of the lateral olfactory tract, which held over
+  1% of all labelled cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: nucleus of the lateral olfactory tract (nLOT)
+  extract.object_name: paralaminar nucleus of the amygdala (PL)

@@ -1,0 +1,31 @@
+id: clm-1k08yj5pzf
+subject:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1523/eneuro.0078-15.2015
+  pmid: '26478911'
+  pmcid: PMC4603255
+  locator: Results, Localization of hM4Di infection
+paraphrase: The caudate putamen showed sparse mCitrine-positive fiber labeling after AAV infection of the mOT.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mOT
+  extract.object_name: caudate putamen (CPu)

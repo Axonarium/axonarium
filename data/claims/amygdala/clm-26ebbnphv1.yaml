@@ -1,0 +1,29 @@
+id: clm-26ebbnphv1
+subject:
+  type: region
+  id: UBERON:0009951
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001883
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/1471-2202-8-103
+  pmid: '18047654'
+  pmcid: PMC2216080
+  locator: Fig. 1B-D
+paraphrase: After biotinylated dextran-amine injection into the mitral cell layer of the main olfactory bulb, labelled fibres
+  occupied sublamina Ia of layer I across the full extent of the olfactory tubercle, thinning from lateral to medial.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: main olfactory bulb
+  extract.object_name: olfactory tubercle

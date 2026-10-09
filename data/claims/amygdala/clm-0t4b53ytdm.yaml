@@ -1,0 +1,29 @@
+id: clm-0t4b53ytdm
+subject:
+  type: region
+  id: UBERON:0004673
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0002866
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 6E
+paraphrase: GFP-positive primary afferent neurons were found in the rat trigeminal ganglion after transneuronal pseudorabies
+  labelling from PB-projecting TNC neurons; most of these cells were NF200-negative, i.e. unmyelinated.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: trigeminal ganglion (TG)
+  extract.object_name: PB-projecting projection neurons of the TNC

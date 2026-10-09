@@ -1,0 +1,38 @@
+id: clm-krzgr7khe0
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:695
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 5.55
+  unit: ms
+  sem: 0.5
+  n: 18
+source:
+  doi: 10.1523/eneuro.0020-19.2019
+  pmid: '31387874'
+  pmcid: PMC6712206
+  locator: Fig. 1E,G, Fig. 2, Fig. 3, Fig. 5B
+paraphrase: Stimulating the LA evoked small subthreshold PSPs and synaptic conductances in deep layer PER-LEC principal neurons;
+  both excitatory and inhibitory conductances were abolished by CNQX/APV, indicating glutamatergic input with no direct long-range
+  inhibitory projection, the inhibition arising from local interneurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral amygdala (LA)
+  extract.object_name: PER-LEC deep layer principal neurons

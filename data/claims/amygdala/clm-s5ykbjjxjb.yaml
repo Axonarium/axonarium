@@ -1,0 +1,32 @@
+id: clm-s5ykbjjxjb
+subject:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s13041-022-00939-2
+  pmid: '35701839'
+  pmcid: PMC9195255
+  locator: Fig. 7A, B, F
+paraphrase: After AAV-hSyn-mCherry injection into the dorsal striatum, labelling was detected in the basolateral amygdaloid
+  nucleus of wild-type and control animals, and this signal was reduced to about 42% of wild-type intensity in mice with striatal
+  CDK5 knockdown.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dorsal striatum (DS)
+  extract.object_name: basolateral amygdala (BLA)

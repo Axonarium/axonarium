@@ -1,0 +1,31 @@
+id: clm-0stry39fm1
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s13024-016-0113-4
+  pmid: '27363576'
+  pmcid: PMC4929736
+  locator: Study 4 text
+paraphrase: Some FluoroGold-labelled cells were present in the bed nucleus of the stria terminalis following tracer infusion
+  into the OB/AON.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: bed nucleus of stria terminalis
+  extract.object_name: OB/AON

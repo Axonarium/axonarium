@@ -1,0 +1,31 @@
+id: clm-maqd3ds6qg
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1371/journal.pone.0011399
+  pmid: '20625482'
+  pmcid: PMC2896423
+  locator: Fig. 1B, Fig. 2C, Fig. 4C-D; Results
+paraphrase: Stimulating thalamic afferents in the internal capsule evoked monosynaptic EPSCs in LA principal neurons, with
+  phasic release properties that stayed largely constant from juvenile to adult ages. In adult mice these afferents also recruited
+  strong picrotoxin-sensitive feed-forward IPSCs in the principal cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: thalamic axons within the internal capsule (Thalamo-LA projections)
+  extract.object_name: LA principal neurons

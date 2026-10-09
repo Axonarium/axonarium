@@ -1,0 +1,32 @@
+id: clm-drt7041xm2
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1186/1744-8069-8-51
+  pmid: '22776418'
+  pmcid: PMC3464693
+  locator: Fig. 3A-B, Fig. 4; Methods, Afferent pathway stimulation
+paraphrase: In amygdala slices, electrical stimulation of the fiber tract carrying parabrachial afferents ventromedial to
+  the central amygdala evoked graded compound EPSCs in capsular central amygdala neurons recorded in whole-cell mode, with
+  GABA-A and glycine transmission blocked, indicating a glutamatergic excitatory input; minimal stimulation with theta pipettes
+  evoked all-or-none single-fiber EPSCs in the same neurons, and right-side EPSC amplitudes were enlarged after spinal nerve
+  ligation in vehicle-treated but not neonatally capsaicin-treated rats.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LPB
+  extract.object_name: CeC

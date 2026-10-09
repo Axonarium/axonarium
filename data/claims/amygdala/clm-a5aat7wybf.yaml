@@ -1,0 +1,30 @@
+id: clm-a5aat7wybf
+subject:
+  type: region
+  id: UBERON:0003004
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001885
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1371/journal.pone.0078928
+  pmid: '24223172'
+  pmcid: PMC3819259
+  locator: Fig. 2F, Fig. 3F
+paraphrase: A small number of median raphe neurons were labeled three days after rabies injection, in three of four dorsal
+  DG cases and all three ventral DG cases.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: median raphe nucleus
+  extract.object_name: dorsal and ventral DG

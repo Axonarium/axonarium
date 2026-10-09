@@ -1,0 +1,31 @@
+id: clm-bhj7sjp8j6
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s10194-026-02285-3
+  pmid: '41652327'
+  pmcid: PMC12977853
+  locator: Fig. 3A-B
+paraphrase: Anterograde, non-transsynaptic tracing from pPVT Vglut2+ neurons produced mRuby-labelled fibre terminals in the
+  bed nucleus of the stria terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pPVT
+  extract.object_name: BNST

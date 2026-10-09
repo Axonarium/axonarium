@@ -1,0 +1,31 @@
+id: clm-s2ebkce6zh
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1371/journal.pone.0123381
+  pmid: '25830919'
+  pmcid: PMC4382118
+  locator: Fig 5F
+paraphrase: Rabies tracing from D2 MSNs labelled only a few neurons in the dorsal raphe.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dorsal raphe nucleus (DRN)
+  extract.object_name: D2 MSNs in the dorsal striatum

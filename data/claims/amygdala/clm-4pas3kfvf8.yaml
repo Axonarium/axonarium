@@ -1,0 +1,31 @@
+id: clm-4pas3kfvf8
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s13041-020-00638-w
+  pmid: '32600466'
+  pmcid: PMC7325111
+  locator: Fig. 1d
+paraphrase: After AAV-ChR2-Venus injection into the BLA, Venus-labeled BLA axons were seen in PL cortex overlapping retrogradely
+  labeled cortico-PAG neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelimbic (PL) cortex

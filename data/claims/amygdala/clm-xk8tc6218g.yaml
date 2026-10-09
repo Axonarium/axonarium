@@ -1,0 +1,32 @@
+id: clm-xk8tc6218g
+subject:
+  type: region
+  id: MBA:688
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1371/journal.pone.0011399
+  pmid: '20625482'
+  pmcid: PMC2896423
+  locator: Fig. 1A, Fig. 2, Fig. 3, Fig. 4; Results
+paraphrase: In acute coronal slices, stimulating cortical afferents in the external capsule evoked monosynaptic EPSCs with
+  AMPA and NMDA components in patched LA principal neurons, in both juvenile and adult mice. The same stimulation also produced
+  picrotoxin-sensitive feed-forward IPSCs. The paper tracked how paired-pulse ratio, refilling rate and maximal EPSC changed
+  with age, and tested associative LTP at these synapses.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: cortical axons in the external capsule (Cortico-LA projections)
+  extract.object_name: LA principal neurons

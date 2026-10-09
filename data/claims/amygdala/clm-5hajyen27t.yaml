@@ -1,0 +1,29 @@
+id: clm-5hajyen27t
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002148
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0042-15.2015
+  pmid: '26634226'
+  pmcid: PMC4660134
+  locator: Results, 'Repeated stress and retrograde labeling'; Fig. 1C
+paraphrase: Fluorogold placed in the LC and the dorsolateral peri-LC produced retrogradely labeled neurons in the central
+  amygdalar nucleus in all animals examined.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: central amygdalar nucleus (CNA)
+  extract.object_name: locus coeruleus (LC)

@@ -1,0 +1,31 @@
+id: clm-frktq2k1w9
+subject:
+  type: neuron_type
+  id: nt-fwck8mp6aj
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1186/s13229-025-00699-5
+  pmid: '41491494'
+  pmcid: PMC12829049
+  locator: Fig. 1b; Results, section on PV output
+paraphrase: After Cre-dependent ChR2 expression in parvalbumin interneurons of the basolateral amygdala, blue-light pulses
+  evoked inhibitory postsynaptic currents in lateral amygdala principal neurons recorded with glutamate receptor blockers
+  present; paired-pulse ratios differed between genotypes, indicating a lower GABA release probability when Mecp2 was deleted
+  from the PV cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PV interneurons (ChR2-expressing parvalbumin interneurons of the BLA)
+  extract.object_name: principal neurons (PNs) in the lateral amygdala

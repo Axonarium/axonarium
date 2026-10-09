@@ -1,0 +1,32 @@
+id: clm-wpe899nw18
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1523/eneuro.0002-16.2016
+  pmid: '27022632'
+  pmcid: PMC4804386
+  locator: Fig. 2D-G; Fig. 3B-D, J-L; Fig. 4D-I
+paraphrase: Light activation of ChR2+ BLA axons in slices evoked EPSCs in IL neurons that mostly persisted in TTX/4-AP, indicating
+  monosynaptic excitation. IPSCs were abolished by the blockers, so the inhibition was polysynaptic. Monosynaptic input was
+  larger in L5 cortico-PAG neurons than in L3/5 corticoamygdalar neurons, and larger in L3/5 than in L2 corticoamygdalar neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: IL cortex (L5 IL-CP neurons, L2 and L3/5 IL-CA neurons)

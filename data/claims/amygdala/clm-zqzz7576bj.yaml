@@ -1,0 +1,30 @@
+id: clm-zqzz7576bj
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1186/1744-8069-6-93
+  pmid: '21162731'
+  pmcid: PMC3016348
+  locator: Fig. 1C-H; Fig. 2A
+paraphrase: In rat slices, electrical stimulation in the BLA evoked short, fixed-latency EPSCs in CeLC neurons that followed
+  20 Hz stimulation and were abolished by the non-NMDA receptor antagonist NBQX. This indicates a monosynaptic glutamatergic
+  input, and its input-output function was enhanced in arthritic rats.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CeLC (latero-capsular division of the CeA)
