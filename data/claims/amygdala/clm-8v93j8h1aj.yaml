@@ -1,0 +1,43 @@
+id: clm-8v93j8h1aj
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electron_microscopy
+result: present
+sign: unknown
+source:
+  doi: 10.1111/ejn.70607
+  pmid: '42460853'
+  pmcid: PMC13373983
+  locator: Figs. 2, 3, 4, 5; Results, Postsynaptic Targets of CGRP+ Terminals
+paraphrase: In the right CeA of 3 mice, CGRP-immunoreactive terminals, which the authors treat as the parabrachial input,
+  formed synapses mainly on dendrites (about 57%), and also on spines (about 24%) and somata (about 19%). Synapses were roughly
+  evenly split between symmetric and asymmetric, and about two thirds of CGRP+ terminals co-expressed vGluT2. The parabrachial
+  origin is inferred from the CGRP marker; it was not traced in this study.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: parabrachial nucleus (CGRP+ PB-CeA terminals)
+  extract.object_name: central amygdala (CeA)
+  verify.note: The mouse EM numbers match the paper (dendrites 56.6%, spines 24.4%, somata 19.0%, symmetric/asymmetric 55/45,
+    vGluT2 66.7%), and the paper itself treats these CGRP+ terminals as the PB-CeA projection, though their PB origin is inferred
+    rather than traced.

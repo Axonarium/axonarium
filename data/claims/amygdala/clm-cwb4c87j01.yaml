@@ -1,0 +1,32 @@
+id: clm-cwb4c87j01
+subject:
+  type: region
+  id: MBA:1018
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1101/lm.035816.114
+  pmid: '25322798'
+  pmcid: PMC4201812
+  locator: Fig. 1D,E; Results, first section
+paraphrase: ChR2-Venus labelling from the auditory cortex injection (combined with the thalamic injection) produced only sparse
+  axonal label in the basal amygdala, whose fluorescence did not differ significantly from background.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AuV
+  extract.object_name: BA (basal amygdala)

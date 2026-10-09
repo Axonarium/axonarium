@@ -1,0 +1,39 @@
+id: clm-ma7zhwcb63
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1097/j.pain.0000000000001691
+  pmid: '31479066'
+  pmcid: PMC6940027
+  locator: Fig. 1H; Results 3.1
+paraphrase: No YFP-labelled parabrachial axons were seen in the lateral amygdala after ChR2-Venus AAV injection in the lateral
+  parabrachial nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBn
+  extract.object_name: LA
+  verify.note: No YFP labelling was detected in LA/BLA, which includes the lateral amygdala.

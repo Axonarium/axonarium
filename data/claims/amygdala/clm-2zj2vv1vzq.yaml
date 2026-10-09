@@ -1,0 +1,40 @@
+id: clm-2zj2vv1vzq
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1093/nsr/nwab004
+  pmid: '34691732'
+  pmcid: PMC8433092
+  locator: Supplementary Fig. 6B–D
+paraphrase: AAV1-Cre anterograde transsynaptic tracing from ACx in IS reporter mice labelled postsynaptic neurons, with the
+  LA as the preferential target.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ACx
+  extract.object_name: LA
+  verify.note: AAV1-Cre transsynaptic tracing from ACx showed LA as the preferential postsynaptic target.

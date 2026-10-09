@@ -1,0 +1,30 @@
+id: clm-pt3v0cp29e
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0003881
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1101/lm.039909.115
+  pmid: '26773098'
+  pmcid: PMC4749832
+  locator: Fig. 5C,D; Methods, Electrophysiological verification
+paraphrase: In anesthetized rats, 40-Hz blue-light pulses applied to ChR2-expressing BLA axons within the ventral hippocampus
+  increased the firing of recorded ventral hippocampal CA1 neurons; when BLA cell bodies were stimulated with 473 nm light,
+  simultaneous continuous 561 nm illumination of the BLA axons in VH (eArchT3.0) reduced this driven VH activity.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: VH (layer CA1)

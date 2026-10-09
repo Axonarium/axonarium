@@ -1,0 +1,30 @@
+id: clm-rmx4e4hw54
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1093/texcom/tgab026
+  pmid: '34296171'
+  pmcid: PMC8152946
+  locator: Fig. 7A–C, F; Methods (CTB infusions)
+paraphrase: Cholera Toxin B conjugated to a red fluorophore injected into the nucleus accumbens retrogradely labelled a population
+  of neurons in the basolateral amygdala, which the authors counted and compared with cFos labelling. In no-light controls
+  about 11% of activated BLA cells were NAc-labelled, rising to roughly 37% after 10-Hz phasic LC stimulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc

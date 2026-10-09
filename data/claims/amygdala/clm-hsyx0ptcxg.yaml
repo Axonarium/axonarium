@@ -1,0 +1,31 @@
+id: clm-hsyx0ptcxg
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1172/jci163266
+  pmid: '37561576'
+  pmcid: PMC10503809
+  locator: Fig. 3D-F, H; Fig. 6A-C
+paraphrase: Fluorogold injected into the nucleus accumbens retrogradely labelled neurons in the basolateral amygdala, which
+  were then co-stained for c-Fos and for KOR mRNA, showing that BLA cells send axons to NAc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc

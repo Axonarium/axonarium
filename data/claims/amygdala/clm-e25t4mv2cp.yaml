@@ -1,0 +1,34 @@
+id: clm-e25t4mv2cp
+subject:
+  type: region
+  id: MBA:780
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+strength: strong
+source:
+  doi: 10.1073/pnas.2011782117
+  pmid: '32973099'
+  pmcid: PMC7568289
+  locator: Fig. 2 I–M; SI Appendix Fig. S2; Fig. 4 B–G, L, M, O
+paraphrase: Photostimulation of Chronos-expressing AHiPM terminals in acute slices reliably evoked postsynaptic currents in
+  tdTomato-identified Esr1 neurons of VMHvl when held at the reversal potential for inhibition (-70 mV), with no response
+  detectable at the reversal potential for excitation (0 mV), indicating a purely excitatory and at least partly monosynaptic
+  input; AMPA/NMDA ratios, synaptic integration, and ex vivo and in vivo (fEPSP) LTP/LTD were measured at this input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AHiPM
+  extract.object_name: VMHvlEsr1 neurons

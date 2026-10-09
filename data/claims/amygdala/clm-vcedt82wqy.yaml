@@ -1,0 +1,41 @@
+id: clm-vcedt82wqy
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:835
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: inhibitory
+source:
+  doi: 10.1097/aln.0000000000005279
+  pmid: '39466630'
+  pmcid: PMC11723501
+  locator: Fig. 5A–C; Results, 'Activation of the GABAergic Central Amygdala–Basal Forebrain Circuit...'
+paraphrase: Cre-dependent ChR2-mCherry was expressed in GABAergic (Vgat-Cre) neurons of the central amygdala, and labelled
+  axonal fibres were visualized in the basal forebrain where the optic fibres were placed, showing that CeA GABAergic cells
+  send terminals to the basal forebrain; optical stimulation of these terminals changed behaviour and cortical EEG.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: central amygdala (CeA)
+  extract.object_name: basal forebrain (BF)
+  verify.note: Fig. 5C does show ChR2-mCherry fibres in the basal forebrain, but the paper never establishes an inhibitory
+    sign, so sign should be unknown; mapping the basal forebrain to ventral pallidum is also not specified by the paper.

@@ -1,0 +1,38 @@
+id: clm-k0epn5tx2q
+subject:
+  type: region
+  id: UBERON:0001897
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0009835
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.1400177
+  pmid: '26601158'
+  pmcid: PMC4640625
+  locator: Fig. 5H, J
+paraphrase: Thalamic nuclei contained retrogradely labeled cells after a fluorogold injection in the anterior cingulate cortex.
+  Only a few of these cells were FOS-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: thalamic nuclei (TH)
+  extract.object_name: anterior cingulate cortex
+  verify.note: The caption reports only a few double-labeled thalamic cells after the anterior cingulate FG injection (Fig.
+    5H, J).

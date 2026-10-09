@@ -1,0 +1,33 @@
+id: clm-pqam7er8qz
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: modulatory
+strength: strong
+source:
+  doi: 10.1177/17448069221145096
+  pmid: '36464669'
+  pmcid: PMC9742700
+  locator: Fig. 3(c)-(d)
+paraphrase: Cre-dependent ChR2-mCherry injected into the VTA of DAT-Cre mice transduced TH-positive dopaminergic cells, and
+  four weeks later abundant mCherry-labelled axons and terminals were seen in the central amygdala, described as strong target-specific
+  dopaminergic projections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTA
+  extract.object_name: CeA

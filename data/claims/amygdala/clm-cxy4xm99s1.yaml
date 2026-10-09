@@ -1,0 +1,29 @@
+id: clm-cxy4xm99s1
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0001880
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.adv3737
+  pmid: '41191754'
+  pmcid: PMC12588290
+  locator: Fig. 2, J and K
+paraphrase: Optogenetic activation of BLA projection neurons increased FOS in the dorsomedial subdivision of the bed nucleus
+  of the stria terminalis, whereas the anterodorsal subdivision showed no significant increase.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: dmBST

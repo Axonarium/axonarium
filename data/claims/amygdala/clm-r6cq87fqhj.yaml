@@ -1,0 +1,31 @@
+id: clm-r6cq87fqhj
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1177/17448069241226960
+  pmid: '38172075'
+  pmcid: PMC10851759
+  locator: Fig. 3(b), Fig. 4(a), Fig. 5(b)
+paraphrase: After injecting CaMKIIa-driven AAV carrying ChR2-EYFP or Cre-EGFP into the right infralimbic cortex, labelled
+  axon terminals were visible in the laterocapsular central amygdala, although the authors note the IL-to-CeLC projection
+  was not abundant.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IL
+  extract.object_name: CeLC

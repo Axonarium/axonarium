@@ -1,0 +1,39 @@
+id: clm-wcbb885n32
+subject:
+  type: region
+  id: UBERON:0001927
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1093/ijnp/pyv015
+  pmid: '25716776'
+  pmcid: PMC4571626
+  locator: Results, Figs. 3B and 4B (distribution of recorded neurons)
+paraphrase: A minority of the projection neurons that responded with evoked spikes to stimulation of the auditory thalamus
+  or auditory association cortex were histologically localized to the basolateral nucleus rather than the lateral nucleus
+  (4 cells in the D1 experiment, 7 in the D2 experiment), indicating these afferents also drive basolateral neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MGN
+  extract.object_name: BLA, basolateral nucleus of the amygdala
+  verify.note: The 4 and 7 BLA cells are pooled across both stimulation sites, so the text doesn't show that any of them responded
+    to MGN rather than Te3.

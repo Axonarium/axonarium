@@ -1,0 +1,31 @@
+id: clm-e18w2mwrf9
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:111
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1073/pnas.2603853123
+  pmid: '42611993'
+  pmcid: PMC13506056
+  locator: SI Appendix, Fig. S6 E and F
+paraphrase: Injection of the retrograde tracer AAV11 into the posterior agranular insular area produced no retrogradely labelled
+  cells in the olfactory bulb, indicating this insular area receives no direct bulbar input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OB
+  extract.object_name: AIP

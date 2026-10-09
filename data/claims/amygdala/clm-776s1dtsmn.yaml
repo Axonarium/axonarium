@@ -1,0 +1,38 @@
+id: clm-776s1dtsmn
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1111/cns.14422
+  pmid: '37715582'
+  pmcid: PMC10915993
+  locator: Results, 'Input sources to the basolateral amygdala'; Fig. S5A–C
+paraphrase: Retrograde Retro-AAV-Cre injected into the BLA of Ai14 mice labelled cells in the prelimbic cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: prelimbic cortex (PL)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: PL appears among the retrogradely labelled input regions from the same BLA injection, cited to Fig. S5A–C.

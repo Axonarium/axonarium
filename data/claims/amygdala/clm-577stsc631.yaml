@@ -1,0 +1,31 @@
+id: clm-577stsc631
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: CL:0000617
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1073/pnas.1811664115
+  pmid: '30348762'
+  pmcid: PMC6233075
+  locator: Fig. 5 A–D
+paraphrase: Post hoc staining of light-responsive BNST neurons showed that 7 of 10 cells with photostimulation-evoked IPSCs
+  were VGAT-positive, indicating that GABAergic BNST neurons receive inhibitory CeA D2R input; IPSC amplitudes did not differ
+  from VGAT-negative cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA-D2R neurons
+  extract.object_name: VGAT-positive (GABAergic) BNST neurons

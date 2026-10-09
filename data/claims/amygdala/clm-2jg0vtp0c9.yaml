@@ -1,0 +1,39 @@
+id: clm-2jg0vtp0c9
+subject:
+  type: region
+  id: MBA:1018
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.79
+  unit: '1'
+- quantity: conduction_delay
+  value: 12.0
+  unit: ms
+source:
+  doi: 10.1101/lm.035816.114
+  pmid: '25322798'
+  pmcid: PMC4201812
+  locator: Fig. 2A (bottom), Fig. 2B, Fig. 4A; Results, sections 2 and 4
+paraphrase: Photostimulation of ChR2-expressing auditory cortical axons in the LA evoked glutamatergic EPSCs in LA pyramidal
+  cells, with 79% of recorded neurons responding when only AuV was infected (84% when AuV and MGm were both infected, N =
+  50 cells). EPSCs were blocked by kynurenic acid, and in vivo photostimulation of AuV evoked LA field potentials at a 12-ms
+  latency, which were strongly reduced by intra-LA kynurenic acid.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AuV
+  extract.object_name: LA pyramidal neurons

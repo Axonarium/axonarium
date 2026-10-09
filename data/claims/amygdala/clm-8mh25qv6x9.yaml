@@ -1,0 +1,36 @@
+id: clm-8mh25qv6x9
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 0.0
+  unit: ms
+  n: 12
+source:
+  doi: 10.1177/17448069241226960
+  pmid: '38172075'
+  pmcid: PMC10851759
+  locator: Fig. 3(c)-(e), Fig. 4(b)-(d), Fig. 5(f), (g)
+paraphrase: Blue-light stimulation of ChR2-expressing IL terminals in amygdala slices evoked EPSCs in CeLC neurons that disappeared
+  with TTX, were restored by 4-AP and abolished by CNQX, indicating a monosynaptic glutamatergic input; the same stimulation
+  also produced longer-latency, CNQX- and picrotoxin-sensitive IPSCs, consistent with disynaptic feed-forward inhibition,
+  and in vivo photostimulation of these terminals lowered c-Fos counts in CeLC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IL
+  extract.object_name: CeLC

@@ -1,0 +1,45 @@
+id: clm-bnx1jwbh1c
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 1.0
+  unit: '1'
+  n: 6
+source:
+  doi: 10.1097/j.pain.0000000000001691
+  pmid: '31479066'
+  pmcid: PMC6940027
+  locator: Fig. 2C–E; Results 3.2
+paraphrase: Wide-field blue-light stimulation of ChR2-expressing parabrachial axons in TTX plus 4-AP evoked monosynaptic EPSCs
+  in all six central amygdala neurons tested, and these currents were abolished by the AMPA-receptor blocker NBQX; no monosynaptic
+  IPSCs were seen.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBn
+  extract.object_name: CeA
+  verify.note: All six CeA neurons showed monosynaptic EPSCs that NBQX blocked, and no IPSCs were evoked.

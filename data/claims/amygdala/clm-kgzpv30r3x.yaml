@@ -1,0 +1,30 @@
+id: clm-kgzpv30r3x
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1152/jn.00946.2015
+  pmid: '26888105'
+  pmcid: PMC4922599
+  locator: Results, Fig. 7A3, 7B
+paraphrase: In horizontal slices from LPB-injected rats, EYFP-positive fibers in the CeM were present but much sparser than
+  in the CeC, at both dorsal and ventral levels.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral parabrachial nucleus (LPB)
+  extract.object_name: medial subdivision of the CeA (CeM)

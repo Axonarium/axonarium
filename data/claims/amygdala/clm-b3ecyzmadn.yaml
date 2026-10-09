@@ -1,0 +1,39 @@
+id: clm-b3ecyzmadn
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1097/j.pain.0000000000001691
+  pmid: '31479066'
+  pmcid: PMC6940027
+  locator: Fig. 3A–C; Results 3.2
+paraphrase: Somatostatin-negative neurons of the lateral division of the central amygdala also showed monosynaptic light-evoked
+  EPSCs from parabrachial axons, with amplitudes (~127 pA) statistically indistinguishable from paired SOM-positive cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBn
+  extract.object_name: SOM− CeL neurons
+  verify.note: SOM− CeL EPSCs of about 127 pA did not differ significantly from paired SOM+ cells.

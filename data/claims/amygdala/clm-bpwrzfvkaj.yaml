@@ -1,0 +1,29 @@
+id: clm-bpwrzfvkaj
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002430
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.adv3737
+  pmid: '41191754'
+  pmcid: PMC12588290
+  locator: Fig. 4, A to M
+paraphrase: CTB in the lateral hypothalamus retrogradely labelled BLA cells, most of them residing in the lateral basal amygdala
+  and few in the medial basal subdivision.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: LH

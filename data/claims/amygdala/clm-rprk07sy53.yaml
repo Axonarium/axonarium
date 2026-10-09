@@ -1,0 +1,31 @@
+id: clm-rprk07sy53
+subject:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.aeb0400
+  pmid: '42341137'
+  pmcid: PMC13292991
+  locator: fig. S3, A to E
+paraphrase: Retrograde virus injected into the central amygdala labelled oxytocin-positive neurons in the PVN, which were
+  spatially segregated from the NAc-projecting population.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PVN
+  extract.object_name: CeA

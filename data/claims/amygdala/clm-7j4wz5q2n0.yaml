@@ -1,0 +1,30 @@
+id: clm-7j4wz5q2n0
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: CL:0000679
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1073/pnas.1811664115
+  pmid: '30348762'
+  pmcid: PMC6233075
+  locator: Fig. 5 B–D
+paraphrase: Three of the light-responsive BNST neurons were VGlut2-positive, showing that glutamatergic BNST cells also receive
+  inhibitory input from CeA D2R neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA-D2R neurons
+  extract.object_name: VGlut2-expressing (glutamatergic) BNST neurons

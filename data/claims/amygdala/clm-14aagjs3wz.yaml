@@ -1,0 +1,39 @@
+id: clm-14aagjs3wz
+subject:
+  type: region
+  id: UBERON:0008933
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001384
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1093/cercor/bhx359
+  pmid: '29373631'
+  pmcid: PMC6093453
+  locator: Fig. 3B, Fig. 4A,C,D, Fig. 5E, Table 1
+paraphrase: Genital cortex BDA injections in both sexes gave a strong elongated labeled spot medial to S1, interpreted as
+  the genital part of primary motor cortex. Weak label also appeared in contralateral M1-clitoris in females.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: somatosensory penis/clitoris cortex
+  extract.object_name: M1-Genital (putative genital primary motor cortex)
+  verify.note: Strong M1-Genital label appears after penis and clitoris injections, with weak contralateral M1-clitoris label
+    in females.

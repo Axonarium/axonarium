@@ -1,0 +1,38 @@
+id: clm-j4tkxfvjwb
+subject:
+  type: region
+  id: UBERON:0001877
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001885
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.1400177
+  pmid: '26601158'
+  pmcid: PMC4640625
+  locator: Fig. 5C
+paraphrase: A dentate gyrus CTb injection produced many retrogradely labeled neurons in the medial septum. These neurons did
+  not express FOS after REM sleep hypersomnia.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial septum
+  extract.object_name: dentate gyrus
+  verify.note: The Fig. 5C caption reports many CTb+ medial septal neurons after the dentate gyrus injection, none of them
+    FOS+.

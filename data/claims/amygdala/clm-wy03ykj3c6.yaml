@@ -1,0 +1,39 @@
+id: clm-wy03ykj3c6
+subject:
+  type: region
+  id: UBERON:0001393
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002886
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1093/ijnp/pyv015
+  pmid: '25716776'
+  pmcid: PMC4571626
+  locator: Methods (Electrically Evoked Responses); Results, Figs. 3A2, 3C, 4A2, 4C
+paraphrase: Electrical stimulation of auditory association cortex (Te3) evoked short-latency spiking (<20 ms onset) in putative
+  lateral amygdala projection neurons, although significantly larger stimulation currents were needed to reach the ~50% evoked-response
+  baseline than for thalamic stimulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: Te3 (auditory association cortex)
+  extract.object_name: LA
+  verify.note: Te3 stimulation evoked short-latency responses in LA projection neurons and needed significantly higher currents
+    than MGN, as shown in Figs. 3C and 4C.

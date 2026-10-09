@@ -1,0 +1,40 @@
+id: clm-8vq0k5xgfp
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-t6ymz01hv4
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1097/j.pain.0000000000001691
+  pmid: '31479066'
+  pmcid: PMC6940027
+  locator: Fig. 3A–C; Results 3.2
+paraphrase: Optogenetic activation of parabrachial axons in TTX/4-AP elicited monosynaptic EPSCs in somatostatin-expressing
+  lateral-division central amygdala neurons; amplitude (about 100 pA) and paired-pulse ratio (about 0.41) did not differ from
+  neighbouring SOM-negative cells in 11 sequentially recorded pairs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBn
+  extract.object_name: SOM+ CeL neurons
+  verify.note: SOM+ CeL neurons showed monosynaptic EPSCs of about 100 pA with PPR about 0.41, not different from SOM− cells
+    in 11 pairs.

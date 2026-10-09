@@ -1,0 +1,40 @@
+id: clm-ahfp85nynr
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1093/ijnp/pyx029
+  pmid: '28453642'
+  pmcid: PMC5570099
+  locator: Fig. 1E–G; Results, section 1
+paraphrase: Fluorescent retrobeads injected into the prelimbic cortex retrogradely labelled projection neurons in the caudal
+  and middle basolateral amygdala, with similar numbers of labelled cells in vehicle- and SB334867-treated mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelimbic medial prefrontal cortex (PL)
+  verify.note: Retrobeads injected into PL labelled BLA neurons in mice, with similar labelled-cell counts in both treatment
+    groups, as shown in Fig. 1G.

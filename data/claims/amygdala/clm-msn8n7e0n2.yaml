@@ -1,0 +1,40 @@
+id: clm-msn8n7e0n2
+subject:
+  type: region
+  id: MBA:961
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1073/pnas.2502127122
+  pmid: '40478871'
+  pmcid: PMC12168007
+  locator: Fig. 3C; SI Appendix Fig. S3 A–D
+paraphrase: After retrograde AAV-GFP injection into the BLA of TRAP2:Ai14 mice, retrogradely labelled cells were found in
+  the piriform cortex and quantified as BLA inputs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: piriform cortex (Pir)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: The piriform cortex is listed in Fig. 3C as one of the regions projecting to the BLA, based on retrograde labelling
+    from the BLA.

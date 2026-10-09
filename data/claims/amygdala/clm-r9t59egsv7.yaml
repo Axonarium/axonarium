@@ -1,0 +1,38 @@
+id: clm-r9t59egsv7
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:583
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1126/sciadv.abi6375
+  pmid: '35302853'
+  pmcid: PMC8932664
+  locator: Fig. S6, B to K
+paraphrase: Retrograde AAV injected into the claustrum labelled neurons in the anterior cingulate area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior cingulate area (ACA)
+  extract.object_name: CLA
+  verify.note: The ACA is listed among regions labeled by the retrograde AAV injected into the CLA.
