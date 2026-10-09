@@ -25,7 +25,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: DgI L5b population (CTIP2+)
   extract.object_name: ipsilateral PSTh
+  verify.note: PSTh-ipsi CTB labeled mainly L5b cells, 98.1% CTIP2-positive, with no cells double-labeled from the contralateral
+    CeA.

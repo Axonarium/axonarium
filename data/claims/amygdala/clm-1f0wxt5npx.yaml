@@ -31,7 +31,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: amygdalopiriform transition area (APir)
   extract.object_name: alBNST
+  verify.note: APir is 6.65% (SE 1.99) in Table 1, and Figs 2O–P and 6K–L show APir labelling.

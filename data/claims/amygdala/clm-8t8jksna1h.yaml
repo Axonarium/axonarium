@@ -29,7 +29,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: hippocampal formation
   extract.object_name: CeA PKC-δ+ GABAergic neurons
+  verify.note: The hippocampal formation is the smallest share for PKC-δ+ neurons at 1.64 ± 0.88%.

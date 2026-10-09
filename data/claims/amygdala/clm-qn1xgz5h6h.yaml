@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: basolateral amygdala
   extract.object_name: CA1 of the hippocampus
+  verify.note: Fig. 4D shows HA-labelled BLA neurons after CA1 retrograde injection and Fig. 4E shows they do not overlap
+    with PV; sign is correctly left unknown since excitation is only inferred.

@@ -32,7 +32,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: preoptic nucleus of the hypothalamus (PO)
   extract.object_name: amBNST
+  verify.note: PO is 1.88% (SE 0.14), described as strongly labelled and significantly higher than in alBNST.

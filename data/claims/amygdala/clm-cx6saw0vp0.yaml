@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: ventral subiculum (vSub)
   extract.object_name: dorsomedial NAcSh
+  verify.note: A dense fiber plexus from accumbens-projecting vSub neurons lies in the dorsomedial shell, with some fibers
+    in the adjacent core.

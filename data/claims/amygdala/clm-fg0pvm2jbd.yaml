@@ -29,7 +29,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: midbrain
   extract.object_name: BLA VGLUT2+ glutamatergic neurons
+  verify.note: The midbrain share for VGLUT2+ neurons is 3.35 ± 0.95%.

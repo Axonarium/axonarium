@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: deep gray layer of the superior colliculus (DpG)
   extract.object_name: alBNST
+  verify.note: DpG is 0.00% for alBNST, and the text says this input is selective to amBNST.
