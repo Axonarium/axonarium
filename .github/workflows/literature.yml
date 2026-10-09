@@ -21,7 +21,7 @@ on:
         type: string
         default: anthropic:claude-opus-5-5
       collect:
-        description: An earlier run's batch ID (msgbatch_…) to collect instead of sending a new batch; leave empty otherwise
+        description: An earlier run's batch ID (msgbatch_…), or latest for the batch sent last, to collect instead of sending a new batch; leave empty otherwise
         type: string
         default: ""
       redo:

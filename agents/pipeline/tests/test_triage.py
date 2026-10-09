@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from pipeline import cli, europepmc, triage
+from pipeline import cli, europepmc, extract, triage
 from pipeline.corpus import MAX_ATTEMPTS, Ledger, Redo, aliases, due, identifier, recorded
 from pipeline.llm import AnthropicRunner, BatchPending, Request, Result, choose, cost, parse, request_id
 
@@ -279,6 +279,32 @@ def test_collecting_a_batch_still_running_sends_nothing():
         run.known()
 
 
+def test_the_latest_batch_is_collected_when_its_id_is_lost(tmp_path, capsys):
+    from datetime import datetime, timezone
+
+    batches = EarlierBatch(["doi:10.1/a"])
+    batches.list = lambda limit: SimpleNamespace(data=[
+        SimpleNamespace(id="msgbatch_old", created_at=datetime(2026, 10, 7, tzinfo=timezone.utc), processing_status="ended"),
+        SimpleNamespace(id="msgbatch_new", created_at=datetime(2026, 10, 8, 21, 37, tzinfo=timezone.utc),
+                        processing_status="in_progress")])
+    asked = []
+    retrieve = batches.retrieve
+    batches.retrieve = lambda batch_id: asked.append(batch_id) or retrieve(batch_id)
+    ledger = Ledger(tmp_path / "triage.csv", triage.LEDGER.columns)
+    run = AnthropicRunner("claude-opus-5-5", triage.Verdict, "low", 8000, client=client(batches), sleep=lambda s: None,
+                          collect_batch="latest")
+    triage.triage(PAPERS, run, limit=1, today="2026-10-08", ledger=ledger, abstract=fetch)
+    assert set(asked) == {"msgbatch_new"} and ledger.read()["doi:10.1/a"]["verdict"] == "in"
+    assert "latest batch: msgbatch_new, sent 2026-10-08 21:37 UTC" in capsys.readouterr().out
+
+
+def test_a_batch_of_another_steps_answers_is_refused():
+    run = AnthropicRunner("claude-opus-5-5", extract.PaperClaims, "high", 8000, client=client(EarlierBatch(["doi:10.1/a"])),
+                          sleep=lambda s: None, collect_batch="msgbatch_1")  # a triage batch, collected by extraction
+    with pytest.raises(ValueError, match="another step's"):
+        run.known()
+
+
 def test_collect_needs_a_batch_id_and_the_batch_api():
     from pipeline.llm import runner
 
@@ -288,6 +314,8 @@ def test_collect_needs_a_batch_id_and_the_batch_api():
         runner("anthropic:claude-opus-5-5", triage.Verdict, None, 8000, batch=False, collect_batch="msgbatch_1")
     with pytest.raises(ValueError, match="--collect"):
         runner("anthropic:claude-opus-5-5", triage.Verdict, None, 8000, batch=True, collect_batch="; rm -rf /")
+    assert runner("anthropic:claude-opus-5-5", triage.Verdict, None, 8000, batch=True, collect_batch="latest",
+                  ).collect_batch == "latest"
 
 
 def test_cli_tells_how_to_collect_a_batch_still_running(tmp_path, monkeypatch, capsys):

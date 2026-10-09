@@ -147,20 +147,40 @@ class AnthropicRunner:
             "output_config": output_config,
         }
 
+    def latest(self) -> str:
+        """The ID of the batch this workspace sent last, for when a run's log, and the ID in it, is lost."""
+        batches = sorted(self.client.messages.batches.list(limit=20).data, key=lambda b: b.created_at, reverse=True)
+        if not batches:
+            raise ValueError("this workspace has no batches to collect")
+        print(f"latest batch: {batches[0].id}, sent {batches[0].created_at:%Y-%m-%d %H:%M} UTC, "
+              f"{batches[0].processing_status}", flush=True)
+        return batches[0].id
+
+    def collected(self) -> dict[str, Result]:
+        """The results of the batch being collected, once; a batch none of whose answers fit this step's schema is
+        another step's, and is refused before anything is written."""
+        if self._collected is None:
+            if self.collect_batch == "latest":
+                self.collect_batch = self.latest()
+            found = self.collect(self.collect_batch)
+            answered = [r for r in found.values() if r.stop not in UNANSWERED]
+            if answered and all(r.stop == "invalid" for r in answered):
+                raise ValueError(f"batch {self.collect_batch} holds no answers this step can read: is it another step's?")
+            self._collected = found
+        return self._collected
+
     def known(self) -> set[str] | None:
         """The request IDs of the batch being collected (once it has ended), or None when a new batch is to be sent.
         Steps send only these papers' requests, so the results land on the papers they were asked about."""
         if self.collect_batch is None:
             return None
-        if self._collected is None:
-            self._collected = self.collect(self.collect_batch)
-        return set(self._collected)
+        return set(self.collected())
 
     def run(self, requests: list[Request]) -> dict[str, Result]:
         if not requests:
             return {}
         if self.collect_batch is not None:
-            collected = self._collected if self._collected is not None else self.collect(self.collect_batch)
+            collected = self.collected()
             found = sum(r.id in collected for r in requests)
             print(f"batch {self.collect_batch}: {found} of its {len(collected)} result(s) collected", flush=True)
             return {r.id: collected.get(r.id) or Result(None, "errored", detail=f"not in batch {self.collect_batch}",
@@ -271,8 +291,9 @@ def runner(spec: str, schema: type[BaseModel], effort: str | None, max_tokens: i
     """A runner from `anthropic:<model>` or `replay:<folder>`; `collect_batch` collects an earlier batch instead, and
     batches are waited for until `wait_seconds` from now."""
     kind, _, rest = spec.partition(":")
-    if collect_batch is not None and not (kind == "anthropic" and batch and re.fullmatch(r"msgbatch_\w+", collect_batch)):
-        raise ValueError("--collect takes a batch ID such as msgbatch_01ABC, with an anthropic: model and without --now")
+    if collect_batch is not None and not (kind == "anthropic" and batch and re.fullmatch(r"msgbatch_\w+|latest", collect_batch)):
+        raise ValueError("--collect takes a batch ID such as msgbatch_01ABC, or `latest`, with an anthropic: model and "
+                         "without --now")
     if kind == "anthropic" and rest:
         return AnthropicRunner(rest, schema, effort, max_tokens, batch, collect_batch=collect_batch, wait_seconds=wait_seconds)
     if kind == "replay" and rest:
