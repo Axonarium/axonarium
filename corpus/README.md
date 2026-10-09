@@ -59,7 +59,7 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 
 | Column | Holds |
 | --- | --- |
-| `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unavailable` (Europe PMC had no full text to give), `unfetched` (Europe PMC couldn't be reached; tried again next run), or why the request failed |
+| `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unavailable` (Europe PMC had no full text to give), `unfetched` (Europe PMC failed or couldn't be reached; tried again next run, though an internal server error counts as a read, so a paper Europe PMC fails on twice is set aside), or why the request failed |
 | `claims`, `dropped` | Claims written, and drafts dropped for naming a region outside the lexicon or breaking the schema's rules |
 | `attempts` | How many times a model has read it for this step |
 | `model`, `prompt`, `date` | Which model and prompt version extracted (the fallback, when it answered a refusal), and when |
