@@ -1,0 +1,30 @@
+id: clm-tznh8jpfrb
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: paired_recording
+result: present
+sign: unknown
+source:
+  doi: 10.1007/s00429-020-02051-4
+  pmid: '32144495'
+  pmcid: PMC7166205
+  locator: Fig. 8c, d; Results
+paraphrase: In each of the three BL-responsive SOM+ interneurons tested, the SOM+ cell in turn innervated its presynaptic
+  principal cell, so the pairs were reciprocally connected.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BL-responsive SOM+ interneurons
+  extract.object_name: LA principal cell

@@ -1,0 +1,33 @@
+id: clm-ga36snbkd6
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.neuropharm.2025.110303
+  pmid: '39814131'
+  pmcid: PMC12882081
+  locator: Fig. 1A–B; Results, first paragraph
+paraphrase: An anterograde transsynaptic AAV1 carrying Cre was placed in the orbitofrontal cortex together with an AAV1-Flpo
+  in the basolateral amygdala and a Cre-dependent/Flp-dependent EYFP reporter in the dorsomedial striatum. EYFP-labelled striatal
+  neurons appeared only when both recombinase viruses were delivered, indicating that orbitofrontal axons transsynaptically
+  label dorsomedial striatal cells, which were then recorded in slices.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OFC
+  extract.object_name: DMS

@@ -1,0 +1,32 @@
+id: clm-j89czseh6d
+subject:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.7; Fig. 11D; Fig. 4; Table 2
+paraphrase: About 4 to 6 double-labelled Nts neurons per section were found across roughly 2.5 mm of the PAG, including its
+  lateral and ventrolateral parts. This gives a substantial total number but only a modest density, described as a minor projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PAG Nts neurons
+  extract.object_name: VTA

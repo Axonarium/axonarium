@@ -1,0 +1,33 @@
+id: clm-a38wage5x6
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.ynpai.2021.100078
+  pmid: '34877437'
+  pmcid: PMC8628014
+  locator: Figs. 1B, 4, 5; Results
+paraphrase: Stimulating the fiber bundle of LPB origin running dorsomedial to the CeA evoked short-latency excitatory postsynaptic
+  currents in CeC/L neurons recorded at -70 mV; these responses were larger in formalin-treated than saline-treated mice and,
+  unlike BLA-evoked responses, were unaffected by pregabalin. Both LPB- and BLA-evoked EPSCs could be recorded in the same
+  CeC/L neurons, showing convergence of the two inputs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LPB (lateral parabrachial nucleus)
+  extract.object_name: CeC/L (capsular and lateral part of the central nucleus of the amygdala)

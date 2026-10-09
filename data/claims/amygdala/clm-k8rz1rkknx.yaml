@@ -1,0 +1,32 @@
+id: clm-k8rz1rkknx
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.1016/j.celrep.2022.110906
+  pmid: '35675770'
+  pmcid: PMC9210496
+  locator: Figures S2G-S2I; Results, 'Shank3 mutation in the PFC-BLA neural circuit'
+paraphrase: When AAV9 rather than AAV8 was used to deliver CreN-InteinN to the PFC together with retrograde InteinC-CreC in
+  the BLA, Cre-reporter somata appeared in the BLA as well as the PFC; the authors attribute this to anterograde transsynaptic
+  spread of AAV9 to BLA recipient neurons, but the experiment was a specificity control rather than a test of synaptic contact.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PFC
+  extract.object_name: BLA

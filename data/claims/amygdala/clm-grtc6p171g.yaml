@@ -1,0 +1,30 @@
+id: clm-grtc6p171g
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.apsb.2024.08.005
+  pmid: '39664418'
+  pmcid: PMC11628806
+  locator: Fig. 8A–C, Fig. S5A
+paraphrase: Anterograde tracing from BLA labelled projections reaching the bed nucleus of the stria terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: bed nucleus of stria terminalis

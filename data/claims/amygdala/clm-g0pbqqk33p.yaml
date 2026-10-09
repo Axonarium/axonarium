@@ -1,0 +1,30 @@
+id: clm-g0pbqqk33p
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.jare.2025.10.015
+  pmid: '41086982'
+  pmcid: PMC13316356
+  locator: Fig. 4b, 4c
+paraphrase: Retrograde CaMKIIa-mCherry virus injected in the BLA labelled neurons in the prelimbic cortex, indicating a PL-to-BLA
+  excitatory projection; these labelled PL cells showed increased c-Fos after conditioned-stimulus retrieval of remote fear
+  memory.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL
+  extract.object_name: BLA

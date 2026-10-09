@@ -1,0 +1,28 @@
+id: clm-9f4hcv7dc5
+subject:
+  type: region
+  id: UBERON:0016634
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.neuroscience.2021.02.017
+  pmid: '33609638'
+  pmcid: PMC8022030
+  locator: Results, Motor cortex; Table 2
+paraphrase: PVO injections labelled M2 in a pattern resembling ALO injections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: secondary motor (M2)
+  extract.object_name: PVO

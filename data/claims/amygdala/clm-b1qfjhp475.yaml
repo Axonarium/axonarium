@@ -1,0 +1,30 @@
+id: clm-b1qfjhp475
+subject:
+  type: region
+  id: MBA:895
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ynstr.2023.100527
+  pmid: '36861029'
+  pmcid: PMC9969273
+  locator: Fig. 2F
+paraphrase: CAV2-Cre injection into lateral adBNST labelled neurons in posterior ectorhinal cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ectorhinal cortex (ECT)
+  extract.object_name: alBNST

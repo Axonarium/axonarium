@@ -1,0 +1,31 @@
+id: clm-rw91egzcrq
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.celrep.2022.110906
+  pmid: '35675770'
+  pmcid: PMC9210496
+  locator: Figures 1B, 1D; Results, 'Shank3 mutation in the PFC-BLA neural circuit'
+paraphrase: A retrograde AAV carrying InteinC-CreC injected into the BLA reconstituted Cre only in neurons whose axons reach
+  the BLA, producing tdTomato-positive somata in the prelimbic cortex, showing that prelimbic neurons send axons to the BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PFC (prelimbic, PL)
+  extract.object_name: BLA

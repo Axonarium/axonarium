@@ -1,0 +1,30 @@
+id: clm-b3swavt7qc
+subject:
+  type: region
+  id: UBERON:0003881
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.jare.2025.10.015
+  pmid: '41086982'
+  pmcid: PMC13316356
+  locator: Fig. 4b, 4d; Methods (retrograde non-transsynaptic tracing)
+paraphrase: A retrograde AAV driving mCherry under a CaMKIIa promoter was placed in the BLA and labelled mCherry-positive
+  cells in ventral CA1, showing that excitatory vCA1 neurons send axons to the BLA; a subset of these labelled cells co-expressed
+  c-Fos after unconditioned-stimulus retrieval of remote fear memory.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: vCA1
+  extract.object_name: BLA

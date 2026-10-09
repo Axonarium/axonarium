@@ -1,0 +1,33 @@
+id: clm-kvyeen11tr
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.neuropharm.2025.110303
+  pmid: '39814131'
+  pmcid: PMC12882081
+  locator: Fig. 1A–B; Results, first paragraph
+paraphrase: AAV1-Flpo injected into the basolateral amygdala, combined with AAV1-Cre in the orbitofrontal cortex and a double-dependent
+  EYFP reporter in the dorsomedial striatum, produced EYFP-positive striatal neurons; no reporter signal was seen when only
+  one recombinase virus was injected, showing that amygdalar axons transsynaptically label dorsomedial striatal neurons that
+  also receive cortical input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: DMS

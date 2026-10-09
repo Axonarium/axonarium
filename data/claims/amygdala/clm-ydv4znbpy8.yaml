@@ -1,0 +1,31 @@
+id: clm-ydv4znbpy8
+subject:
+  type: region
+  id: MBA:226
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.6; Fig. 9C; Table 2
+paraphrase: In the rostral preoptic region, numerous Nts neurons of the lateral preoptic area carried tracer from the VTA,
+  between -0.10 and +0.40 bregma.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LPO Nts neurons
+  extract.object_name: VTA

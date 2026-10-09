@@ -1,0 +1,31 @@
+id: clm-26z9wzk7k3
+subject:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:362
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.brs.2024.08.007
+  pmid: '39173736'
+  pmcid: PMC11555405
+  locator: Fig. 9A–B, A1–B1
+paraphrase: TRAPped cNTS axon terminals were observed in the mediodorsal thalamus, including its lateral, central and medial
+  parts.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: cNTS
+  extract.object_name: mediodorsal thalamic nucleus (MD)

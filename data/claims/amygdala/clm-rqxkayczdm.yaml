@@ -1,0 +1,30 @@
+id: clm-rqxkayczdm
+subject:
+  type: region
+  id: MBA:1020
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1016/j.jbc.2022.102207
+  pmid: '35772494'
+  pmcid: PMC9304789
+  locator: Results, Fig. S1
+paraphrase: Rabies tracing from BLA glutamatergic starter cells labelled input neurons in the posterior thalamic nuclear group.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: posterior thalamic nuclear group
+  extract.object_name: BLAGlu neurons

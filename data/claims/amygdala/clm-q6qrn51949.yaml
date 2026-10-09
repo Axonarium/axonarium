@@ -1,0 +1,31 @@
+id: clm-q6qrn51949
+subject:
+  type: region
+  id: UBERON:0002148
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: modulatory
+source:
+  doi: 10.1016/j.ynstr.2020.100284
+  pmid: '33344735'
+  pmcid: PMC7739179
+  locator: Fig. 1E, 1G, 1H; Fig. 3A,C; Methods (Surgery)
+paraphrase: Fluorescent dextran injected into CeA retrogradely labelled neurons throughout the dorsoventral extent of LC,
+  with a bias toward the dorsal part; in the same animals only about 7.6% of all labelled LC cells carried both the CeA and
+  mPFC tracers, indicating largely separate populations. A retrogradely transported CAV2 vector with a noradrenergic-selective
+  PRS promoter injected into CeA also transduced LC neurons, confirming the pathway arises from noradrenergic LC cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: locus coeruleus (LC)
+  extract.object_name: central nucleus of the amygdala (CeA)

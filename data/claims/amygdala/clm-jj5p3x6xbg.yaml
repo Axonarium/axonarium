@@ -1,0 +1,32 @@
+id: clm-jj5p3x6xbg
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.5; Fig. 7C
+paraphrase: A few Nts neurons in the bed nucleus of the stria terminalis contained tracer from the VTA. Many other cells there
+  carried only one of the two labels.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ST Nts neurons
+  extract.object_name: VTA

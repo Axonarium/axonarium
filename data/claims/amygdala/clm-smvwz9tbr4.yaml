@@ -1,0 +1,31 @@
+id: clm-smvwz9tbr4
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.celrep.2022.110906
+  pmid: '35675770'
+  pmcid: PMC9210496
+  locator: Figures S2J-S2R; STAR Methods, 'Surgery for conventional retrograde tracing'
+paraphrase: Cholera toxin subunit B conjugated to Alexa 488 injected into the BLA retrogradely labelled neurons in the PFC,
+  which the authors compared against the split-Cre reconstitution labelling of the same pathway.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PFC
+  extract.object_name: BLA

@@ -1,0 +1,30 @@
+id: clm-4m95vjkexp
+subject:
+  type: region
+  id: UBERON:0003040
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001896
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/emmm.201302475
+  pmid: '23703938'
+  pmcid: PMC3721477
+  locator: Fig 2E,G
+paraphrase: Axonal profiles stained for human alpha-synuclein appeared in the periaqueductal gray of high-expressor rats 18
+  weeks after the protein had been expressed exclusively in medullary neurons, indicating transfer along fibres linking the
+  periaqueductal gray with the medulla.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: periacqueductal gray
+  extract.object_name: medulla oblongata (MO)

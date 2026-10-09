@@ -1,0 +1,32 @@
+id: clm-tabx8ytttz
+subject:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:852
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.brs.2024.08.007
+  pmid: '39173736'
+  pmcid: PMC11555405
+  locator: Fig. 7A
+paraphrase: TRAPped cNTS axon terminals were observed in the parvicellular reticular formation. Labeling there was weaker
+  than in the lateral parabrachial nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: cNTS
+  extract.object_name: parvicellular reticular formation (PCRt)

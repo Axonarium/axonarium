@@ -1,0 +1,32 @@
+id: clm-fccdyeesvq
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ibror.2019.03.001
+  pmid: '31193158'
+  pmcid: PMC6520332
+  locator: Results; Fig. 3D-F; Fig. 4B-C; Table 1
+paraphrase: After a Cre-dependent retrograde tdTomato AAV was injected into the vlPAG of VGAT-Cre mice, GABAergic neurons
+  in the basolateral amygdala were labelled. About 57% of labelled BLA neurons projected to the vlPAG, and roughly 28% were
+  bifurcating cells that also projected to the mPFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: vlPAG

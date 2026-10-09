@@ -1,0 +1,29 @@
+id: clm-msnex0bhda
+subject:
+  type: region
+  id: UBERON:0001882
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002778
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/cne.70081
+  pmid: '40838534'
+  pmcid: PMC12368940
+  locator: Fig. 2
+paraphrase: Retrograde AAV-Cre injected into ventromedial VP, combined with Cre-dependent helper and rabies in the medial
+  shell, yielded hundreds of starter cells in the dorsomedial shell, identifying shell neurons projecting to VP.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial nucleus accumbens shell (mNAcSh)
+  extract.object_name: ventromedial ventral pallidum (VP)

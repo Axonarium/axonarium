@@ -1,0 +1,38 @@
+id: clm-gra1nr72vk
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.6
+  unit: '1'
+  n: 70
+source:
+  doi: 10.1016/j.molmet.2023.101702
+  pmid: '36898526'
+  pmcid: PMC10025284
+  locator: Fig. 3E–I, Figs. S2E–G
+paraphrase: After ChR2 was expressed in BNST neurons, blue light stimulation of BNST axons in LHA slices evoked postsynaptic
+  currents in 42 of 70 patched LHA neurons; 36 of those 42 connected cells showed light-evoked IPSCs that persisted with TTX/4-AP
+  (monosynaptic) and were nearly abolished by the GABA-A antagonist gabazine. Connected cells were spread along the anterior–posterior
+  LHA but were most common in middle and posterior LHA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BNST
+  extract.object_name: LHA

@@ -1,0 +1,30 @@
+id: clm-98fv8tb5x4
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ynstr.2024.100694
+  pmid: '39634490'
+  pmcid: PMC11615582
+  locator: Fig. 2A, Fig. 4D-E; Methods (stereotaxic surgery)
+paraphrase: CTB-488 injected into the NAc retrogradely labelled neurons in the basolateral amygdala complex, with labelled
+  projection neurons more numerous in the medial region (and more numerous in females than males); labelling was essentially
+  confined to the hemisphere ipsilateral to the injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: nucleus accumbens (NAc)

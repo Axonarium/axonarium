@@ -1,0 +1,33 @@
+id: clm-acd9vd0ccs
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.crmeth.2024.100740
+  pmid: '38521059'
+  pmcid: PMC11045876
+  locator: Figs. 4A–4D, 5A–5B
+paraphrase: In acute slices, red-light activation of C1ChrimsonSA expressed in parabrachial axons evoked excitatory postsynaptic
+  currents in whole-cell recorded CeA neurons (isolated with picrotoxin), and photoactivation of presynaptically targeted
+  bPAC potentiated these currents with a concurrent drop in paired-pulse ratio, indicating a functional monosynaptic excitatory
+  PB-to-CeA input with presynaptically regulated release.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PB
+  extract.object_name: CeA

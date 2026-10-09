@@ -1,0 +1,31 @@
+id: clm-07j5vj5g50
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.isci.2026.114753
+  pmid: '41684844'
+  pmcid: PMC12890714
+  locator: Fig. 4C
+paraphrase: An anterograde trans-synaptic AAV2/1-hSyn-Cre injected in the PrL combined with a Cre-dependent VGluT2-driven
+  reporter in the BLA yielded many EYFP-labelled BLA glutamatergic neurons, indicating monosynaptic PrL input onto BLA glutamatergic
+  cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PrL glutamatergic neurons
+  extract.object_name: BLA glutamatergic (VGluT2+) neurons

@@ -1,0 +1,36 @@
+id: clm-h7s0rw2e1m
+subject:
+  type: region
+  id: MBA:165
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0009
+  unit: '1'
+  sem: 0.0003
+  n: 5
+source:
+  doi: 10.1016/j.ynstr.2023.100527
+  pmid: '36861029'
+  pmcid: PMC9969273
+  locator: Table 2
+paraphrase: A small number of dorsal raphe and caudal linear raphe neurons were retrogradely labelled from medial adBNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: raphe nuclei (DR/CLi)
+  extract.object_name: amBNST

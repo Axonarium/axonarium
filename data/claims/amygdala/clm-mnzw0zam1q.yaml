@@ -1,0 +1,32 @@
+id: clm-mnzw0zam1q
+subject:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1016/j.brs.2024.08.007
+  pmid: '39173736'
+  pmcid: PMC11555405
+  locator: Fig. 9C, C1, F
+paraphrase: Within the central amygdala, terminals from VNS-TRAPped cNTS neurons were dense in the medial subdivision. CeA
+  terminal density was similar between cVNS and aVNS.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: cNTS
+  extract.object_name: central amygdala medial part (CeM)

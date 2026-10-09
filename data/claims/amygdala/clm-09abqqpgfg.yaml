@@ -1,0 +1,32 @@
+id: clm-09abqqpgfg
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ibror.2019.03.001
+  pmid: '31193158'
+  pmcid: PMC6520332
+  locator: Results; Fig. 3A-C; Table 1
+paraphrase: A Cre-dependent retrograde AAV expressing tdTomato was injected into the vlPAG of VGAT-Cre mice, and it labelled
+  many GABAergic neurons in the central amygdala. About 85% of retrogradely labelled CeA neurons were tdTomato+, and about
+  15% of all labelled CeA neurons were double-labelled, meaning they also projected to the mPFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: vlPAG

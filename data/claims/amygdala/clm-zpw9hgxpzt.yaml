@@ -1,0 +1,32 @@
+id: clm-zpw9hgxpzt
+subject:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.6; Fig. 10E; Fig. 4
+paraphrase: The paraventricular hypothalamus contained a few Nts neurons labelled from the VTA. It was a minor source compared
+  with the LHA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PVH Nts neurons
+  extract.object_name: VTA

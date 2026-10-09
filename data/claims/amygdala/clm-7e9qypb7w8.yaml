@@ -1,0 +1,32 @@
+id: clm-7e9qypb7w8
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1016/j.celrep.2020.108362
+  pmid: '33176134'
+  pmcid: PMC8136285
+  locator: Fig. 5D–5E
+paraphrase: Fluorescent labelling of Pnoc neurons and their axons in adBNST produced prominent distal fiber labelling in the
+  medial amygdala (notably its posterodorsal portion), quantified as fiber density across target regions in six mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PnocBNST neurons (adBNST)
+  extract.object_name: medial amygdala (MeA)

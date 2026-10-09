@@ -1,0 +1,32 @@
+id: clm-wcvm67xfa9
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.7; Fig. 12C
+paraphrase: The parabrachial nucleus held a dense Nts population, but few of these neurons were tracer-labelled, so they provide
+  minimal VTA input. The co-labelled cells lay where the Nts and tracer-labelled groups of the lateral PB overlap.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: parabrachial nucleus (PB/LPB) Nts neurons
+  extract.object_name: VTA

@@ -1,0 +1,32 @@
+id: clm-7wkd6e4f3k
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:463
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ebiom.2026.106478
+  pmid: '42700720'
+  pmcid: PMC13572171
+  locator: Fig. 1H–I; Fig. S3C–D; Results, section 1
+paraphrase: Retrograde viruses (retroAAV-hSyn-mCherry or AAV11-hSyn-GFP) placed in dorsal CA3 labelled cell bodies in the
+  BLA, showing that BLA neurons send axons to dCA3. The same retrograde strategy (retro-Cre in dCA3 with Cre-dependent GCaMP6m
+  in BLA) was used for photometry of dCA3-projecting BLA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: dCA3
