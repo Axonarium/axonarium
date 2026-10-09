@@ -163,7 +163,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
         try:
             screened = (text or (lambda p: extract.full_text(p, classify)))(paper)
         except (OSError, ValueError, SyntaxError) as error:
-            skipped.append(f"{paper['key']}: its text couldn't be read ({type(error).__name__})")
+            skipped.append(f"{paper['key']}: its text couldn't be read ({extract.why(error)})")
             rows.append(ledger_row((paper, claims), extract.fetch_failure(error), None))
             continue
         if screened.flagged:

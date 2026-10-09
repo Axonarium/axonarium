@@ -73,7 +73,7 @@ def test_papers_whose_text_is_flagged_or_unreadable_are_skipped(tmp_path):
         raise SyntaxError("not XML")
 
     summary = verify.verify(PAPERS, Judge(), 10, lexicon(), classify=None, claims_dir=claims, text=flagged)
-    assert summary["sent"] == 0 and summary["skipped"] == ["doi:10.1/a: its text couldn't be read (SyntaxError)"]
+    assert summary["sent"] == 0 and summary["skipped"] == ["doi:10.1/a: its text couldn't be read (SyntaxError: not XML)"]
     assert all("verification" not in yaml.safe_load(p.read_text(encoding="utf-8")) for p in claims.glob("*.yaml"))
 
 

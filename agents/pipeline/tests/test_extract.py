@@ -240,8 +240,9 @@ def test_only_open_access_papers_are_read_and_a_missing_text_is_not_asked_for_ag
     ledger = Ledger(tmp_path / "extracted.csv", extract.LEDGER.columns)
     run = SimpleNamespace(model="m", name="m", batch=False, run=lambda requests: {r.id: Result(None, "refusal") for r in requests})
     lexicon = extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"])
-    extract.extract(PAPERS[:1] + PAPERS[4:5], run, 10, lexicon, classify=None, today="2026-10-08", ledger=ledger,
-                    triaged=TRIAGED, claims_dir=tmp_path / "claims", text=missing)
+    summary = extract.extract(PAPERS[:1] + PAPERS[4:5], run, 10, lexicon, classify=None, today="2026-10-08", ledger=ledger,
+                              triaged=TRIAGED, claims_dir=tmp_path / "claims", text=missing)
     assert {k: r["outcome"] for k, r in ledger.read().items()} == {"doi:10.1/a": "unavailable", "doi:10.1/e": "unfetched"}
+    assert summary["not_read"] == ["doi:10.1/a: HTTPError 404", "doi:10.1/e: OSError: unreachable"]
     assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, ledger.read(), "extract@0.3.0")] == [
         "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]  # unfetched is tried again; unavailable is done
