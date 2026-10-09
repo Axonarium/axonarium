@@ -1,0 +1,39 @@
+id: clm-a17w2a6eht
+subject:
+  type: neuron_type
+  id: nt-sexhekqxaa
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001880
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-019-09183-0
+  pmid: '30886240'
+  pmcid: PMC6423296
+  locator: Fig. 5b; Methods (Intracranial surgery, Histology)
+paraphrase: Cre-dependent AAV5-EF1a-DIO-NpHR-eYFP injected into the CeA of Crh-Cre rats produced eYFP-labelled CRF axon terminals
+  in the ventral BNST, where optical fibers were placed; histology confirmed viral expression at the CeA injection site and
+  in the BNST target.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA CRF neurons
+  extract.object_name: BNST (ventral bed nucleus of the stria terminalis)
+  verify.note: The projection is implied by terminal photoinhibition, but the cited figure caption only mentions images of
+    the injection and illumination sites, not explicit anterograde eYFP terminal labeling in BNST.

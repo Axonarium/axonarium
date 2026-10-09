@@ -1,0 +1,39 @@
+id: clm-1fxed6xd3n
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41398-020-0837-3
+  pmid: '32424318'
+  pmcid: PMC7235080
+  locator: Supplementary Fig. 1B,D,E (described in Results)
+paraphrase: Electrical stimulation within the BLA evoked mixed AMPAR/NMDAR excitatory postsynaptic currents in BLA pyramidal
+  neurons, used as a measure of non-pathway-specific local input; the AMPA/NMDA ratio of this input was unchanged by stress.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: BLA pyramidal neurons
+  verify.note: Intra-BLA electrical stimulation yielded AMPA/NMDA ratios in BLA pyramidal neurons that stress did not change,
+    per Supplementary Fig. 1B,D,E as described in Results.

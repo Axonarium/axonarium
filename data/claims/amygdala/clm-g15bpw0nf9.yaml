@@ -1,0 +1,38 @@
+id: clm-g15bpw0nf9
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/ncomms11395
+  pmid: '27102565'
+  pmcid: PMC4844703
+  locator: Figs 4b, 5; Supplementary Fig. 5
+paraphrase: Clusters of monosynaptic input cells to MCH neurons were found in the BST, the largest source among cerebral nuclei.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: bed nucleus of the stria terminalis (BST)
+  extract.object_name: LH MCH neurons
+  verify.note: BST clusters are reported and BST is listed first among the cerebral nuclei inputs to MCH cells.

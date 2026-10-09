@@ -1,0 +1,44 @@
+id: clm-13zf8zy5xn
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-t6ymz01hv4
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.9
+  unit: '1'
+  n: 10
+source:
+  doi: 10.1038/s41386-023-01673-6
+  pmid: '37542159'
+  pmcid: PMC10789863
+  locator: Fig. 1C–F; Results, section 1
+paraphrase: Optogenetic activation of PBN axon terminals in CeA slices from Sst-cre::Ai9 mice produced light-evoked EPSCs
+  in nearly all recorded somatostatin-positive laterocapsular CeA neurons, independent of their firing type.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: parabrachial nucleus (PBN)
+  extract.object_name: CeA-Som+ neurons
+  verify.note: The paper reports oEPSCs in 90% of 10 recorded CeA-Som+ cells after PBN terminal stimulation, independent of
+    firing type, which supports an excitatory connection.

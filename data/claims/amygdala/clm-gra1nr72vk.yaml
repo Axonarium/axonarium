@@ -32,7 +32,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: BNST
   extract.object_name: LHA
+  verify.note: ChR2 mapping showed 42/70 LHA neurons connected, mostly GABAergic IPSCs blocked by gabazine, matching the stated
+    probability and locator.

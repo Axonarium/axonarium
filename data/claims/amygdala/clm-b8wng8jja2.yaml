@@ -1,0 +1,42 @@
+id: clm-b8wng8jja2
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/nn.3625
+  pmid: '24441680'
+  pmcid: PMC3968853
+  locator: Fig. 5b,c; Fig. 6b,c
+paraphrase: Photostimulation (20 Hz) of ChR2-expressing D1 neurons in the medial prefrontal cortex raised Fos immunoreactivity
+  in the ipsilateral medial basolateral amygdala relative to the contralateral side and to Cre-negative controls. Directly
+  illuminating the prefrontal D1 axon terminals in the medial basolateral amygdala likewise increased Fos there on the stimulated
+  side.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC)
+  extract.object_name: medial basolateral amygdala (mBLA)
+  verify.note: Fos increases ipsilaterally in mBLA after mPFC D1 photostimulation and after terminal stimulation support the
+    functional connection.

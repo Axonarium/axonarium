@@ -1,0 +1,41 @@
+id: clm-y978wjtb0y
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1038/s41398-020-00926-y
+  pmid: '32684634'
+  pmcid: PMC7370229
+  locator: Fig. 4a–f
+paraphrase: Sequential patterned-light activation of individual soma-targeted ChR2-expressing neurons within the basal amygdala,
+  with glutamate receptors blocked by NBQX and L-APV, evoked IPSCs in non-expressing BA principal neurons, demonstrating local
+  inhibitory connections; connection probability and quantal IPSC amplitude were both lower in NRXN1alpha knockouts (about
+  69-71 presynaptic cells probed per recorded neuron).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BA (local GABAergic neurons)
+  extract.object_name: BA principal neuron
+  verify.note: Soma-targeted ChR2 mapping with glutamate blockers revealed local BA inhibitory inputs onto principal neurons,
+    with the stated cell counts.

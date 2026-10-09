@@ -1,0 +1,38 @@
+id: clm-20rjcmbv3p
+subject:
+  type: region
+  id: MBA:223
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/ncomms11395
+  pmid: '27102565'
+  pmcid: PMC4844703
+  locator: Supplementary Fig. 4c
+paraphrase: Rabies-labelled inputs to MCH cells included proopiomelanocortin-expressing neurons in the arcuate nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: hypothalamic arcuate nucleus (POMC neurons)
+  extract.object_name: LH MCH neurons
+  verify.note: The text cites Supplementary Fig. 4C for POMC arcuate neurons among the MCH input cells.

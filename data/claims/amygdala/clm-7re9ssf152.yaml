@@ -1,0 +1,39 @@
+id: clm-7re9ssf152
+subject:
+  type: region
+  id: MBA:453
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-022-33241-9
+  pmid: '36130959'
+  pmcid: PMC9492683
+  locator: Fig. 7b, c
+paraphrase: Rabies-labelled presynaptic neurons were found in somatosensory cortex for both insular projection populations,
+  with a trend toward more input onto amygdala-projecting insular neurons (P = 0.052).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: SS (somatosensory area)
+  extract.object_name: IC-CeA and IC-NAc projectors
+  verify.note: SS inputs were labeled for both, with a near-significant bias toward IC-CeA (P=0.052).

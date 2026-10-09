@@ -1,0 +1,39 @@
+id: clm-hbapeew4kf
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-fwck8mp6aj
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/nn.3625
+  pmid: '24441680'
+  pmcid: PMC3968853
+  locator: Fig. 5e,f
+paraphrase: 'Co-staining showed essentially no overlap between the Fos signal evoked in the medial basolateral amygdala by
+  prefrontal D1 photostimulation and parvalbumin: only about 5% of Fos-positive nuclei were PV-positive, so prefrontal D1
+  activation did not appreciably recruit these interneurons.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC)
+  extract.object_name: parvalbumin (PV) interneurons of the mBLA
+  verify.note: Only ~5% of evoked Fos nuclei were PV-positive, supporting lack of recruitment of PV interneurons.

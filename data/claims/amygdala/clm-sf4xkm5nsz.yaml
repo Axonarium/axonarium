@@ -1,0 +1,38 @@
+id: clm-sf4xkm5nsz
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:223
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/nature12596
+  pmid: '24121436'
+  pmcid: PMC3878302
+  locator: Results (projection mapping)
+paraphrase: No mCherry or synaptophysin-GFP labelling from PBelo CGRP neurons was detected in the arcuate nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBelo (CGRP neurons)
+  extract.object_name: arcuate nucleus
+  verify.note: Labelling was explicitly absent from the arcuate nucleus.

@@ -1,0 +1,41 @@
+id: clm-z2gmxw54ah
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-022-32388-9
+  pmid: '35970891'
+  pmcid: PMC9378688
+  locator: Fig. 5e (left panel); Methods, Table 2
+paraphrase: A retrogradely transported AAV carrying Cre-GFP was placed in the prelimbic cortex together with a Cre-dependent
+  Gi-DREADD-mCherry vector in the basolateral amygdala; mCherry-labelled amygdala cells confirmed that BLA neurons send axons
+  to PL, and these cells could be chemogenetically silenced (verified by patch-clamp in Fig. S3).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PL
+  verify.note: Retro-Cre in PL produced Cre-dependent mCherry expression in BLA (Fig. 5e left), and the text confirms patch-clamp
+    silencing in Fig. S3, supporting a BLA-to-PL projection.

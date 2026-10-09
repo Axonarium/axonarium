@@ -1,0 +1,39 @@
+id: clm-rfz07mpn5b
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/nn.3625
+  pmid: '24441680'
+  pmcid: PMC3968853
+  locator: Supplemental Fig. 7d,e; Results, 'Downstream targets of mPFC stimulation'
+paraphrase: Despite dense prefrontal D1 axon labelling there, 20 Hz photostimulation of prefrontal D1 neurons produced no
+  detectable change in Fos immunoreactivity in the nucleus accumbens.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC)
+  extract.object_name: nucleus accumbens
+  verify.note: Paper explicitly found no Fos difference in nucleus accumbens despite dense axons.

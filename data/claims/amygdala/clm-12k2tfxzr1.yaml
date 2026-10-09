@@ -1,0 +1,39 @@
+id: clm-12k2tfxzr1
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/ncomms8062
+  pmid: '25952660'
+  pmcid: PMC4430111
+  locator: Fig. 1i,j
+paraphrase: Retrograde AAV2/5-CaMKIIa-EYFP injected into nucleus accumbens labelled neurons in medial prefrontal cortex, identifying
+  an mPFC population projecting to NAc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mPFC (infralimbic prefrontal cortex)
+  extract.object_name: NAc
+  verify.note: Retrograde AAV injected in NAc labelled mPFC neurons analysed for EGR1 in Fig. 1i,j.

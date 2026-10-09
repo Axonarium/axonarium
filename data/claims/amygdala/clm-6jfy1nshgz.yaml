@@ -1,0 +1,37 @@
+id: clm-6jfy1nshgz
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-g513b58b0y
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41386-025-02298-7
+  pmid: '41419678'
+  pmcid: PMC13125285
+  locator: Fig. 5c, 5e
+paraphrase: Insular cortex neurons were among the rabies-labelled monosynaptic inputs to CeLC PKCδ neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IC insular cortex
+  extract.object_name: CeLCPKCδ neurons
+  verify.note: Insular cortex is among the rabies-identified input regions.

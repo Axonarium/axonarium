@@ -1,0 +1,50 @@
+id: clm-0dcxk68jxf
+subject:
+  type: neuron_type
+  id: nt-fwck8mp6aj
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.348
+  unit: '1'
+  n: 66
+- quantity: connection_probability
+  value: 0.303
+  unit: '1'
+  n: 66
+source:
+  doi: 10.1038/s41467-020-18199-w
+  pmid: '32868768'
+  pmcid: PMC7459312
+  locator: Fig. 3b–c; Supplementary Fig. 1h–k; Fig. 3d–m
+paraphrase: Optogenetic activation of channelrhodopsin-expressing parvalbumin interneurons in the BLA, with light pulses or
+  sinusoidal waveforms, produced both light-suppressed and light-activated single units in the same nucleus in vivo; the authors
+  interpret the suppression as rapid synaptic inhibition of surrounding BLA neurons, with some cells showing rebound spiking.
+  Spiking of BLA units became entrained to the phase of the 4 Hz and 8 Hz light waveforms.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA PV-interneurons
+  extract.object_name: BLA
+  verify.note: In vivo optogenetic driving of BLA PV cells produced light-suppressed BLA units and phase-locking of 23/66
+    (34.8%) and 20/66 (30.3%) units to the 4 Hz and 8 Hz waveforms, matching the cited values and locators.

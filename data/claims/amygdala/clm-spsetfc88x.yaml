@@ -1,0 +1,37 @@
+id: clm-spsetfc88x
+subject:
+  type: region
+  id: UBERON:0001877
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0006107
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/s41386-022-01427-w
+  pmid: '36056107'
+  pmcid: PMC9938249
+  locator: Fig. S1F–M
+paraphrase: Infusing the Cre-dependent eNpHR3.0-eYFP virus into the medial septum produced no eYFP-positive terminals in the
+  BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MS
+  extract.object_name: BLA
+  verify.note: MS infusion yielded no BLA eYFP terminals (Fig. S1F–M).

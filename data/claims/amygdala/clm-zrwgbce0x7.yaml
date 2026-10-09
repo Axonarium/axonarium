@@ -1,0 +1,46 @@
+id: clm-zrwgbce0x7
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 5.0
+  unit: ms
+  n: 8
+source:
+  doi: 10.1038/nn.4510
+  pmid: '28218915'
+  pmcid: PMC5374019
+  locator: Fig. 3j; Results, projection mapping section
+paraphrase: After expressing ChR2 in BLA neurons, blue-light pulses delivered through a probe in the mPFC evoked local field
+  responses at a short latency (~5 ms after each pulse), appearing about 12 days post-injection; a second, longer-latency
+  (~32 ms) component appeared later and was attributed by the authors to polysynaptic network activity within the mPFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: medial prefrontal cortex (mPFC)
+  verify.note: The paper records from and names only the mPFC, never the prelimbic area specifically, so the object region
+    is narrower than the paper's own region.

@@ -1,0 +1,39 @@
+id: clm-g86bp9edrb
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-024-03085-6
+  pmid: '39300117'
+  pmcid: PMC11412998
+  locator: Fig. 2A-C; Fig. S4D
+paraphrase: CTB555 injected into the central amygdala, aimed at its centromedial part, retrogradely labelled BLA neurons.
+  Some BLA cells were double-labelled from both NAc and CeA injections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CeA
+  verify.note: CTB555 injected in the centromedial CeA labelled BLA neurons, some of them double-labelled with the NAc tracer.

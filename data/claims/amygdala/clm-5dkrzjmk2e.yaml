@@ -27,7 +27,17 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: PrLGlu
   extract.object_name: BLAGlu neurons
+  verify.note: Combined opto-terminal stimulation/silencing with opposing chemogenetic manipulation of BLA Glu neurons plus
+    the glutamate sensor data support an excitatory functional PrL→BLA connection, though the Fig. 6F/G wording is internally
+    inconsistent.

@@ -1,0 +1,39 @@
+id: clm-dbj13eet7w
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-15920-7
+  pmid: '32376858'
+  pmcid: PMC7203160
+  locator: Fig. 2a, b
+paraphrase: Red fluorescent retrobeads deposited in the dorsomedial prefrontal cortex retrogradely labelled a subset of principal
+  neurons in the basolateral amygdala, identifying BLA cells that project back to dmPFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: dmPFC
+  verify.note: Retrobeads in dmPFC retrogradely labelled BLA PNs (dmPFC↔BLA).

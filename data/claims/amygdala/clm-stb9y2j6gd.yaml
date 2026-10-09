@@ -1,0 +1,44 @@
+id: clm-stb9y2j6gd
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.69
+  unit: '1'
+  n: 16
+source:
+  doi: 10.1038/s41467-022-33241-9
+  pmid: '36130959'
+  pmcid: PMC9492683
+  locator: Supplementary Fig. 23c–f
+paraphrase: Stimulating orbitofrontal axons in insular slices produced excitatory currents in about two thirds of recorded
+  amygdala-projecting insular neurons, with a higher inhibitory-to-excitatory ratio than in accumbens-projecting neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OFC
+  extract.object_name: IC-CeA projectors
+  verify.note: OFC terminal stimulation evoked EPSCs in 11/16 IC-CeA projectors with a higher IPSC/EPSC ratio.

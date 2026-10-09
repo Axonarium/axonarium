@@ -1,0 +1,39 @@
+id: clm-ekdx3defh6
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/nn.3533
+  pmid: '24077564'
+  pmcid: PMC3815713
+  locator: Fig. 1C–G, 1I
+paraphrase: After injecting an AAV2 driving ChR2-YFP into the basolateral amygdala, labelled somata and processes were seen
+  at the injection site and abundant YFP-positive axonal fibres were found in the accumbens shell, indicating anterograde
+  transport of the fluorescent protein along the amygdala axons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc shell
+  verify.note: Viral ChR2-YFP expressed in BLA labels fibers in NAc shell, an anterograde demonstration shown in the cited
+    panels.

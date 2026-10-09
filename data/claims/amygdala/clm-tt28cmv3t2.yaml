@@ -1,0 +1,44 @@
+id: clm-tt28cmv3t2
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:544
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.95
+  unit: '1'
+source:
+  doi: 10.1038/nature12596
+  pmid: '24121436'
+  pmcid: PMC3878302
+  locator: Results (projection mapping); Supplementary Fig. 13; Fig. 4e
+paraphrase: Green retrobeads placed in the CeAlc retrogradely labelled neurons in the PBelo, and over 95% of these retrogradely
+  labelled cells also expressed the Cre-dependent mCherry marking CGRP neurons. Retrograde CAV2-Cre injected into the CeAlc
+  likewise drove Cre-dependent transgene expression in upstream PBN neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBelo
+  extract.object_name: CeAlc
+  verify.note: Retrobeads in CeAlc labelled PBelo neurons, >95% mCherry-positive, consistent with the stated fraction.

@@ -1,0 +1,42 @@
+id: clm-k8hpgx9jts
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-18199-w
+  pmid: '32868768'
+  pmcid: PMC7459312
+  locator: Results, 'Effects of BLA stimulation on BLA-mPFC oscillatory activity'; Supplementary Fig. 4d,f; Fig. 5d–i
+paraphrase: Rhythmic optogenetic driving of BLA parvalbumin interneurons at 4 Hz or 8 Hz shifted not only the BLA local field
+  potential spectrum but also the mPFC spectrum toward the stimulation frequency, and changed the BLA–mPFC cross-power spectrum,
+  indicating that activity imposed in the BLA propagates to and is amplified in mPFC (in a memory-state dependent way for
+  the cross-power measure).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: mPFC
+  verify.note: BLA PV stimulation shifted mPFC LFP power and BLA-mPFC cross-power toward the driven frequency, supporting
+    a functional BLA-to-mPFC (prelimbic coordinates) influence.

@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: BLA
   extract.object_name: dCA3
+  verify.note: Retrograde virus in dCA3 labelled BLA somata, as described in the results and used for the photometry strategy.

@@ -1,0 +1,42 @@
+id: clm-vqm1v6gq4h
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41398-018-0106-x
+  pmid: '29507292'
+  pmcid: PMC5838104
+  locator: Fig. 1a–d; Fig. 2a; Fig. 4a–b; Results, 'Separate IL and PL projections to BLA and NAc'
+paraphrase: Cholera toxin B injected into the BLA retrogradely labelled many neurons in the infralimbic cortex, in both layer
+  2/3 and layer 5, with labelling described as dense and concentrated in superficial IL layers; of all labelled PFC cells,
+  38.2% were BLA-labelled and only 3.4% were double-labelled with NAc tracer. Retrobeads and a retrograde HSV-Cre placed in
+  the BLA likewise labelled IL neurons that were then recorded or chemogenetically targeted.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IL
+  extract.object_name: BLA
+  verify.note: BLA retrograde tracing labelled IL neurons (38.2%, 3.4% double-labelled), matching the paper.

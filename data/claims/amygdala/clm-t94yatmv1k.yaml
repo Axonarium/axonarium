@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: PBN
   extract.object_name: CeA
+  verify.note: Stimulating PBN ChR2 terminals in the CeA reliably evoked DNQX-blocked EPSCs, and the DPDPE and deltorphin
+    II effects match Fig. 4D–E.

@@ -1,0 +1,39 @@
+id: clm-m95wr57jfd
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41398-020-00926-y
+  pmid: '32684634'
+  pmcid: PMC7370229
+  locator: Figs. 1a, d–i; 2a–c; 3a–c
+paraphrase: Blue-light activation of ChR2-expressing dmPFC terminals in the basal amygdala evoked monosynaptic AMPA- and NMDA-receptor-mediated
+  EPSCs in BA principal neurons recorded in whole-cell mode; EPSCs persisted with GABA-A blockade by bicuculline, and paired-pulse
+  ratio, input-output and AMPA/NMDA ratio were measured at this synapse.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dmPFC
+  extract.object_name: BA principal neurons
+  verify.note: Light activation of dmPFC terminals evoked glutamatergic EPSCs in BA principal cells in the cited figures.

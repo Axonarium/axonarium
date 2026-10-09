@@ -1,0 +1,38 @@
+id: clm-jygx61xv47
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-16407-1
+  pmid: '32483118'
+  pmcid: PMC7264246
+  locator: Results, 'Shock-rod attraction activates mesocorticolimbic circuity'; Fig. 5; Supplementary Table 1
+paraphrase: CeA ChR2 stimulation paired with sucrose/cocaine pursuit or with shock-rod attraction was followed by elevated
+  Fos in the rostromedial quadrant of nucleus accumbens medial shell (over 700% above baseline in the reward group; over 180%
+  above eYFP in the shock-rod group), whereas caudal medial shell showed no significant change.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: central nucleus of amygdala (CeA)
+  extract.object_name: rostromedial shell of nucleus accumbens (NAc)
+  verify.note: Rostromedial NAc shell elevations (>700% reward, >180% shock-rod) and null caudal shell result match the text.

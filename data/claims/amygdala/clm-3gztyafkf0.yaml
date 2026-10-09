@@ -1,0 +1,40 @@
+id: clm-3gztyafkf0
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41398-018-0106-x
+  pmid: '29507292'
+  pmcid: PMC5838104
+  locator: Fig. 1c–d; Fig. 3a,h–k; Results, 'Separate IL and PL projections to BLA and NAc'
+paraphrase: Retrograde CTB in the nucleus accumbens labelled prelimbic cortex neurons in addition to IL neurons, and retrobeads
+  placed in the NAc allowed recordings from identified PL-NAc projection neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL
+  extract.object_name: NAc
+  verify.note: CTB in NAc labelled PL neurons and PL-NAc retrobead-labelled cells were patched.

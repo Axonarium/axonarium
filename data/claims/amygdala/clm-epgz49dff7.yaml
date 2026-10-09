@@ -1,0 +1,41 @@
+id: clm-epgz49dff7
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41386-023-01673-6
+  pmid: '37542159'
+  pmcid: PMC10789863
+  locator: Fig. S1E–G; Fig. 2F
+paraphrase: A retrograde Cre-expressing AAV injected into the CeA, combined with a Cre-dependent mCherry AAV in the PBN, labelled
+  CeA-projecting neurons across the rostrocaudal PBN, mostly confined to the external lateral subdivision. Retrobeads injected
+  into the CeA also labelled PBN neurons that were then recorded.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: external lateral PBN
+  extract.object_name: central amygdala (CeA)
+  verify.note: Retrograde Cre injected into the CeA plus Cre-dependent mCherry in the PBN labelled neurons mainly in the external
+    lateral PBN, and retrobead-labelled CeA-projecting PBN cells were recorded.

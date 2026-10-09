@@ -1,0 +1,44 @@
+id: clm-tzptp7rjc5
+subject:
+  type: region
+  id: MBA:685
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.073
+  unit: '1'
+  sem: 0.01
+  n: 5
+source:
+  doi: 10.1038/nn.4624
+  pmid: '28825718'
+  pmcid: PMC5614838
+  locator: Fig. 4f-g
+paraphrase: Ventromedial thalamus was among the main long-range sources of rabies-labelled input to PL ChCs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ventromedial thalamic nucleus (VM)
+  extract.object_name: PL L2 chandelier cells
+  verify.note: VM supplied 7.3±1.0% of long-range inputs, n=5.

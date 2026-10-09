@@ -1,0 +1,40 @@
+id: clm-8tg60q17wd
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/ncomms8062
+  pmid: '25952660'
+  pmcid: PMC4430111
+  locator: Fig. 1q,r; Fig. 2d; Fig. 3d
+paraphrase: Light activation of ChR2-expressing basolateral amygdala terminals in NAc shell slices elicited EPSCs in medium
+  spiny neurons, including paired-pulse responses and responses to 1 Hz and 4 Hz stimulation, showing a glutamatergic amygdala
+  input to NAc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AMY (basolateral amygdala)
+  extract.object_name: NAc shell
+  verify.note: Optically evoked EPSCs in NAc MSNs from ChR2-expressing AMY terminals are shown in the cited panels.

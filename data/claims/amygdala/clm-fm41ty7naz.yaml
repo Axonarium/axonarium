@@ -1,0 +1,30 @@
+id: clm-fm41ty7naz
+subject:
+  type: region
+  id: UBERON:0000956
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-gypnv5m278
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/nn.2993
+  pmid: '22158512'
+  pmcid: PMC3245819
+  locator: Fig. 1a,c,e; Fig. 5a,b; Fig. 6a,b; Supplementary Fig. 1
+paraphrase: Stimulating cortical afferents in the external capsule evoked glutamatergic EPSCs in lateral amygdala principal
+  neurons in rat slices. These EPSCs had AMPA and kainate receptor components that were blocked by NBQX, and they were potentiated
+  after pairing with prior thalamic stimulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: cortical inputs (external capsule stimulation)
+  extract.object_name: principal neurons in the LAn

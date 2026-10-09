@@ -1,0 +1,41 @@
+id: clm-ywtf0f1r27
+subject:
+  type: region
+  id: MBA:294
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:218
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/ncomms7756
+  pmid: '25854147'
+  pmcid: PMC4403372
+  locator: Fig. 5a-c; Supplementary Fig. 9
+paraphrase: AAV-CaMKIIa-EYFP injected into the ILSCm labelled axons that prominently innervated the LP. These axons overlapped
+  with LP neurons that were retrogradely labelled from the LA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ILSCm (medial intermediate layers of the superior colliculus)
+  extract.object_name: lateral posterior nucleus (LP) of the thalamus
+  verify.note: AAV-CaMKIIa-EYFP from the ILSCm labelled prominent axons in the LP that overlapped LA-projecting LP neurons
+    (Fig. 5b,c).

@@ -1,0 +1,40 @@
+id: clm-q54ctztbh6
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41398-020-0837-3
+  pmid: '32424318'
+  pmcid: PMC7235080
+  locator: Fig. 1c,d; Fig. 2f-k
+paraphrase: Blue-light activation of ChR2-expressing orbitofrontal axons in slices evoked excitatory postsynaptic currents
+  in BLA pyramidal neurons; the responses disappeared with tetrodotoxin and returned with 4-aminopyridine, indicating a monosynaptic
+  glutamatergic (AMPAR/NMDAR-mediated) input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OFC
+  extract.object_name: BLA pyramidal neurons
+  verify.note: Light-evoked OFC EPSCs in BLA pyramidal neurons were abolished by TTX and rescued by 4-AP, showing a monosynaptic
+    excitatory input with AMPAR/NMDAR components.

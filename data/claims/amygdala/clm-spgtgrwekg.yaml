@@ -1,0 +1,40 @@
+id: clm-spgtgrwekg
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-020-0837-3
+  pmid: '32424318'
+  pmcid: PMC7235080
+  locator: Fig. 1a,b; Fig. 5b
+paraphrase: After AAV-CaMKIIa-ChR2-EYFP was injected into the lateral/ventral orbitofrontal cortex, fluorescent axon terminals
+  from the injection site were seen in the anterior portion of the basolateral amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: OFC (lateral part of the orbitofrontal cortex)
+  extract.object_name: BLA
+  verify.note: ChR2-EYFP injected into lateral/ventral OFC produced labelled axon terminals in the anterior BLA (Fig. 1a,b),
+    and Fig. 5b shows OFC axons in the BLA.

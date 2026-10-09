@@ -1,0 +1,39 @@
+id: clm-16ax0ef7vd
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-15920-7
+  pmid: '32376858'
+  pmcid: PMC7203160
+  locator: Fig. 1b; Results, first section
+paraphrase: No ChR2-eGFP-labelled dorsomedial prefrontal fibres were found in the central amygdala, in contrast to the dense
+  labelling in BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dmPFC
+  extract.object_name: central amygdala
+  verify.note: Paper explicitly reports no ChR2-labelled dmPFC fibers in central amygdala.

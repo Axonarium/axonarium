@@ -1,0 +1,39 @@
+id: clm-bt3p5xb2w7
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-022-33241-9
+  pmid: '36130959'
+  pmcid: PMC9492683
+  locator: Results (whole-brain input mapping); Supplementary Fig. 22
+paraphrase: Among subcortical inputs, the anterior basolateral amygdala contained more rabies-labelled neurons presynaptic
+  to accumbens-projecting insular neurons than to amygdala-projecting ones.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLAa
+  extract.object_name: IC-NAc projectors
+  verify.note: RV tracing showed greater BLAa input to IC-NAc projectors.

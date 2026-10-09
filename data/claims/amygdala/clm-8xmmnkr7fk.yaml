@@ -1,0 +1,39 @@
+id: clm-8xmmnkr7fk
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-022-33241-9
+  pmid: '36130959'
+  pmcid: PMC9492683
+  locator: Fig. 5b
+paraphrase: Optogenetic stimulation of insular axon terminals in the nucleus accumbens produced excitatory postsynaptic currents
+  in accumbens neurons, which were suppressed by tetanus toxin expression in the presynaptic IC neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IC-NAc projectors
+  extract.object_name: NAc
+  verify.note: ChR2-evoked oEPSCs in NAc neurons were reduced by TetTox in IC-NAc projectors.

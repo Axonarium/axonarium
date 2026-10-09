@@ -1,0 +1,41 @@
+id: clm-bhwfn3mh1n
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-022-02252-x
+  pmid: '36402746'
+  pmcid: PMC9675804
+  locator: Fig. 4a-e
+paraphrase: Cre-dependent tdTomato AAV injected into the caudal dorsal raphe of ePet1-Cre mice labelled serotonergic terminals
+  in the dorsal BNST bilaterally. Terminal fluorescence was significantly higher in the anterodorsal BNST than in the oval
+  nucleus (n = 3 mice).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: DRC (caudal subregion of the dorsal raphe nucleus), serotonergic neurons
+  extract.object_name: BNSTad (anterodorsal BNST)
+  verify.note: ePet1-Cre AAV in DRC labeled 5-HT terminals bilaterally in dorsal BNST with significantly greater BNSTad intensity,
+    n=3.

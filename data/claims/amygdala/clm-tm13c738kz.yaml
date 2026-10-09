@@ -1,0 +1,40 @@
+id: clm-tm13c738kz
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-018-05090-y
+  pmid: '30013065'
+  pmcid: PMC6048069
+  locator: Fig. 5d-f; Fig. 6b
+paraphrase: CAV2-Cre injected into the BLA, combined with Cre-dependent eYFP in the ACC, labelled ACC neurons mainly in layer
+  V on the same side, with fewer labelled neurons in the opposite ACC, in all five mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ACC
+  extract.object_name: BLA
+  verify.note: CAV2-Cre injected into the BLA retrogradely labelled mainly ipsilateral layer V ACC neurons in all five mice,
+    consistent with the Fig. 6b expression.
