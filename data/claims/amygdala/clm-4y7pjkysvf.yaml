@@ -1,0 +1,31 @@
+id: clm-4y7pjkysvf
+subject:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/cns.70775
+  pmid: '41645569'
+  pmcid: PMC12877313
+  locator: Fig. 2E–L
+paraphrase: Retrograde AAV-EGFP injected into the RVLM produced retrogradely labelled neurons in the nucleus of the solitary
+  tract.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: NTS
+  extract.object_name: RVLM

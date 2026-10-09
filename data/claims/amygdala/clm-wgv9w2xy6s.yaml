@@ -1,0 +1,29 @@
+id: clm-wgv9w2xy6s
+subject:
+  type: region
+  id: UBERON:0001930
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001936
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1007/s00429-022-02527-5
+  pmid: '35934753'
+  pmcid: PMC9418084
+  locator: Results, CTB section
+paraphrase: Retrogradely labeled TMN afferents were found in the anterior parvocellular paraventricular nucleus. They were
+  not TRH-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior parvocellular PVN (paPVN)
+  extract.object_name: TMN

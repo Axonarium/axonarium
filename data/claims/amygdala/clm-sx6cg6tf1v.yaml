@@ -1,0 +1,44 @@
+id: clm-sx6cg6tf1v
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0628
+  unit: '1'
+  n: 10
+- quantity: fraction_of_labelled_neurons
+  value: 0.0647
+  unit: '1'
+  n: 8
+- quantity: fraction_of_labelled_neurons
+  value: 0.13
+  unit: '1'
+- quantity: fraction_of_labelled_neurons
+  value: 0.1869
+  unit: '1'
+source:
+  doi: 10.1016/j.ynstr.2024.100694
+  pmid: '39634490'
+  pmcid: PMC11615582
+  locator: Fig. 5A-C
+paraphrase: Some BLA neurons retrogradely labelled from the NAc also carried the CRHR1 reporter, indicating CRHR1-expressing
+  BLA cells project to the NAc; in females a larger proportion of CRHR1 cells were NAc projectors than CeA projectors.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA CRHR1+ (CRHR1-Cre-tdTomato) neurons
+  extract.object_name: NAc

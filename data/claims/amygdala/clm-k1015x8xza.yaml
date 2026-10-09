@@ -1,0 +1,30 @@
+id: clm-k1015x8xza
+subject:
+  type: region
+  id: MBA:319
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ynstr.2023.100527
+  pmid: '36861029'
+  pmcid: PMC9969273
+  locator: Fig. 3G–J; Fig. 7H–I
+paraphrase: Neurons in the anterior basomedial amygdala were retrogradely labelled from medial adBNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basomedial amygdaloid nucleus (BMA)
+  extract.object_name: amBNST

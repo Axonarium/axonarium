@@ -1,0 +1,32 @@
+id: clm-y8h25c4dpa
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.ynstr.2023.100527
+  pmid: '36861029'
+  pmcid: PMC9969273
+  locator: Fig. 3A–D; Table 2
+paraphrase: Injections into medial adBNST gave only sparse retrograde labelling in prelimbic cortex. The combined AC/PL/IL
+  group was about 2.27% (SE 0.41) of inputs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: prelimbic cortex (PrL)
+  extract.object_name: amBNST

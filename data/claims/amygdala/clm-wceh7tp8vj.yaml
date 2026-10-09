@@ -1,0 +1,31 @@
+id: clm-wceh7tp8vj
+subject:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1007/s12264-020-00545-z
+  pmid: '32691225'
+  pmcid: PMC7674542
+  locator: Fig. 2B-C; Fig. 6A
+paraphrase: Monosynaptic rabies tracing from BLA VGLUT2-Cre starter cells densely labelled input neurons in the caudate-putamen,
+  which gave more input to VGLUT2+ than to PV+ BLA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: caudate-putamen (CPu)
+  extract.object_name: BLA VGLUT2+ glutamatergic neurons

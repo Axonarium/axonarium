@@ -1,0 +1,30 @@
+id: clm-0nd9zqnv23
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:8440032
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ynstr.2025.100753
+  pmid: '41050508'
+  pmcid: PMC12489772
+  locator: Fig. 1; Results, section 'MS leads to facilitation of BLA-evoked LFP'
+paraphrase: In anesthetized adolescent rats, single-pulse electrical stimulation of the BLA at increasing intensities evoked
+  local field potentials in the prelimbic cortex, and these responses were larger in maternally separated animals of both
+  sexes than in controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelimbic region (PFC)

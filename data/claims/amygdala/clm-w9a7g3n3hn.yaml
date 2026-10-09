@@ -1,0 +1,30 @@
+id: clm-w9a7g3n3hn
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:689
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1007/s00429-022-02527-5
+  pmid: '35934753'
+  pmcid: PMC9418084
+  locator: Results, Trh-Cre section
+paraphrase: Virally labeled TuLH TRH axons were seen in the ventrolateral preoptic area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: TuLH TRH neurons
+  extract.object_name: ventrolateral preoptic area

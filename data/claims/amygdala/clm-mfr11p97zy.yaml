@@ -1,0 +1,31 @@
+id: clm-mfr11p97zy
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.1016/j.celrep.2022.110906
+  pmid: '35675770'
+  pmcid: PMC9210496
+  locator: Figures 1E and 1F
+paraphrase: Labelled axons of PFC neurons were visible within the medial striatum, but the authors describe these as fibres
+  coursing through the striatum on their way to terminate in the BLA, so striatal innervation is not established.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PFC
+  extract.object_name: striatum (medial part)

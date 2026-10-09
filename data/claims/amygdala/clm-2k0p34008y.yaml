@@ -1,0 +1,32 @@
+id: clm-2k0p34008y
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:463
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.ebiom.2026.106478
+  pmid: '42700720'
+  pmcid: PMC13572171
+  locator: Fig. S3; Results, section 1 (anterograde trans-synaptic tagging)
+paraphrase: Anterograde trans-synaptic AAV1-hSyn-Cre injected in the BLA together with a Cre-dependent GFP reporter in dorsal
+  CA3 produced GFP-labelled neurons in dCA3, indicating BLA axons contact dCA3 neurons; labelling was comparable in Fmr1 KO
+  and wild-type mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: dCA3

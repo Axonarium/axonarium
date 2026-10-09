@@ -1,0 +1,32 @@
+id: clm-evthtg6mge
+subject:
+  type: region
+  id: MBA:688
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.celrep.2017.05.002
+  pmid: '28538174'
+  pmcid: PMC5457478
+  locator: Fig. 1F, 1G, 1I
+paraphrase: Stimulating cortical fibers in the external capsule evoked excitatory postsynaptic currents in lateral amygdala
+  principal neurons; input-output relations and paired-pulse ratios of this cortico-LA pathway were indistinguishable between
+  wild-type and Df(16)1/+ mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: cortical input (external capsule)
+  extract.object_name: lateral amygdala (LA)

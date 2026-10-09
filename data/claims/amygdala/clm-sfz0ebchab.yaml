@@ -1,0 +1,28 @@
+id: clm-sfz0ebchab
+subject:
+  type: region
+  id: UBERON:0002430
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001934
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1007/s00429-022-02527-5
+  pmid: '35934753'
+  pmcid: PMC9418084
+  locator: Results, PHAL section
+paraphrase: PHAL-labeled TuLH fibers were found in the dorsal, central and ventral dorsomedial hypothalamic nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: TuLH
+  extract.object_name: dorsomedial (DMN) hypothalamus

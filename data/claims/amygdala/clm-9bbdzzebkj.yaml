@@ -1,0 +1,29 @@
+id: clm-9bbdzzebkj
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.neuron.2015.09.001
+  pmid: '26412489'
+  locator: Main text, paragraphs 3–4; Fig. 1A
+paraphrase: In mouse slices, stimulating the LA pathway gave monosynaptic glutamatergic responses in dorsal ITC neurons. STDP
+  stimulation of this pathway produced LTD after weak but not strong fear conditioning, and the LTD depended on D4R.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral amygdala (LA)
+  extract.object_name: dorsal ITC neurons

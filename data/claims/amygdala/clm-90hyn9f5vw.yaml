@@ -1,0 +1,28 @@
+id: clm-90hyn9f5vw
+subject:
+  type: region
+  id: UBERON:0008933
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1016/j.neuroscience.2021.02.017
+  pmid: '33609638'
+  pmcid: PMC8022030
+  locator: Results, Sensory cortex; Table 2
+paraphrase: No labelled cells in S1 limb and trunk areas after PLO injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: forelimb, hindlimb, and trunk regions of the primary somatosensory cortex
+  extract.object_name: PLO

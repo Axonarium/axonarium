@@ -1,0 +1,30 @@
+id: clm-eg0k4t4trv
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-t6ymz01hv4
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1007/s12264-020-00545-z
+  pmid: '32691225'
+  pmcid: PMC7674542
+  locator: Fig. 5B-C
+paraphrase: Agranular insular cortex contained dense presynaptic cells to CeA SST+ neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AI
+  extract.object_name: CeA SST+ GABAergic neurons

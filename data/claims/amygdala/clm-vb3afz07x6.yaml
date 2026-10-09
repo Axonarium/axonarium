@@ -1,0 +1,37 @@
+id: clm-vb3afz07x6
+subject:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0099
+  unit: '1'
+  sem: 0.001
+  n: 5
+source:
+  doi: 10.1016/j.ynstr.2023.100527
+  pmid: '36861029'
+  pmcid: PMC9969273
+  locator: Table 2; Table 3
+paraphrase: Ventromedial hypothalamic neurons were retrogradely labelled from medial adBNST, significantly more than from
+  lateral adBNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ventromedial hypothalamus (vmH)
+  extract.object_name: amBNST

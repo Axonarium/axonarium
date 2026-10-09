@@ -1,0 +1,34 @@
+id: clm-13a6rtv5w7
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.ynpai.2021.100078
+  pmid: '34877437'
+  pmcid: PMC8628014
+  locator: Figs. 1A, 2, 3, 5; Results
+paraphrase: Electrical stimulation with an electrode placed in the ventral BLA close to the CeA border evoked short, stable-latency
+  excitatory postsynaptic currents in CeC/L neurons held at -70 mV in brain slices from naive, saline- and formalin-treated
+  mice. Pregabalin reduced these BLA-evoked EPSCs and raised the paired-pulse ratio only in formalin-treated animals, indicating
+  a presynaptic site of action at BLA terminals; EPSC amplitude at fixed 100 µA stimulation did not differ between saline
+  and formalin groups.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA (basolateral amygdala)
+  extract.object_name: CeC/L (capsular and lateral part of the central nucleus of the amygdala)

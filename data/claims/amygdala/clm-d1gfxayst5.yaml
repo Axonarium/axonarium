@@ -1,0 +1,37 @@
+id: clm-d1gfxayst5
+subject:
+  type: region
+  id: MBA:375
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0072
+  unit: '1'
+  sem: 0.0024
+  n: 7
+source:
+  doi: 10.1016/j.ynstr.2023.100527
+  pmid: '36861029'
+  pmcid: PMC9969273
+  locator: Table 1; Table 3
+paraphrase: Labelled cells in the hippocampus proper contributed a small share of CAV2-Cre inputs to lateral adBNST. This
+  share was significantly smaller than for medial adBNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: hippocampus (HPC)
+  extract.object_name: alBNST

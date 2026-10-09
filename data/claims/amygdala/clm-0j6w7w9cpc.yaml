@@ -1,0 +1,30 @@
+id: clm-0j6w7w9cpc
+subject:
+  type: region
+  id: UBERON:0001920
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1002/cne.70081
+  pmid: '40838534'
+  pmcid: PMC12368940
+  locator: Fig. 3a,b; Figs. 4d-e, 5c
+paraphrase: Rabies input cells were consistently found in the anterior PVT, which supplied about a tenth of inputs and was
+  a stronger source than several other areas; the posterior thalamus lacked input cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior paraventricular nucleus of the thalamus (aPVT)
+  extract.object_name: NAcSh-VP projection neurons

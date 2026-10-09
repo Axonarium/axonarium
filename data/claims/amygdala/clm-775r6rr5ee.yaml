@@ -1,0 +1,29 @@
+id: clm-775r6rr5ee
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1002/cne.70081
+  pmid: '40838534'
+  pmcid: PMC12368940
+  locator: Fig. 3a,b
+paraphrase: Prelimbic cortex contained quantified input cells; prefrontal inputs were relatively weak.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: prelimbic cortex (PrL)
+  extract.object_name: NAcSh-VP projection neurons

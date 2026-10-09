@@ -1,0 +1,35 @@
+id: clm-sfy50zen21
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: paired_recording
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.571
+  unit: '1'
+  n: 35
+source:
+  doi: 10.1007/s00429-020-02051-4
+  pmid: '32144495'
+  pmcid: PMC7166205
+  locator: Fig. 4b, Fig. 5b, d; Results
+paraphrase: Spiking LTS feedback interneurons evoked unitary IPSPs in LA principal neurons. Their slow rise kinetics matched
+  those of the polysynaptic IPSPs seen between principal cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LTS feedback interneurons
+  extract.object_name: principal neurons

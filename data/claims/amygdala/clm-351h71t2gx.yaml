@@ -1,0 +1,31 @@
+id: clm-351h71t2gx
+subject:
+  type: neuron_type
+  id: nt-wprma5fcrr
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.apsb.2024.08.005
+  pmid: '39664418'
+  pmcid: PMC11628806
+  locator: Fig. 8H–J
+paraphrase: After ChR2 expression in BLA CaMKIIα neurons, blue light applied to BLA terminals evoked inward excitatory postsynaptic
+  currents in EGFP-labelled vCA1 pyramidal neurons held at −70 mV; the amplitude was larger in stressed mice and reduced by
+  intra-BLA cangrelor.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA glutamatergic neurons
+  extract.object_name: vCA1 PyNs

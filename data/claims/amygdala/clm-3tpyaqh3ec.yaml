@@ -1,0 +1,31 @@
+id: clm-3tpyaqh3ec
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/cns.70775
+  pmid: '41645569'
+  pmcid: PMC12877313
+  locator: Fig. 2E–L (panel K)
+paraphrase: Injection of a retrograde EGFP-expressing AAV into the RVLM produced labelled neurons in the central amygdala,
+  indicating a descending CeA input to the RVLM and thus a reciprocal connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: RVLM

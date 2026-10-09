@@ -1,0 +1,32 @@
+id: clm-5563yn3mpp
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: ambiguous
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.celrep.2020.108362
+  pmid: '33176134'
+  pmcid: PMC8136285
+  locator: Fig. 5D; Results
+paraphrase: Fiber-density quantification showed only sparse to nearly absent labelling of Pnoc BNST axons in the parabrachial
+  nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PnocBNST neurons (adBNST)
+  extract.object_name: parabrachial nucleus (PB)

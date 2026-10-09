@@ -1,0 +1,31 @@
+id: clm-mdgb8e49qa
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.jbc.2022.102207
+  pmid: '35772494'
+  pmcid: PMC9304789
+  locator: Experimental procedures (anterograde tracing); Fig. 6B
+paraphrase: Cre-dependent ChR2-mCherry expressed in glutamatergic neurons of the insular cortex of CaMKII-Cre mice produced
+  labelled axonal fibres in the BLA, where the optical fibre was placed.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IC
+  extract.object_name: BLA

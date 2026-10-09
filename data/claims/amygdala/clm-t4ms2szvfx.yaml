@@ -1,0 +1,31 @@
+id: clm-t4ms2szvfx
+subject:
+  type: region
+  id: MBA:993
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1007/s12035-026-06153-8
+  pmid: '42642694'
+  pmcid: PMC13506595
+  locator: Fig. 5d–f, j
+paraphrase: Labelling from MOs injections extended into the intermediate stratum of the lateral domain adjacent to the amygdalar
+  capsule.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ICxFrA / ICxM2 (MOs)
+  extract.object_name: lateral domain (lat-i)

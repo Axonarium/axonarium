@@ -1,0 +1,30 @@
+id: clm-nys0bn9met
+subject:
+  type: region
+  id: UBERON:0002148
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001896
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/emmm.201302475
+  pmid: '23703938'
+  pmcid: PMC3721477
+  locator: Fig 2E,F; Supporting Information Fig S3
+paraphrase: Human alpha-synuclein expressed only in medullary neurons was later found in axonal fibres within the pontine
+  coeruleus–subcoeruleus complex, some of which were also tyrosine hydroxylase positive, taken as evidence of protein transfer
+  along the direct projection these cells send to the medulla.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: coeruleus–subcoeruleus complex
+  extract.object_name: medulla oblongata (MO)

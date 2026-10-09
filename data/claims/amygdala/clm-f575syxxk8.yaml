@@ -1,0 +1,30 @@
+id: clm-f575syxxk8
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: moderate
+source:
+  doi: 10.1016/j.neuroscience.2021.02.017
+  pmid: '33609638'
+  pmcid: PMC8022030
+  locator: Results, Amygdala; Fig. 7; Fig. S7; Table 2
+paraphrase: PLO injection moderately labelled anterior basolateral amygdala and weakly labelled its posterior part (BLP);
+  amygdala input to PLO exceeded that to ALO or PVO.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior part of the basolateral amygdala (BLA)
+  extract.object_name: PLO

@@ -1,0 +1,31 @@
+id: clm-f2ysn395p8
+subject:
+  type: region
+  id: MBA:723
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.4; Fig. 6C
+paraphrase: The lateral orbital cortex contained distinct Nts and tracer-labelled populations. None of its neurons were double-labelled
+  after VTA injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral orbital cortex (LO) Nts neurons
+  extract.object_name: VTA

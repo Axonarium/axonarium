@@ -1,0 +1,31 @@
+id: clm-w88vzk2dqf
+subject:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.isci.2023.106985
+  pmid: '37378339'
+  pmcid: PMC10291511
+  locator: Fig. 1E
+paraphrase: Insular GFP axons innervated the lateral BNST. The ipsilateral side received axons in STLD, STLP and STLV, while
+  the contralateral side received them only in STLD.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: middle-posterior insula (DgI and GI)
+  extract.object_name: bed nucleus of the stria terminalis (BNST)

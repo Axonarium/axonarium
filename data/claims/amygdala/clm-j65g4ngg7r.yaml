@@ -1,0 +1,32 @@
+id: clm-j65g4ngg7r
+subject:
+  type: region
+  id: MBA:523
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1016/j.npep.2018.02.003
+  pmid: '29478718'
+  pmcid: PMC5906039
+  locator: Results 3.6; Fig. 9B; Table 2
+paraphrase: Many Nts neurons in the caudal medial preoptic area were double-labelled after VTA injection, forming a dense
+  cluster around -0.22 to +0.02 bregma. The preoptic area is among the main Nts sources to the VTA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MPO Nts neurons
+  extract.object_name: VTA

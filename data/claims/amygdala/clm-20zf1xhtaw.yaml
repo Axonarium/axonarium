@@ -1,0 +1,28 @@
+id: clm-20zf1xhtaw
+subject:
+  type: region
+  id: UBERON:0006083
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.1016/j.neuroscience.2021.02.017
+  pmid: '33609638'
+  pmcid: PMC8022030
+  locator: Results, Temporal lobe; Fig. S3
+paraphrase: Perirhinal labelling after ALO injection was inconsistent across brains.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PRh
+  extract.object_name: ALO

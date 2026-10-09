@@ -1,0 +1,32 @@
+id: clm-tfvj7bkrqq
+subject:
+  type: region
+  id: MBA:1088
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.celrep.2017.05.002
+  pmid: '28538174'
+  pmcid: PMC5457478
+  locator: Fig. 7F, 7G
+paraphrase: Chemogenetic silencing restricted to thalamo-LA projections (hM4Di expressed via CAV2-Cre from the LA plus Cre-dependent
+  AAV in MGm, activated by CNO) lowered the amplitude of electrically evoked thalamo-LA EPSCs and altered paired-pulse ratio
+  relative to controls, confirming a functional thalamic drive onto LA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MGm / thalamo-LA projections
+  extract.object_name: LA

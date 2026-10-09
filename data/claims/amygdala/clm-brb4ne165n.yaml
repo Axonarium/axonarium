@@ -1,0 +1,32 @@
+id: clm-brb4ne165n
+subject:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1002/hbm.25596
+  pmid: '34288264'
+  pmcid: PMC8449107
+  locator: Figs. 1b, 2b, 4, 5, 6; Results
+paraphrase: After injecting the retrogradely transported rAAV2-retro vector (ferritin- or EGFP-encoding) into the caudate
+  putamen, labelled cell bodies expressing the transgene were seen in prefrontal cortex, both by fluorescence/immunostaining
+  and as hypointense T2-weighted MRI signal and significant T2 relaxation-time changes that grew from 30 to 60 days post-injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PFC (prefrontal cortex)
+  extract.object_name: CPu

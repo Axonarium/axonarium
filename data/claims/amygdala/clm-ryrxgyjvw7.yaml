@@ -1,0 +1,33 @@
+id: clm-ryrxgyjvw7
+subject:
+  type: region
+  id: MBA:1088
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1016/j.celrep.2017.05.002
+  pmid: '28538174'
+  pmcid: PMC5457478
+  locator: Fig. 1F–1J; Fig. 5; Fig. 6
+paraphrase: Electrical stimulation of thalamic fibers in the internal capsule evoked glutamatergic excitatory postsynaptic
+  currents in principal neurons of the lateral amygdala in acute slices, with paired-pulse depression and stimulus-intensity-dependent
+  amplitudes; these responses were reduced in 22q11DS model mice and the presynaptic release probability deficit was reversed
+  by a Drd2 antagonist.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial division of the medial geniculate nucleus (MGm) / thalamic input
+  extract.object_name: lateral amygdala (LA)

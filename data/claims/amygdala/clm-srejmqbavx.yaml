@@ -1,0 +1,30 @@
+id: clm-srejmqbavx
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1002/cne.70081
+  pmid: '40838534'
+  pmcid: PMC12368940
+  locator: Fig. 3a,b; Fig. 4e
+paraphrase: Amygdalar input cells were concentrated in part in the central nucleus; the amygdala overall was a relatively
+  weak source.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: central nucleus of the amygdala (CeA)
+  extract.object_name: NAcSh-VP projection neurons

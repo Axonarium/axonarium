@@ -1,0 +1,29 @@
+id: clm-5rtnkn54rk
+subject:
+  type: region
+  id: UBERON:0001921
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1016/j.neuroscience.2021.02.017
+  pmid: '33609638'
+  pmcid: PMC8022030
+  locator: Results, Thalamus; Fig. 2; Table 2
+paraphrase: PVO injections produced light labelling in nucleus reuniens.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: reuniens thalamic (Re) nucleus
+  extract.object_name: PVO

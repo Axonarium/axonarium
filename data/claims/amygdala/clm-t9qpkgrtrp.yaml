@@ -1,0 +1,36 @@
+id: clm-t9qpkgrtrp
+subject:
+  type: region
+  id: MBA:477
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.3067
+  unit: '1'
+  sem: 0.0338
+  n: 4
+source:
+  doi: 10.1007/s12264-020-00545-z
+  pmid: '32691225'
+  pmcid: PMC7674542
+  locator: Fig. 6C
+paraphrase: The striatum supplied the largest share of rabies-labelled inputs to BLA VGLUT2+ neurons, more than to BLA PV+
+  neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: striatum
+  extract.object_name: BLA VGLUT2+ glutamatergic neurons
