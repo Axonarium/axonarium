@@ -51,6 +51,8 @@ QUANTITIES = {
     "synapse_count": ("1", 0.0, math.inf),
     "conduction_delay": ("ms", 0.0, math.inf),
 }
+# A delay of 0 is no measurement: a draft that gives one has taken the number from somewhere else, or made it up.
+POSITIVE = {"conduction_delay"}
 EVIDENCE = {  # the schema's predicate rule: each predicate allows only its own kinds of evidence
     "projects_to": {"anterograde_tracer", "retrograde_tracer", "single_neuron_reconstruction"},
     "synapses_onto": {"electron_microscopy", "transsynaptic_tracer"},
@@ -154,6 +156,7 @@ def measurements(found: list[DraftMeasurement]) -> tuple[list[dict], list[str]]:
             "isn't a finite number" if not all(math.isfinite(x) for x in numbers)
             else f"{m.value} is outside [{low}, {high}]" + (", perhaps a percent" if unit == "1" and high == 1 and m.value <= 100 else "")
             if not low <= m.value <= high
+            else f"{m.value} isn't above 0" if m.quantity in POSITIVE and m.value <= 0
             else "has a negative spread" if any(x is not None and x < 0 for x in (m.sd, m.sem))
             else "needs both ends of its interval" if (m.ci_low is None) != (m.ci_high is None)
             else "has an interval whose low end is above its high end" if m.ci_low is not None and m.ci_low > m.ci_high
