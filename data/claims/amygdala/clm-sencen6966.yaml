@@ -1,0 +1,30 @@
+id: clm-sencen6966
+subject:
+  type: region
+  id: UBERON:0002891
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/1471-2202-8-103
+  pmid: '18047654'
+  pmcid: PMC2216080
+  locator: Fig. 2E; Fig. 3D
+paraphrase: Layer II injections labelled some fibres in the caudal lateral/ventrolateral shell of the accumbens. A layer III
+  injection (case 9905) labelled the accumbens core densely.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: posterolateral cortical amygdaloid nucleus
+  extract.object_name: nucleus accumbens (core and lateral shell)

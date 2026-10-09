@@ -1,0 +1,31 @@
+id: clm-z9yhkvpfm5
+subject:
+  type: region
+  id: MBA:170
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:669
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 5A-5B
+paraphrase: Ad-Cre placed in visual cortex was retrogradely carried to geniculate neurons, which became GFP-labelled after
+  the Cre-dependent BA2001 vector replicated in them, confirming the thalamocortical projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral geniculate nucleus (LGN)
+  extract.object_name: visual cortex (Vis Cx)

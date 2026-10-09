@@ -1,0 +1,31 @@
+id: clm-y7sxrxa070
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0002-16.2016
+  pmid: '27022632'
+  pmcid: PMC4804386
+  locator: Fig. 3I-J; Fig. 4A,C,G
+paraphrase: CTB injected into the BLA retrogradely labelled corticoamygdalar neurons in IL cortex, in layer 2 and in layers
+  3/5.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: IL cortex (L2 and L3/5 IL-CA neurons)
+  extract.object_name: basolateral amygdala (BLA)

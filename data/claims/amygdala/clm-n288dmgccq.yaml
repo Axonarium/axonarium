@@ -1,0 +1,31 @@
+id: clm-n288dmgccq
+subject:
+  type: region
+  id: MBA:901
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:429
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 10F
+paraphrase: Monosynaptically restricted rabies-GFP labelled a mixed population of trigeminal ganglion sensory neurons, including
+  NF200-positive myelinated cells, as direct inputs to PB-projecting TNC neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: trigeminal ganglion (TG)
+  extract.object_name: PB-projecting projection neurons of the TNC

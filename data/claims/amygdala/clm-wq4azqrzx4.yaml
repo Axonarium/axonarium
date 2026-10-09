@@ -1,0 +1,30 @@
+id: clm-wq4azqrzx4
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1097
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Fig. 9F
+paraphrase: Axon collaterals of rabies-RFP-labelled parabrachial neurons were seen in the hypothalamus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: parabrachial nucleus (PB)
+  extract.object_name: hypothalamus (Hyp)

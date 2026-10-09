@@ -1,0 +1,31 @@
+id: clm-vqk2tqchpx
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s10194-026-02285-3
+  pmid: '41652327'
+  pmcid: PMC12977853
+  locator: Fig. 3C-D
+paraphrase: High-titre anterograde transsynaptic AAV2/1-hSyn-Cre injected into the pPVT of Ai9 reporter mice produced tdTomato-labelled
+  postsynaptic cell bodies in the nucleus accumbens.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pPVT
+  extract.object_name: NAc

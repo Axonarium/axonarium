@@ -1,0 +1,32 @@
+id: clm-cf9znqw7br
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1186/s13293-022-00486-4
+  pmid: '36585727'
+  pmcid: PMC9801632
+  locator: Fig. 1A, Fig. 2A, D
+paraphrase: VTA dopaminergic tdTomato-labelled axons were present in the prefrontal cortex and co-labelled with TH immunostaining.
+  Labelling there was sparse and significantly lower than in BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTA (dopaminergic neurons, TH-Cre)
+  extract.object_name: prefrontal cortex (PFC)

@@ -1,0 +1,32 @@
+id: clm-dvxpwhpwmq
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s10194-026-02285-3
+  pmid: '41652327'
+  pmcid: PMC12977853
+  locator: Fig. 3C-D; Fig. 7G-I
+paraphrase: Anterograde transsynaptic Cre injected in the pPVT labelled postsynaptic cell bodies in the central amygdala of
+  Ai9 mice; a second experiment with transsynaptic Flp from the pPVT combined with a Cre/Flp-dependent vector in VGAT-Cre
+  mice selectively labelled CeA GABAergic neurons receiving pPVT input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pPVT
+  extract.object_name: CeA

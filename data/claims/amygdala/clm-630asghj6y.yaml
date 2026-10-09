@@ -1,0 +1,29 @@
+id: clm-630asghj6y
+subject:
+  type: region
+  id: UBERON:0001953
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001885
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0078928
+  pmid: '24223172'
+  pmcid: PMC3819259
+  locator: Fig. 2F, Fig. 4F
+paraphrase: After dorsal DG injections, presubiculum labeling was absent at three days but dense in some five-day cases, consistent
+  with an indirect rather than monosynaptic input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: presubiculum
+  extract.object_name: dorsal DG

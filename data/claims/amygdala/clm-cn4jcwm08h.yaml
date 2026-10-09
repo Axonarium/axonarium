@@ -1,0 +1,31 @@
+id: clm-cn4jcwm08h
+subject:
+  type: region
+  id: UBERON:0001897
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-gv1k4bnh04
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.14814/phy2.13002
+  pmid: '27798355'
+  pmcid: PMC5099964
+  locator: Materials and Methods (electrophysiology); Fig. 2A–C
+paraphrase: Electrical stimulation of thalamic afferent fibers in amygdala slices evoked monosynaptic EPSCs in BLA principal
+  neurons; the NMDA receptor component was isolated with CNQX and picrotoxin at +40 mV and progressively blocked by MK-801
+  during repeated stimulation, with a faster decay constant in slices from stressed rats (control 33.47 ± 2.3, n = 12; stress
+  25.03 ± 2.03, n = 12), indicating higher presynaptic release probability at this thalamic input ten days after acute stress.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: thalamic inputs (thalamic afferent fibers)
+  extract.object_name: BLA principal neurons

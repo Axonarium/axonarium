@@ -1,0 +1,32 @@
+id: clm-d8d89prr2b
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/s12915-017-0467-2
+  pmid: '29282124'
+  pmcid: PMC5745965
+  locator: Fig. 7a (left and middle panels)
+paraphrase: Six weeks after injecting AAV-CaMKIIa-ChR2-mCherry into the mPFC, mCherry-labelled axons from the mPFC were seen
+  in the BLA, described by the authors as strong fibre labelling.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mPFC
+  extract.object_name: BLA

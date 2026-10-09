@@ -1,0 +1,29 @@
+id: clm-0atke2z3xp
+subject:
+  type: region
+  id: UBERON:0002421
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s12915-017-0467-2
+  pmid: '29282124'
+  pmcid: PMC5745965
+  locator: Fig. 2a; Methods, Anterograde tracing
+paraphrase: BDA injected into the hippocampus produced labelled axon terminals in the BLA that co-localised with VGLUT2, showing
+  a glutamatergic hippocampal input to the BLA; the density of this BDA/VGLUT2 labelling was unchanged by morphine treatment.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: hippocampus
+  extract.object_name: BLA

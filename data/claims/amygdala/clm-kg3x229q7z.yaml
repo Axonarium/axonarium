@@ -1,0 +1,32 @@
+id: clm-kg3x229q7z
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1210/endocr/bqac196
+  pmid: '36445688'
+  pmcid: PMC9761574
+  locator: Fig. 2; Results, 'Effect of MePD Urocortin-3 Terminal Stimulation in the PVN on Dynamic CORT Secretion'
+paraphrase: Blue-light stimulation (20 Hz, 15 mW) of ChR2-expressing MePD Ucn3 axon terminals within the PVN raised circulating
+  corticosterone relative to control virus animals, indicating that the MePD Ucn3 input drives PVN-dependent HPA axis output;
+  no such change occurred in AAV-YFP controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MePD Ucn3 neurons
+  extract.object_name: hypothalamic paraventricular nucleus (PVN)

@@ -1,0 +1,31 @@
+id: clm-y95n84awaz
+subject:
+  type: region
+  id: UBERON:0002891
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001883
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/1471-2202-8-103
+  pmid: '18047654'
+  pmcid: PMC2216080
+  locator: Fig. 2B-F; Fig. 3B; Methodological considerations
+paraphrase: Dextran-amine injections restricted to the posterolateral cortical amygdaloid nucleus labelled a dense meshwork
+  of fibres in layers II-III of the medial olfactory tubercle, around the medial islands of Calleja, and in the cell bridges
+  of the ventral striatum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: posterolateral cortical amygdaloid nucleus
+  extract.object_name: medial olfactory tubercle

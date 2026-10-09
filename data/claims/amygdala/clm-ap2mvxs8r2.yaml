@@ -1,0 +1,30 @@
+id: clm-ap2mvxs8r2
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: inhibitory
+source:
+  doi: 10.1186/1744-8069-6-93
+  pmid: '21162731'
+  pmcid: PMC3016348
+  locator: Fig. 1C-H; Fig. 2B; Fig. 3
+paraphrase: BLA stimulation also evoked longer, more variable-latency IPSCs in CeLC neurons that failed to follow high-frequency
+  stimulation. These IPSCs were blocked by bicuculline and reduced by NBQX, consistent with glutamate-driven disynaptic feedforward
+  inhibition, and they were reduced in arthritic rats.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CeLC (latero-capsular division of the CeA)

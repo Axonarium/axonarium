@@ -1,0 +1,31 @@
+id: clm-jh9ms1zhtz
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0078-15.2015
+  pmid: '26478911'
+  pmcid: PMC4603255
+  locator: Results, Experiment 1; Fig. 3C; Fig. 4B,F,I
+paraphrase: Injecting CTb into the mOT retrogradely labeled VTA neurons. Some of these mOT-projecting VTA cells became Fos-positive
+  when the mice were exposed to male bedding volatiles.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ventral tegmental area (VTA)
+  extract.object_name: medial olfactory tubercle (mOT)

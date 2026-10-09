@@ -1,0 +1,30 @@
+id: clm-0w7anb12df
+subject:
+  type: region
+  id: MBA:827
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0002-16.2016
+  pmid: '27022632'
+  pmcid: PMC4804386
+  locator: Fig. 2B-C; Fig. 4B-C
+paraphrase: Retrograde tracer (Retrobeads) injected into the PAG labelled cortico-PAG pyramidal neurons in layer 5 of IL cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: layer 5 of IL cortex (IL-CP neurons)
+  extract.object_name: periaqueductal gray (PAG)

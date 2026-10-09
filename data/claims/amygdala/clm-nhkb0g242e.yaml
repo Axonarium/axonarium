@@ -1,0 +1,31 @@
+id: clm-nhkb0g242e
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1186/1744-8069-2-18
+  pmid: '16681859'
+  pmcid: PMC1471776
+  locator: Fig. 1A-E; Fig. 2; Fig. 3; Methods, Synaptic stimulation
+paraphrase: Electrical stimulation of the fibre bundle carrying parabrachial afferents dorsomedial to the central amygdala
+  evoked monosynaptic excitatory postsynaptic currents in CeLC neurons recorded in whole-cell voltage clamp in both normal
+  and arthritic rats; EPSC amplitudes were larger in slices from arthritic rats, and a group II mGluR agonist presynaptically
+  suppressed this transmission (an effect reversed by the group II antagonist EGLU and not by bicuculline).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pontine parabrachial (PB) area
+  extract.object_name: latero-capsular division of the central nucleus of the amygdala (CeLC)

@@ -1,0 +1,29 @@
+id: clm-wy0njjn0pd
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001885
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0078928
+  pmid: '24223172'
+  pmcid: PMC3819259
+  locator: Results, Single-virus injection; Fig. 9
+paraphrase: Medial prefrontal (prelimbic) labeling was absent at three days and appeared only at five days, implying an indirect
+  route to the DG.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: prelimbic cortex
+  extract.object_name: dorsal and ventral DG

@@ -1,0 +1,30 @@
+id: clm-cfhx4pjk30
+subject:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:159
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0078-15.2015
+  pmid: '26478911'
+  pmcid: PMC4603255
+  locator: Results, Localization of hM4Di infection
+paraphrase: Viral mCitrine expression in the mOT revealed labeled fibers in the anterior olfactory nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mOT
+  extract.object_name: anterior olfactory nucleus

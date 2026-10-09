@@ -1,0 +1,32 @@
+id: clm-xyaexa41q8
+subject:
+  type: region
+  id: MBA:596
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/s13024-016-0113-4
+  pmid: '27363576'
+  pmcid: PMC4929736
+  locator: 'Study 2, Fig. 3a (panels a, f-g); Additional file 1: Table S2'
+paraphrase: Dense, brightly labelled FluoroGold+ neurons were seen in the horizontal limb of the diagonal band after tracer
+  infusion into the OB/AON, even though this region developed no α-synuclein inclusions.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: horizontal limb of the diagonal band of Broca (HDB)
+  extract.object_name: OB/AON

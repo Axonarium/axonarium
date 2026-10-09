@@ -1,0 +1,30 @@
+id: clm-rf5d281rcg
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1289/ehp12532
+  pmid: '37796530'
+  pmcid: PMC10552915
+  locator: Fig. S5M-O
+paraphrase: ChR2 was expressed in Gad2-Cre GABAergic neurons of the LA. Light stimulation of these neurons evoked IPSCs in
+  LA principal neurons recorded in slices.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LA GABA interneurons (Gad2-Cre)
+  extract.object_name: principal (glutamatergic) neurons of the LA

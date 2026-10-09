@@ -1,0 +1,32 @@
+id: clm-tpy0bc81bw
+subject:
+  type: neuron_type
+  id: nt-bqdbjsy396
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:223
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1210/endocr/bqac197
+  pmid: '36453253'
+  pmcid: PMC9757692
+  locator: Fig. 5A-F; Results, final section
+paraphrase: 'Blue-light stimulation through a fibre in the ARC of ChR2-expressing MePD GABAergic terminals lengthened the
+  LH interpulse interval in a frequency-dependent way: 10 Hz raised it from about 23 to 38 min and 20 Hz from about 23 to
+  62 min, whereas 2 Hz, 5 Hz and no stimulation had no effect, and light in wild-type mice without ChR2 had no effect. This
+  indicates that activating this GABAergic input to the ARC suppresses the GnRH pulse generator output.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MePD GABAergic projection terminals in the ARC
+  extract.object_name: hypothalamic arcuate nucleus (ARC)

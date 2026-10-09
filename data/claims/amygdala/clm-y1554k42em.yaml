@@ -1,0 +1,31 @@
+id: clm-y1554k42em
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.1186/1471-2202-12-115
+  pmid: '22085449'
+  pmcid: PMC3228703
+  locator: Fig. 2A-C; Results, 'HFS delivered to the BLA modified pain responses recorded in the PFC'; Fig. 6
+paraphrase: In urethane-anesthetized rats, high-frequency electrical stimulation of the BLA produced a long-lasting suppression,
+  beginning within 10 min and lasting over 60 min, of tail-pressure-evoked nociceptive unit responses recorded in cingulate
+  and prelimbic mPFC (9 units in 9 rats). This suppression was prevented by NMDA and group II mGluR antagonists and by D2
+  or D4 antagonists injected into the PFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral nucleus of the amygdala (BLA)
+  extract.object_name: medial prefrontal cortex (mPFC; cingulate and prelimbic areas)

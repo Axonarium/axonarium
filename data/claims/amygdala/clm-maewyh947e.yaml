@@ -1,0 +1,30 @@
+id: clm-maewyh947e
+subject:
+  type: region
+  id: MBA:218
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0123381
+  pmid: '25830919'
+  pmcid: PMC4382118
+  locator: Fig 3
+paraphrase: Rabies-labelled inputs to cholinergic interneurons appeared in the lateral posterior thalamus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: lateral posterior thalamic nucleus, mediorostral part
+  extract.object_name: cholinergic interneurons in the dorsal striatum

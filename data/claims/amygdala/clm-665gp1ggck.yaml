@@ -1,0 +1,32 @@
+id: clm-665gp1ggck
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1210/endocr/bqac196
+  pmid: '36445688'
+  pmcid: PMC9761574
+  locator: Fig. 5, A-Aiii; Results, final section
+paraphrase: Cre-dependent AAV carrying ChR2-EYFP injected into the posterodorsal medial amygdala of Ucn3-cre-tdTomato mice
+  produced YFP-labelled axonal fibres within the hypothalamic paraventricular nucleus, showing that Ucn3 cells of the MePD
+  send axons to the PVN; the authors note some fibres might reflect non-specific ChR2 expression.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MePD Ucn3 neurons
+  extract.object_name: paraventricular nucleus of hypothalamus (PVN)

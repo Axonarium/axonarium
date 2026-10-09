@@ -1,0 +1,32 @@
+id: clm-kd73ke59jx
+subject:
+  type: region
+  id: MBA:223
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1371/journal.pone.0025864
+  pmid: '21991375'
+  pmcid: PMC3186811
+  locator: Fig. 4C, Fig. 5B, Fig. 6B
+paraphrase: CTB in the lateral hypothalamus labeled many arcuate cells, including POMC neurons. The labeled POMC neurons were
+  spread evenly from rostral to caudal arcuate.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: arcuate nucleus (POMC neurons)
+  extract.object_name: lateral hypothalamus

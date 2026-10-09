@@ -1,0 +1,31 @@
+id: clm-wcyw0efyct
+subject:
+  type: region
+  id: MBA:703
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/eneuro.0119-24.2024
+  pmid: '38811163'
+  pmcid: PMC11208988
+  locator: Fig. 5B, Fig. 7
+paraphrase: The entorhinal cortex, an input region, showed strong reciprocal Syp-EGFP terminal labelling from the PL.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL
+  extract.object_name: ENT

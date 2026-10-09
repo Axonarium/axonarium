@@ -1,0 +1,36 @@
+id: clm-k7xkxn6q5m
+subject:
+  type: region
+  id: MBA:1011
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0525
+  unit: '1'
+  n: 3
+source:
+  doi: 10.1503/jpn.200131
+  pmid: '34043305'
+  pmcid: PMC8327972
+  locator: Results, Direct anatomic connection between mouse AAC and OFC; Fig. 2C-D
+paraphrase: After Fluoro-Gold injection into ventral orbital OFC, retrogradely labelled neurons were found in the dorsal secondary
+  auditory cortex. They accounted for about 5.25% of labelled cortical cells outside the OFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dorsal AAC–dorsal auditory cortex (AuD)
+  extract.object_name: OFC (ventral–orbital)

@@ -1,0 +1,31 @@
+id: clm-6pw16bzqkk
+subject:
+  type: region
+  id: MBA:1052
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.1371/journal.pone.0140681
+  pmid: '26470056'
+  pmcid: PMC4607402
+  locator: Results, monosynaptic inputs to PB projection neurons
+paraphrase: Pedunculopontine tegmental neurons were rarely labelled with the rabies system after PB injections, a negative
+  result the authors ascribe to limited rabies uptake and transfer rather than to lack of connectivity.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PPTg
+  extract.object_name: PB neurons that project to the amygdala

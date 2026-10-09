@@ -1,0 +1,32 @@
+id: clm-1h8726v93v
+subject:
+  type: region
+  id: MBA:475
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1186/s13041-023-01053-7
+  pmid: '37715263'
+  pmcid: PMC10504749
+  locator: 'Additional file 1: Fig. S1C'
+paraphrase: A retro-AAV2 expressing mRuby placed in the medial geniculate nucleus produced dense axonal, but no somatic, mRuby
+  labeling in the basolateral amygdala, showing thalamic axons reaching the BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MGn
+  extract.object_name: BLA

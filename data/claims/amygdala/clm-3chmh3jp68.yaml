@@ -1,0 +1,36 @@
+id: clm-3chmh3jp68
+subject:
+  type: region
+  id: MBA:1002
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0185
+  unit: '1'
+  n: 3
+source:
+  doi: 10.1503/jpn.200131
+  pmid: '34043305'
+  pmcid: PMC8327972
+  locator: Results, Direct anatomic connection between mouse AAC and OFC; Fig. 2C-D
+paraphrase: Only a small share of OFC-projecting neurons labelled by Fluoro-Gold in ventral orbital OFC lay in the primary
+  auditory cortex. This was about 1.85% of labelled cortical cells outside the OFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: primary auditory cortex (Au1)
+  extract.object_name: OFC (ventral–orbital)

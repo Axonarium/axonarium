@@ -1,0 +1,29 @@
+id: clm-07py5a6ybc
+subject:
+  type: region
+  id: UBERON:0001393
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002886
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1186/s13041-020-00587-4
+  pmid: '32197621'
+  pmcid: PMC7082919
+  locator: Fig. 1a
+paraphrase: AAV-oChIEF-tdTomato injected into the auditory cortex produced tdTomato-labelled axonal fibres in the lateral
+  amygdala four weeks later, where the optical fibre was placed to stimulate these inputs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: auditory cortex (AC)
+  extract.object_name: lateral amygdala (LA)

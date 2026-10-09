@@ -1,0 +1,31 @@
+id: clm-aqk2a4m6bz
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0002-16.2016
+  pmid: '27022632'
+  pmcid: PMC4804386
+  locator: Fig. 1D-G; Results, first section
+paraphrase: After AAV-ChR2-YFP injection into the BLA, YFP-labelled axons appeared in IL cortex. They were uniform across
+  layer 5 and sparse in layer 2.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: infralimbic (IL) cortex
