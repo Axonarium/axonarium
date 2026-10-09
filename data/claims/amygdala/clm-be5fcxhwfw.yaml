@@ -27,7 +27,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: AuV (ventral part of secondary auditory cortex)
   extract.object_name: LA (LAd and LAv)
+  verify.note: ChR2-Venus from the AuV injection gave strong LA labelling significantly above background in LAd and LAv (n
+    = 10), with functional AuV-to-LA EPSCs confirming the source.

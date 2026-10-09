@@ -24,7 +24,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: BLA
   extract.object_name: NAc
+  verify.note: CTB-594 in NAc labeled BLA neurons, with 11% control vs 37% phasic cFos overlap as reported.
