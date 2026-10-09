@@ -1,0 +1,40 @@
+id: clm-4fahem3739
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-025-59686-2
+  pmid: '40368884'
+  pmcid: PMC12078644
+  locator: Fig. 2A, D–F; Fig. S3A, D, E
+paraphrase: Retrogradely transported viruses (retroAAV-Syn-eYFP, or retroAAV-mCherry-FlpO in Vgat-Cre mice) injected into
+  the LHA labelled cell bodies in the BNST, which were then patched or imaged; the Flp-dependent strategy showed that labelled
+  LHA-projecting BNST cells include GABAergic (Vgat+) neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BNST
+  extract.object_name: LHA
+  verify.note: retroAAV injected in LHA labeled BNST somata for patching/imaging, including Vgat+ cells via the Flp strategy.

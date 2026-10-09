@@ -1,0 +1,40 @@
+id: clm-x4vgb8paz5
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-025-64742-y
+  pmid: '41188217'
+  pmcid: PMC12586453
+  locator: Fig. 4a–d; Supplementary Fig. 6
+paraphrase: Cre-dependent synaptophysin-mCherry injected into the CeA of Avpr1a-Cre mice labelled synaptic boutons in the
+  medial amygdala, listed among the densest target sites in females.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AVPR1ACeA neurons
+  extract.object_name: MeA
+  verify.note: MeA is listed first among prominent anterograde targets of AVPR1A CeA neurons.

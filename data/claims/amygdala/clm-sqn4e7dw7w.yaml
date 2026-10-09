@@ -1,0 +1,41 @@
+id: clm-sqn4e7dw7w
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41593-019-0506-0
+  pmid: '31611706'
+  pmcid: PMC6858554
+  locator: Fig. 2a; Supplementary Fig. 3c
+paraphrase: Cre-dependent mCherry expressed in VTA dopamine neurons labelled axons within the basolateral complex that were
+  concentrated in the basal nucleus rather than the lateral nucleus, across anterior, middle and posterior levels (4 mice).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTA dopamine neurons (DAT-IRES-Cre)
+  extract.object_name: basal amygdala (BA)
+  verify.note: Anterograde Cre-dependent mCherry from VTA dopamine neurons densely labeled BA over LA in 4 mice across AP
+    levels.

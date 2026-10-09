@@ -1,0 +1,39 @@
+id: clm-ptp1a3f20g
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-025-57230-w
+  pmid: '39994222'
+  pmcid: PMC11850870
+  locator: Fig. 5f, g; Results, PAG-projecting ACC neurons section
+paraphrase: Retrograde AAV-Cre injected into the right BLA, with Cre-dependent GCaMP8f in the right ACC, labelled BLA-projecting
+  ACC neurons; 280 of these cells were imaged.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior cingulate cortex (ACC)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: The same retrograde strategy with Cre injected into the BLA gave 280 imaged BLA-projecting ACC neurons in mice.

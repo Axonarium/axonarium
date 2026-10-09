@@ -1,0 +1,38 @@
+id: clm-njya9wk00b
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: single_neuron_reconstruction
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-18411-1
+  pmid: '41022937'
+  pmcid: PMC12479884
+  locator: Fig. 8; Supplementary Fig. S8
+paraphrase: Axon collaterals of reconstructed BAp principal neurons were observed in the lateral amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BAp PNs
+  extract.object_name: LA
+  verify.note: BAp axon collaterals were observed in the LA.

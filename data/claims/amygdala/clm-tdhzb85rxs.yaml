@@ -1,0 +1,40 @@
+id: clm-tdhzb85rxs
+subject:
+  type: region
+  id: MBA:262
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-025-64742-y
+  pmid: '41188217'
+  pmcid: PMC12586453
+  locator: Fig. 5b; Supplementary Fig. 9e–k
+paraphrase: Retrograde tracer injected in the medial CeA of Avp-Flp::GFP mice robustly labelled AVP-expressing cells in the
+  thalamic reticular nucleus in both sexes.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: thalamic reticular nucleus (TRN)
+  extract.object_name: medial aspect of the CeA
+  verify.note: TRN showed robust retrograde AVP labelling from medial CeA in both sexes.

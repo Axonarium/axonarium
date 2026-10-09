@@ -1,0 +1,40 @@
+id: clm-86z23yvmqn
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-023-44322-8
+  pmid: '38191518'
+  pmcid: PMC10774417
+  locator: Fig. 2k
+paraphrase: Optical stimulation of BLA axons also evoked excitatory postsynaptic currents in putative D2 medium spiny neurons
+  of the dorsomedial striatum (6 cells from 6 mice), but these responses were significantly smaller than in D1 neurons (5
+  cells from 5 mice) at every light intensity tested.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: D2-MSNs (tdTomato-) in the DMS
+  verify.note: Fig. 2k shows oEPSCs in D2-MSNs that were significantly smaller than in D1-MSNs, with the stated sample sizes.

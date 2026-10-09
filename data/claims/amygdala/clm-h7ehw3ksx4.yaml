@@ -1,0 +1,40 @@
+id: clm-h7ehw3ksx4
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002043
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41598-025-99181-8
+  pmid: '40275074'
+  pmcid: PMC12022358
+  locator: Fig. 2A–D; Fig. 3D–E
+paraphrase: With ChR2 expressed in mPFC and DRN neurons retrogradely labelled from mPFC, light stimulation of mPFC axons within
+  DRN evoked excitatory postsynaptic currents in mPFC-projecting 5-HT neurons (recorded with picrotoxin present); these currents
+  were abolished by TTX and restored by 4-AP, indicating a direct monosynaptic glutamatergic input. Amplitudes averaged about
+  47 pA in controls and were larger in prenatally ethanol-exposed rats, which also showed a reduced paired-pulse ratio; the
+  NO donor SNAP potentiated these currents in controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mPFC
+  extract.object_name: DRNmPFC 5-HT neurons
+  verify.note: Monosynaptic mPFC glutamatergic input to DRNmPFC 5-HT neurons, potentiated by PE and by SNAP in controls.

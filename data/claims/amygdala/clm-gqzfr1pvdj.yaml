@@ -1,0 +1,39 @@
+id: clm-gqzfr1pvdj
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 1i–l
+paraphrase: Retro-AAV-mCherry restricted to the oval BNST labelled principal neurons located mainly in the posterior BLA (3
+  mice).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pBLA
+  extract.object_name: ovBNST
+  verify.note: ovBNST retro-AAV (n=3) labelled mainly pBLA neurons.

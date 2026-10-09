@@ -1,0 +1,39 @@
+id: clm-n2r5hg67j8
+subject:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-18411-1
+  pmid: '41022937'
+  pmcid: PMC12479884
+  locator: Fig. 3A; Supplementary Fig. S3
+paraphrase: In rostral and caudal segments of the basal nucleus, labelled glutamatergic mPFC axons reached both the BAa and
+  the BAp, in a pattern complementary to insular afferents.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC)
+  extract.object_name: BAp
+  verify.note: In rostral and caudal BA segments, mPFC axons reached the BAp in a pattern complementary to insular axons.

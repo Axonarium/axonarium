@@ -1,0 +1,40 @@
+id: clm-wn07ygc9p7
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 1a–d
+paraphrase: AAV-vGluT1-mCherry in the posterior BLA produced densely packed terminal labelling in the oval subregion of dorsal
+  BNST, measured as relative fluorescence intensity in four mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pBLA
+  extract.object_name: ovBNST
+  verify.note: pBLA anterograde tracing gave dense ovBNST terminal labelling quantified in 4 mice.

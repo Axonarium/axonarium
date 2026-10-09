@@ -1,0 +1,41 @@
+id: clm-1rrp20cgjs
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-025-59686-2
+  pmid: '40368884'
+  pmcid: PMC12078644
+  locator: Fig. 3E; Methods, voltage clamp recordings
+paraphrase: A minority of synaptically connected LHA Vglut2 neurons showed optically evoked EPSCs (alone or together with
+  IPSCs) upon BNST axon stimulation; in these rare cases the response persisted in TTX/4-AP plus gabazine and was blocked
+  by the AMPA antagonist DNQX, indicating a small glutamatergic BNST input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BNST
+  extract.object_name: LHAVglut2 neurons
+  verify.note: The pie chart categories plus the DNQX confirmation in Methods support a small glutamatergic BNST input to
+    LHA Vglut2 cells in mice.

@@ -1,0 +1,41 @@
+id: clm-8z9551sd01
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-44322-8
+  pmid: '38191518'
+  pmcid: PMC10774417
+  locator: Fig. 3e
+paraphrase: Two different retrograde dyes injected separately into the dorsomedial striatum and the nucleus accumbens each
+  labelled BLA neurons, but only a few BLA cells were double-labelled, indicating that accumbens-projecting and striatum-projecting
+  BLA populations are largely separate.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc
+  verify.note: Dual retrograde dye injection into DMS and NAc labelled BLA neurons with little overlap, as described for Fig.
+    3e.

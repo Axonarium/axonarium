@@ -1,0 +1,40 @@
+id: clm-bxt2e7b7sg
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1038/s42003-026-10089-z
+  pmid: '42026195'
+  pmcid: PMC13316100
+  locator: Fig. 4d, f; Supplementary Fig. 4b
+paraphrase: Silencing NpHR-expressing BLA axons within the prelimbic cortex with amber light increased the calcium transient
+  rate of CaMKII-positive prefrontal neurons imaged by miniscope, both in the home cage and during social testing, showing
+  that BLA input exerts a net suppressive influence on prefrontal excitatory neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: mPFC (PL) pyramidal neurons
+  verify.note: NpHR silencing of BLA axons in PL increased mPFC pyramidal transient rates, supporting net suppressive influence.

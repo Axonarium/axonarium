@@ -1,0 +1,40 @@
+id: clm-czqd2t32nz
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-44322-8
+  pmid: '38191518'
+  pmcid: PMC10774417
+  locator: Fig. 2a; Results (BLA-NAc section)
+paraphrase: Anterograde tracing from the BLA showed labelled fibres in the nucleus accumbens, with a more widespread terminal
+  field there than in the dorsomedial striatum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc
+  verify.note: The text states BLA inputs are more widespread in NAc than DMS referring to Fig. 2a, but the figure caption
+    only describes amygdalostriatal tracing, so the NAc labelling cannot be confirmed from this text.

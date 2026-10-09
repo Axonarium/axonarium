@@ -1,0 +1,42 @@
+id: clm-w88x3zy10g
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-023-40517-1
+  pmid: '37604802'
+  pmcid: PMC10442438
+  locator: Fig. 3c-e, 3f-k
+paraphrase: With eYFP expressed in aIC glutamatergic neurons, the BLA held the densest axonal labelling of all twelve targets
+  and served as the normalization reference. Collateral mapping of aIC-BLA neurons with synaptophysin-mCherry showed the densest
+  boutons in the ipsilateral BLA, plus substantial axons and boutons in the contralateral BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: aIC
+  extract.object_name: BLA
+  verify.note: BLA is the densest aIC target and the normalization reference, and collateral mapping shows dense boutons in
+    the ipsilateral and contralateral BLA.

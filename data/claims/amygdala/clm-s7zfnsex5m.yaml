@@ -1,0 +1,40 @@
+id: clm-s7zfnsex5m
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-025-64742-y
+  pmid: '41188217'
+  pmcid: PMC12586453
+  locator: Fig. 5a, b; Supplementary Fig. 9c–k
+paraphrase: A retrograde AAV-fDIO-mCherry placed in the medial CeA of Avp-Flp::GFP mice robustly labelled GFP-positive AVP
+  neurons in the posterodorsal and anteroventral medial amygdala in both sexes; the MePD was labelled in every animal examined.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: MePD and MeAV (AVP neurons)
+  extract.object_name: medial aspect of the CeA
+  verify.note: Robust retrograde labelling of AVP neurons in MePD (100% of mice) and MeAV from medial CeA.

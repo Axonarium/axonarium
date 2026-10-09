@@ -1,0 +1,39 @@
+id: clm-geybfn1h0d
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-18411-1
+  pmid: '41022937'
+  pmcid: PMC12479884
+  locator: Fig. 6B
+paraphrase: CEAl retrograde tracer injections labelled neurons throughout the lateral amygdala, with no segregation between
+  its subnuclei.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LA
+  extract.object_name: CEAl
+  verify.note: CEAl injections labelled LA neurons, with no segregation between LA subnuclei.

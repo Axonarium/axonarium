@@ -1,0 +1,39 @@
+id: clm-etpe3e64b1
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 9c, d
+paraphrase: Monosynaptic rabies tracing showed ventral CA1 neurons among the direct presynaptic inputs to adBNST-projecting
+  anterior BLA principal neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CA1v (field CA1 ventral region)
+  extract.object_name: aBLA→adBNST PNs
+  verify.note: Ventral CA1 appeared among monosynaptic inputs to aBLA→adBNST PNs.

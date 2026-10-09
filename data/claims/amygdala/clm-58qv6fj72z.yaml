@@ -1,0 +1,39 @@
+id: clm-58qv6fj72z
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-18411-1
+  pmid: '41022937'
+  pmcid: PMC12479884
+  locator: Fig. 3B; Supplementary Fig. S4
+paraphrase: Cre-dependent anterograde labelling of glutamatergic insular cortex neurons showed axons innervating the DsRed-negative
+  posterior basal subnucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: insular cortex (IC)
+  extract.object_name: BAp
+  verify.note: Vglut1-Cre anterograde labelling of insular axons shows them reaching the BAp in all segments described.

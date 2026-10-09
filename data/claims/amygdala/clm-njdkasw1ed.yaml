@@ -1,0 +1,41 @@
+id: clm-njdkasw1ed
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1002
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1038/s41598-019-56092-9
+  pmid: '31873139'
+  pmcid: PMC6928164
+  locator: Figs. 3, 4a,b, 5
+paraphrase: CTB injected into A1 retrogradely labelled about one third as many La neurons as A2 injections, concentrated caudally;
+  dual-tracer injections showed A1- and A2-projecting La neurons intermingled but largely separate, with only 3.9% double-labelled.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: La
+  extract.object_name: A1
+  verify.note: The one-third count, caudal concentration, intermingling and 3.9% double labelling are all reported for La-to-A1
+    neurons.

@@ -1,0 +1,53 @@
+id: clm-t9qp766h7g
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.72
+  unit: '1'
+  n: 44
+- quantity: fraction_of_labelled_neurons
+  value: 0.478
+  unit: '1'
+  n: 67
+- quantity: fraction_of_labelled_neurons
+  value: 0.17
+  unit: '1'
+  n: 206
+source:
+  doi: 10.1038/s41598-025-08612-z
+  pmid: '40691451'
+  pmcid: PMC12280202
+  locator: Fig. 2F–H and Results, section 2
+paraphrase: Among itch-activated CGRP-immunoreactive neurons in the lateral external parabrachial subregion, most contained
+  CTB injected in the CeA, and nearly half of the CTB-labelled itch-activated PBNLE neurons were CGRP-positive, so both CGRP+
+  and non-CGRP+ PBN cells send axons to the CeA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CGRP⁺ serotonin-TRAPed neurons in the lateral external PBN (PBNLE)
+  extract.object_name: CeA
+  verify.note: The paper reports 32/44 (72%), 32/67 (47.8%) and 36/206 (17%) for CGRP+ itch-TRAPed CeA-projecting PBN neurons.

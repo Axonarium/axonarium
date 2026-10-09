@@ -1,0 +1,39 @@
+id: clm-dn3fncjkxk
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41593-019-0506-0
+  pmid: '31611706'
+  pmcid: PMC6858554
+  locator: Fig. 4a
+paraphrase: After Cre-dependent GCaMP6s expression in VTA of DAT-IRES-Cre mice, histology showed labelled dopaminergic axon
+  fields in NAc as well as BA, beneath the implanted photometry fibers.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTA dopamine neurons
+  extract.object_name: nucleus accumbens (NAc) medial shell
+  verify.note: Fig. 4a histology shows Cre-dependent VTA labeling with axon fields under the NAc medial shell fiber.

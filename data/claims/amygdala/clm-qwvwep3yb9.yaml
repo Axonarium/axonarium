@@ -1,0 +1,39 @@
+id: clm-qwvwep3yb9
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-025-64742-y
+  pmid: '41188217'
+  pmcid: PMC12586453
+  locator: Fig. 4g, h; Supplementary Fig. 7b, c
+paraphrase: EnvA-G-deleted rabies-mCherry injected into the DLS, and separately a retrograde AAV-DIO-Flp injected into the
+  DLS, labelled Avpr1a-Cre neurons in the CeA, showing that these CeA neurons send axons to the dorsolateral striatum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AVPR1ACeA neurons
+  extract.object_name: DLS
+  verify.note: Both rabies and retrograde AAV-Flp injections in DLS labelled Avpr1a-Cre CeA neurons.

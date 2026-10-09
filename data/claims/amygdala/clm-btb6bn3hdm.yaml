@@ -1,0 +1,38 @@
+id: clm-btb6bn3hdm
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1038/s41598-019-56092-9
+  pmid: '31873139'
+  pmcid: PMC6928164
+  locator: Figs. 3, 4a,b
+paraphrase: No retrogradely labelled amygdala neurons were found after CTB injection into DM.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: amygdala
+  extract.object_name: dorsomedial field (DM)
+  verify.note: No labelled neurons were found inside the amygdala after DM injection, which covers La.

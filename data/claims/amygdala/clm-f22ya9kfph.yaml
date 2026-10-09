@@ -1,0 +1,38 @@
+id: clm-f22ya9kfph
+subject:
+  type: region
+  id: MBA:655
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41586-024-08540-4
+  pmid: '39939764'
+  pmcid: PMC11946885
+  locator: Fig. 5a
+paraphrase: Trans-synaptic HSV-1 tracing from the COApl labelled downstream cells in the bed nucleus of the stria terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: COAplEsr1 neurons
+  extract.object_name: BNST
+  verify.note: The BNST is named among the downstream regions found with HSV-1 tracing.

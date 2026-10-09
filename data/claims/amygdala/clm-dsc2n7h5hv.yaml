@@ -1,0 +1,41 @@
+id: clm-dsc2n7h5hv
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s42003-023-04811-4
+  pmid: '37061616'
+  pmcid: PMC10105726
+  locator: Fig. 2a; Fig. 3b–e; Fig. 4j; Supplementary Figs. 1, 5
+paraphrase: Injecting retrograde CTB-555 or retrograde AAV (rAAV-retro-Cre-mCherry) into the NAc, mainly the core, labelled
+  neuron somata in the intermediate BA at bregma −1.8 mm. Laser-captured CTB+ BA samples were enriched for Slc17a7, which
+  indicates these NAc-projecting BA cells are mainly glutamatergic.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basal amygdala (BA)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The paper's own retrograde CTB-555 and retro-Cre-mCherry injections into the NAc labelled BA somata at bregma
+    −1.8 mm, and the laser-captured samples showed high Slc17a7 expression, so the claim is supported in mouse.

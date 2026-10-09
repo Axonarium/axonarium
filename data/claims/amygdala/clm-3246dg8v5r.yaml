@@ -1,0 +1,39 @@
+id: clm-3246dg8v5r
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-024-47966-2
+  pmid: '38658548'
+  pmcid: PMC11043328
+  locator: Fig. 2e–g; Supplementary Fig. 4a–d
+paraphrase: Optogenetic stimulation of posterior BLA terminals strongly increased firing of oval BNST neurons and evoked robust
+  excitatory (and inhibitory) postsynaptic currents there, consistent with the dense terminal field.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pBLA
+  extract.object_name: ovBNST
+  verify.note: Optogenetic pBLA terminal activation raised ovBNST firing and evoked oEPSCs there.

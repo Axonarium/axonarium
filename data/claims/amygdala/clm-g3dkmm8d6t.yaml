@@ -1,0 +1,39 @@
+id: clm-g3dkmm8d6t
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s42003-023-04429-6
+  pmid: '36717646'
+  pmcid: PMC9886947
+  locator: Fig. 1b,c; Supplementary Fig. 1b,c; Methods (Surgical procedures)
+paraphrase: AAV2-CaMKIIa-ChR2-eYFP injected into the infralimbic medial prefrontal cortex produced eYFP-labelled axon terminals
+  in the nucleus accumbens shell, where optical fibres were placed over the labelled terminal field.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: mPFC (infralimbic cortex)
+  extract.object_name: NAcSh
+  verify.note: Viral CaMKIIa-ChR2-eYFP in infralimbic mPFC labeled NAcSh terminals shown in Fig. 1b,c and verified histologically.

@@ -1,0 +1,40 @@
+id: clm-qqdz6m142s
+subject:
+  type: region
+  id: MBA:111
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-023-40517-1
+  pmid: '37604802'
+  pmcid: PMC10442438
+  locator: Fig. 3e; Supplementary Fig. 3f
+paraphrase: Anterograde eYFP labelling of posterior insula glutamatergic neurons revealed axonal fibers in the BLA. The authors
+  say this contradicts strictly segregated aIC-BLA and pIC-CeA pathways.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pIC
+  extract.object_name: BLA
+  verify.note: Anterograde eYFP from pIC showed axons in the BLA, which the authors say challenges segregated insula-amygdala
+    pathways.

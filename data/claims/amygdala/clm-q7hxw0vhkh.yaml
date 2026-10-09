@@ -1,0 +1,39 @@
+id: clm-q7hxw0vhkh
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: single_neuron_reconstruction
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41598-025-18411-1
+  pmid: '41022937'
+  pmcid: PMC12479884
+  locator: Figs. 7F, 8F,G
+paraphrase: Axon collaterals of in vivo filled posterior basal principal neurons were typically present in the lateral central
+  amygdala, as well as in other CEA subdivisions.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BAp PNs
+  extract.object_name: CEAl
+  verify.note: BAp axon collaterals were typically present in the CEAl and in other CEA subdivisions.

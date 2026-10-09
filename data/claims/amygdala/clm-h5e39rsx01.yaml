@@ -1,0 +1,39 @@
+id: clm-h5e39rsx01
+subject:
+  type: region
+  id: UBERON:0001941
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002043
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41598-025-99181-8
+  pmid: '40275074'
+  pmcid: PMC12022358
+  locator: Fig. 2E–H; Fig. 3F–G
+paraphrase: ChR2 expression in lateral habenula allowed light activation of LHb fibres in DRN, which evoked excitatory currents
+  in mPFC-projecting 5-HT neurons that were blocked by TTX and rescued by 4-AP, showing a direct monosynaptic glutamatergic
+  LHb input. Amplitudes (~47 pA in controls) and paired-pulse ratios were unchanged by prenatal ethanol, and the NO donor
+  SNAP did not modulate these currents.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LHb
+  extract.object_name: DRNmPFC 5-HT neurons
+  verify.note: Paper shows monosynaptic glutamatergic LHb input to DRNmPFC 5-HT neurons unchanged by PE and NO-insensitive.

@@ -1,0 +1,39 @@
+id: clm-chwpv7h605
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s42003-025-08140-6
+  pmid: '40467858'
+  pmcid: PMC12137600
+  locator: Fig. 3B; Supplementary Fig. 7
+paraphrase: Retrograde labelling from the BLA injection appeared in the paraventricular thalamic nucleus, indicating a PVT
+  input to BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: paraventricular nucleus of the thalamus (PVT)
+  extract.object_name: BLA
+  verify.note: PVT listed among regions with significant ChR-retro expression after BLA injection.

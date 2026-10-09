@@ -1,0 +1,46 @@
+id: clm-63kja44dhx
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.333
+  unit: '1'
+  n: 90
+source:
+  doi: 10.1038/s41593-019-0506-0
+  pmid: '31611706'
+  pmcid: PMC6858554
+  locator: Fig. 7b,c,e,h,i
+paraphrase: In slices, ChR2 activation of VTA dopaminergic terminals evoked fast, DNQX-sensitive inward currents in a third
+  of recorded BA neurons; the currents persisted in TTX plus 4-AP, showing monosynaptic glutamate co-release. Connection rates
+  were similar in anterior and posterior BA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTADA➜BA axons
+  extract.object_name: BA neurons
+  verify.note: Paper reports 30/90 BA neurons with monosynaptic DNQX-sensitive currents (TTX/4-AP verified) and similar rates
+    along the anterior-posterior axis.

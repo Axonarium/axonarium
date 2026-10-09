@@ -1,0 +1,39 @@
+id: clm-k73k9tf59s
+subject:
+  type: region
+  id: MBA:556
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:827
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-023-37318-x
+  pmid: '36966143'
+  pmcid: PMC10039875
+  locator: Fig. 3d
+paraphrase: Among BLA-projecting ventral mPFC cells, stimulating layer 2 and layer 3 cells produced connections onto layer
+  5 BLA-projecting cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: L2 and L3 mPFC-BLA cells
+  extract.object_name: L5 mPFC-BLA cells
+  verify.note: Fig. 3d reports L2- and L3-to-L5 connections among ventral mPFC-BLA cells, and these were glutamatergic EPSCs.

@@ -1,0 +1,41 @@
+id: clm-186q1gchns
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s42003-026-10089-z
+  pmid: '42026195'
+  pmcid: PMC13316100
+  locator: Supplementary Fig. 4a
+paraphrase: Optogenetic activation of ChrimsonR-expressing BLA axons in the prelimbic cortex raised the calcium activity of
+  local vGAT-Cre-defined GABAergic neurons recorded by fibre photometry, indicating that glutamatergic BLA input drives prefrontal
+  interneurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PL GABAergic neurons
+  verify.note: Text states activating BLA-PL projection raised local GABAergic neuron activity (Suppl. Fig. 4a), with ChrimsonR/vGAT-GCaMP
+    photometry in methods.
