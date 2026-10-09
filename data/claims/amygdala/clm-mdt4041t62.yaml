@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: dorsal part of the inferior colliculus (IC)
   extract.object_name: PB neurons that project to the amygdala
+  verify.note: Fig 8H shows a few dorsal inferior colliculus neurons with Golgi-like filling.

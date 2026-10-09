@@ -27,7 +27,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: arcuate nucleus (POMC neurons)
   extract.object_name: ventral tegmental area
+  verify.note: The significantly lower contralateral VTA labeling applies to total CTB cells; the percent of POMC cells labeled
+    did not differ between sides.

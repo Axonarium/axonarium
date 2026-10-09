@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: BLA
   extract.object_name: CeLC (latero-capsular division of the CeA)
+  verify.note: Fig. 1–3 show rat BLA stimulation evoking polysynaptic, bicuculline-blocked, NBQX-sensitive IPSCs in CeLC that
+    were reduced in arthritis.

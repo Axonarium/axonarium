@@ -33,7 +33,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: agranular insular cortex (AiP)
   extract.object_name: PER-LEC deep layer principal neurons
+  verify.note: AiP stimulation evoked subthreshold PSPs and an excitatory conductance at 5.95 ± 0.52 ms (n = 18) that preceded
+    a larger, CNQX/APV-sensitive inhibition, and the dye imaging showed a network response.

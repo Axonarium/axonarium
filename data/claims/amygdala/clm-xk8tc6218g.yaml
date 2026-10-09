@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: cortical axons in the external capsule (Cortico-LA projections)
   extract.object_name: LA principal neurons
+  verify.note: External-capsule stimulation evoked monosynaptic EPSCs in mouse LA principal cells, and the paper reports age-dependent
+    PPR, refilling and EPSCmax changes, NMDA/AMPA ratios, LTP and feed-forward IPSCs.

@@ -23,7 +23,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: dorsal raphe nucleus
   extract.object_name: substantia nigra pars compacta
+  verify.note: The Fig. 2B axon passes through SNc with en passant varicosities, and the Fig. 2E axon arborizes in SNc.

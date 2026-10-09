@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: dorsal raphe nucleus
   extract.object_name: dorsolateral striatum
+  verify.note: The Fig. 2A and 2B axons arborize densely in sensorimotor dorsolateral striatum, with 2,131 varicosities for
+    the 2A axon.

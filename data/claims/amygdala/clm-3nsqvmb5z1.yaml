@@ -28,7 +28,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: VTA (dopaminergic neurons, TH-Cre)
   extract.object_name: basolateral amygdala (BLA)
+  verify.note: Tracing labelled VTA dopaminergic axons and boutons in BLA at intermediate intensity, and female bouton density
+    was about half of male.

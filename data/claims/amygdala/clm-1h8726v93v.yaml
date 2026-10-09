@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: MGn
   extract.object_name: BLA
+  verify.note: The main text only reports absence of somatic labeling in BLA; the figure caption's wording about dense axonal
+    labeling is ambiguous, so axonal projection evidence cannot be settled.

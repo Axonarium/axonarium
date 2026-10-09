@@ -25,7 +25,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: MePD GABA neurons (Vgat-cre-tdTomato)
   extract.object_name: hypothalamic arcuate nucleus (ARC)
+  verify.note: Cre-dependent AAV-ChR2-EYFP in MePD Vgat neurons labelled EYFP terminals in the ipsilateral posterior ARC,
+    an anterograde viral tracing result in mice.
