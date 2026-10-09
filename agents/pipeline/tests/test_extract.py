@@ -212,6 +212,7 @@ def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():
         number("fraction_of_labelled_neurons", 35.0),  # a percent: left out, with a note
         number("conduction_delay", 3.2, sem=0.4, n=12),
         number("synapse_count", 5.0, ci_low=4.0),  # half an interval
+        number("conduction_delay", 0.0),  # no delay is a measurement
     ])
     notes: list[str] = []
     record, problem = extract.claim(found, paper, lexicon, "m", "extract@0.3.0", "2026-10-09", notes)
@@ -221,7 +222,8 @@ def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():
         {"quantity": "conduction_delay", "value": 3.2, "unit": "ms", "sem": 0.4, "n": 12},
     ]
     assert notes == ["doi:10.1/a: MBA:295 → MBA:536: fraction_of_labelled_neurons 35.0 is outside [0.0, 1.0], perhaps a percent",
-                     "doi:10.1/a: MBA:295 → MBA:536: synapse_count needs both ends of its interval"]
+                     "doi:10.1/a: MBA:295 → MBA:536: synapse_count needs both ends of its interval",
+                     "doi:10.1/a: MBA:295 → MBA:536: conduction_delay 0.0 isn't above 0"]
     assert list(record)[:10] == ["id", "subject", "predicate", "object", "species", "evidence_class", "result", "sign", "strength", "measurements"]
 
     absent, _ = extract.claim(draft("MBA:295", "MBA:672", result="absent", strength="weak", measurements=[number("connection_probability", 0.0)]),
