@@ -1,0 +1,37 @@
+id: clm-vpakyngq4g
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:8440033
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-16407-1
+  pmid: '32483118'
+  pmcid: PMC7264246
+  locator: Fig. 5 caption
+paraphrase: Infralimbic cortex Fos differed across groups, with CeA ChR2 shock-rod rats showing significantly more Fos-positive
+  neurons than eYFP controls after the final shock-rod session.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: central nucleus of amygdala (CeA)
+  extract.object_name: infralimbic cortex
+  verify.note: Fig. 5 caption gives a significant infralimbic cortex ChR2 vs eYFP Fos difference.

@@ -1,0 +1,40 @@
+id: clm-ae99pqmg3g
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41386-023-01673-6
+  pmid: '37542159'
+  pmcid: PMC10789863
+  locator: Fig. 1B; Results, section 1
+paraphrase: After injecting an AAV expressing ChR2-EYFP into the PBN, fluorescent PBN axon terminals were seen in the laterocapsular
+  part of the central amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: parabrachial nucleus (PBN)
+  extract.object_name: laterocapsular subdivision of the CeA (CeLC)
+  verify.note: After the ChR2-EYFP virus was injected into the PBN, the paper's own Fig. 1B shows fluorescent terminals in
+    the laterocapsular CeA.

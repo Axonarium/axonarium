@@ -1,0 +1,40 @@
+id: clm-b5eetvbp8y
+subject:
+  type: region
+  id: MBA:502
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/ncomms8062
+  pmid: '25952660'
+  pmcid: PMC4430111
+  locator: Fig. 1g,h; Methods (Stereotaxic surgery and viral vectors)
+paraphrase: A retrogradely transported AAV2/5-CaMKIIa-EYFP vector injected into the nucleus accumbens labelled EYFP-positive
+  neurons in ventral hippocampus, which were then assessed for EGR1 immunoreactivity, demonstrating vHIP neurons that project
+  to NAc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: vHIP (ventral subiculum)
+  extract.object_name: NAc
+  verify.note: Retrogradely labelled vHIP (ventral subiculum target) neurons from NAc injection are shown in Fig. 1g,h.

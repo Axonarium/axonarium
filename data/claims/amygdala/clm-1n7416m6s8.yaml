@@ -1,0 +1,40 @@
+id: clm-1n7416m6s8
+subject:
+  type: region
+  id: MBA:922
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-022-33241-9
+  pmid: '36130959'
+  pmcid: PMC9492683
+  locator: Fig. 7b, c
+paraphrase: Perirhinal cortex neurons were retrogradely labelled by monosynaptic rabies tracing from both insular projector
+  populations, with comparable amounts for the two.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PERI (perirhinal area)
+  extract.object_name: IC-CeA and IC-NAc projectors
+  verify.note: Rabies tracing quantified perirhinal inputs to both IC projector populations with no significant difference
+    (P=0.16).

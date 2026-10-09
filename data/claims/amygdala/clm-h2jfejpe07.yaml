@@ -1,0 +1,39 @@
+id: clm-h2jfejpe07
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-15920-7
+  pmid: '32376858'
+  pmcid: PMC7203160
+  locator: Supplementary Fig. 2; Methods, stereotaxic surgery
+paraphrase: Retrobeads co-injected with the viral vector into ventral medial prefrontal cortex labelled basolateral amygdala
+  principal neurons, defining a vmPFC-projecting BLA population.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: vmPFC
+  verify.note: Methods describe retrobead labelling of vmPFC↔BLA PNs used in Supplementary Fig. 2.

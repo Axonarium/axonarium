@@ -1,0 +1,44 @@
+id: clm-2caf5hpe20
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 4.0
+  unit: ms
+source:
+  doi: 10.1038/s41467-020-15920-7
+  pmid: '32376858'
+  pmcid: PMC7203160
+  locator: Fig. 1d–h; Supplementary Fig. 1a–f
+paraphrase: 'Light activation of ChR2-expressing dorsomedial prefrontal axons in slices produced biphasic currents in basolateral
+  amygdala principal neurons: a short-latency monosynaptic EPSC (about 4 ms onset, abolished by TTX and partly restored with
+  4-AP) followed by a longer-latency disynaptic IPSC that was blocked by glutamate receptor antagonists or by picrotoxin,
+  indicating feedforward recruitment of local interneurons.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: dmPFC
+  extract.object_name: BLA PNs
+  verify.note: Optogenetic slice recordings show short-latency (~4 ms) monosynaptic EPSCs in BLA PNs plus disynaptic IPSCs.

@@ -1,0 +1,38 @@
+id: clm-wkx9fkfnj4
+subject:
+  type: region
+  id: MBA:1080
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41467-020-15920-7
+  pmid: '32376858'
+  pmcid: PMC7203160
+  locator: Fig. 1r–v
+paraphrase: Photostimulation of ventral hippocampal terminals evoked biphasic excitatory-then-inhibitory currents in basolateral
+  amygdala principal neurons; amplitudes and their ratio were unaffected by chronic restraint stress.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: vHPC
+  extract.object_name: BLA PNs
+  verify.note: Photostimulation of vHPC terminals evoked biphasic responses in BLA PNs, unaltered by CRS.

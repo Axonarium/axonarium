@@ -1,0 +1,41 @@
+id: clm-xsfqdyjwhk
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41467-018-05090-y
+  pmid: '30013065'
+  pmcid: PMC6048069
+  locator: Fig. 5a-c, g-h
+paraphrase: Expressing the presynaptic marker eGFP-Syb2 in caudal ACC neurons gave strong labelled terminals in the BLA in
+  all three mice, making it the main amygdala target. Most Syb2 puncta in the BLA co-localized with VGLUT1 rather than VGAT.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: anterior cingulate cortex (ACC)
+  extract.object_name: basolateral nucleus of amygdala (BLA)
+  verify.note: eGFP-Syb2 terminals were strong in the BLA across three mice, and most co-localized puncta were VGLUT1-positive
+    (89.2%).

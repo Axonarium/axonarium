@@ -1,0 +1,30 @@
+id: clm-xqg2nf830w
+subject:
+  type: region
+  id: UBERON:0001897
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-gypnv5m278
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/nn.2993
+  pmid: '22158512'
+  pmcid: PMC3245819
+  locator: Fig. 1a,d,f; Fig. 5a,b; Supplementary Fig. 1
+paraphrase: In rat slices, stimulating thalamic afferents in the internal capsule evoked EPSCs in lateral amygdala principal
+  neurons. The EPSCs were recorded with GABA-A receptors blocked and were mediated by AMPA and kainate receptors, being abolished
+  by NBQX.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: thalamic inputs (internal capsule stimulation)
+  extract.object_name: principal neurons in the LAn

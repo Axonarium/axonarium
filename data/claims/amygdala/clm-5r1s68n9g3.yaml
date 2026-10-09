@@ -1,0 +1,40 @@
+id: clm-5r1s68n9g3
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-024-03085-6
+  pmid: '39300117'
+  pmcid: PMC11412998
+  locator: Fig. 3I
+paraphrase: The percentage of rabies-labelled inputs to BLA-to-CeA neurons was quantified separately for the lateral amygdala
+  and the BLA, showing that LA neurons provide inputs to this population.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LA
+  extract.object_name: BLA-to-CeA neurons
+  verify.note: Fig. 3I quantifies the share of rabies-labelled inputs to BLA-to-CeA neurons coming from the LA as well as
+    the BLA.

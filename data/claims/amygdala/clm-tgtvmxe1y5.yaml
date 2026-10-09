@@ -1,0 +1,36 @@
+id: clm-tgtvmxe1y5
+subject:
+  type: region
+  id: UBERON:0001879
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002421
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: modulatory
+source:
+  doi: 10.1038/s41386-022-01427-w
+  pmid: '36056107'
+  pmcid: PMC9938249
+  locator: Fig. 1J–L
+paraphrase: eYFP-positive terminals from labelled HDB cholinergic neurons were found in dorsal hippocampus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: HDB
+  extract.object_name: dorsal hippocampus
+  verify.note: HDB labelling produced dorsal hippocampal terminals.

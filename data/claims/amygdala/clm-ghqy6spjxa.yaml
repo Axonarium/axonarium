@@ -1,0 +1,39 @@
+id: clm-ghqy6spjxa
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-022-33241-9
+  pmid: '36130959'
+  pmcid: PMC9492683
+  locator: Results (whole-brain input mapping); Supplementary Fig. 22
+paraphrase: Rabies tracing showed more presynaptic neurons in the central amygdala for amygdala-projecting insular neurons
+  than for accumbens-projecting insular neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: IC-CeA projectors
+  verify.note: RV tracing showed greater CeA input to IC-CeA projectors.

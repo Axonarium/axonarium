@@ -1,0 +1,38 @@
+id: clm-x68t7ja2nq
+subject:
+  type: region
+  id: MBA:631
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-g513b58b0y
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41386-025-02298-7
+  pmid: '41419678'
+  pmcid: PMC13125285
+  locator: Fig. 5c, 5e
+paraphrase: Rabies tracing from CeLC PKCδ starter cells labelled input neurons in the cortical amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: CO cortical amygdala
+  extract.object_name: CeLCPKCδ neurons
+  verify.note: Cortical amygdala appears among the rabies-labeled amygdalar inputs.

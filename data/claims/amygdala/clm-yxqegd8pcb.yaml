@@ -1,0 +1,39 @@
+id: clm-yxqegd8pcb
+subject:
+  type: region
+  id: MBA:477
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-g513b58b0y
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41386-025-02298-7
+  pmid: '41419678'
+  pmcid: PMC13125285
+  locator: Fig. 5c, 5e
+paraphrase: Monosynaptic rabies tracing from CeLC PKCδ neurons labelled presynaptic cells in the amygdalostriatal transition
+  area, part of the dense striatal input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: AStria amygdalostriatal transition area
+  extract.object_name: CeLCPKCδ neurons
+  verify.note: The subject ID is the whole striatum rather than the amygdalostriatal transition area named in the paper.

@@ -1,0 +1,41 @@
+id: clm-1f2dj4p4zv
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41380-023-01954-y
+  pmid: '36690791'
+  pmcid: PMC10611563
+  locator: Supplementary Figs. 6 and 7
+paraphrase: Light activation of ChR2-expressing prelimbic glutamatergic terminals in the BLA reduced centre and open-arm exploration,
+  while NpHR-mediated silencing of the same terminals relieved anxiety-like behaviour in Tmem74-/- mice, without effects on
+  grooming or social novelty.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL
+  extract.object_name: BLA
+  verify.note: Paper's ChR2 activation and NpHR silencing of PL terminals in BLA support a functional excitatory PL→BLA pathway
+    with the described behavioral specificity.

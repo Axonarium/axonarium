@@ -1,0 +1,40 @@
+id: clm-w4jz6hnjdt
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41380-024-02843-8
+  pmid: '39580604'
+  pmcid: PMC12092189
+  locator: Fig. 1I
+paraphrase: After retrograde rAAV2 injection into the mPFC, most amygdala labelling was in the GRP-negative basal nucleus.
+  No labelled amygdala cells were GRP-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basal nucleus of the amygdala (BA)
+  extract.object_name: mPFC
+  verify.note: After the mPFC retrograde injection, most amygdala labelling was in the GRP-negative BA, with no GRP co-labelling
+    (Fig. 1I).

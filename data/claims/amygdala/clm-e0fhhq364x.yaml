@@ -1,0 +1,38 @@
+id: clm-e0fhhq364x
+subject:
+  type: region
+  id: MBA:1105
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41386-025-02298-7
+  pmid: '41419678'
+  pmcid: PMC13125285
+  locator: Fig. 5e
+paraphrase: Retrograde AAV from the CeA labelled 1222 intercalated amygdala neurons, 72% Oprm1-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ITC intercalated nuclei of the amygdala
+  extract.object_name: CeA
+  verify.note: Fig. 5e reports 1222 ITC cells, 72% Oprm1+.

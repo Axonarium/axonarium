@@ -1,0 +1,40 @@
+id: clm-3abttn0krz
+subject:
+  type: neuron_type
+  id: CL:0000850
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-020-01008-9
+  pmid: '32999279'
+  pmcid: PMC7527452
+  locator: Fig. 2a; Results, Pet-ChR2 section
+paraphrase: In Pet-Cre x Ai32 mice, where ChR2-YFP is expressed only in serotonergic neurons, YFP-labelled axons that largely
+  overlapped with SERT staining were seen in the cingulate gyrus of sham control mice. This labelling dropped after a left
+  mPFC stroke and recovered with chronic fluoxetine.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: 5-HT neurons (Pet-ChR2-YFP-expressing serotonergic neurons)
+  extract.object_name: cingulate gyrus (CG) of the mPFC
+  verify.note: Fig. 2a and the Pet-ChR2 results show YFP-labelled serotonergic axons, about 90% colocalized with SERT, in
+    the mouse left cingulate gyrus; the signal fell after stroke and recovered with fluoxetine.

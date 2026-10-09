@@ -1,0 +1,39 @@
+id: clm-bepbbgd3fv
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002691
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-020-16407-1
+  pmid: '32483118'
+  pmcid: PMC7264246
+  locator: Results, 'Shock-rod attraction activates mesocorticolimbic circuity'; Fig. 5; Supplementary Table 1
+paraphrase: Optogenetic ChR2 excitation of CeA paired with reward or shock-rod encounters was followed by strongly raised
+  Fos protein counts in the ventral tegmental area (over 800% above baseline in the sucrose/cocaine group, over 400% above
+  eYFP controls in the shock-rod group, mainly in the caudal VTA), indicating that CeA activation drives activity in VTA,
+  although the effect may be indirect and behaviourally mediated.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: central nucleus of amygdala (CeA)
+  extract.object_name: ventral tegmental area (VTA)
+  verify.note: VTA Fos elevations of >800% (reward) and >400% caudal VTA (shock-rod) are reported as stated.

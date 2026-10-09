@@ -1,0 +1,40 @@
+id: clm-9qfyzjgk96
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-024-03085-6
+  pmid: '39300117'
+  pmcid: PMC11412998
+  locator: Results, presynaptic connectivity section
+paraphrase: Rabies tracing from BLA neurons projecting to CeA labelled PVT input neurons, which made up about 64% of thalamic
+  inputs. Many were CaMKIIα-positive, and their number did not change with CORT.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: paraventricular nucleus of the thalamus (PVT)
+  extract.object_name: BLA-to-CeA neurons
+  verify.note: PVT supplied about 64% of thalamic inputs to BLA-to-CeA cells, about 47% were CaMKIIα-positive, and CORT had
+    no significant effect.

@@ -1,0 +1,39 @@
+id: clm-kcv2rvdjgw
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41398-020-0837-3
+  pmid: '32424318'
+  pmcid: PMC7235080
+  locator: Fig. 2l,m
+paraphrase: Light stimulation of ChR2-expressing anterior cingulate axons in slices produced AMPAR- and NMDAR-mediated excitatory
+  postsynaptic currents in BLA pyramidal neurons, establishing a functional ACC-to-BLA excitatory synapse.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ACC
+  extract.object_name: BLA pyramidal neurons
+  verify.note: Light-evoked EPSCs with AMPAR and NMDAR components were recorded in BLA pyramidal neurons from ChR2-expressing
+    ACC axons, shown in Fig. 2l,m.

@@ -1,0 +1,42 @@
+id: clm-tashqhbpbh
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/s41398-022-02252-x
+  pmid: '36402746'
+  pmcid: PMC9675804
+  locator: Fig. 5a, c-d; Supplementary Fig. 3
+paraphrase: Fluorogold injected into the anterodorsal BNST densely labelled TPH2-positive serotonergic cells in the caudal
+  dorsal raphe, with only a few labelled cells at other raphe levels. This confirms a discrete serotonergic DRC-to-BNSTad
+  projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: DRC (caudal DRN), TPH2+ 5-HT cells
+  extract.object_name: BNSTad
+  verify.note: FG in BNSTad densely labeled TPH2+ cells in caudal DRC with few elsewhere, matching the paper's described discrete
+    projection.

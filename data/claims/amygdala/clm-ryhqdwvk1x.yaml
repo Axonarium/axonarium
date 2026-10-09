@@ -1,0 +1,43 @@
+id: clm-ryhqdwvk1x
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1038/nn.3625
+  pmid: '24441680'
+  pmcid: PMC3968853
+  locator: Fig. 5a,g,h; Results, 'Downstream targets of mPFC stimulation'
+paraphrase: Cre-dependent ChR2-eYFP expressed in D1-receptor neurons of the medial prefrontal cortex (prelimbic and infralimbic)
+  of Drd1a-cre mice labelled axons that were prominent in the caudomedial basolateral amygdala. A Cre-dependent synaptobrevin-eGFP
+  virus injected in the same prefrontal site produced punctate presynaptic labelling in the same amygdala territory, with
+  puncta lying within 5 microns of CaMKII-positive cell bodies.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC)
+  extract.object_name: caudal-medial, basolateral nucleus of the amygdala (mBLA)
+  verify.note: ChR2-eYFP and synaptobrevin-eGFP anterograde labeling show prominent prefrontal D1 terminals apposed to CaMKII
+    cells in mBLA.

@@ -1,0 +1,39 @@
+id: clm-abcgtpf53g
+subject:
+  type: region
+  id: MBA:803
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-024-03085-6
+  pmid: '39300117'
+  pmcid: PMC11412998
+  locator: Fig. 3G; Fig. S6I
+paraphrase: Rabies-labelled input neurons to BLA-to-CeA cells were found in the pallidum, and their number was reduced after
+  CORT.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: pallidum (PAL)
+  extract.object_name: BLA-to-CeA neurons
+  verify.note: Pallidal inputs to BLA-to-CeA neurons were found and were reduced after CORT, shown in the Fig. 3G map.

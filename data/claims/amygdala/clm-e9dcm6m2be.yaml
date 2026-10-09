@@ -1,0 +1,39 @@
+id: clm-e9dcm6m2be
+subject:
+  type: region
+  id: MBA:867
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:444
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1038/nature12596
+  pmid: '24121436'
+  pmcid: PMC3878302
+  locator: Results (projection mapping)
+paraphrase: Sparse mCherry and synaptophysin-GFP labelling from PBelo CGRP neurons was found in the medial thalamus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PBelo (CGRP neurons)
+  extract.object_name: medial thalamus
+  verify.note: Text reports sparse anterograde label in medial thalamus.

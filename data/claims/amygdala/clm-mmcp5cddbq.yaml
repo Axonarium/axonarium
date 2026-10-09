@@ -1,0 +1,39 @@
+id: clm-mmcp5cddbq
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/nn.4510
+  pmid: '28218915'
+  pmcid: PMC5374019
+  locator: Fig. 3b–d
+paraphrase: AAV5-CaMKIIα::ChR2-eYFP was infused into the BLA through the fiber probe's microfluidic channel; six weeks later
+  eYFP-labelled axons were visible in coronal sections of the medial prefrontal cortex, including the prelimbic subdivision.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelymbic (PrL) area of mPFC
+  verify.note: Fig. 3b–d shows eYFP in mPFC sections, including a prelimbic panel, six weeks after the BLA injection.

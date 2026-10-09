@@ -1,0 +1,38 @@
+id: clm-66n4b4hef1
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41398-024-03085-6
+  pmid: '39300117'
+  pmcid: PMC11412998
+  locator: Fig. S5; Table S3
+paraphrase: CTB injected into the CeA labelled lateral amygdala neurons, including cells double-labelled from the NAc injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LA
+  extract.object_name: CeA
+  verify.note: The LA analysis reports activity of CTB-labelled LA-to-CeA and dual-projecting LA cells (Fig. S5, Table S3).

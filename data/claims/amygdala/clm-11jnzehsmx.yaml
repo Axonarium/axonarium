@@ -1,0 +1,40 @@
+id: clm-11jnzehsmx
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41467-022-32388-9
+  pmid: '35970891'
+  pmcid: PMC9378688
+  locator: Fig. 5e (right panel); Methods, Table 2
+paraphrase: Retrograde AAV expressing Cre-GFP was injected into the nucleus accumbens with a Cre-dependent Gi-DREADD-mCherry
+  vector in prelimbic cortex; co-labelled Cre+/mCherry+ neurons in PL demonstrate a prelimbic projection to the accumbens.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: PL
+  extract.object_name: NAc
+  verify.note: Retrograde Cre-GFP in NAc with Cre-dependent mCherry-DREADD expression in PL neurons, shown in Fig. 5e right,
+    supports a PL-to-NAc projection in mice.

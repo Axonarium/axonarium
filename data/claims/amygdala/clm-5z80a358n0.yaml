@@ -1,0 +1,42 @@
+id: clm-5z80a358n0
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: modulatory
+source:
+  doi: 10.1038/s41467-022-29155-1
+  pmid: '35318315'
+  pmcid: PMC8940900
+  locator: Supplementary Fig. 3a, b; Results (VTA → BLA dopamine neuron hypoactivity section)
+paraphrase: Retrograde AAV encoding tdTomato (AAVrg-CAG-tdTomato in wild-type mice, AAVrg-FLEX-tdTomato in TH-BAC-Cre mice)
+  injected into the nucleus accumbens retrogradely labelled VTA neurons, including dopaminergic ones. When combined with a
+  differently coloured retrograde tracer in the BLA, only about 2.7% of 2100 labelled VTA neurons carried both labels, indicating
+  largely segregated VTA→NAc and VTA→BLA populations.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: VTA
+  extract.object_name: NAc
+  verify.note: Retrograde AAV-tdTomato in NAc labelled VTA neurons in mice, with the 2.7%/2100 dual-labelling figure matching
+    the paper, and dopaminergic identity supports a modulatory sign.

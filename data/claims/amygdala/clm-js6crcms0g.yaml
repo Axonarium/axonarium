@@ -1,0 +1,42 @@
+id: clm-js6crcms0g
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:375
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/nn.4510
+  pmid: '28218915'
+  pmcid: PMC5374019
+  locator: Fig. 3k, 3o; Supplementary Fig. 10
+paraphrase: Light pulses delivered in the ventral hippocampus after ChR2 expression in the BLA produced only short-latency
+  evoked potentials, consistent with direct axonal input, detectable about 11 days after injection. Local infusion of the
+  AMPA-receptor antagonist CNQX through the probe suppressed the optically evoked response and abolished the stimulation-induced
+  behavioural change, indicating a glutamatergic synaptic connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: ventral hippocampus (vHPC)
+  verify.note: Short-latency vHPC responses and the CNQX block of the behavioural effect are reported, but the text never
+    states that CNQX suppressed the evoked potentials, which leaves the excitatory sign only indirectly supported.

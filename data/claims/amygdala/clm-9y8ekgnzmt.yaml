@@ -1,0 +1,39 @@
+id: clm-9y8ekgnzmt
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/s41398-020-00926-y
+  pmid: '32684634'
+  pmcid: PMC7370229
+  locator: Figs. 1j–l; 2d–f; 3d–f
+paraphrase: Bipolar electrode stimulation of the lateral amygdala evoked EPSCs with monosynaptic latencies in BA principal
+  neurons, with AMPA and NMDA components measured; paired-pulse ratio and AMPA/NMDA ratio at this input were unchanged by
+  NRXN1alpha deletion.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LA
+  extract.object_name: BA principal neurons
+  verify.note: Bipolar stimulation of LA evoked monosynaptic EPSCs in BA principal neurons, as shown in the cited figures.

@@ -1,0 +1,38 @@
+id: clm-g7zcmeth74
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/s41386-025-02298-7
+  pmid: '41419678'
+  pmcid: PMC13125285
+  locator: Fig. 5e
+paraphrase: Retrograde colour-switching tracer from the CeA labelled 4266 lateral amygdala neurons, 77% Oprm1-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: LA lateral amygdala
+  extract.object_name: CeA
+  verify.note: Fig. 5e reports 4266 LA cells, 77% Oprm1+.

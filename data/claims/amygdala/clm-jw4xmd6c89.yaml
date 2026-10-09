@@ -1,0 +1,64 @@
+id: clm-jw4xmd6c89
+subject:
+  type: region
+  id: MBA:294
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.342
+  unit: '1'
+  n: 38
+- quantity: conduction_delay
+  value: 13.3
+  unit: ms
+  sd: 6.6
+  n: 13
+- quantity: connection_probability
+  value: 0.275
+  unit: '1'
+  n: 40
+- quantity: connection_probability
+  value: 0.213
+  unit: '1'
+  n: 61
+- quantity: conduction_delay
+  value: 9.9
+  unit: ms
+  sd: 6.0
+  n: 13
+source:
+  doi: 10.1038/ncomms7756
+  pmid: '25854147'
+  pmcid: PMC4403372
+  locator: Fig. 3f-j; Fig. 4; Supplementary Fig. 7; Fig. 6j,k
+paraphrase: Pulsed 20-Hz light delivered to ChR2-expressing ILSCm CaMKIIa neurons activated a subset of ipsilateral LA units
+  at short latency, both in anesthetized and in freely moving mice. Stimulating ILSCm axon terminals in the LP also evoked
+  short-latency LA responses, consistent with a route relayed through the LP.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: ILSCm
+  extract.object_name: LA
+  verify.note: The fractions 13/38, 11/40 and 13/61 and both latencies (13.3±6.6 ms and 9.9±6.0 ms, n=13 each) all match the
+    paper's ILSCm-driven LA recordings.

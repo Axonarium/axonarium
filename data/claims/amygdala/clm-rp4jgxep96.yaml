@@ -1,0 +1,40 @@
+id: clm-rp4jgxep96
+subject:
+  type: region
+  id: MBA:502
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1038/ncomms8062
+  pmid: '25952660'
+  pmcid: PMC4430111
+  locator: Fig. 1m,n; Fig. 2b; Fig. 3b; Supplementary Fig. 2c
+paraphrase: Blue-light stimulation of ChR2-expressing vHIP terminals in NAc shell slices reliably evoked EPSCs in accumbens
+  medium spiny neurons (including paired-pulse and 1 Hz/4 Hz trains), and the optically evoked currents were abolished by
+  glutamate receptor antagonists, indicating a glutamatergic vHIP-to-NAc connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: vHIP (ventral subiculum)
+  extract.object_name: NAc shell
+  verify.note: vHIP terminal stimulation evoked glutamate-receptor-dependent EPSCs in NAc shell MSNs as cited.

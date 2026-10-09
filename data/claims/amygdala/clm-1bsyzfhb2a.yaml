@@ -1,0 +1,40 @@
+id: clm-1bsyzfhb2a
+subject:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1038/ncomms13421
+  pmid: '27845329'
+  pmcid: PMC5116076
+  locator: Fig. 3a–e; Fig. 5c–f
+paraphrase: An AAV expressing tdTomato was injected into the mPFC of adult female mice, and labelled axon terminals with branches
+  and synaptic boutons were traced in the BLA. Branching and bouton density were higher in Pten+/− than in wild-type mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
+status: proposed
+extra:
+  extract.subject_name: medial prefrontal cortex (mPFC)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: The AAV-tdTomato tracing supports mPFC to BLA, but the subject is mapped to the whole isocortex, which is broader
+    than the mPFC the paper means.
