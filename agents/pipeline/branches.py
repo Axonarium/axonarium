@@ -2,8 +2,11 @@
 
 A run's results reach `main` only when its pull request merges. Until then a run started from `main` can't see them
 and would send the same papers again. So before a step runs, every branch this checkout knows on its remotes is read
-for that step's ledger. A row newer than this checkout's row for the paper, or for a paper this checkout has no row
-for, is a result still waiting. The Literature workflow fetches every branch first; locally, `git fetch --prune` first.
+for that step's ledger. A row the branch itself wrote (one that differs from the ledger where the branch split from
+this checkout's history) and that is newer than this checkout's row for the paper, or is for a paper this checkout has
+no row for, is a result still waiting. A branch made before some results merged holds an older copy of the ledger, but
+it didn't write those rows, so they don't count. The Literature workflow fetches every branch with its history first;
+locally, `git fetch --prune` first.
 """
 
 import csv
@@ -35,8 +38,24 @@ def _newer(theirs: dict, mine: dict | None) -> bool:
     return theirs.get("date", "") == mine.get("date", "") and any(theirs.get(k) != mine.get(k) for k in theirs.keys() & mine.keys())
 
 
+def _rows(text: str) -> dict[str, dict]:
+    return {row["key"]: row for row in csv.DictReader(io.StringIO(text)) if row.get("key")}
+
+
+def _written(branch: str, path: str, theirs: dict[str, dict], run: Callable) -> dict[str, dict]:
+    """The branch's rows that differ from the ledger where it split from this checkout's history: the rows it wrote.
+    Without a common history to compare with, every row counts."""
+    base = _git("merge-base", "HEAD", branch, run=run)
+    if base.returncode != 0:
+        return theirs
+    shown = _git("show", f"{base.stdout.strip()}:{path}", run=run)
+    before = _rows(shown.stdout) if shown.returncode == 0 else {}
+    return {key: row for key, row in theirs.items() if before.get(key) != row}
+
+
 def waiting(ledger: Ledger, run: Callable = subprocess.run) -> dict[str, int]:
-    """{branch: papers} for each remote branch holding this ledger's rows that this checkout lacks or has older."""
+    """{branch: papers} for each remote branch holding rows of this ledger that it wrote and this checkout lacks or
+    has older."""
     try:
         branches = remote_branches(run)
     except OSError:  # not a git checkout, or git missing: nothing to compare against
@@ -48,7 +67,8 @@ def waiting(ledger: Ledger, run: Callable = subprocess.run) -> dict[str, int]:
         shown = _git("show", f"{branch}:{path}", run=run)
         if shown.returncode != 0:  # the branch has no such ledger
             continue
-        newer = sum(_newer(row, mine.get(row["key"])) for row in csv.DictReader(io.StringIO(shown.stdout)) if row.get("key"))
+        written = _written(branch, path, _rows(shown.stdout), run)
+        newer = sum(_newer(row, mine.get(key)) for key, row in written.items())
         if newer:
             found[branch] = newer
     return found
