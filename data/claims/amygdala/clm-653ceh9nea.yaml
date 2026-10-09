@@ -29,7 +29,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: striatum
   extract.object_name: CeA PKC-δ+ GABAergic neurons
+  verify.note: The striatum is the largest share for PKC-δ+ neurons at 30.11 ± 10.96% and exceeds the SST+ share.

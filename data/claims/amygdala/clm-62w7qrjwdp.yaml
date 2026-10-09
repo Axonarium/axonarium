@@ -31,7 +31,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: agranular insular cortex (AI)
   extract.object_name: alBNST
+  verify.note: AI is 3.40% (SE 0.97) in Table 1 and significantly larger than in amBNST per Table 3.

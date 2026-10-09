@@ -30,7 +30,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: BL
   extract.object_name: PV+ interneurons in the LA
+  verify.note: The 1/9 PV spiking reflects antidromic recruitment of LA recurrent circuitry in the paper's interpretation,
+    not a BL projection to LA PV cells.

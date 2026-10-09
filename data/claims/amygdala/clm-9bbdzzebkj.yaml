@@ -23,7 +23,17 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: lateral amygdala (LA)
   extract.object_name: dorsal ITC neurons
+  verify.note: 'The authors summarize their own mouse slice work: STDP stimulation of the LA pathway gave monosynaptic excitatory
+    input to dorsal ITC cells and D4R-dependent LTD after weak conditioning only, as the cited paragraphs and the Fig. 1A
+    legend describe.'

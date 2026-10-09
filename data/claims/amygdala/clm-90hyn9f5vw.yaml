@@ -22,7 +22,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: forelimb, hindlimb, and trunk regions of the primary somatosensory cortex
   extract.object_name: PLO
+  verify.note: S1 limb and trunk areas had no labelled cells after PLO injection, scored absent in Table 2.

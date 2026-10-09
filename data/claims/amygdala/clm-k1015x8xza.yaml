@@ -24,7 +24,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: basomedial amygdaloid nucleus (BMA)
   extract.object_name: amBNST
+  verify.note: Anterior BMA neurons are labelled in Figs 3G–J and 7H–I.

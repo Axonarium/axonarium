@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: 5-HT-ir axon terminals (serotonergic afferents)
   extract.object_name: NPY-ir neurons in BL (basolateral nucleus)
+  verify.note: The EM results and the Fig. 4 caption, which covers La and BL, report rat 5-HT-ir terminals apposed to and
+    synapsing on NPY-ir somata, though the nucleus holding the spine example is not specified.

@@ -32,7 +32,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: cortical amygdaloid nuclei (Co AMG; PMCo)
   extract.object_name: alBNST
+  verify.note: Co AMG is 7.97% (SE 2.93), described as a strong input, with PMCo shown in Fig 2M–P.

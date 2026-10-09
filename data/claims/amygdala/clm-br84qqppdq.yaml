@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: NA shell (NAsh) Nts neurons
   extract.object_name: VTA
+  verify.note: Many NAsh Nts/FG+ neurons formed a continuous band, and the abstract calls this input dense.

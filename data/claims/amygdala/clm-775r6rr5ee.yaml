@@ -23,7 +23,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-09'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-09'
 status: proposed
 extra:
   extract.subject_name: prelimbic cortex (PrL)
   extract.object_name: NAcSh-VP projection neurons
+  verify.note: PrL is quantified in Fig. 3, and prefrontal input is described as relatively weak.
