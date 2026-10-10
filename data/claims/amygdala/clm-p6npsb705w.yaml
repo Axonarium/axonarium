@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: glutamatergic BNSTa neurons (Vglut2-ires-Cre)
   extract.object_name: shell or core of VMH
+  verify.note: The paper describes only 'very little' mCherry in VMH and frames it as a negative result, so present/weak cannot
+    be settled.

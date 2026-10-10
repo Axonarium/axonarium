@@ -30,7 +30,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: VIP+ INs (VIP+ basket cells, CCK+/CB1+/VIP+)
   extract.object_name: principal neurons
+  verify.note: Fig. 7 shows light-evoked, CNQX-resistant, CB1-sensitive IPSPs in about 20% of 78 principal neurons, and Fig.
+    8F reports inhibitory responses in EGFP+ principal neurons.

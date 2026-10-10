@@ -32,7 +32,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: A11 dopaminergic cell group
   extract.object_name: dlPAG
+  verify.note: The A11 section reports double-labelled cells ipsi- and contralaterally and gives A11 as second source at 28%
+    (R25) and 22% (R30).

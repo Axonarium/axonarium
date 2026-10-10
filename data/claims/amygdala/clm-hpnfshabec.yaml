@@ -23,7 +23,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: A13 cell group
   extract.object_name: deep layers of the superior colliculus
+  verify.note: The control CTb injection in the deep superior colliculus gave about 6 double-labelled cells, split equally
+    between A13 and A10.

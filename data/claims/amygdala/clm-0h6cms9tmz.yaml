@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: raphe pallidus (RPa)
   extract.object_name: cNTS/DVC
+  verify.note: The paper names RPa among the CTb-defined direct sources of DVC input and notes CTb labeling there in Experiment
+    3.

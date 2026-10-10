@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: medial cerebellar nucleus (MCN)
   extract.object_name: cNTS PPG neurons
+  verify.note: MCN had little or no PRV-GFP at 96 h, which the authors interpret as no direct or indirect input to PPG neurons.

@@ -44,7 +44,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: A13 cell group (medial zona incerta)
   extract.object_name: dorsolateral periaqueductal gray (dlPAG)
+  verify.note: A13 held the most double-labelled cells in every case, with the stated percentages, mostly ipsilateral and
+    in intermediate A13.

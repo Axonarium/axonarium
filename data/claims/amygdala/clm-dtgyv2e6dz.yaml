@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: mitral cell layer of AOB (MiA)
   extract.object_name: ACo
+  verify.note: MiA labeled from ACo with matching count (48.3±36.9, n=6) and co-label percentages 63.8% and 38.5%.

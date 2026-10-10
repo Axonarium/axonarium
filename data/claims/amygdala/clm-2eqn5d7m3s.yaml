@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: Ba
   extract.object_name: Tu
+  verify.note: The Ba injection gave dense layer 3 and very dense layer 2 labeling, extremely dense lateral CB labeling, and
+    nearly unlabeled ICj.

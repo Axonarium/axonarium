@@ -24,7 +24,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: LDT
   extract.object_name: BF cholinergic neurons (BFCS)
+  verify.note: The motivation section reports that LDT sends dense projections to the BFCS, citing Figs 2 and 4C.

@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: primary motor cortex
   extract.object_name: thalamus
+  verify.note: The Fig. 10B caption describes M1 axons terminating densely in the thalamus after viral anterograde labeling.

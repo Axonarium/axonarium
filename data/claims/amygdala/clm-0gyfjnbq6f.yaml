@@ -24,7 +24,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: glutamatergic BM inputs
   extract.object_name: Vglut2-negative shell neurons of VMH
+  verify.note: Paper reports no response in the 5 Vglut2-negative shell cells after BM glutamatergic ChR2 activation.

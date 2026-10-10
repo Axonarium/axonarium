@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: magnocellular preoptic nucleus (MCPO)
   extract.object_name: CSF-contacting nucleus
+  verify.note: The subject ID is that of the ventral pallidum, which is a different region from the magnocellular preoptic
+    nucleus the paper describes.

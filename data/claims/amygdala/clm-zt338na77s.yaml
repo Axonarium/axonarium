@@ -36,7 +36,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: PmCo
   extract.object_name: AOB mitral cells (MCs)
+  verify.note: The 0.333 value (9 of 27 cells) is the fraction of MCs whose firing was suppressed, not a connection probability,
+    and 4 of 27 cells were facilitated instead.

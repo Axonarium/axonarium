@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: posterior regions of the basomedial amygdala (pBMA)
   extract.object_name: NPY neurons in the NAc
+  verify.note: The pBMA is one of the two regions holding the vast majority of inputs, shown in Fig. 6H.

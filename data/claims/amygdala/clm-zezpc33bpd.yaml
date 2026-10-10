@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: primary afferent Aβ fibers (ChR2-expressing)
   extract.object_name: Lamina I SDH neurons
+  verify.note: In naive slices light evoked no (or negligible) EPSCs in lamina I while electrical stimulation evoked Aδ/C
+    responses.

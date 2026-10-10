@@ -31,7 +31,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: PmCo
   extract.object_name: main accessory cells (macs)
+  verify.note: Macs showed small direct PmCo-evoked events (onset 6.9 ± 0.6 ms, N = 10) that persisted in TTX plus 4-AP.

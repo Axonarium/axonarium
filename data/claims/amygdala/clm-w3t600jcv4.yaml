@@ -31,7 +31,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: central amygdala (CeA)
   extract.object_name: VPCNs
+  verify.note: CeA is one of the main input sources at 17.64 ± 3.94% (Fig. 2C and 2D).

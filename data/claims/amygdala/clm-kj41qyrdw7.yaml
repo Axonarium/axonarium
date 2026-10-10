@@ -25,7 +25,17 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: central amygdala
   extract.object_name: lateral parabrachial nucleus
+  verify.note: Cre-dependent synaptophysin labeling in Gad1-iCre rat central amygdala yielded puncta on CaMKIIa-EGFP cells
+    in lateral parabrachial nucleus, with the described shRNA and VZV effects, and the GABAergic source supports an inhibitory
+    sign.

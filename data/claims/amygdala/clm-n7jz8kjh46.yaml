@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: D2R-expressing PVT neurons (PVT)
   extract.object_name: NAc (nucleus accumbens, medial shell)
+  verify.note: Patchy NAc labelling that is densest in the medial shell is reported in Fig. 3D.

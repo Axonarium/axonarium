@@ -29,7 +29,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: mediodorsal thalamic nucleus (MD)
   extract.object_name: D1-MSNs in the posterior dorsomedial striatum (pDMS)
+  verify.note: MD supplies 2.21% of D1-MSN inputs, with n=5.

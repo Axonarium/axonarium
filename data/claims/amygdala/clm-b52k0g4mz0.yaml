@@ -29,7 +29,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: BLA
   extract.object_name: GC
+  verify.note: The BLA stimulation evoked PSPs at monosynaptic delays (onset 10.2 ms, n=5) and timing-dependently modulated
+    VPMpc-evoked PSPs in convergent GC neurons.

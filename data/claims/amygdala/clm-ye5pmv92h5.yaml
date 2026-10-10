@@ -35,7 +35,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: dmPFC
   extract.object_name: BLA principal neurons
+  verify.note: The dmPFC-evoked IPSCs are blocked by DNQX, indicating a polysynaptic feedback circuit rather than an inhibitory
+    dmPFC connection.

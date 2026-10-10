@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: IRT
   extract.object_name: cNTS/DVC
+  verify.note: The IRT is named as a particularly dense CTb cluster (Fig. 1C).

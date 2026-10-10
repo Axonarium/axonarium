@@ -37,7 +37,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: PmCo
   extract.object_name: AOB granule cells (GCs)
+  verify.note: GC EPSCs had 4.8 ± 0.2 ms onset (N = 23), were rescued by TTX-4AP at 8.3 ± 0.7 ms (N = 6), and were abolished
+    by DNQX/AP5.

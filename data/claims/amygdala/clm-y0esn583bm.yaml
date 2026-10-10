@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: BA
   extract.object_name: ovBNST and adBNST
+  verify.note: AAV-GFP restricted to the BA labelled axons through the stria terminalis into the ovBNST and adBNST, with SynapsinI/PSD-95
+    colocalization along them in the ovBNST.

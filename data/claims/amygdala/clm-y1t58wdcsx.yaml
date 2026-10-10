@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: primary motor cortex (vibrissa)
   extract.object_name: anterior striatum / dorsolateral striatum
+  verify.note: M1 infection produced substantial anterior striatal arborization and dense terminations in the dorsolateral
+    striatum (Fig. 10A,B).

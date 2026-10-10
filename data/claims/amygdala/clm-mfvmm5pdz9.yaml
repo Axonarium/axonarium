@@ -35,7 +35,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: vmPFC
   extract.object_name: BLA principal neurons
+  verify.note: The IPSCs are DNQX-sensitive local circuit responses, so the vmPFC input itself is not inhibitory as the sign
+    asserts.
