@@ -1,0 +1,39 @@
+id: clm-rh4wm2xf2x
+subject:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 3G, Fig. 5E, Fig. 5K
+paraphrase: Extended amygdalar areas contained rabies-labelled neurons presynaptic to VTA dopamine cells, and this input was
+  increased in mice given a single injection of an addictive drug.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: EAM (extended amygdalar areas)
+  extract.object_name: VTADA cells (DAT-Cre VTA dopamine neurons)
+  verify.note: EAM labeling from VTA DA cells is quantified and reported as elevated after a single drug dose.

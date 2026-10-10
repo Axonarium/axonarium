@@ -1,0 +1,38 @@
+id: clm-fwfw28n692
+subject:
+  type: region
+  id: MBA:1031
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 1G
+paraphrase: Entopeduncular nucleus neurons were rabies-labelled from glutamatergic VTA starter cells in vGluT2-Cre mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: EP (entopeduncular nucleus)
+  extract.object_name: VTA glutamatergic cells (vGluT2-Cre)
+  verify.note: EP is a counted input region in vGluT2-Cre brains with positive PC2 weight.

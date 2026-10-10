@@ -1,0 +1,39 @@
+id: clm-qhaj0aprt2
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 3G, Fig. 5K
+paraphrase: Lateral hypothalamic neurons were rabies-labelled from VTA dopamine cells, and their labelling increased after
+  a single injection of an addictive drug.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LH (lateral hypothalamus)
+  extract.object_name: VTADA cells (DAT-Cre VTA dopamine neurons)
+  verify.note: LH labeling from VTA DA cells is increased in drug-treated brains per the stated positive PC2 weights.

@@ -1,0 +1,40 @@
+id: clm-8et7jhfc4m
+subject:
+  type: region
+  id: MBA:475
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.85459
+  pmid: '37526552'
+  pmcid: PMC10449383
+  locator: Fig. 3A-C
+paraphrase: GCaMP7s was expressed in the medial geniculate/LT and an optic fiber was placed over the BLA. Axon terminals of
+  these thalamic neurons in the BLA showed calcium signals evoked by looming stimuli, tones and footshocks.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MGN
+  extract.object_name: BLA
+  verify.note: Fig. 3A-C shows GCaMP7s fiber photometry of thalamic axon terminals, a calcium-imaging method rather than anterograde
+    tracing, and the panels show only the injection and fiber placement.

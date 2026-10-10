@@ -1,0 +1,40 @@
+id: clm-w3x4nmwrq0
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 7—figure supplement 2E–H; Methods (cTRIO, mPFC injections)
+paraphrase: Retrograde CAV2-FLEx-Flp delivered to medial prefrontal cortex recombined in Cre-positive VTA dopamine neurons,
+  defining a VTADA→mPFC population and showing that VTA dopamine cells project to medial prefrontal cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VTADA
+  extract.object_name: mPFC
+  verify.note: The paper specifies only mPFC as the retrograde injection site, so the prelimbic-specific assignment is not
+    established.
