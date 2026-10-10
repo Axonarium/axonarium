@@ -1,0 +1,31 @@
+id: clm-pq2cfcrb6m
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:362
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnagi.2022.960868
+  pmid: '36062147'
+  pmcid: PMC9428471
+  locator: Fig. 2A, Fig. 3A, Fig. 6D
+paraphrase: MD was densely labelled after anterograde transsynaptic tracing from rACC in young mice and decreased with age.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rACC
+  extract.object_name: MD

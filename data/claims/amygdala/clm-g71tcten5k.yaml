@@ -1,0 +1,28 @@
+id: clm-g71tcten5k
+subject:
+  type: region
+  id: UBERON:0009951
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002893
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00003
+  pmid: '21290004'
+  pmcid: PMC3032080
+  locator: Fig. 7; Fig. 9
+paraphrase: Rat main olfactory bulb injections labelled terminals in the nucleus of the lateral olfactory tract.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: main olfactory bulb (MOB)
+  extract.object_name: nucleus of the LOT

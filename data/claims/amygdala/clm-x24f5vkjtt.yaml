@@ -1,0 +1,29 @@
+id: clm-x24f5vkjtt
+subject:
+  type: region
+  id: UBERON:0003029
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-gv1k4bnh04
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1523/eneuro.0164-22.2022
+  pmid: '36280288'
+  pmcid: PMC9668348
+  locator: Materials and Methods, whole-cell patch-clamp; Fig. 3B,C
+paraphrase: Electrical stimulation of fibres within the stria terminalis evoked monosynaptic glutamatergic EPSCs in BLA pyramidal
+  neurons, recorded with GABA-A and NMDA receptors blocked; polysynaptic responses were rare and excluded.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: stria terminalis (ST) afferents
+  extract.object_name: BLA pyramidal neurons

@@ -1,0 +1,31 @@
+id: clm-1v3z85j8we
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0227-17.2017
+  pmid: '29071300'
+  pmcid: PMC5654238
+  locator: Fig. 4C,D
+paraphrase: With a Cre-off AAV1-hsyn-FAS-GCaMP6f labelling D2R-negative PVT cells, their axons reached the nucleus accumbens
+  and were concentrated in the core, overlapping partly with D2R-positive projections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Cre-negative (D2R-negative) PVT neurons
+  extract.object_name: NAc core

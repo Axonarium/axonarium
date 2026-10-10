@@ -1,0 +1,31 @@
+id: clm-drghfs5kks
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:639
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.24272/j.issn.2095-8137.2020.020
+  pmid: '31945810'
+  pmcid: PMC7109009
+  locator: Fig. 3B, 3C
+paraphrase: The tracer injected in ACo also labelled cells at the PMCo injection site, indicating PMCo neurons project to
+  ACo; the authors describe mutual connectivity between ACo and PMCo.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PMCo
+  extract.object_name: ACo

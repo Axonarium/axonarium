@@ -1,0 +1,33 @@
+id: clm-h6nkg5aa2z
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.0088-24.2025
+  pmid: '39947924'
+  pmcid: PMC11905350
+  locator: Figs. 3D, 4B,D–F
+paraphrase: Driving VTA terminals within the BLA produced phase-locked oscillations not only in the BLA but also in the medial
+  prefrontal cortex, and phase-locking analyses (PLV and imaginary PLV) showed that BLA activity led mPFC activity, with significant
+  stimulation-induced BLA-to-mPFC coherence at frequencies above 5 Hz (20 and 40 Hz for iPLV); this coherence was reduced
+  in early life stress animals at 40 Hz.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: mPFC

@@ -1,0 +1,33 @@
+id: clm-nssgy7jbzr
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Fig. 8B-E; Table 2
+paraphrase: Lateral nucleus injections produced the densest ventral striatal terminal field in the accumbens core, plus a
+  conspicuous field in the ventral shell and a moderate-to-dense field in the midcaudal lateral shell. The dorsal medial shell
+  was nearly unlabeled, and labeling was bilateral with ipsilateral dominance.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: L
+  extract.object_name: Acb

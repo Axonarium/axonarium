@@ -1,0 +1,32 @@
+id: clm-jb4ba9j9cy
+subject:
+  type: region
+  id: MBA:780
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: moderate
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Fig. 7E,F; Table 2
+paraphrase: An injection restricted to the lateral amygdalohippocampal area gave moderately dense labeling in the ventral
+  accumbens core and parts of the medial shell. The midcaudal lateral shell was sparsely labeled.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AHAl
+  extract.object_name: Acb

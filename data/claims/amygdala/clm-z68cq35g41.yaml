@@ -1,0 +1,29 @@
+id: clm-z68cq35g41
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:8440075
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0199-19.2019
+  pmid: '32019871'
+  pmcid: PMC7029183
+  locator: Fig. 1B-E; Results, first section
+paraphrase: Anterograde AAV9 fluorescent labelling from BLA showed direct axonal projections to GC. They lay mainly in the
+  dysgranular and agranular subdivisions, more ventrally than VPMpc axons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: gustatory cortex (GC)

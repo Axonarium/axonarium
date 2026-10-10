@@ -1,0 +1,32 @@
+id: clm-0mcgddhf64
+subject:
+  type: region
+  id: MBA:226
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fnana.2021.741868
+  pmid: '34566585'
+  pmcid: PMC8460764
+  locator: Results, Retrograde Tracing of Global Inputs section
+paraphrase: A few presynaptic neurons to accumbal NPY cells, labelled by rabies tracing, were found in the lateral preoptic
+  area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral preoptic area
+  extract.object_name: NPY neurons in the NAc

@@ -1,0 +1,32 @@
+id: clm-n99z346jq4
+subject:
+  type: region
+  id: UBERON:0001930
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001896
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2020.00047
+  pmid: '32848637'
+  pmcid: PMC7412887
+  locator: Fig. 4A,B; Fig. 5C; Results, Distribution of WGA-HRP Retrograde-Labeled Neurons in the PVN
+paraphrase: After WGA-HRP was injected into one side of the DVC in asthmatic rats, retrogradely labelled cells appeared in
+  the PVN, dense in its medial and lateral subnuclei and scattered in the dorsal subnucleus. Across 8 rats, 634 HRP-labelled
+  PVN neurons were counted; about 18.14% were HRP/OT and 2.37% HRP/Fos/OT, so roughly a fifth of DVC-projecting PVN neurons
+  were oxytocin-positive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: paraventricular hypothalamic nucleus (PVN)
+  extract.object_name: dorsal vagal complex (DVC)

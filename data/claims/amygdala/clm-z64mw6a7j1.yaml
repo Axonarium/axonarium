@@ -1,0 +1,30 @@
+id: clm-z64mw6a7j1
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0348-20.2020
+  pmid: '33380525'
+  pmcid: PMC7877463
+  locator: Fig. 1Diii
+paraphrase: mCherry-positive rabies-labeled neurons presynaptic to pDMS D1-MSNs were found in the BNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: bed nucleus of the stria terminalis (BNST)
+  extract.object_name: D1-MSNs in the posterior dorsomedial striatum (pDMS)

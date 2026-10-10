@@ -1,0 +1,31 @@
+id: clm-ccxefadxt2
+subject:
+  type: region
+  id: MBA:280
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.2145-19.2019
+  pmid: '31666353'
+  pmcid: PMC6891065
+  locator: Fig. 10; Fig. 13; Table 5
+paraphrase: Monosynaptic rabies tracing from cNTS PPG neurons labeled Barrington's nucleus neurons, including a subset expressing
+  Crh mRNA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Barrington's nucleus (Bar)
+  extract.object_name: cNTS PPG neurons

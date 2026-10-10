@@ -1,0 +1,31 @@
+id: clm-b939xyrtev
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.2145-19.2019
+  pmid: '31666353'
+  pmcid: PMC6891065
+  locator: Fig. 8; Results, Experiment 2
+paraphrase: Despite projecting to the DVC, the VTA showed little or no Cre-dependent PRV-GFP labeling at 96 h, suggesting
+  no direct or indirect input to cNTS PPG neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VTA
+  extract.object_name: cNTS PPG neurons

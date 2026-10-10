@@ -1,0 +1,31 @@
+id: clm-55bpdfvdkf
+subject:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2010.00147
+  pmid: '21212837'
+  pmcid: PMC3014656
+  locator: Figs. 1, 3; Table 1
+paraphrase: Fluorescent bead injections into dorsal striatum labeled many neurons in deep layers (mainly layer V) across frontal,
+  parietal sensory and motor cortex, with more labeling ipsilaterally.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: neocortex (deep layers of frontal and parietal neocortex)
+  extract.object_name: dorsal striatum

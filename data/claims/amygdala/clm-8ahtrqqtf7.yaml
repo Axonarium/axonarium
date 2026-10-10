@@ -1,0 +1,37 @@
+id: clm-8ahtrqqtf7
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.55
+  unit: '1'
+  n: 59
+source:
+  doi: 10.1523/jneurosci.2238-16.2016
+  pmid: '28087766'
+  pmcid: PMC5320609
+  locator: Fig. 2B,C; Results, 'Activation of 5-HT neurons evokes glutamate-mediated responses in BA INs'
+paraphrase: Single light pulses applied to ChR2-expressing raphe axons produced short-latency EPSCs in just over half of recorded
+  basal amygdala interneurons; these currents were eliminated by combined AMPA/kainate and NMDA receptor blockade, showing
+  glutamate release from 5-HT axons. The responses depressed as stimulation frequency rose from 1 to 20 Hz.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DRN (5-HT neurons)
+  extract.object_name: BA interneurons (INs)

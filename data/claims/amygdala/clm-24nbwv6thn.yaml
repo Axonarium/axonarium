@@ -1,0 +1,29 @@
+id: clm-24nbwv6thn
+subject:
+  type: neuron_type
+  id: nt-6730a6m5pa
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-wprma5fcrr
+species: NCBITaxon:10090
+evidence_class: electron_microscopy
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2016.00020
+  pmid: '27013983'
+  pmcid: PMC4779893
+  locator: Results, 'Target distribution of BCs'
+paraphrase: Electron microscopy of randomly sampled boutons from biocytin-filled CCK/CB1 basket cells showed synapses onto
+  somata and dendrites of BLA neurons. 32 of 54 synapses from 5 cells were on dendrites.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cholecystokinin and CB1 cannabinoid receptor-expressing basket cell (CCK/CB1BC)
+  extract.object_name: principal cells (PCs) of the BLA

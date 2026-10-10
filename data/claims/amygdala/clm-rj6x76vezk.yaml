@@ -1,0 +1,31 @@
+id: clm-rj6x76vezk
+subject:
+  type: region
+  id: MBA:619
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Fig. 2F; Table 1
+paraphrase: A lateral shell injection labeled cells in layers 2 and 3 of the nucleus of the lateral olfactory tract. Core
+  injections labeled a few cells bilaterally in its layer 3.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LOT
+  extract.object_name: Acb

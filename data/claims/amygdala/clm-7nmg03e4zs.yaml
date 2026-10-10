@@ -1,0 +1,31 @@
+id: clm-7nmg03e4zs
+subject:
+  type: region
+  id: MBA:374
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0348-20.2020
+  pmid: '33380525'
+  pmcid: PMC7877463
+  locator: Fig. 1Dxiv, 2, 4G
+paraphrase: SNc neurons were labeled as monosynaptic inputs to pDMS D2-MSNs. D2R-expressing SNc inputs were enriched among
+  them.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: substantia nigra pars compacta (SNc)
+  extract.object_name: D2-MSNs in the posterior dorsomedial striatum (pDMS)

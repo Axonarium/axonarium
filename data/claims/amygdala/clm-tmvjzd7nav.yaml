@@ -1,0 +1,30 @@
+id: clm-tmvjzd7nav
+subject:
+  type: region
+  id: UBERON:0001879
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002298
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: moderate
+source:
+  doi: 10.3389/fnana.2020.00057
+  pmid: '32973466'
+  pmcid: PMC7468392
+  locator: Fig. 3D,G; Results, basal forebrain
+paraphrase: The horizontal limb of the diagonal band showed CB-labelled neurons after tracer injection into the CSF-contacting
+  nucleus, a moderate projection (about 9.7 cells per 0.2 mm2).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: nucleus of the horizontal limb of the diagonal band (HDB)
+  extract.object_name: CSF-contacting nucleus

@@ -1,0 +1,31 @@
+id: clm-2k2szzvr4y
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Fig. 3C,D
+paraphrase: The posterior part of the basal nucleus held abundant fluorogold-labeled cells after the tubercle injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Bp
+  extract.object_name: olfactory tubercle

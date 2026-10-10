@@ -1,0 +1,31 @@
+id: clm-jp9egcy1eq
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1523/eneuro.0227-17.2017
+  pmid: '29071300'
+  pmcid: PMC5654238
+  locator: Results, PVT efferents; Table 1
+paraphrase: Sparse labelling of axons from PVT D2R-expressing neurons was observed in entorhinal cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: D2R-expressing PVT neurons (PVT)
+  extract.object_name: entorhinal cortex

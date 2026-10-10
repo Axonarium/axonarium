@@ -1,0 +1,31 @@
+id: clm-ry97pb5c4n
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0175-18.2018
+  pmid: '29911171'
+  pmcid: PMC6001136
+  locator: Fig. 1G2; Results, first section
+paraphrase: Rabies tracing from Pcdh21-cre mitral cell starters in the AOB labelled only a few PmCo neurons. The PmCo-to-AOB
+  labelled-cell ratio was much lower than for nNOS starters.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PmCo
+  extract.object_name: AOB mitral cells (Pcdh21cre starters)

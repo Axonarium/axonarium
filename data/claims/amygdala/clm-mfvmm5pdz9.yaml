@@ -1,0 +1,41 @@
+id: clm-mfvmm5pdz9
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-gv1k4bnh04
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: conduction_delay
+  value: 18.8
+  unit: ms
+  sem: 1.1
+  n: 13
+- quantity: conduction_delay
+  value: 21.7
+  unit: ms
+  sem: 1.2
+  n: 13
+source:
+  doi: 10.1523/eneuro.0132-19.2019
+  pmid: '31548367'
+  pmcid: PMC7070451
+  locator: Fig. 6B3, B4
+paraphrase: Optical stimulation of ventral mPFC terminals evoked GABAergic IPSCs in BLA principal neurons with longer latencies
+  than the EPSCs; these IPSCs were attenuated by picrotoxin and by DNQX, consistent with recruitment of local GABAergic neurons
+  rather than direct inhibition.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: vmPFC
+  extract.object_name: BLA principal neurons

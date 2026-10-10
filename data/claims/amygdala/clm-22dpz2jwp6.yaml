@@ -1,0 +1,29 @@
+id: clm-22dpz2jwp6
+subject:
+  type: region
+  id: UBERON:0009951
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002266
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00003
+  pmid: '21290004'
+  pmcid: PMC3032080
+  locator: Fig. 7; Fig. 9
+paraphrase: A biotinylated dextran-amine injection into the rat main olfactory bulb labelled fibres via the lateral olfactory
+  tract that terminated in the anterior olfactory nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: main olfactory bulb (MOB)
+  extract.object_name: anterior olfactory nucleus

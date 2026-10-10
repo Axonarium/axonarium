@@ -1,0 +1,30 @@
+id: clm-g269b6cvcf
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0489-19.2020
+  pmid: '32471845'
+  pmcid: PMC7322293
+  locator: Results, rabies tracing section
+paraphrase: Rabies tracing from MeA aromatase neurons labelled no cells in the main olfactory bulb.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: main olfactory bulb
+  extract.object_name: arom+ neurons in the MeA

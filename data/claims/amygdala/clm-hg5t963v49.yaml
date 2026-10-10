@@ -1,0 +1,32 @@
+id: clm-hg5t963v49
+subject:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0489-19.2020
+  pmid: '32471845'
+  pmcid: PMC7322293
+  locator: Fig. 3C,D; Fig. 4; Fig. 6
+paraphrase: Monosynaptic rabies tracing started from aromatase-Cre neurons in the medial amygdala labelled mitral/tufted cells
+  in the accessory olfactory bulb. Their dendrites reached AOB glomeruli. About 89% of the labelled cells lay in the anterior
+  AOB. Male mice had roughly ten times more labelled AOB cells per starter neuron than females (1.25 vs 0.13).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AOB mitral/tufted cell layer
+  extract.object_name: arom+ neurons in the MeA (posterior dorsal MeA)

@@ -1,0 +1,30 @@
+id: clm-8a9matgha7
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0034893
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0156-22.2022
+  pmid: '36127135'
+  pmcid: PMC9522321
+  locator: Methods, Histology; Fig. 4D
+paraphrase: After AAV8-hSyn-hM4Di-mCherry or mCherry was injected into the BLA, immunohistochemical amplification of mCherry
+  revealed labelled axon terminals within the anterior insular cortex. Terminal expression was confirmed in every rat included
+  in the analysis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: anterior insular cortex (aIC)

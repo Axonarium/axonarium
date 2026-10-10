@@ -1,0 +1,49 @@
+id: clm-jedtnymsvz
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: modulatory
+measurements:
+- quantity: connection_probability
+  value: 0.37
+  unit: '1'
+- quantity: connection_probability
+  value: 0.47
+  unit: '1'
+- quantity: connection_probability
+  value: 0.41
+  unit: '1'
+  n: 12
+- quantity: connection_probability
+  value: 0.41
+  unit: '1'
+  n: 12
+source:
+  doi: 10.1523/jneurosci.0682-24.2024
+  pmid: '39187377'
+  pmcid: PMC11426376
+  locator: Figs. 1G–M, 2, 3
+paraphrase: 'Photostimulation (30 Hz, up to 30 s) of channelrhodopsin-expressing lateral hypothalamic orexin/dynorphin terminals
+  in slices bidirectionally changed evoked firing of tyrosine hydroxylase-positive VTA neurons: some cells fired more, others
+  less, and a minority were unaffected. The increases persisted with glutamate and GABA-A blockers and were reversed by the
+  orexin-1 receptor antagonist SB334867, the decreases were reversed by the kappa-opioid antagonist NorBNI, and combined antagonists
+  abolished any change, indicating peptidergic (orexin and dynorphin) postsynaptic modulation rather than fast transmission.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LHox/dyn
+  extract.object_name: VTADA neurons

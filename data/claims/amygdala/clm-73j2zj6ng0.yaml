@@ -1,0 +1,30 @@
+id: clm-73j2zj6ng0
+subject:
+  type: region
+  id: MBA:655
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Fig. 3C,D
+paraphrase: A tubercle fluorogold injection retrogradely labeled neurons in the posterolateral cortical amygdaloid nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: COApl
+  extract.object_name: olfactory tubercle

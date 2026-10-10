@@ -1,0 +1,30 @@
+id: clm-8bz6esyf9s
+subject:
+  type: neuron_type
+  id: nt-3kvfdzf7wn
+predicate: projects_to
+object:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.1103-21.2021
+  pmid: '34470806'
+  pmcid: PMC8528505
+  locator: Fig. 3E; Results, AAV expression and fiber optic cannula placement
+paraphrase: Glutamatergic MeApd fibers were observed in the VMH, including the ventrolateral part, which received less of
+  them than the rest of the nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MeApd VGluT2 neurons
+  extract.object_name: VMHvl

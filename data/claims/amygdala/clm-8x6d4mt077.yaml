@@ -1,0 +1,32 @@
+id: clm-8x6d4mt077
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.24272/j.issn.2095-8137.2020.020
+  pmid: '31945810'
+  pmcid: PMC7109009
+  locator: Results, 'AOB projects to BST and PMCo simultaneously' (Fig. 2)
+paraphrase: After injecting one retrograde virus in BST and the other in PMCo, the tracer from the PMCo injection appeared
+  in BST neurons and vice versa, which the authors interpreted as reciprocal connections between the two regions; here BST
+  cells were labelled from the PMCo injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BST
+  extract.object_name: PMCo

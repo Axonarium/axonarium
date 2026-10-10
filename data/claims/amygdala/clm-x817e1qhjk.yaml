@@ -1,0 +1,31 @@
+id: clm-x817e1qhjk
+subject:
+  type: region
+  id: MBA:381
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/eneuro.0238-23.2023
+  pmid: '37775310'
+  pmcid: PMC10576262
+  locator: Fig. 7c-d; Results, Lateral ITCs
+paraphrase: Dense clusters of rabies-labelled inputs to lateral ITCs were found in the shell of the substantia nigra pars
+  reticulata.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: shell of the reticular substantia nigra (SNR)
+  extract.object_name: lITC

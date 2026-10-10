@@ -1,0 +1,31 @@
+id: clm-mgs4t766ep
+subject:
+  type: region
+  id: MBA:599
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fnagi.2022.960868
+  pmid: '36062147'
+  pmcid: PMC9428471
+  locator: Fig. 2
+paraphrase: CM was sporadically labelled by retrograde tracer from rACC in male mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: central medial thalamic nucleus (CM)
+  extract.object_name: rACC

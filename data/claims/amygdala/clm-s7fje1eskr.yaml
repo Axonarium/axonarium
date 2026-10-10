@@ -1,0 +1,31 @@
+id: clm-s7fje1eskr
+subject:
+  type: region
+  id: MBA:1020
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:322
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2010.00147
+  pmid: '21212837'
+  pmcid: PMC3014656
+  locator: Fig. 8B
+paraphrase: Thalamic AAV-GFP infection produced a dense columnar axonal plexus in layer IV of primary somatosensory cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: posterior and ventral posterior thalamus
+  extract.object_name: primary somatosensory cortex

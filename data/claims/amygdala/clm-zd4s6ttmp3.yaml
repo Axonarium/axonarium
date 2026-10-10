@@ -1,0 +1,29 @@
+id: clm-zd4s6ttmp3
+subject:
+  type: region
+  id: UBERON:0004069
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001880
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00003
+  pmid: '21290004'
+  pmcid: PMC3032080
+  locator: Fig. 8
+paraphrase: Labelled vomeronasal fibres from the rat accessory olfactory bulb travelled in the stria terminalis to the bed
+  nucleus of the stria terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: accessory olfactory bulb (AOB)
+  extract.object_name: bed nucleus of the stria terminalis

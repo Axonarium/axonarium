@@ -1,0 +1,31 @@
+id: clm-mkp2aeha9k
+subject:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Figures 4A,G
+paraphrase: A small number of presynaptic rabies-labelled neurons (fewer than 20 per identified region rostral to the midbrain)
+  were found in the zona incerta for both SST+ and GlyT2+ preBötC starter populations.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: zona incerta
+  extract.object_name: preBötC

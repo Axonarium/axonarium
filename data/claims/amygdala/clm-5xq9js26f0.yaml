@@ -1,0 +1,31 @@
+id: clm-5xq9js26f0
+subject:
+  type: region
+  id: MBA:319
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0204-18.2018
+  pmid: '29971248'
+  pmcid: PMC6027956
+  locator: Abstract; Results, Transmitter used by BM and BNSTa axons
+paraphrase: After Cre-dependent ChR2-mCherry infusion into BM of Vgat-Cre mice, no anterogradely labelled axons were found
+  in VMH, indicating GABAergic BM cells do not project there.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: GABAergic BM neurons (Vgat-ires-Cre)
+  extract.object_name: VMH

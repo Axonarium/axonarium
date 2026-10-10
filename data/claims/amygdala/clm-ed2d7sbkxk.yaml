@@ -1,0 +1,30 @@
+id: clm-ed2d7sbkxk
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2010.00147
+  pmid: '21212837'
+  pmcid: PMC3014656
+  locator: Results, thalamus paragraph; Table 1
+paraphrase: Labeled somata were found in the lateral geniculate nucleus after dorsal striatal tracer injections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral geniculate (LG)
+  extract.object_name: dorsal striatum

@@ -1,0 +1,31 @@
+id: clm-s782sbzj71
+subject:
+  type: region
+  id: MBA:688
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0348-20.2020
+  pmid: '33380525'
+  pmcid: PMC7877463
+  locator: Fig. 1D, 1F
+paraphrase: Rabies tracing from pDMS D2-MSNs labeled many cortical neurons. The cortex was the largest input source, though
+  proportionally smaller than for D1-MSNs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cortex
+  extract.object_name: D2-MSNs in the posterior dorsomedial striatum (pDMS)

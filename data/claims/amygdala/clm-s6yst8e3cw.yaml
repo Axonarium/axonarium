@@ -1,0 +1,30 @@
+id: clm-s6yst8e3cw
+subject:
+  type: region
+  id: UBERON:0001898
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002298
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2020.00057
+  pmid: '32973466'
+  pmcid: PMC7468392
+  locator: Fig. 7; Results, preoptic area
+paraphrase: The ventromedial preoptic nucleus contained CB-labelled cells after tracer injection into the CSF-contacting nucleus,
+  graded strong (about 11.2 cells per 0.2 mm2).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ventromedial preoptic nucleus (VMPO)
+  extract.object_name: CSF-contacting nucleus

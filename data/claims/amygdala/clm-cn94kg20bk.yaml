@@ -1,0 +1,31 @@
+id: clm-cn94kg20bk
+subject:
+  type: region
+  id: MBA:4
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Figures 3B,F
+paraphrase: In the same sections where collicular labelling was examined, no rabies-labelled presynaptic neurons were found
+  in the inferior colliculus for either preBötC subpopulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: inferior colliculus
+  extract.object_name: preBötC

@@ -1,0 +1,31 @@
+id: clm-x9f39kgj5g
+subject:
+  type: region
+  id: MBA:631
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Table 1; Fig. 2B,G
+paraphrase: The cortex-amygdala transition zone contained retrogradely labeled cells after accumbens injections, abundant
+  after the lateral shell injection and in its deep portion after core injections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CxA
+  extract.object_name: Acb

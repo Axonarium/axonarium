@@ -1,0 +1,35 @@
+id: clm-wfkv6a52s0
+subject:
+  type: region
+  id: MBA:322
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.1531
+  unit: '1'
+  n: 8
+source:
+  doi: 10.1523/eneuro.0348-20.2020
+  pmid: '33380525'
+  pmcid: PMC7877463
+  locator: Fig. 1D, 2
+paraphrase: Primary sensory cortex provided a significantly greater proportion of inputs to pDMS D2-MSNs than to D1-MSNs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: primary sensory cortex (S1)
+  extract.object_name: D2-MSNs in the posterior dorsomedial striatum (pDMS)

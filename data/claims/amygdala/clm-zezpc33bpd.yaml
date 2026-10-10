@@ -1,0 +1,30 @@
+id: clm-zezpc33bpd
+subject:
+  type: neuron_type
+  id: CL:0000101
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: CL:0000540
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0450-17.2018
+  pmid: '29468190'
+  pmcid: PMC5819669
+  locator: Fig. 5B,C
+paraphrase: In spinal slices from naive (uninjured) transgenic rats, optical stimulation of the dorsal root failed to evoke
+  EPSCs in lamina I neurons, although the same cells responded to electrical stimulation of Aδ and C fibers, indicating no
+  functional Aβ input to lamina I under normal conditions.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: primary afferent Aβ fibers (ChR2-expressing)
+  extract.object_name: Lamina I SDH neurons

@@ -1,0 +1,30 @@
+id: clm-whqc52d7fr
+subject:
+  type: region
+  id: UBERON:0002023
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002298
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2020.00057
+  pmid: '32973466'
+  pmcid: PMC7468392
+  locator: Fig. 3E,G; Results, basal forebrain
+paraphrase: After the CB tracer was injected into the CSF-contacting nucleus, claustrum neurons were labelled, a projection
+  the authors grade as strong (about 11.7 cells per 0.2 mm2).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: claustrum (Cl)
+  extract.object_name: CSF-contacting nucleus

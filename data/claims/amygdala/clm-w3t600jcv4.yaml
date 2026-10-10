@@ -1,0 +1,37 @@
+id: clm-w3t600jcv4
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:835
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.1764
+  unit: '1'
+  sem: 0.0394
+  n: 6
+source:
+  doi: 10.1523/jneurosci.0415-25.2026
+  pmid: '41605651'
+  pmcid: PMC12962782
+  locator: Fig. 2C-D
+paraphrase: The central amygdala was one of the main sources of monosynaptic input cells to VP cholinergic neurons in rabies
+  tracing.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: central amygdala (CeA)
+  extract.object_name: VPCNs

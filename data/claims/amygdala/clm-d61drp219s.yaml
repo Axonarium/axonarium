@@ -1,0 +1,31 @@
+id: clm-d61drp219s
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.2238-16.2016
+  pmid: '28087766'
+  pmcid: PMC5320609
+  locator: Fig. 1E1,E2,F
+paraphrase: ChR2/YFP-labelled dorsal raphe axons also innervated the lateral amygdala, though the labelling there was less
+  dense than in the adjacent basal nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DRN
+  extract.object_name: LA

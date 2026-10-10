@@ -1,0 +1,30 @@
+id: clm-vx1v7c12zw
+subject:
+  type: region
+  id: UBERON:0001934
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001894
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.3389/fendo.2020.546350
+  pmid: '33343506'
+  pmcid: PMC7746818
+  locator: Fig. 4A,B
+paraphrase: EGFP-positive somata were detected in the dorsal portion of the dorsomedial hypothalamic nucleus 96 h after PRV
+  152 was injected into the posterior lobe, a labelling pattern the authors attribute to direct or indirect links with the
+  posterior pituitary.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: dorsomedial hypothalamic nucleus, dorsal part (DMD)
+  extract.object_name: posterior pituitary (posterior lobe)

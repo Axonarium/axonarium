@@ -1,0 +1,33 @@
+id: clm-zgdgdpdyfe
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Table 1; Fig. 2H
+paraphrase: Core injections produced a dense, bilateral population of labeled cells in the anterior lateral nucleus, especially
+  its dorsolateral part. Medial-shell-only injections left the lateral nucleus unlabeled, and a lateral shell injection labeled
+  cells in the rostral ventrolateral part.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: L
+  extract.object_name: Acb

@@ -1,0 +1,30 @@
+id: clm-nn1ajzph3c
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:292
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0175-18.2018
+  pmid: '29911171'
+  pmcid: PMC6001136
+  locator: Fig. 5B-D; Results
+paraphrase: After CaMKIIa-AAV injections restricted to the PmCo, there was negligible or no viral expression in the BAOT.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PmCo
+  extract.object_name: BAOT

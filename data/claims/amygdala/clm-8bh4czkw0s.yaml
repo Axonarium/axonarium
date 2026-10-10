@@ -1,0 +1,31 @@
+id: clm-8bh4czkw0s
+subject:
+  type: neuron_type
+  id: CL:0000101
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: CL:0000540
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.1523/eneuro.0450-17.2018
+  pmid: '29468190'
+  pmcid: PMC5819669
+  locator: Fig. 3B–E
+paraphrase: Electrical stimulation of the L4 dorsal root with suction and monopolar electrodes evoked monosynaptic EPSCs in
+  lamina II dorsal horn neurons; latency differences gave conduction velocities of ~19.5 m/s for the light-responsive (Aβ)
+  input, and separate groups at ~6.2 m/s (n = 11) and ~0.54 m/s (n = 13) corresponding to Aδ and C fibers in light-unresponsive
+  neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: primary afferent Aβ fibers (dorsal root afferents)
+  extract.object_name: Lamina II SDH neurons

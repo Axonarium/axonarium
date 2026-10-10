@@ -1,0 +1,31 @@
+id: clm-g5y2r2janh
+subject:
+  type: region
+  id: MBA:154
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Figures 2D,I
+paraphrase: Presynaptic rabies-labelled neurons were detected in the parahypoglossal region in both SST-Cre and GlyT2-Cre
+  tracing experiments.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: parahypoglossal region
+  extract.object_name: preBötC

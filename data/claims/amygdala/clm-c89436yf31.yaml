@@ -1,0 +1,31 @@
+id: clm-c89436yf31
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.1523/eneuro.0227-17.2017
+  pmid: '29071300'
+  pmcid: PMC5654238
+  locator: Results, PVT efferents; Table 1
+paraphrase: Only sparse eYFP-labelled axons from PVT D2R neurons were seen in the caudate putamen.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: D2R-expressing PVT neurons (PVT)
+  extract.object_name: caudate putamen

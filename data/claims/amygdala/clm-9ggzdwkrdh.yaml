@@ -1,0 +1,30 @@
+id: clm-9ggzdwkrdh
+subject:
+  type: region
+  id: MBA:322
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Supplementary Figures S1B–P
+paraphrase: Fluorogold tracing from the preBötC labelled neurons in sensory cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: sensory cortex
+  extract.object_name: preBötC

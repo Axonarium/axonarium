@@ -1,0 +1,35 @@
+id: clm-b7b6qesk6y
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.1166
+  unit: '1'
+  n: 8
+source:
+  doi: 10.1523/eneuro.0348-20.2020
+  pmid: '33380525'
+  pmcid: PMC7877463
+  locator: Fig. 1D, 2
+paraphrase: Cingulate cortex neurons were labeled as monosynaptic inputs to pDMS D2-MSNs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cingulate cortex (Cg)
+  extract.object_name: D2-MSNs in the posterior dorsomedial striatum (pDMS)

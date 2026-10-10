@@ -1,0 +1,30 @@
+id: clm-b7mn2k71r1
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0227-17.2017
+  pmid: '29071300'
+  pmcid: PMC5654238
+  locator: Results, PVT afferents; Table 1
+paraphrase: Monosynaptic rabies tracing from PVT D2R-expressing neurons labelled cell bodies in the VTA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VTA (ventral tegmental area)
+  extract.object_name: D2R-expressing PVT neurons

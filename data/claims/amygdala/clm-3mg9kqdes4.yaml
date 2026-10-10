@@ -1,0 +1,33 @@
+id: clm-3mg9kqdes4
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/jneurosci.2238-16.2016
+  pmid: '28087766'
+  pmcid: PMC5320609
+  locator: Fig. 1E–G; Results, 'Selective targeting of ChR2 expression to 5-HT neurons'
+paraphrase: Cre-dependent AAV expressing ChR2-YFP injected into the dorsal raphe of SERT-Cre mice labelled axons throughout
+  the basolateral amygdala, with the basal nucleus receiving a particularly dense plexus of YFP-positive, 5-HT-immunoreactive
+  fibres; some of these varicosities also contained VGLUT3.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DRN
+  extract.object_name: BA (basal nucleus of the amygdala)

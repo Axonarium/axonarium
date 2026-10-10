@@ -1,0 +1,43 @@
+id: clm-zwdzadd5nx
+subject:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.0719
+  unit: '1'
+  sem: 0.0116
+  n: 5
+- quantity: connection_probability
+  value: 0.0955
+  unit: '1'
+  sem: 0.0215
+  n: 4
+source:
+  doi: 10.3389/fnana.2021.741868
+  pmid: '34566585'
+  pmcid: PMC8460764
+  locator: Fig. 4, Table 1; Fig. 5, Table 2
+paraphrase: CTb injected into the LH retrogradely labelled ipsilateral NAc neurons, about 7% of them mCherry-labelled NPY
+  neurons. In a second experiment, EnvA-pseudotyped rabies injected into the LH infected TVA-expressing NAc NPY neurons, labelling
+  about 9.6% of the NPY neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: NPY neurons in the NAc
+  extract.object_name: LH
