@@ -1,0 +1,39 @@
+id: clm-4wbwhttq4r
+subject:
+  type: region
+  id: MBA:1022
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1B–C, Fig. 1G
+paraphrase: External globus pallidus neurons were labelled as presynaptic inputs to GABAergic VTA neurons in GAD2-Cre mice,
+  with relative enrichment over dopamine cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: GPe
+  extract.object_name: VTA GABAergic cells (GAD2-Cre)
+  verify.note: GPe inputs were imaged and quantified in GAD2-Cre brains and enriched relative to DA cells.

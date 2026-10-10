@@ -1,0 +1,39 @@
+id: clm-mcjx7gqmxp
+subject:
+  type: region
+  id: MBA:483
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 3G, Fig. 5K
+paraphrase: Medial habenula neurons were labelled as inputs to VTA dopamine cells; this input was reduced in brains from mice
+  given a single addictive drug exposure.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MHb
+  extract.object_name: VTADA cells (DAT-Cre VTA dopamine neurons)
+  verify.note: MHb is a quantified input described as reduced in drug-treated brains and a negative PC2 weight.

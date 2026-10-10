@@ -1,0 +1,39 @@
+id: clm-n0w049y25c
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1B–C, Fig. 1G
+paraphrase: Deep cerebellar nuclei neurons were rabies-labelled after tracing from glutamatergic VTA cells, contributing to
+  the component on which vGluT2-Cre brains scored highest.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN (deep cerebellar nuclei)
+  extract.object_name: VTA glutamatergic cells (vGluT2-Cre)
+  verify.note: DCN labeling in vGluT2-Cre brains contributes positively to PC2.

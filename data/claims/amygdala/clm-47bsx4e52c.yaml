@@ -1,0 +1,39 @@
+id: clm-47bsx4e52c
+subject:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 5E, Fig. 5K
+paraphrase: Dorsal raphe neurons were rabies-labelled from VTA dopamine starter cells and contributed to the component enriched
+  in drug-treated brains.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DR (dorsal raphe)
+  extract.object_name: VTADA cells (DAT-Cre VTA dopamine neurons)
+  verify.note: DR labeling from VTA DA starter cells is quantified and contributes positively to the drug-enriched PC2.

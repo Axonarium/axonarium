@@ -1,0 +1,39 @@
+id: clm-8bnd0e66at
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1B–C
+paraphrase: Representative images and quantification show rabies-labelled deep cerebellar nuclei neurons after tracing from
+  GABAergic VTA cells in GAD2-Cre mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN (deep cerebellar nuclei)
+  extract.object_name: VTA GABAergic cells (GAD2-Cre)
+  verify.note: DCN images and counts are shown for GAD2-Cre tracing.

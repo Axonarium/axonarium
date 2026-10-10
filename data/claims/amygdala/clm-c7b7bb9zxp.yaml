@@ -1,0 +1,39 @@
+id: clm-c7b7bb9zxp
+subject:
+  type: region
+  id: MBA:162
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 5E
+paraphrase: The laterodorsal tegmental nucleus was one of the 22 quantified regions containing rabies-labelled inputs to VTA
+  dopamine neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LDT
+  extract.object_name: VTADA cells (DAT-Cre VTA dopamine neurons)
+  verify.note: LDT is among the 22 quantified input regions for DAT-Cre tracing.

@@ -1,0 +1,40 @@
+id: clm-1cxa9jfyf2
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 7M–P; Methods (cTRIO, amygdala coordinates AP −1.43, ML 2.5, DV −4.5)
+paraphrase: Retrograde CAV2-FLEx-Flp injected into the basolateral amygdala region labelled a subset of VTA dopamine neurons,
+  which were then used as starter cells for input mapping, demonstrating a VTA dopamine projection to the amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VTADA
+  extract.object_name: Amygdala
+  verify.note: The paper only designates the retrograde target as "Amygdala", so restriction to the basolateral nucleus cannot
+    be confirmed.

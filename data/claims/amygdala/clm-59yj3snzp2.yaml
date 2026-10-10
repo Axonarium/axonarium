@@ -1,0 +1,39 @@
+id: clm-59yj3snzp2
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:8440075
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.65766
+  pmid: '34018924'
+  pmcid: PMC8139825
+  locator: Figure 1; Results, first section
+paraphrase: AAV carrying ArchT-GFP was infused into BLA; immunohistochemical inspection found GFP-labelled somata in BLA and
+  GFP-labelled axon fibres, but no labelled cell bodies, in gustatory cortex, with terminals concentrated in ventral GC. This
+  anterograde pattern indicates BLA neurons send axons to GC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: GC
+  verify.note: The Figure 1 histology shows GFP-labelled somata only in BLA and labelled axons ending in ventral GC of rats
+    after a BLA AAV injection, which supports an anterograde BLA-to-GC projection.

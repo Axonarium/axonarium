@@ -1,0 +1,39 @@
+id: clm-hsp84hz35x
+subject:
+  type: region
+  id: MBA:483
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 1G
+paraphrase: Medial habenula neurons were labelled as presynaptic inputs to glutamatergic VTA cells, consistent with these
+  cells lying in the medial VTA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MHb
+  extract.object_name: VTA glutamatergic cells (vGluT2-Cre)
+  verify.note: MHb input labeling in vGluT2-Cre brains loads positively on PC2.

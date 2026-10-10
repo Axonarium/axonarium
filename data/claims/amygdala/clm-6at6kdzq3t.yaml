@@ -1,0 +1,39 @@
+id: clm-6at6kdzq3t
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93664
+  pmid: '42138352'
+  pmcid: PMC13179063
+  locator: Fig. 1C, Fig. 1G
+paraphrase: Central amygdala neurons were rabies-labelled from GABAergic VTA starter cells and were relatively enriched onto
+  this population compared with dopamine cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA (central amygdala)
+  extract.object_name: VTA GABAergic cells (GAD2-Cre)
+  verify.note: CeA contributes to the GAD2-enriched positive PC1 dimension and is labeled in GAD2-Cre brains.
