@@ -1,0 +1,40 @@
+id: clm-ac2tssrb2m
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:147
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fncir.2018.00099
+  pmid: '30483067'
+  pmcid: PMC6243045
+  locator: Figures 3C,D
+paraphrase: Locus coeruleus neurons were labelled after anterograde VSV injection into the olfactory bulb, sparsely at 72
+  h and more abundantly at 96 h.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: OB
+  extract.object_name: LC (locus coeruleus)
+  verify.note: LC had a few VSV-labelled neurons at 72 h and more at 96 h after OB injection.

@@ -1,0 +1,39 @@
+id: clm-8g9f0kxbdv
+subject:
+  type: region
+  id: MBA:323
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1611199
+  pmid: '40832125'
+  pmcid: PMC12358408
+  locator: Figs. 4B, 5B, 6E
+paraphrase: Retrogradely labeled cells were present in the lateral substantia nigra after FG injections at intermediate and
+  caudal levels of the caudoputamen.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral part of SN (SNL)
+  extract.object_name: PuI∼ and caudal CP (PuC∼, CaT∼)
+  verify.note: SNL labeling is shown after PuI∼, rostral PuC∼ and CaT∼+PuC∼ FG injections.

@@ -1,0 +1,40 @@
+id: clm-rzqw15cc6n
+subject:
+  type: region
+  id: MBA:771
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:872
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnins.2019.00375
+  pmid: '31068780'
+  pmcid: PMC6491572
+  locator: Fig. 8, 9, 10B
+paraphrase: The DR received about 6.4% of LPT GABAergic varicosities, roughly matching its share of inputs, which makes the
+  connection reciprocal.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LPT GABAergic neurons
+  extract.object_name: DR
+  verify.note: The DR received 6.39% of varicosities, roughly equal to its input share, as shown in Fig. 10B.

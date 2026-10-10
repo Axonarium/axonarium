@@ -1,0 +1,38 @@
+id: clm-m2z8wjmsrr
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002191
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2019.00087
+  pmid: '31114488'
+  pmcid: PMC6503755
+  locator: Results, Histological Verification; Fig. 1E
+paraphrase: The same viral injection into the BLA produced fluorophore-labelled fibres in the subiculum of the temporal hippocampus,
+  with labelling confined to axons rather than cell bodies there.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA (basal nucleus of the amygdala)
+  extract.object_name: subiculum
+  verify.note: The histology results report labelled BLA fibres in the subiculum as well as CA1, citing Fig. 1E, whose caption
+    confirms hippocampal labelling was axonal only.

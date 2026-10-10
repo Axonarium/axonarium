@@ -1,0 +1,36 @@
+id: clm-1b5358teg5
+subject:
+  type: region
+  id: UBERON:0013601
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0019295
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2024.1384621
+  pmid: '38736977'
+  pmcid: PMC11082296
+  locator: Fig. 9J
+paraphrase: Medial terminal nucleus neurons were retrogradely labelled from the PIL.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: medial terminal nucleus (MT)
+  extract.object_name: PIL
+  verify.note: The MT is listed among the FG-labeled regions after PIL injection, shown in Fig. 9J.

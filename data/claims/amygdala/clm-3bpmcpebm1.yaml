@@ -1,0 +1,38 @@
+id: clm-3bpmcpebm1
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001880
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2020.580583
+  pmid: '33192326'
+  pmcid: PMC7531233
+  locator: Fig. 5A-D; Results, 'CeA Projection Neurons Contain CCL2'
+paraphrase: Unilateral injection of retrograde fluorescent nanobeads into the BNST of naive rats labelled neurons in the central
+  amygdala. Some of the labelled neurons were also immunopositive for CCL2.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: bed nucleus of the stria terminalis (BNST)
+  verify.note: Rats received retrograde nanobeads in the BNST, and labelled cells turned up in the CeA, some carrying CCL2
+    (Fig. 5A-D).

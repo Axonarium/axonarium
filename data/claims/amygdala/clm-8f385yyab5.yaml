@@ -1,0 +1,37 @@
+id: clm-8f385yyab5
+subject:
+  type: region
+  id: UBERON:0002267
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002144
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fncir.2024.1384621
+  pmid: '38736977'
+  pmcid: PMC11082296
+  locator: Fig. 10 caption
+paraphrase: Scattered FG-labelled cells were present in the laterodorsal tegmental nucleus after PP injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LDTg
+  extract.object_name: PP
+  verify.note: The Fig. 10 caption mentions scattered LDTg cells after PP injection.

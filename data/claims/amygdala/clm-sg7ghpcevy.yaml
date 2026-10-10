@@ -1,0 +1,40 @@
+id: clm-sg7ghpcevy
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-t6ymz01hv4
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fncel.2025.1597131
+  pmid: '40642101'
+  pmcid: PMC12240933
+  locator: Fig. 2a-d; Results 2.2
+paraphrase: Blue-light activation of ChR2-expressing BLA axons in slices evoked excitatory postsynaptic currents with AMPA
+  and NMDA components in patched CeL somatostatin neurons. Peak currents trended larger and the AMPA/NMDA ratio was higher
+  in SOM-PTEN-KO mice, while paired-pulse ratio did not change.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: CeL SOM+ neurons
+  verify.note: ChR2-expressing BLA terminals evoked excitatory currents in CeL SOM+ cells; the knockout raised the AMPA/NMDA
+    ratio, left paired-pulse ratio unchanged and gave a non-significant amplitude trend.

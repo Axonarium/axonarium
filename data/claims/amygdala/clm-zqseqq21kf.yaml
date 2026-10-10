@@ -1,0 +1,39 @@
+id: clm-zqseqq21kf
+subject:
+  type: region
+  id: MBA:1022
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:470
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fncir.2025.1611199
+  pmid: '40832125'
+  pmcid: PMC12358408
+  locator: Supplementary Fig. 9
+paraphrase: GPe-restricted tracer injections strongly labeled terminals in the subthalamic nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: GPe
+  extract.object_name: STh
+  verify.note: The GPe is reported to project strongly to the STh.

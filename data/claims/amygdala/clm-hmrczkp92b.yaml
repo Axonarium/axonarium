@@ -1,0 +1,38 @@
+id: clm-hmrczkp92b
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnbeh.2013.00213
+  pmid: '24399945'
+  pmcid: PMC3871970
+  locator: Fig. 2B; Results, BLA-to-NAcore section
+paraphrase: After AAV-ArchT-GFP was injected into the BLA, immunostaining for GFP revealed labelled axonal fibres in the core
+  of the nucleus accumbens, confirming an anterogradely traced BLA axonal projection to this target.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAcore
+  verify.note: GFP-labelled terminal fibers in NAcore after BLA AAV injection are reported as strong (Fig. 2B).

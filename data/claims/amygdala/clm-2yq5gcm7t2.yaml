@@ -1,0 +1,46 @@
+id: clm-2yq5gcm7t2
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:771
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0441
+  unit: '1'
+  sem: 0.0105
+  n: 4
+source:
+  doi: 10.3389/fnins.2019.00375
+  pmid: '31068780'
+  pmcid: PMC6491572
+  locator: Fig. 4, 5A-B, 6
+paraphrase: The LHA provided monosynaptic inputs to LPT GABAergic neurons. Some of these input cells were orexin-positive
+  (about 14%) and some MCH-positive (about 11%).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LHA
+  extract.object_name: LPT GABAergic neurons
+  verify.note: The paper reports LHA at 4.41 ± 1.05% of inputs, with orexin and MCH colocalization.

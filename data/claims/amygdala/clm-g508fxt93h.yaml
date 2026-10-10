@@ -1,0 +1,38 @@
+id: clm-g508fxt93h
+subject:
+  type: region
+  id: UBERON:0002889
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002273
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2022.1056706
+  pmid: '36532270'
+  pmcid: PMC9751402
+  locator: Fig. 5D; Results
+paraphrase: CTb injected into the perifornical region retrogradely labelled amygdala neurons. CTb/Fos double-labelled cells
+  in seizure rats were concentrated in medial subnuclei, including BMA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basomedial amygdaloid nucleus, anterior part (BMA)
+  extract.object_name: perifornical nucleus
+  verify.note: After perifornical CTb injection, co-labelled cells were concentrated in the medial subnuclei, and the paper
+    names BMA among them in the Fig. 5D distribution.

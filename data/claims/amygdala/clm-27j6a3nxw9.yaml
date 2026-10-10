@@ -1,0 +1,51 @@
+id: clm-27j6a3nxw9
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.808
+  unit: '1'
+  n: 3
+- quantity: fraction_of_labelled_neurons
+  value: 0.98
+  unit: '1'
+  n: 3
+source:
+  doi: 10.3389/fncel.2025.1565939
+  pmid: '40213497'
+  pmcid: PMC11983651
+  locator: Fig. 1C–E; Results 3.1
+paraphrase: Retrograde AAV (AAV-retro-FLEX-mCherry) injected into the nucleus accumbens of NPY-Cre mice labelled numerous
+  mCherry-positive somata in the basolateral amygdala, with more labelled cells in the posterior than anterior BLA; double
+  staining showed most labelled cells were NPY-immunoreactive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc
+  verify.note: Retrograde AAV from NAc labelled many BLA somata with the cited 80.8%/98% double-labelling percentages (n =
+    3) in Results 3.1 and Fig. 1.

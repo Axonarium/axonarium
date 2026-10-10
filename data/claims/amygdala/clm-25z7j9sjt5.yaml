@@ -1,0 +1,38 @@
+id: clm-25z7j9sjt5
+subject:
+  type: region
+  id: MBA:342
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2023.1258284
+  pmid: '37901417'
+  pmcid: PMC10601666
+  locator: Fig. 2D; Supplementary Table 1
+paraphrase: The substantia innominata contained rabies-traced inputs to the amygdala, significantly more per starter in males.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: substantia innominata (SI)
+  extract.object_name: amygdala (MeA-targeted injection site)
+  verify.note: SI is named as one of the pallidal subregions with significantly higher PPS in males.

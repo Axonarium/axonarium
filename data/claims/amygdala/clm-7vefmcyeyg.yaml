@@ -1,0 +1,39 @@
+id: clm-7vefmcyeyg
+subject:
+  type: region
+  id: MBA:111
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:922
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.3389/fncir.2016.00044
+  pmid: '27378860'
+  pmcid: PMC4906015
+  locator: Supplementary Fig. S2A
+paraphrase: DiI placed in the AiP of slices produced only local staining in superficial AiP. No labelled projection to the
+  PER/EC network was reported, which leaves this pathway unresolved by tracing.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: agranular insular cortex (AiP)
+  extract.object_name: perirhinal cortex (PER)
+  verify.note: The AiP DiI injection gave only local superficial staining and no labelled projection, so 'ambiguous' fits.

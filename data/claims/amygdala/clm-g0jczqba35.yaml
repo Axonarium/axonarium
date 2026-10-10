@@ -1,0 +1,46 @@
+id: clm-g0jczqba35
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:8440075
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 6.97
+  unit: ms
+  sem: 0.79
+  n: 15
+source:
+  doi: 10.3389/fnint.2011.00003
+  pmid: '21503144'
+  pmcid: PMC3071977
+  locator: Results, Figs. 2-3
+paraphrase: In urethane-anesthetized rats, electrical stimulation of BLA evoked, in GC regular-spiking neurons recorded intracellularly,
+  an early depolarizing PSP that grew with stimulus intensity. Its early component reversed near the glutamatergic (AMPA-type)
+  reversal potential, consistent with a likely monosynaptic excitatory input. It was followed by a slower, likely multisynaptic
+  hyperpolarization that reversed near the GABA-A reversal potential.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: gustatory cortex (GC)
+  verify.note: The paper's intracellular recordings in rats show that BLA stimulation evokes in GC an early glutamatergic
+    PSP, followed by GABAergic inhibition, with onset latency 6.97 ± 0.79 ms (n = 15) as stated.

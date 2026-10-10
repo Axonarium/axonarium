@@ -1,0 +1,41 @@
+id: clm-352k6m9k56
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fncel.2021.742207
+  pmid: '34867199'
+  pmcid: PMC8635139
+  locator: Figs. 1C,D, 2A,D; Results, sections 1-2
+paraphrase: After AAV2-ChR2-eYFP was expressed in prelimbic prefrontal cortex, blue-light pulses delivered to accumbens core
+  slices evoked short-latency glutamatergic EPSPs/EPSCs (AMPA-receptor mediated, decay ~7.7 ms) in medium spiny neurons, showing
+  a functional cortical input to NAc core MSNs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: prelimbic PFCx
+  extract.object_name: core nucleus accumbens
+  verify.note: ChR2 expressed in prelimbic cortex drove short-latency glutamatergic EPSPs/EPSCs in NAc core MSNs in mice,
+    as described in the results.

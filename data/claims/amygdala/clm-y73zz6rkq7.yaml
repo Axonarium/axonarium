@@ -1,0 +1,39 @@
+id: clm-y73zz6rkq7
+subject:
+  type: neuron_type
+  id: nt-sexhekqxaa
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: modulatory
+source:
+  doi: 10.3389/fnins.2015.00487
+  pmid: '26733798'
+  pmcid: PMC4689854
+  locator: Fig. 7A-F
+paraphrase: Chemogenetic activation of CeL CRF neurons with hM3Dq plus CNO induced Fos in non-CRF CeL neurons (absent with
+  hM4Di or mCherry controls), and this Fos induction was reduced by about two-thirds by the CRF1 receptor antagonist R121919,
+  indicating peptidergic excitation via local CRF release.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeL CRF neurons
+  extract.object_name: non-CRF neurons of the CeL
+  verify.note: The CRF1-dependent Fos induction in CeL non-CRF neurons was obtained chemogenetically, not by optogenetic circuit
+    mapping.

@@ -1,0 +1,48 @@
+id: clm-mf71s7ypmf
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: paired_recording
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.39
+  unit: '1'
+  n: 41
+- quantity: connection_probability
+  value: 0.28
+  unit: '1'
+  n: 68
+source:
+  doi: 10.3389/fncel.2019.00220
+  pmid: '31164805'
+  pmcid: PMC6536628
+  locator: Fig. 3B-F; Results, 'The IN-PN Connectivity Remains Stable'
+paraphrase: Spikes evoked in GFP interneurons produced outward GABAergic currents in neighbouring principal neurons held at
+  0 mV in a subset of pairs. The connection rate did not differ significantly between juvenile and adult wild-type mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: GFP-positive LA interneurons (LA-IN)
+  extract.object_name: LA principal neuron (LA-PN)
+  verify.note: Paired recordings gave 39% connectivity in juveniles (n=41) and 28% in adults (n=68), with p=0.13, matching
+    the claimed fractions and the stable rate.

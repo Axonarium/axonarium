@@ -1,0 +1,40 @@
+id: clm-88bfs9hsqb
+subject:
+  type: region
+  id: MBA:619
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2022.815282
+  pmid: '35281496'
+  pmcid: PMC8908425
+  locator: Fig. 1D, Fig. 3B-D, Fig. 6A-B
+paraphrase: OB injections of retrograde tracers labeled neurons in ipsilateral nLOT from birth, while contralateral nLOT labeling
+  was sparser and reliably detected only from P6. At P12, counts were 55% (ipsilateral) and 44% (contralateral) of adult levels.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: nucleus of the lateral olfactory tract (nLOT)
+  extract.object_name: main olfactory bulb (OB)
+  verify.note: Ipsilateral nLOT was labeled from birth and contralateral nLOT reliably from P6, at 55% and 44% of adult levels
+    at P12.

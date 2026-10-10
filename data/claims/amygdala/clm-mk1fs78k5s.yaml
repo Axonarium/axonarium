@@ -1,0 +1,40 @@
+id: clm-mk1fs78k5s
+subject:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:319
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2022.910699
+  pmid: '36090791'
+  pmcid: PMC9459227
+  locator: Fig. 3A,B; Supplementary Fig. 5
+paraphrase: Cre-dependent mCherry expressed selectively in tyrosine hydroxylase-positive cells of the zona incerta (via TH-Cre
+  plus DIO-mCherry injection) produced mCherry-labelled axon terminals in the basomedial amygdala, showing an anterograde
+  projection from ZI TH+ neurons to BMA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ZI TH+ neurons
+  extract.object_name: BMA
+  verify.note: Paper reports mCherry+ terminals in BMA after ZI TH-Cre/DIO-mCherry injection, matching locator and species.

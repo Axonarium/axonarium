@@ -1,0 +1,46 @@
+id: clm-ygn0s3dpqa
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 15.4
+  unit: ms
+  sem: 1.3
+source:
+  doi: 10.3389/fnbeh.2015.00007
+  pmid: '25688195'
+  pmcid: PMC4311640
+  locator: Fig. 1C; Fig. 5B,E,H; Data collection and analysis
+paraphrase: Electrical stimulation of the CA1 pyramidal layer in behaving mice evoked field postsynaptic potentials in the
+  medial prefrontal cortex. These potentials showed a steep input-output curve, paired-pulse facilitation peaking at 40 ms,
+  and a small, slowly developing LTP.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: hippocampal CA1 area
+  extract.object_name: prelimbic/infralimbic area of the mPFC
+  verify.note: The 15.4 ± 1.3 ms value is the latency of maximum fPSP amplitude, not a conduction delay, which would correspond
+    to the onset latencies in Table 1.

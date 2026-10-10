@@ -1,0 +1,39 @@
+id: clm-ecvgz1xd4p
+subject:
+  type: region
+  id: MBA:159
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:835
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2018.00099
+  pmid: '30483067'
+  pmcid: PMC6243045
+  locator: Figures 2B,C
+paraphrase: Monosynaptic rabies tracing from HMSc cholinergic neurons labelled presynaptic cells in the anterior olfactory
+  nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AON
+  extract.object_name: HMSc (cholinergic neurons)
+  verify.note: AON is among the olfactory regions providing rabies-traced input to HMSc cholinergic neurons.

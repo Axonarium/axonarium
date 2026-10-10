@@ -1,0 +1,38 @@
+id: clm-xakja64yve
+subject:
+  type: neuron_type
+  id: nt-sexhekqxaa
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002148
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnins.2015.00487
+  pmid: '26733798'
+  pmcid: PMC4689854
+  locator: Fig. 3B-D
+paraphrase: mCherry-labelled axons from CeL CRF neurons were among the largest and densest projections and reached the locus
+  coeruleus, running orthogonally to the dendrites of tyrosine-hydroxylase-positive LC neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeL CRF neurons
+  extract.object_name: locus coeruleus (LC)
+  verify.note: Dense labelled fibers reached LC, interdigitated orthogonally with TH-positive dendrites.

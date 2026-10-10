@@ -1,0 +1,38 @@
+id: clm-57r9fjqs3n
+subject:
+  type: neuron_type
+  id: nt-sexhekqxaa
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001965
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.3389/fnins.2015.00487
+  pmid: '26733798'
+  pmcid: PMC4689854
+  locator: Fig. 5A-D
+paraphrase: Labelled CRF axons from the CeL were seen in the dorsolateral substantia nigra pars compacta, but the authors
+  judged these to be most likely fibers of passage en route to the brainstem.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeL CRF neurons
+  extract.object_name: substantia nigra pars compacta (SNc)
+  verify.note: Paper reports labelled fibers through dorsolateral SNc judged most likely fibers of passage, so ambiguous is
+    apt.

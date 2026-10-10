@@ -1,0 +1,40 @@
+id: clm-6aen39y7pm
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2022.815282
+  pmid: '35281496'
+  pmcid: PMC8908425
+  locator: Fig. 5A-C, Fig. 6E-F
+paraphrase: Ipsilateral vCA1 contained no OB-projecting neurons at birth. Retrogradely labeled cells appeared from P9 onward
+  but at P12 were only 15% of adult levels, indicating late development of this projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CA1 of the ventral hippocampus (vCA1)
+  extract.object_name: main olfactory bulb (OB)
+  verify.note: vCA1 labeling was absent at birth, rose after P6, and reached only 15% of adult levels at P12, which the paper
+    calls late development.

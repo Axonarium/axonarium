@@ -1,0 +1,36 @@
+id: clm-z1dxh62129
+subject:
+  type: region
+  id: UBERON:0002267
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0019295
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2024.1384621
+  pmid: '38736977'
+  pmcid: PMC11082296
+  locator: Fig. 9P; Fig. 4K
+paraphrase: FG and BDA injections in the PIL retrogradely labelled neurons in the laterodorsal tegmental nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral dorsal tegmental nucleus (LDTg)
+  extract.object_name: PIL
+  verify.note: LDTg cells were labeled by both the PIL FG and the PIL BDA injections.

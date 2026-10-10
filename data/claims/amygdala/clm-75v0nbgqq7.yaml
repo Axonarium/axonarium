@@ -1,0 +1,40 @@
+id: clm-75v0nbgqq7
+subject:
+  type: region
+  id: MBA:688
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2019.00220
+  pmid: '31164805'
+  pmcid: PMC6536628
+  locator: Fig. 1C-D; Fig. 2B
+paraphrase: In dual recordings, external capsule stimulation evoked AMPA-receptor-mediated inward currents in GAD67-GFP interneurons
+  of the lateral amygdala. Stimulation intensity was set to give about 100 pA in the interneuron.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cortical inputs (external capsule)
+  extract.object_name: GFP-positive LA interneurons (LA-IN)
+  verify.note: External capsule stimulation evoked AMPAR inward currents of about 100 pA in GFP interneurons in wild-type
+    dual recordings, as shown in Fig. 1C and Fig. 2B.

@@ -1,0 +1,39 @@
+id: clm-w64xm5ene4
+subject:
+  type: region
+  id: MBA:564
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2021.643230
+  pmid: '33935658'
+  pmcid: PMC8079783
+  locator: Fig. 6A-E
+paraphrase: Medial septal neurons, mostly ipsilateral, were labelled from vCA1 PNs at a level similar to dCA1 (CSI 0.74 ±
+  0.02).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MS
+  extract.object_name: vCA1 projection neurons
+  verify.note: MS input to vCA1 (0.74 ± 0.02) is similar to dCA1 and mostly ipsilateral.

@@ -1,0 +1,41 @@
+id: clm-w4ghqpysjy
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1089
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2022.894886
+  pmid: '35726232'
+  pmcid: PMC9205755
+  locator: Fig. 2A (bottom), Fig. 2D-E, Fig. 4C
+paraphrase: A retrograde AAV (retroAAV-hSyn-mCherry) placed in the ventral hippocampus labelled cell bodies in the basolateral
+  amygdala; likewise, fluorogold injected into the ventral hippocampus labelled BLA neurons, which were then assessed for
+  c-Fos and kappa opioid receptor mRNA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: vHip
+  verify.note: RetroAAV in the vHip labelled BLA neurons (Fig. 2A bottom), and fluorogold from the vHip labelled BLA cells
+    that were co-assessed for c-Fos (Fig. 2D-E) and KOR mRNA (Fig. 4C).

@@ -1,0 +1,40 @@
+id: clm-rjzbhdtsqs
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2026.1853168
+  pmid: '42358617'
+  pmcid: PMC13290759
+  locator: Fig. 2D,M–P
+paraphrase: Entorhinal neurons were retrogradely labelled by EGFP injected into the OFC, with a subset double-labelled by
+  the vCA1 transsynaptic marker.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: entorhinal cortex (Ent)
+  extract.object_name: OFC
+  verify.note: Entorhinal neurons were retrogradely labelled from the OFC, and double-labelled cells are quantified in Fig.
+    2D.

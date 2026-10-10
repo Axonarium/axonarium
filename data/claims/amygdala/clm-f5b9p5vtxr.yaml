@@ -1,0 +1,37 @@
+id: clm-f5b9p5vtxr
+subject:
+  type: region
+  id: UBERON:0002480
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002144
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: moderate
+source:
+  doi: 10.3389/fncir.2024.1384621
+  pmid: '38736977'
+  pmcid: PMC11082296
+  locator: Fig. 10I
+paraphrase: A moderate number of FG-labelled cells were found in the medial ventral lateral geniculate after PP injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: medial part of ventral lateral geniculate nucleus (VLG)
+  extract.object_name: PP
+  verify.note: A moderate number of VLG cells is reported after PP injection.

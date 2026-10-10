@@ -1,0 +1,39 @@
+id: clm-p1fkhr61dq
+subject:
+  type: region
+  id: MBA:771
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:313
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnins.2019.00375
+  pmid: '31068780'
+  pmcid: PMC6491572
+  locator: Fig. 8, 9
+paraphrase: The superior colliculus received about 4.6% of LPT GABAergic axonal varicosities.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LPT GABAergic neurons
+  extract.object_name: SC
+  verify.note: The object is coded as the whole midbrain, but the 4.6% value is for the superior colliculus specifically.

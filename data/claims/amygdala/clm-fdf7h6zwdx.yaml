@@ -1,0 +1,40 @@
+id: clm-fdf7h6zwdx
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2019.00220
+  pmid: '31164805'
+  pmcid: PMC6536628
+  locator: Fig. 1E; Fig. 2D; Supplementary Fig. 1
+paraphrase: Internal capsule stimulation evoked excitatory currents in GAD67-GFP lateral amygdala interneurons recorded together
+  with neighbouring principal neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: thalamic inputs (internal capsule)
+  extract.object_name: GFP-positive LA interneurons (LA-IN)
+  verify.note: Thalamic stimulation evoked excitatory currents in GFP interneurons recorded alongside principal neurons (Fig.
+    1E, Fig. 2D).

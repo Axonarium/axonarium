@@ -1,0 +1,37 @@
+id: clm-060w81fe3p
+subject:
+  type: region
+  id: UBERON:0002144
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002890
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fncir.2024.1384621
+  pmid: '38736977'
+  pmcid: PMC11082296
+  locator: Fig. 5F
+paraphrase: Stronger PP terminal labelling was noted in the anterior amygdaloid area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PP
+  extract.object_name: anterior amygdaloid area (AAA)
+  verify.note: The Fig. 5 caption lists the AAA among the stronger PP terminal fields.

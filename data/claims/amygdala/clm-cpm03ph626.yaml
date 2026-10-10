@@ -1,0 +1,40 @@
+id: clm-cpm03ph626
+subject:
+  type: region
+  id: MBA:771
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnins.2019.00375
+  pmid: '31068780'
+  pmcid: PMC6491572
+  locator: Fig. 8, 9
+paraphrase: Cre-dependent ChR2-mCherry tracing of LPT GABAergic neurons found the largest share of axonal varicosities in
+  vlPAG (about 11.7%), with fewer in lPAG (1.4%) and dPAG (0.5%).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LPT GABAergic neurons
+  extract.object_name: PAG
+  verify.note: The PAG subregion varicosity values match those reported (vlPAG 11.70%, lPAG 1.42%, dPAG 0.49%).

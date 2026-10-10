@@ -1,0 +1,38 @@
+id: clm-3qhrnpcxx0
+subject:
+  type: region
+  id: UBERON:0002942
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0008933
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fneur.2020.00441
+  pmid: '32528401'
+  pmcid: PMC7256190
+  locator: Fig. 6C,D,F; Table 2
+paraphrase: After Fluoro-Gold injection into S1, retrogradely labeled neurons were found in ipsilateral VPL, more scattered
+  than in VPM.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ventral posterolateral thalamic nucleus (VPL)
+  extract.object_name: primary somatosensory cortex (S1)
+  verify.note: VPL neurons labeled from S1 are described as more scattered than VPM, which supports a weak rating.

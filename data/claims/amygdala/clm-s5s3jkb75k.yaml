@@ -1,0 +1,39 @@
+id: clm-s5s3jkb75k
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:583
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2026.1853168
+  pmid: '42358617'
+  pmcid: PMC13290759
+  locator: Fig. 1C–F
+paraphrase: After AAV2/1-Cre was injected into the OFC of Ai9 mice, tdTomato-labelled neurons in the claustrum marked cells
+  that receive anterograde transsynaptic input from the OFC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: OFC
+  extract.object_name: claustrum
+  verify.note: Fig. 1C–F shows tdTomato labelling in the claustrum after AAV2/1-Cre was injected into the OFC.

@@ -1,0 +1,37 @@
+id: clm-j8hhb1cbv4
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0003040
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2020.580583
+  pmid: '33192326'
+  pmcid: PMC7531233
+  locator: Fig. 5E-H; Results, 'CeA Projection Neurons Contain CCL2'
+paraphrase: Retrograde fluorescent nanobeads injected into the ventral periaqueductal gray were found in central amygdala
+  neurons. Some of these back-labelled neurons were also CCL2-immunoreactive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: ventral periaqueductal gray (VPAG)
+  verify.note: Nanobeads placed in the VPAG back-labelled CeA neurons, and some of those were CCL2-positive (Fig. 5E-H).

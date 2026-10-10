@@ -1,0 +1,39 @@
+id: clm-ack13vdd7h
+subject:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:323
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1611199
+  pmid: '40832125'
+  pmcid: PMC12358408
+  locator: Figs. 11C, 11G, 12C, 12G; Supplementary Fig. 8E
+paraphrase: BDA injections into intermediate and caudal putamen labeled varicose terminals mainly in the lateral substantia
+  nigra.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PuI∼ and PuC∼
+  extract.object_name: SNL
+  verify.note: BDA terminals were mainly in the SNL, and their varicosities are shown in Supp. Fig. 8E.
