@@ -59,6 +59,9 @@ def main(argv: list[str] | None = None, classify=None) -> int:
     parser.add_argument("--collect", metavar="BATCH_ID",
                         help="collect an earlier batch's results instead of sending a new one (they are paid for already); "
                              "its papers are taken whatever --limit says. `latest` takes the batch this step last sent to its model")
+    parser.add_argument("--collect-fallback", metavar="BATCH_ID",
+                        help="with --collect: the same run's fallback batch, whose answers to the refusals are collected "
+                             "instead of sent again; `latest` takes the fallback model's last batch for this step")
     parser.add_argument("--redo", action="append", default=[], metavar="PAPERS",
                         help="send papers again although this step has finished them: keys, DOIs, PubMed IDs or PMC IDs, "
                              "'older' for those an earlier version of the prompt finished, or 'all'; repeatable")
@@ -73,8 +76,11 @@ def main(argv: list[str] | None = None, classify=None) -> int:
         run = runner(args.model, schema, effort, step.MAX_TOKENS, batch=not args.now, collect_batch=args.collect,
                      wait_seconds=wait)
         fallback = FALLBACKS.get(args.model) if args.fallback == "auto" else None if args.fallback == "none" else args.fallback
+        if args.collect_fallback and not (args.collect and fallback):
+            raise ValueError("--collect-fallback goes with --collect, and with a fallback model")
         if fallback:
-            run = FallbackRunner(run, runner(fallback, schema, effort, step.MAX_TOKENS, batch=not args.now, wait_seconds=wait))
+            run = FallbackRunner(run, runner(fallback, schema, effort, step.MAX_TOKENS, batch=not args.now,
+                                             collect_batch=args.collect_fallback, wait_seconds=wait))
         if args.collect is None:  # collecting sends nothing, so it can't pay twice
             elsewhere = branches.waiting(step.LEDGER)
             if elsewhere:
