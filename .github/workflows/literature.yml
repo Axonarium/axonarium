@@ -24,6 +24,10 @@ on:
         description: An earlier run's batch ID (msgbatch_…), or latest for the step's last batch, to collect instead of sending a new batch; leave empty otherwise
         type: string
         default: ""
+      collect_fallback:
+        description: With collect, the same run's fallback batch (msgbatch_…, or latest), whose answers to the refusals are collected instead of sent again; usually empty
+        type: string
+        default: ""
       redo:
         description: Papers to read again though this step finished them (DOIs, PubMed or PMC IDs; older; all); usually empty
         type: string
@@ -76,6 +80,7 @@ jobs:
           LIMIT: ${{ inputs.limit }}
           MODEL: ${{ inputs.model }}
           COLLECT: ${{ inputs.collect }}
+          COLLECT_FALLBACK: ${{ inputs.collect_fallback }}
           REDO: ${{ inputs.redo }}
           HF_HUB_DISABLE_TELEMETRY: "1"
         run: |
@@ -84,10 +89,10 @@ jobs:
           deadline=$(( $(date +%s) + 330 * 60 ))
           minutes_left() { echo $(( (deadline - $(date +%s)) / 60 )); }
           if [ "$STEP" != extract-and-verify ]; then
-            uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${COLLECT:+--collect "$COLLECT"} ${REDO:+--redo "$REDO"}
+            uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${COLLECT:+--collect "$COLLECT"} ${COLLECT_FALLBACK:+--collect-fallback "$COLLECT_FALLBACK"} ${REDO:+--redo "$REDO"}
             exit
           fi
-          if [ -n "$COLLECT" ]; then
+          if [ -n "$COLLECT$COLLECT_FALLBACK" ]; then
             echo "A batch is collected by the step that sent it: choose extract or verify." >&2
             exit 1
           fi
@@ -118,8 +123,16 @@ jobs:
           branch="literature/${STEP}-$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git switch -c "$branch"
           git add corpus data
           git commit -q -m "Literature: ${STEP} of $(date -u +%Y-%m-%d)" -m "Run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          git push -q "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$branch"
+          # Build on main as it is now. A new branch is compared with main, so one based on an older main seems to undo
+          # whatever main changed since, and GitHub refuses this token a branch that seems to change a workflow file.
+          git fetch -q "$remote" main
+          if ! git rebase -q --autostash FETCH_HEAD; then
+            git rebase --abort 2>/dev/null || true
+            echo "The results conflict with main as it is now, so they are pushed on the main this run started from." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          git push -q "$remote" "$branch"
           echo "Pushed **${branch}**: open a pull request from it." >> "$GITHUB_STEP_SUMMARY"

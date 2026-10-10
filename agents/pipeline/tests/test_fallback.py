@@ -139,3 +139,34 @@ def test_the_cli_tells_how_to_collect_a_fallback_batch_still_running(tmp_path, m
     out = capsys.readouterr().out
     assert "--collect msgbatch_9 --model anthropic:claude-opus-5" in out
     assert (tmp_path / "triage.csv").read_text().count("refusal") == 1
+
+
+def test_the_cli_collects_the_fallbacks_batch_beside_the_primarys(monkeypatch, capsys):
+    made = []
+
+    def runner(spec, *args, **kwargs):
+        made.append((spec, kwargs.get("collect_batch")))
+        return SimpleNamespace(model=spec.partition(":")[2], name=spec, batch=True, run=lambda requests: {},
+                               known=lambda: set())
+
+    monkeypatch.setattr(cli, "runner", runner)
+    monkeypatch.setattr(cli, "read_manifest", lambda: [])
+    assert cli.main(["triage", "--collect", "msgbatch_1", "--collect-fallback", "msgbatch_2"]) == 0
+    assert made == [("anthropic:claude-opus-5-5", "msgbatch_1"), ("anthropic:claude-opus-5", "msgbatch_2")]
+    made.clear()
+    assert cli.main(["triage", "--collect", "msgbatch_1"]) == 0  # without it, the refusals are sent to the fallback again
+    assert made == [("anthropic:claude-opus-5-5", "msgbatch_1"), ("anthropic:claude-opus-5", None)]
+    for argv in (["triage", "--collect-fallback", "msgbatch_2"],
+                 ["triage", "--collect", "msgbatch_1", "--collect-fallback", "msgbatch_2", "--fallback", "none"]):
+        assert cli.main(argv) == 1
+        assert "--collect-fallback goes with --collect" in capsys.readouterr().out
+
+
+def test_refusals_take_the_answers_of_a_collected_fallback_batch():
+    collected = Model("claude-opus-5", VERDICT)
+    collected.run = lambda requests: {r.id: Result(VERDICT, "end_turn", model="claude-opus-5") if r.id == "b"
+                                      else Result(None, "errored", detail="not in batch msgbatch_2") for r in requests}
+    results = FallbackRunner(Model("claude-opus-5-5", VERDICT, refuses="rabies"), collected).run(
+        [Request("b", "p", "rabies"), Request("c", "p", "rabies")])
+    assert results["b"].parsed == VERDICT and results["b"].model == "claude-opus-5"
+    assert results["c"].stop == "refusal"  # a refusal the collected batch doesn't hold stands
