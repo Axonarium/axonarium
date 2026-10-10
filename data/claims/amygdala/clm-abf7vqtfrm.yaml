@@ -1,0 +1,38 @@
+id: clm-abf7vqtfrm
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000700
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Fig. 4; Figure 4—figure supplement 1
+paraphrase: Within the hypothalamus, the lateral hypothalamus (including PSTh) held the most monosynaptic inputs to dopamine
+  neuron populations.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral hypothalamus (LH)
+  extract.object_name: projection-specific dopamine neurons
+  verify.note: The lateral hypothalamus, including PSTh, held the largest share of hypothalamic inputs.

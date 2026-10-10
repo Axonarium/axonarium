@@ -1,0 +1,38 @@
+id: clm-nt9wds2q0t
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.4103/1673-5374.353852
+  pmid: '36204863'
+  pmcid: PMC9700093
+  locator: Fig. 5A, Fig. 6A, B
+paraphrase: PRV724 trans-synaptic tracing from the retina labelled basolateral amygdala neurons equally in both hemispheres
+  of cleared brains, and labelling decreased bilaterally after optic nerve crush.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: retinal ganglion cells (RGCs)
+  extract.object_name: basolateral amygdala nucleus (BLA)
+  verify.note: BLA labelling was equal across hemispheres and decreased on both sides after crush.

@@ -1,0 +1,40 @@
+id: clm-7r3zhfryvs
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 1D–F; Fig. 1—figure supplement 2A–E
+paraphrase: Anterograde virus injected at the rostral BLA coordinate produced labelled axons whose fluorescence peaked in
+  layer 2 of PL (3 animals). A Cre-dependent version of the experiment, restricted to PL-projecting rBLA neurons, gave the
+  same laminar profile.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rBLA
+  extract.object_name: PL
+  verify.note: Anterograde and Cre-dependent anterograde tracing both show rBLA axons peaking in PL L2.

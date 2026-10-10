@@ -1,0 +1,40 @@
+id: clm-a59nmx9e4y
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.59281
+  pmid: '33054975'
+  pmcid: PMC7588229
+  locator: Fig. 1B-E; Results, 'PL projections to the VS'
+paraphrase: ChR2 was expressed in PL under a CaMKIIα promoter and an optic fiber was placed over PL axon terminals in ventral
+  striatum; blue-light stimulation at 4 Hz and 15 Hz of these terminals reduced platform-mediated avoidance in a frequency-dependent
+  way, indicating a functional PL axonal input to ventral striatum. Photosilencing the same terminals with ArchT had no detectable
+  behavioral effect.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: prelimbic (PL) PFC
+  extract.object_name: ventral striatum (VS)
+  verify.note: Photoactivation of PL terminals in VS reduced avoidance at both frequencies with no effect of ArchT silencing,
+    matching Figure 1 and the text.

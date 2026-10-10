@@ -1,0 +1,39 @@
+id: clm-baqnbsdfd1
+subject:
+  type: region
+  id: MBA:147
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.18247
+  pmid: '28708061'
+  pmcid: PMC5550275
+  locator: Fig. 1E–H
+paraphrase: A Cre-dependent eYFP reporter virus injected into the LC of Th-Cre mice filled LC somata and revealed labelled
+  axonal fibres terminating within the BLA of the same animals.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LC
+  extract.object_name: BLA
+  verify.note: Cre-dependent eYFP in LC of Th-Cre mice labelled LC somata and fibers terminating in BLA.

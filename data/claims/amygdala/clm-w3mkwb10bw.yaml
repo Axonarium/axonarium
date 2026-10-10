@@ -1,0 +1,39 @@
+id: clm-w3mkwb10bw
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 3A-D
+paraphrase: Differently tagged cholera toxin B injected into prefrontal cortex labelled a population of neurons in the ventral
+  CA1/subiculum border, which was largely non-overlapping with populations labelled from NAc or BA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: vH (CA1/subiculum)
+  extract.object_name: PFC (infralimbic prefrontal cortex)
+  verify.note: A CTXβ injection at infralimbic PFC coordinates labelled a largely non-overlapping vH population.

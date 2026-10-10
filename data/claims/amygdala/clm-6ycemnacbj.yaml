@@ -1,0 +1,39 @@
+id: clm-6ycemnacbj
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.91421
+  pmid: '39023519'
+  pmcid: PMC11257676
+  locator: Figure 5d-f
+paraphrase: In lateral amygdala slices, electrical stimulation of external capsule (cortical) fibres evoked EPSPs in putative
+  pyramidal neurons; strong tetanic stimulation of this pathway stabilised potentiation of the converging thalamic pathway.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cortical input (external capsule)
+  extract.object_name: lateral amygdala
+  verify.note: External capsule electrical stimulation evoked EPSPs in LA pyramidal cells and stabilized thalamic LTP.

@@ -1,0 +1,40 @@
+id: clm-w4g1a6w8jk
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 2H,I
+paraphrase: With cre-dependent ChR2 confined to GABAergic basal amygdala neurons in vGAT-cre mice, light evoked robust currents
+  at 0 mV in vH pyramidal neurons that were insensitive to NBQX but blocked by gabazine, demonstrating a direct long-range
+  inhibitory connection (n = 6 neurons).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA (vGAT+ neurons)
+  extract.object_name: vH pyramidal neurons
+  verify.note: The vGAT+ BA input was NBQX-insensitive but gabazine-blocked (n=6).

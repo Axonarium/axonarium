@@ -1,0 +1,38 @@
+id: clm-j6redym1h5
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.85547
+  pmid: '37314164'
+  pmcid: PMC10353859
+  locator: Fig. 4B
+paraphrase: Rabies tracing from AmgC/M-PAG starter neurons labeled input neurons in auditory cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: auditory cortex
+  extract.object_name: AmgC/M-PAG neurons
+  verify.note: Auditory cortex is listed among the rabies-labeled cortical inputs in Fig. 4B.

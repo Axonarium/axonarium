@@ -1,0 +1,45 @@
+id: clm-tr5bpzaq3d
+subject:
+  type: region
+  id: MBA:463
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.29
+  unit: '1'
+  sem: 0.024
+  n: 4
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 8c,e
+paraphrase: Monosynaptic rabies tracing from CA1 axo-axonic cells labelled many contralateral CA3 neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CA3 (contralateral)
+  extract.object_name: AACsCA1
+  verify.note: Contralateral CA3 provides 29.0 ± 2.4% of inputs to CA1 AACs.

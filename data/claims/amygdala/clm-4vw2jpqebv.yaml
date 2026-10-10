@@ -1,0 +1,40 @@
+id: clm-4vw2jpqebv
+subject:
+  type: neuron_type
+  id: nt-g513b58b0y
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Figure 1C-D, Table 1, Results (Identification of CeA-PKCδ neuronal efferent targets)
+paraphrase: Cre-dependent mCherry or ChrimsonR-tdTomato expressed in PKCδ-positive central amygdala neurons produced labelled
+  axon terminals in the bed nucleus of the stria terminalis, with moderate-to-dense labelling consistently present in all
+  five brains examined.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA-PKCδ neurons
+  extract.object_name: bed nucleus of stria terminalis (BNST-MA, BNST-Fu)
+  verify.note: BNST is listed among the three densely labeled targets, consistent in all five brains.

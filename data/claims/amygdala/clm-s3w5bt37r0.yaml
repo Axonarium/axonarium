@@ -1,0 +1,44 @@
+id: clm-s3w5bt37r0
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.3
+  unit: '1'
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 2D,E; Fig. 2—figure supplement 1D-F
+paraphrase: Light stimulation of basal amygdala axons expressing ChR2 pan-neuronally evoked currents at 0 mV in roughly 30%
+  of vH pyramidal neurons that were blocked by gabazine. In 4 of 12 cells with inhibitory responses part of the current survived
+  NBQX, indicating direct long-range inhibition in addition to feedforward inhibition.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA (pan-neuronal hSyn-ChR2)
+  extract.object_name: vH pyramidal neurons (CA1/proximal subiculum border)
+  verify.note: Gabazine-sensitive currents appeared in ~30% of cells, and 4 of 12 kept an NBQX-resistant component.

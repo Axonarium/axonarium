@@ -1,0 +1,44 @@
+id: clm-nqh6pxrpcs
+subject:
+  type: region
+  id: UBERON:0001950
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.667
+  unit: '1'
+  n: 12
+source:
+  doi: 10.7554/elife.68617
+  pmid: '34142660'
+  pmcid: PMC8266390
+  locator: Fig. 4—figure supplement 1
+paraphrase: In slices, green-light silencing of ArchT-expressing lOFC axons and terminals in the BLA lowered the frequency
+  of spontaneous EPSCs (recorded under GABAA blockade) in most recorded BLA neurons, indicating excitatory lOFC drive onto
+  BLA cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral orbitofrontal cortex (lOFC)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: Ex vivo optical silencing of ArchT-expressing lOFC terminals reduced BLA sEPSC frequency in 8 of 12 cells,
+    supporting an excitatory functional input and the 8/12 figure.

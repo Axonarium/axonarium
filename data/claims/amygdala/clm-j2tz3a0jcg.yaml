@@ -1,0 +1,41 @@
+id: clm-j2tz3a0jcg
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 2F,G
+paraphrase: With ChR2 restricted to excitatory basal amygdala neurons by the CaMKii promoter, light evoked large currents
+  at 0 mV in vH pyramidal cells that were completely abolished by NBQX, showing the inhibition was purely disynaptic feedforward
+  inhibition driven by a glutamatergic BA input (n = 3 neurons).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA (CaMKii+ excitatory projection)
+  extract.object_name: vH pyramidal neurons
+  verify.note: Fig 2F,G records NBQX-sensitive inhibitory currents at 0 mV, so it does not show a direct excitatory connection
+    onto pyramidal cells; the sign is wrong for this evidence.

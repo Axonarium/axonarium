@@ -1,0 +1,38 @@
+id: clm-kxrh4y1mbp
+subject:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000700
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Fig. 4
+paraphrase: The periaqueductal grey supplied monosynaptic inputs to the dopamine populations, with fewer going to lHb-projecting
+  neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: periaqueductal grey
+  extract.object_name: projection-specific dopamine neurons
+  verify.note: PAG inputs were present, with fewer going to lHb-projecting neurons (Fig. 4).

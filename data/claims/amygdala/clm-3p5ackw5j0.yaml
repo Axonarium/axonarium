@@ -1,0 +1,39 @@
+id: clm-3p5ackw5j0
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.4103/1673-5374.353852
+  pmid: '36204863'
+  pmcid: PMC9700093
+  locator: Fig. 5A, Fig. 6A, C
+paraphrase: Unexpectedly, neurons in the central amygdala were labelled after intravitreal PRV724, predominantly contralateral
+  to the injected eye, and contralateral labelling was strongly reduced after optic nerve crush.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: retinal ganglion cells (RGCs)
+  extract.object_name: central amygdalar nucleus (CeA)
+  verify.note: PRV724 labelled CeA neurons mostly on the contralateral side, and contralateral counts fell significantly after
+    crush.

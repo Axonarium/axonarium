@@ -1,0 +1,46 @@
+id: clm-ayszayg3mg
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.075
+  unit: '1'
+- quantity: connection_probability
+  value: 0.266
+  unit: '1'
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 4C,E,G; Fig. 4—figure supplements 1 and 2
+paraphrase: Stimulating cBLA in awake mice mainly altered firing in IL layer 5, where 26.6 percent of single units responded
+  and 17.7 percent were activated, with a much smaller effect in IL layer 2.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cBLA
+  extract.object_name: IL (L2 and L5)
+  verify.note: Reported in vivo percentages of responsive IL units (7.5% L2, 26.6% L5) match the claim.

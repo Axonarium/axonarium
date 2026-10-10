@@ -1,0 +1,41 @@
+id: clm-k8dnqmxrhk
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1089
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnmol.2015.00056
+  pmid: '26557053'
+  pmcid: PMC4617378
+  locator: Figs. 1G–K, 3A–C; Results, sections 1 and 3
+paraphrase: After AAV9-Camk2a-TRAP was injected into the dorsal hippocampus, EGFP-L10a labelled cell bodies appeared in the
+  entorhinal cortex, mainly in layer II with some in layer III and only occasional cells in layers V/VI, consistent with retrograde
+  uptake by axon terminals of entorhinal projection neurons; these labelled cells were Camk2a-positive neurons and never GAD67-positive
+  interneurons or GFAP-positive astrocytes.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: entorhinal cortex
+  extract.object_name: hippocampus
+  verify.note: Layer II/III entorhinal labeling after hippocampal injection supports retrograde ENT→HPF result.

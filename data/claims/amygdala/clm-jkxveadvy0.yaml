@@ -1,0 +1,38 @@
+id: clm-jkxveadvy0
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:8440033
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.52651
+  pmid: '31958061'
+  pmcid: PMC7010412
+  locator: Fig. 2B; Results, Study 1, IL innervation
+paraphrase: BDA-labelled fibres from the BLA were quantified stereologically in infralimbic layers 2 and 5. Innervation of
+  layer 2 was increased after early-life adversity at PD28 in females and at PD38 in males.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: infralimbic (IL)
+  verify.note: BDA tracing from BLA shows labelled fibres in IL layers 2 and 5, with ELA raising IL2 innervation in females
+    at PD28 and in males at PD38, as reported in the IL section and Fig. 2B.

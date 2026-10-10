@@ -1,0 +1,39 @@
+id: clm-74mzw9eafm
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.3389/fnsyn.2021.634558
+  pmid: '34295235'
+  pmcid: PMC8290482
+  locator: Fig. 3A legend
+paraphrase: Few if any ChR2-YFP-labelled thalamic fibres were seen in the basolateral nucleus of the amygdala after PIN/MGm
+  injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PIN/MGm
+  extract.object_name: BL
+  verify.note: The Fig. 3A legend reports little to no labelled fibres in the BL.

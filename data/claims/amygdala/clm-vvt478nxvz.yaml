@@ -1,0 +1,40 @@
+id: clm-vvt478nxvz
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:477
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3791/53853
+  pmid: '27167567'
+  pmcid: PMC4941933
+  locator: Representative Results, paragraph 2
+paraphrase: ChR2-YFP-expressing axons from the PIN/MGn injection site densely innervated the amygdalostriatal transition area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PIN/MGn
+  extract.object_name: amygdalostriatal transition area (Astria)
+  verify.note: Dense labelled axons in the amygdalostriatal transition area are reported, and this area sits within the striatum
+    parent term.

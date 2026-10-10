@@ -1,0 +1,38 @@
+id: clm-5hj2ey20av
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001880
+species: NCBITaxon:10116
+evidence_class: single_neuron_reconstruction
+result: present
+sign: unknown
+source:
+  doi: 10.3390/ijms262311405
+  pmid: '41373566'
+  pmcid: PMC12692419
+  locator: Results (juxtacellular labeling section); Fig. 5A,D,F
+paraphrase: The same juxtacellularly labelled KF neuron sent a rostral axonal branch through the dorsal tegmental bundle and
+  ansa peduncularis, ending in ring-like perisomatic (calyceal-like) terminals in the oval subdivision of the bed nucleus
+  of the stria terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Kölliker–Fuse nucleus (KF), ventrolateral parabrachial complex
+  extract.object_name: oval subdivision of the bed nucleus of the stria terminalis (BSTov)
+  verify.note: Results and Fig. 5D report neurobiotin-labeled calyceal-like terminals in BSTov from the single filled KF neuron.

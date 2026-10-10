@@ -1,0 +1,52 @@
+id: clm-8969782f9d
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.3215
+  unit: '1'
+  sd: 0.0683
+  n: 6
+- quantity: fraction_of_labelled_neurons
+  value: 0.2133
+  unit: '1'
+  sd: 0.0532
+  n: 6
+source:
+  doi: 10.3389/fphar.2022.906057
+  pmid: '36016574'
+  pmcid: PMC9395614
+  locator: Fig. 2A-C; Results, 'MCH-immunoreactive neurons in the LHA projected to the BLA'
+paraphrase: Fluoro-Gold deposited in the BLA retrogradely labelled cells in the LHA, and double immunofluorescence showed
+  that a subset of these retrogradely labelled LHA neurons were MCH-immunoreactive, indicating that MCH-containing LHA neurons
+  send axons to the BLA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral hypothalamic area (LHA)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: Fluoro-Gold in BLA labelled LHA MCH neurons in mice, with the two double-labelling percentages correctly converted
+    and n=6 matching.

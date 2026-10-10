@@ -1,0 +1,40 @@
+id: clm-n7fxdpb17w
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:8440032
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.101667
+  pmid: '40338067'
+  pmcid: PMC12061479
+  locator: Figs. 5-7
+paraphrase: Light stimulation of ChR2-expressing BLA terminals in PrL slices evoked excitatory currents in retrobead-labelled
+  PAG-projecting neurons. These currents persisted in TTX/4-AP, consistent with monosynaptic input, and had an APV-sensitive
+  NMDA component. The same stimulation also evoked feedforward inhibitory currents, which were reduced after adolescent ethanol
+  exposure.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: PrLPAG neurons (PrL pyramidal neurons projecting to vlPAG)
+  verify.note: Optically stimulating BLA terminals evoked glutamatergic AMPA and NMDA currents that survived TTX/4-AP, plus
+    feedforward IPSCs that AIE reduced (Figs. 5-7).

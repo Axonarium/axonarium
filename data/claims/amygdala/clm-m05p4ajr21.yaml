@@ -1,0 +1,38 @@
+id: clm-m05p4ajr21
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:362
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 1E
+paraphrase: DCN axons labelled with anterograde AAV overlapped with BLA-projecting neurons in the mediodorsal nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN
+  extract.object_name: MD
+  verify.note: MD is listed among the nuclei with overlap in Fig. 1E.

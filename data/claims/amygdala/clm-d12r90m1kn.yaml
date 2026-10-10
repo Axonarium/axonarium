@@ -1,0 +1,40 @@
+id: clm-d12r90m1kn
+subject:
+  type: region
+  id: MBA:523
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.85547
+  pmid: '37314164'
+  pmcid: PMC10353859
+  locator: Fig. 5A
+paraphrase: Cre-dependent GCaMP8s expressed in POA of Esr1-Cre males labeled axon terminals in the AmgC/M, from which terminal
+  calcium activity was recorded.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Esr1+ POA neurons
+  extract.object_name: AmgC/M
+  verify.note: Fig. 5A is a viral schematic for fiber photometry of terminal calcium activity, not an anterograde tracing
+    result.

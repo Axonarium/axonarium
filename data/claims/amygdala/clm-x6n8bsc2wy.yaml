@@ -1,0 +1,45 @@
+id: clm-x6n8bsc2wy
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.127
+  unit: '1'
+  sem: 0.002
+  n: 3
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 9c,h
+paraphrase: Entorhinal cortex provided one of the strongest inputs to BLA axo-axonic cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ENT
+  extract.object_name: AACsBLA
+  verify.note: ENT provides 12.7 ± 0.2% of inputs to BLA AACs.

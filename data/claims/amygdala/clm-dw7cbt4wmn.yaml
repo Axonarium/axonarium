@@ -1,0 +1,38 @@
+id: clm-dw7cbt4wmn
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:661
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.4103/1673-5374.353852
+  pmid: '36204863'
+  pmcid: PMC9700093
+  locator: Fig. 5D, Fig. 7E, F
+paraphrase: Neurons of the facial motor nucleus were labelled bilaterally by intravitreal PRV724 in cleared brains, and counts
+  were similar in control and optic nerve crush mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: retinal ganglion cells (RGCs)
+  extract.object_name: VII nucleus (facial nerve nucleus)
+  verify.note: VII nucleus labelling was bilateral and did not differ between control and crush mice.

@@ -1,0 +1,38 @@
+id: clm-dx6zmekn8t
+subject:
+  type: neuron_type
+  id: CL:0000700
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1022
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Figure 3—figure supplement 1, 2
+paraphrase: Cre-dependent TVA delivered into the globus pallidus retrogradely labelled a population of midbrain dopamine neurons
+  after rabies injection into VTA/SNc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DAT-Cre dopamine neurons in VTA/SNc
+  extract.object_name: globus pallidus (GP)
+  verify.note: The GP TVA injection labelled GP-projecting dopamine neurons, and mouse GP corresponds to GPe.

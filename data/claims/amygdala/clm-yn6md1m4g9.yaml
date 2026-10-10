@@ -1,0 +1,52 @@
+id: clm-yn6md1m4g9
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: electron_microscopy
+result: present
+sign: excitatory
+measurements:
+- quantity: synapse_count
+  value: 98.0
+  unit: '1'
+  n: 4
+- quantity: synapse_count
+  value: 109.0
+  unit: '1'
+  n: 4
+- quantity: synapse_count
+  value: 88.0
+  unit: '1'
+  n: 4
+source:
+  doi: 10.3389/fnsyn.2021.634558
+  pmid: '34295235'
+  pmcid: PMC8290482
+  locator: Results; Figs. 3C-D, 4, 5A
+paraphrase: Freeze-fracture replica immunolabelling showed ChR2-YFP-labelled thalamic terminals forming asymmetric, AMPA receptor-containing
+  synapses onto spines and dendritic shafts of mpITC neurons identified by mu-opioid receptor labelling on face-matched replicas.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PIN/MGm
+  extract.object_name: mpITC neurons (mu-opioid receptor-positive)
+  verify.note: FRIL shows labelled terminals forming asymmetric, AMPA receptor-bearing synapses on mu-opioid-positive mpITC
+    spines and shafts, with 98, 109 and 88 confirmed synapses from 4 mice per group.

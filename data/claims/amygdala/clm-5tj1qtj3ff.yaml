@@ -1,0 +1,38 @@
+id: clm-5tj1qtj3ff
+subject:
+  type: neuron_type
+  id: nt-g513b58b0y
+predicate: projects_to
+object:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Results (Identification of CeA-PKCδ neuronal efferent targets), Table 1
+paraphrase: No labelled axon terminals from PKCδ central amygdala neurons were detected in any cortical region in any of the
+  five brains surveyed.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA-PKCδ neurons
+  extract.object_name: cortical regions
+  verify.note: The paper reports no cortical terminal labeling in any of the five brains.

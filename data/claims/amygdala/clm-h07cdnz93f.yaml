@@ -1,0 +1,40 @@
+id: clm-h07cdnz93f
+subject:
+  type: region
+  id: MBA:523
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.63493
+  pmid: '33372655'
+  pmcid: PMC7793624
+  locator: Fig. 2A, 2C; Fig. 4—figure supplement 2
+paraphrase: Injection of a retrogradely infecting AAV driving Cre into the caudolateral PAG, combined with a Cre-dependent
+  reporter/ChR2 in the preoptic area, labelled POA cell bodies, demonstrating a preoptic projection to the PAG. All 319 labelled
+  POA-to-PAG cells expressed VGAT and 278 of 319 co-expressed Esr1.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: POA
+  extract.object_name: caudolateral PAG
+  verify.note: Retro-Cre labelled POAPAG cells, with 319/319 VGAT-positive and 278/319 Esr1-positive.

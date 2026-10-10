@@ -1,0 +1,38 @@
+id: clm-x1d7qkneea
+subject:
+  type: region
+  id: MBA:629
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:985
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 7f; Results
+paraphrase: Thalamocortical inputs to MOp chandelier cells came mostly from VAL.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VAL
+  extract.object_name: ChCsMOp
+  verify.note: Thalamocortical inputs to MOp ChCs were primarily from VAL.

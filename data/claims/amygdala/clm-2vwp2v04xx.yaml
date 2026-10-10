@@ -1,0 +1,40 @@
+id: clm-2vwp2v04xx
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 2—figure supplement 2
+paraphrase: Immunostaining for somatostatin on sections containing amygdalar neurons retrogradely labelled from ventral hippocampus
+  showed that a proportion of these projection neurons were somatostatin-immunopositive.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA (somatostatin-positive neurons)
+  extract.object_name: vH (ventral hippocampus)
+  verify.note: The figure supplement shows CTX-labelled BA neurons retrogradely traced from vH that colocalise with somatostatin
+    immunostaining.

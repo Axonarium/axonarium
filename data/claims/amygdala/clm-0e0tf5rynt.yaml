@@ -1,0 +1,39 @@
+id: clm-0e0tf5rynt
+subject:
+  type: region
+  id: UBERON:0001880
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0005383
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.107145
+  pmid: '41870239'
+  pmcid: PMC13008356
+  locator: Fig. 3A, 3B, 3D–3F
+paraphrase: Retrograde AAVretro-DIO-GFP injected in the dorsal striatum of CRF-Cre;tdTomato rats labelled GFP+/tdTomato+ cells
+  in the BNST, demonstrating a CRF-positive BNST projection to the dorsal striatum; both the proportion (p<0.001) and density
+  (p<0.01) of dorsal striatum-projecting CRF neurons were greater in BNST than in CeA (8 sections from 5 rats).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BNST CRF+ (tdTomato+) neurons
+  extract.object_name: dorsal striatum
+  verify.note: Retrograde AAV in rat dorsal striatum labelled BNST CRF+ neurons, with the quoted proportion/density statistics
+    and n=8/5.

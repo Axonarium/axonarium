@@ -1,0 +1,40 @@
+id: clm-bxdhz8pp6j
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 2D; Fig. 5G–I
+paraphrase: Monosynaptic currents from cBLA axons onto PL layer 5 pyramidal tract neurons were essentially nil (under one
+  percent of the IL L5 PT response), and even stimulation strong enough to make IL L5 PT neurons fire evoked no excitatory
+  current in PL L5 PT neurons (9 pairs, 3 animals), only a trace of inhibition.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cBLA
+  extract.object_name: PL L5 PT neurons
+  verify.note: cBLA-evoked responses in PL L5 PT were negligible monosynaptically and absent even at suprathreshold stimulation.

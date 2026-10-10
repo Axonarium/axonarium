@@ -1,0 +1,40 @@
+id: clm-nyr14f1156
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 2F; Fig. 2—figure supplement 1I; Fig. 5A–C
+paraphrase: Subcellular mapping of rBLA axons under TTX/4-AP revealed no monosynaptic input to either the apical or the basal
+  dendrites of PL layer 5 pyramidal tract neurons, and subthreshold stimulation of rBLA fibres evoked essentially no current
+  in these cells; the authors conclude there is no direct rBLA to PL L5 PT connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rBLA
+  extract.object_name: PL L5 pyramidal tract (PT) neurons
+  verify.note: sCRACM showed no rBLA input to PL L5 PT dendrites and the authors state no monosynaptic connection exists.

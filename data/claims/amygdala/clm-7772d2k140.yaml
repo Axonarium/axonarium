@@ -1,0 +1,45 @@
+id: clm-7772d2k140
+subject:
+  type: neuron_type
+  id: nt-g513b58b0y
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: ambiguous
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.0
+  unit: '1'
+  n: 30
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Author response (attempted cre-dependent ChR2 recordings)
+paraphrase: In mice with cre-dependent ChR2 in PKCδ central amygdala neurons, whole-cell recordings from 30 zona incerta neurons
+  across 8 mice yielded no light-evoked postsynaptic currents despite robust terminal labelling, leaving the monosynaptic
+  PKCδ-to-ZI connection unresolved.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA-PKCδ neurons
+  extract.object_name: ZI
+  verify.note: The author response describes 30 recorded ZI neurons from 8 PKCδ-cre mice with no optically evoked responses,
+    deemed inconclusive.

@@ -1,0 +1,40 @@
+id: clm-nx7r50r2ps
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3390/cells15020116
+  pmid: '41597191'
+  pmcid: PMC12839825
+  locator: Fig. 2C; Results 3.2
+paraphrase: BLA neurons labelled by a Cre-dependent reporter after anterograde trans-synaptic Cre delivery to the PFC had
+  axon terminals in the BNST, abundant in the anterior medial division (STMA) and only scattered in the dorsal lateral division
+  (STLD).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: BNST (STMA and STLD)
+  verify.note: Terminals of the labeled BLA neurons were dense in STMA and sparse in STLD per Fig. 2C.

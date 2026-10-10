@@ -1,0 +1,41 @@
+id: clm-zgky6d8ndq
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3390/cells15020116
+  pmid: '41597191'
+  pmcid: PMC12839825
+  locator: Fig. 2C,D; Results 3.2
+paraphrase: Anterograde trans-synaptic rAAV2/1-Cre injected in the PFC combined with a Cre-dependent reporter in the BLA labelled
+  BLA neurons, and together with retrograde labelling from the BNST revealed doubly labelled BLA relay cells that receive
+  prefrontal input and project to the BNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PFC
+  extract.object_name: BLA
+  verify.note: Trans-synaptic Cre from PFC with BLA Cre-dependent reporter and BNST retrograde tracer identified double-labeled
+    BLA relay neurons.

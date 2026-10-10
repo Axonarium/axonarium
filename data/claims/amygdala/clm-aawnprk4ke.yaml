@@ -1,0 +1,44 @@
+id: clm-aawnprk4ke
+subject:
+  type: region
+  id: MBA:322
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:985
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.632
+  unit: '1'
+  sem: 0.113
+  n: 3
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 7f
+paraphrase: Long-range rabies-labelled inputs to MOp chandelier cells were dominated by primary somatosensory cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: SSp
+  extract.object_name: ChCsMOp (chandelier cells in primary motor area)
+  verify.note: SSp provides 63.2 ± 11.3% of inputs to MOp ChCs.

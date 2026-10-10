@@ -1,0 +1,39 @@
+id: clm-70km6yteeb
+subject:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.63493
+  pmid: '33372655'
+  pmcid: PMC7793624
+  locator: Fig. 4A; Fig. 4—figure supplements 1–2
+paraphrase: AAV-retro-Cre injected into the caudolateral PAG together with a Cre-dependent fluorophore in the amygdala labelled
+  cell bodies in the central-medial boundary zone, showing these neurons project to the PAG; about 92% of them expressed VGAT.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AmgC/M
+  extract.object_name: caudolateral PAG
+  verify.note: Retro-AAV labelling from the caudolateral PAG marked AmgC/M cells, about 92% of which were VGAT-positive.

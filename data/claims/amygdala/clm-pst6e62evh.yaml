@@ -1,0 +1,41 @@
+id: clm-pst6e62evh
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.5607/en.2018.27.5.387
+  pmid: '30429648'
+  pmcid: PMC6221842
+  locator: Fig. 1E; Fig. 2A-C; Fig. 3A-C
+paraphrase: After bilateral injection of Alexa-conjugated CTB into the NAc lateral core and shell, retrogradely labelled cells
+  were found in the PL (about 170 cells/mm2); roughly 90% of them (743/829) were immunopositive for glutamate, and about 2.7%
+  were c-Fos positive after 1-h restraint.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: prelimbic cortex (PL)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The PL results show 167–175 CTB cells/mm2 after NAc core/shell injection, 89.8% (743/829) glutamatergic and
+    2.7% c-Fos positive after restraint.

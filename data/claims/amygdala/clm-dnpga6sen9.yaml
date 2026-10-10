@@ -1,0 +1,41 @@
+id: clm-dnpga6sen9
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 1A–C; Fig. 1—figure supplement 1
+paraphrase: Retrograde AAV injected into PL labelled neurons throughout the basolateral amygdala, and these PL-projecting
+  cells were concentrated in the rostral portion of the nucleus along the anterior–posterior gradient (583 ± 59 cells per
+  animal, 3 animals). The same bias was seen when PL and IL were injected at matched anterior-posterior coordinates in separate
+  mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rostral BLA (rBLA)
+  extract.object_name: prelimbic (PL)
+  verify.note: AAVrg in PL labelled BLA neurons biased rostrally, with the cited cell counts and the matched-coordinate control.

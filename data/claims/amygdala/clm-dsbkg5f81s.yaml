@@ -1,0 +1,39 @@
+id: clm-dsbkg5f81s
+subject:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000700
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Fig. 3A; Fig. 4; Fig. 7D–J
+paraphrase: Monosynaptic rabies tracing showed the ventral striatum to be among the largest input sources for the canonical
+  dopamine populations. In those populations, 12–20% of inputs lay in the ventral striatum, and 16–26% of accumbens inputs
+  fell within five dense patches.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ventral striatum (nucleus accumbens core and shell)
+  extract.object_name: VS-, DS-, GP-, Amy-, OFC-, mPFC- and lHb-projecting dopamine neurons
+  verify.note: The 12–20% ventral striatal share and the 16–26% patch share for canonical populations match Fig. 7D and 7I.

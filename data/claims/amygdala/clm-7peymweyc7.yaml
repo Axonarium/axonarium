@@ -1,0 +1,39 @@
+id: clm-7peymweyc7
+subject:
+  type: region
+  id: MBA:930
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.107145
+  pmid: '41870239'
+  pmcid: PMC13008356
+  locator: Results, first section (Fig. 1)
+paraphrase: The parafascicular thalamic nucleus contained rabies-labelled neurons presynaptic to dorsal striatal cholinergic
+  interneurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: parafascicular thalamic nucleus
+  extract.object_name: dorsal striatal cholinergic interneurons (CINs)
+  verify.note: Parafascicular nucleus is listed among rabies-labelled presynaptic regions.

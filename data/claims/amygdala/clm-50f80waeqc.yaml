@@ -1,0 +1,38 @@
+id: clm-50f80waeqc
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:1048
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.4103/1673-5374.353852
+  pmid: '36204863'
+  pmcid: PMC9700093
+  locator: Fig. 5D, Fig. 7E, G
+paraphrase: PRV724 injected into the eye produced labelled neurons in the gigantocellular reticular nucleus bilaterally, with
+  no change after optic nerve crush.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: retinal ganglion cells (RGCs)
+  extract.object_name: gigantocellular reticular nucleus (GRN)
+  verify.note: GRN labelling was bilateral and equal across sides, with no significant change after crush.

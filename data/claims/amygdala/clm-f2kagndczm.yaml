@@ -1,0 +1,45 @@
+id: clm-f2kagndczm
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.6
+  unit: '1'
+  n: 20
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Figure 2C-F
+paraphrase: After ChR2-EYFP expression in central amygdala neurons, blue-light stimulation of their terminals in the zona
+  incerta evoked monosynaptic (TTX/4-AP resistant) inhibitory postsynaptic currents in 12 of 20 VGAT-positive zona incerta
+  neurons; the currents were reduced by the GABA-A antagonist bicuculline and absent or small near the chloride reversal potential.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: ZI (VGAT-positive neurons)
+  verify.note: 12/20 VGAT-positive ZI neurons showed monosynaptic, bicuculline-sensitive oIPSCs from CeA terminals.

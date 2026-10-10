@@ -1,0 +1,57 @@
+id: clm-56ad1jrbjx
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:51
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 2.5
+  unit: ms
+  sem: 0.28
+- quantity: conduction_delay
+  value: 2.4
+  unit: ms
+  sem: 0.18
+  n: 6
+- quantity: conduction_delay
+  value: 3.35
+  unit: ms
+  sem: 0.25
+  n: 8
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 3B; Fig. 5D; Fig. 6D
+paraphrase: In slices, ChR2 stimulation of DCN axons evoked short-latency synaptic currents in intralaminar neurons. In CM/PF
+  the currents were abolished by TTX and restored by 4-AP, showing they are monosynaptic, and they were also evoked in BLA-projecting
+  CM/PF neurons labelled with CtB. Mean amplitudes were about 312 pA for the IL group, -197.5 pA in CM/PF and -104.1 pA in
+  BLA-projecting CM/PF neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN
+  extract.object_name: Intralaminar (IL) group; CM/PF
+  verify.note: The IL, CM/PF and BLA-projecting CM/PF latencies and amplitudes, the n values and the TTX/4-AP result all match
+    the text.

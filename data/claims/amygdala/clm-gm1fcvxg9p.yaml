@@ -1,0 +1,40 @@
+id: clm-gm1fcvxg9p
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3390/cells15020116
+  pmid: '41597191'
+  pmcid: PMC12839825
+  locator: Fig. 2E, Fig. 5B,C; Results 3.2 and 3.5
+paraphrase: Anterograde trans-synaptic rAAV2/1-Cre in the PFC with a Cre-dependent mCherry vector in the BNST labelled a population
+  of BNST neurons directly innervated by prefrontal axons; these cells were spatially separate from BNST neurons engaged by
+  the BLA relay.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PFC
+  extract.object_name: BNST
+  verify.note: rAAV2/1-Cre in PFC plus DIO-mCherry in BNST labeled directly innervated, spatially segregated BNST cells.

@@ -1,0 +1,40 @@
+id: clm-k754hmb29m
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.5607/en.2018.27.5.387
+  pmid: '30429648'
+  pmcid: PMC6221842
+  locator: Fig. 1F; Fig. 2D-F; Fig. 3D-F
+paraphrase: CTB injected into the NAc retrogradely labelled many BLA neurons (roughly 430-490 cells/mm2), 93% of which (610/657)
+  were glutamate-immunopositive; about 4% of these projection cells expressed c-Fos after restraint stress.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The BLA results give 428–488 CTB cells/mm2, 93.0% (610/657) GLU-4 positive and 4.0% c-Fos co-labelled, all
+    retrograde from the NAc.

@@ -1,0 +1,40 @@
+id: clm-y32bq5kz1z
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 1D–F; Fig. 1—figure supplement 2F–J
+paraphrase: Anterograde virus injected at the caudal BLA coordinate labelled axons that were densest in layer 5 of IL, measured
+  as normalized fluorescence from pia to white matter (3 animals), and the same profile was obtained when labelling only IL-projecting
+  cBLA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cBLA
+  extract.object_name: IL
+  verify.note: Anterograde and Cre-dependent tracing show cBLA axons densest in IL L5.

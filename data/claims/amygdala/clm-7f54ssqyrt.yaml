@@ -1,0 +1,41 @@
+id: clm-7f54ssqyrt
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 2D, 2E–F; Fig. 3C,D,F; Fig. 2—figure supplement 1D–F
+paraphrase: Optical stimulation of cBLA axons evoked monosynaptic glutamatergic currents that were much larger in IL layer
+  5 pyramidal tract neurons than in any other recorded cell type, mapped to perisomatic and basal dendrites, and drove nearly
+  every stimulus to spike (firing probability 0.98 ± 0.02, 7 pairs). Responses were also larger at IL L5 PT than at neighbouring
+  IL L5 cortico-amygdalar neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cBLA
+  extract.object_name: IL L5 PT neurons
+  verify.note: Monosynaptic EPSCs, sCRACM maps and near-certain firing all show cBLA excites IL L5 PT neurons.

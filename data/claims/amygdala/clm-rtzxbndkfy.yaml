@@ -1,0 +1,39 @@
+id: clm-rtzxbndkfy
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 2C3
+paraphrase: Few tagged neurons were found in the PVT, so the authors concluded it does not appear to receive robust direct
+  DCN input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN
+  extract.object_name: paraventricular (PVT) nucleus
+  verify.note: The authors say the PVT did not appear to receive robust direct DCN input, so an ambiguous result fits.

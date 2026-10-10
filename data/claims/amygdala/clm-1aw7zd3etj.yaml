@@ -1,0 +1,42 @@
+id: clm-1aw7zd3etj
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnmol.2021.752516
+  pmid: '35002616'
+  pmcid: PMC8739225
+  locator: Results, 'NPSR Positive Neurons in the Medial Amygdala...'; Fig. 5A–D
+paraphrase: After unilateral injection of the anterograde multi-trans-synaptic herpes virus H129-H8 into the olfactory bulb,
+  labelled neurons appeared bilaterally in the posterodorsal and posteroventral subdivisions of the medial amygdala 72 h later,
+  which the authors interpret as olfactory input reaching these nuclei; about 90% of the virus-labelled cells in each subdivision
+  also stained for NPSR.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: olfactory bulb (OB)
+  extract.object_name: posterodorsal (MePD) and posteroventral (MePV) medial amygdala
+  verify.note: The Results and Fig. 5A–D show H129-H8 labelling in bilateral MePD and MePV after a unilateral OB injection
+    in mice, and the paraphrase correctly calls the route multi-synaptic and gives the roughly 90% NPSR overlap.

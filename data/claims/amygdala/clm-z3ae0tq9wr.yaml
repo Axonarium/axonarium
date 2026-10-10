@@ -1,0 +1,38 @@
+id: clm-z3ae0tq9wr
+subject:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000700
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Fig. 3E; Fig. 4; Figure 4—figure supplement 1
+paraphrase: The zona incerta supplied a significantly larger share of inputs to TS-projecting dopamine neurons than to other
+  populations (ANOVA p = 0.0028).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: zona incerta (ZI)
+  extract.object_name: TS-projecting dopamine neurons
+  verify.note: The ZI share was elevated for TS-projecting neurons, with ANOVA p = 0.0028 as reported.

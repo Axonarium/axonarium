@@ -1,0 +1,39 @@
+id: clm-r2mtgz318w
+subject:
+  type: neuron_type
+  id: nt-sexhekqxaa
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0005383
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.107145
+  pmid: '41870239'
+  pmcid: PMC13008356
+  locator: Fig. 3A, 3C–3F
+paraphrase: After infusing a retrograde Cre-dependent AAV expressing GFP into the dorsal striatum of CRF-Cre;tdTomato rats,
+  GFP-labelled cells overlapping with tdTomato (CRF+) were found in the central amygdala, showing that CeA CRF neurons send
+  axons to the dorsal striatum; the proportion and density of such projecting CRF neurons was lower in CeA than in BNST (9
+  sections from 5 rats).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA CRF+ (tdTomato+) neurons
+  extract.object_name: dorsal striatum
+  verify.note: Retrograde Cre-dependent GFP revealed CeA CRF+ neurons projecting to rat dorsal striatum, fewer than BNST.

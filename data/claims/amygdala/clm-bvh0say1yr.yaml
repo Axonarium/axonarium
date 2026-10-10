@@ -1,0 +1,40 @@
+id: clm-bvh0say1yr
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fphar.2021.668337
+  pmid: '34113253'
+  pmcid: PMC8185300
+  locator: Supplementary Fig. S1A-E; Results (validation of optogenetic approach)
+paraphrase: In amygdala slices, shining blue light on ChR2-expressing BLA axon terminals in the CeA drove action potential
+  firing in a recorded CeLC neuron, with continuous and 20 Hz pulsed light being equally effective; conversely, yellow light
+  applied to eNpHR3.0-expressing BLA terminals suppressed firing of a CeLC neuron from an arthritic rat, indicating a functional
+  excitatory BLA input to CeA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CeA, laterocapsular division (CeLC)
+  verify.note: Slice patch-clamp with ChR2/eNpHR at BLA terminals drove or suppressed CeLC firing, supporting an excitatory
+    functional BLA→CeA connection in rats.

@@ -1,0 +1,40 @@
+id: clm-b1aykeh5c1
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.91421
+  pmid: '39023519'
+  pmcid: PMC11257676
+  locator: Figure 4i,j (middle); Figure 5b
+paraphrase: Optical activation of oChIEF-expressing auditory/associative cortical axons evoked field EPSPs in the lateral
+  amygdala of anesthetized and freely moving mice, which were potentiated by high-frequency stimulation of those same cortical
+  fibres.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cortical inputs (Ctx)
+  extract.object_name: lateral amygdala (LA)
+  verify.note: Optical stimulation of cortical axons evoked LA field EPSPs that were potentiated by HFS.

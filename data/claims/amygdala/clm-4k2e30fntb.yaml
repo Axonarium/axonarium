@@ -1,0 +1,45 @@
+id: clm-4k2e30fntb
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: conduction_delay
+  value: 6.5
+  unit: ms
+  n: 8
+source:
+  doi: 10.7554/elife.107145
+  pmid: '41870239'
+  pmcid: PMC13008356
+  locator: Fig. 3G–3J
+paraphrase: Chrimson expressed in CRF-Cre neurons of the BNST (injected together with CeA) allowed optical activation of their
+  striatal fibres, which produced fast optically evoked IPSCs in cholinergic interneurons; TTX abolished and TTX+4-AP restored
+  the response, and bicuculline blocked it, indicating a monosynaptic GABAergic connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BNST CRF+ neurons
+  extract.object_name: dorsal striatal cholinergic interneurons (CINs)
+  verify.note: Chrimson in CRF-Cre BNST/CeA evoked ~6.5 ms GABAergic monosynaptic currents in CINs (n=8).

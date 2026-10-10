@@ -1,0 +1,39 @@
+id: clm-4arr0jht6b
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:362
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.95821
+  pmid: '39088250'
+  pmcid: PMC11293866
+  locator: Fig. 5B
+paraphrase: After AAV-CaMKII-ChR2-eYFP was injected into the aIC, eYFP-labelled axon terminals in the thalamus were found
+  mainly in the mediodorsal and central medial nuclei.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: anterior insular cortex (aIC)
+  extract.object_name: MD, mediodorsal thalamus
+  verify.note: The results state that eYFP-labelled aIC terminals in the thalamus lay mainly in MD and CM, shown in Fig. 5B.

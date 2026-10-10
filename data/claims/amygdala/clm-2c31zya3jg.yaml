@@ -1,0 +1,41 @@
+id: clm-2c31zya3jg
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:362
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.95821
+  pmid: '39088250'
+  pmcid: PMC11293866
+  locator: Fig. 4A-E; Figure 4—figure supplement 1
+paraphrase: Alexa Fluor 594-conjugated CTB injected into the mediodorsal thalamus retrogradely labelled aIC neurons, mainly
+  in deep layers (about layer 6). None of these cells were also labelled by the amygdala tracer. They outnumbered the amygdala-projecting
+  aIC cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: anterior insular cortex (aIC)
+  extract.object_name: medial dorsal thalamus
+  verify.note: The Fig. 4 CTB-594 thalamic injections labelled deep-layer aIC neurons that did not overlap with amygdala-projecting
+    cells and outnumbered them, all in mice.

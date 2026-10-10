@@ -1,0 +1,45 @@
+id: clm-0dc62czm14
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.53
+  unit: '1'
+  n: 15
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Figure 2D
+paraphrase: Optical stimulation of ChR2-expressing central amygdala terminals also elicited inhibitory postsynaptic currents
+  in 8 of 15 VGAT-negative zona incerta neurons, with paired-pulse ratios indistinguishable from those of VGAT-positive cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: ZI (VGAT-negative neurons)
+  verify.note: Text reports light-evoked IPSCs in 8/15 VGAT-negative ZI neurons from ChR2-expressing CeA terminals, with PPR
+    data in Figure 2D.

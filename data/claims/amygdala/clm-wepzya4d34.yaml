@@ -1,0 +1,39 @@
+id: clm-wepzya4d34
+subject:
+  type: region
+  id: MBA:609
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 1D,E
+paraphrase: Neurons in the subparafascicular area were retrogradely labelled from the BLA, and DCN axons overlapped with them.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: subparafascicular area (SPA)
+  extract.object_name: BLA
+  verify.note: The overlap reported in SPA implies BLA-projecting neurons there, within the multi-nucleus distribution of
+    Fig. 1D.

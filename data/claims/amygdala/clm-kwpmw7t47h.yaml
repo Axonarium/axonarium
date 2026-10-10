@@ -1,0 +1,40 @@
+id: clm-kwpmw7t47h
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 1C; Results, section 2
+paraphrase: The paraventricular thalamic nucleus held many neurons retrogradely labelled from the BLA; the authors call this
+  projection heavy.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: paraventricular (PVT) nucleus
+  extract.object_name: BLA
+  verify.note: The paper describes the PVT as projecting heavily to the BLA (Fig. 1C).

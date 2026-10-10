@@ -1,0 +1,39 @@
+id: clm-2b1w5cspnk
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3390/cells15020116
+  pmid: '41597191'
+  pmcid: PMC12839825
+  locator: Fig. 2B; Results 3.2
+paraphrase: Retrograde mCherry-expressing AAV placed in the BNST labelled neurons in the basolateral amygdala, showing that
+  BLA neurons send axons to the BNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: BNST
+  verify.note: Retrograde AAV-mCherry in BNST labeled BLA somata, as stated in Results 3.2/Fig. 2B.

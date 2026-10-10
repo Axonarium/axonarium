@@ -1,0 +1,38 @@
+id: clm-zemwvzcv5f
+subject:
+  type: region
+  id: MBA:1022
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000700
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Fig. 3C; Fig. 4; Fig. 6B; Figure 4—figure supplement 1
+paraphrase: A larger share of the inputs to TS-projecting dopamine neurons came from the globus pallidus than for other populations
+  (ANOVA p = 0.0017).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: globus pallidus (GP)
+  extract.object_name: TS-projecting dopamine neurons
+  verify.note: The GP share was elevated for TS-projecting neurons, with ANOVA p = 0.0017.

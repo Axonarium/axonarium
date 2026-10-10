@@ -1,0 +1,41 @@
+id: clm-s06m8phycq
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnsyn.2015.00012
+  pmid: '26257641'
+  pmcid: PMC4507144
+  locator: Fig. 1A; Methods (Animal Surgeries)
+paraphrase: After bilateral AAV9-ChR2-EYFP injection into the prelimbic prefrontal cortex, fluorescent cortical axons were
+  visualized in the nucleus accumbens region (near the anterior commissure) in coronal slices containing only terminals from
+  the injected region.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: prelimbic prefrontal cortex (PFCx)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The Fig. 1A epifluorescence image shows ChR2-YFP axons from prelimbic cortex near the anterior commissure in
+    the NAc after viral injection.

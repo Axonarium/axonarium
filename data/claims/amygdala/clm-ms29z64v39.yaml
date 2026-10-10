@@ -1,0 +1,41 @@
+id: clm-ms29z64v39
+subject:
+  type: region
+  id: MBA:147
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.7554/elife.18247
+  pmid: '28708061'
+  pmcid: PMC5550275
+  locator: Fig. 1A–D
+paraphrase: Fluorogold deposited in the BLA of wild-type mice retrogradely labelled tyrosine hydroxylase-positive cells in
+  the locus coeruleus. In a second approach, red retrobeads placed in the BLA of Th-Cre mice that had received a Cre-dependent
+  ChR2-eYFP virus in the LC produced cells containing both markers, identifying BLA-projecting catecholaminergic LC neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LC
+  extract.object_name: BLA
+  verify.note: Both Fluorogold and retrobead dual-labelling experiments show TH+ LC neurons projecting to BLA.
