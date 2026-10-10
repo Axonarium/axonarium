@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 8 October 2026.
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 10 October 2026.
 
 ## Phase
 
@@ -30,7 +30,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 1.8 Single-neuron reconstructions ([#84](https://github.com/axonarium/axonarium/issues/84)), 1.9 WhiteText statements ([#85](https://github.com/axonarium/axonarium/issues/85)) | Planned: more data without model costs. Both need their files' real formats checked first (MouseLight's export, WhiteText's XML); the agents' sandbox can't reach figshare or Janelia yet |
 | 2.1 Amygdala inventory ([#59](https://github.com/axonarium/axonarium/issues/59)) | Drafted ([#60](https://github.com/axonarium/axonarium/pull/60)): 26 neuron types and the region naming traps; its open questions wait on the maintainer |
 | 2.2 Literature corpus ([#61](https://github.com/axonarium/axonarium/issues/61)) | Done ([#62](https://github.com/axonarium/axonarium/pull/62)): the first Scout run's 2,079 papers are in `corpus/manifest.csv` ([#68](https://github.com/axonarium/axonarium/pull/68)) |
-| 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | Running, from the **Literature** workflow ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). Triage is done: of 2,079 papers, 1,608 in, 468 out, 3 set aside after two refusals. The first extraction ([#107](https://github.com/axonarium/axonarium/pull/107)) gave 30 claims from 6 papers, all verified. About 350 open-access papers remain; the rest have no full text Europe PMC will serve. Claims stay proposed until Gate 2 |
+| 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | Running, from the **Literature** workflow ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). Triage is done ([#79](https://github.com/axonarium/axonarium/issues/79) closed): of 2,079 papers, 1,608 in, 468 out, 3 set aside after two refusals. Extraction has finished 246 of the 362 open-access papers triaged in: 225 gave 2,213 claims, 5 gave none and 16 were screened out. Every claim has a verdict: 2,146 agree, 38 disagree, 29 unsure; the disagreements and doubts wait in [#116](https://github.com/axonarium/axonarium/issues/116). About 100 remain, and 11 are set aside because Europe PMC fails on them; papers without open-access full text are left out, since Europe PMC won't serve it. Claims stay proposed until Gate 2 |
 | 2.5 Audit, 2.6 homology | Not started: the audit needs gold v1 and extracted claims |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract and reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
@@ -73,39 +73,48 @@ Later phases get cards when they start.
 - The literature pipeline: triage, extraction and verification on the Batch API, run by hand from GitHub Actions or locally, paid from $1,000 of promotional API credits; extracted claims stay proposed until Gate 2 ([ADR 0028](docs/decisions/0028-literature-pipeline.md)).
 - The literature pipeline reads each paper once per step unless asked, sends Claude Opus 5.5's refusals to Claude Opus 5 in the same run, and extracts only open-access papers, the only full text Europe PMC serves ([ADR 0028](docs/decisions/0028-literature-pipeline.md)).
 
-## Handoff (8 October 2026, fifth session)
+## Handoff (10 October 2026, fifth session)
 
-**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas, from wild-type and Cre-line injections, and now the first 30 claims from papers. They are shown in 3D and as a network (`/brain`), in a table (`/explore`), region by region (`/regions`), paper by paper (`/sources`), through the read API (`/api/v1`) and through the MCP server.
+**Live at https://axonarium.com:** the mouse amygdala's outputs and inputs from the Allen Mouse Brain Connectivity Atlas, from wild-type and Cre-line injections, and 2,213 claims from 225 papers, each with its verifier's verdict. They are shown in 3D and as a network (`/brain`), in a table (`/explore`), region by region (`/regions`), paper by paper (`/sources`), through the read API (`/api/v1`) and through the MCP server.
 
 **Done and merged this session**, each with CI green:
-- [#101](https://github.com/axonarium/axonarium/pull/101): extraction records what a paper says of a connection's strength, and its numbers (connection probability, fraction of labelled neurons, synapse count, conduction delay, each with its spread and n); the verifier checks them (`extract@0.3.0`, `verify@0.2.0`).
-- [#102](https://github.com/axonarium/axonarium/pull/102), [#103](https://github.com/axonarium/axonarium/pull/103), [#106](https://github.com/axonarium/axonarium/pull/106): triage of the whole corpus. 1,608 in, 468 out, 3 set aside, for $5.59.
-- [#105](https://github.com/axonarium/axonarium/pull/105): Claude Opus 5.5's bio classifier refused 110 of 2,079 abstracts (5%), mostly viral transsynaptic tracing. Refusals now go to Claude Opus 5 in the same run, and each claim names the model that drafted it.
-- [#107](https://github.com/axonarium/axonarium/pull/107): the first claims from papers. 6 papers gave 30 claims, all 30 verified "agree", for $1.18.
-- [#104](https://github.com/axonarium/axonarium/pull/104): the ledgers may grow past pre-commit's large-file limit, like the manifest.
-- [#108](https://github.com/axonarium/axonarium/pull/108): extraction reads only open-access papers. Europe PMC holds author manuscripts' text but won't serve it, and 347 of the 705 papers triaged in with full text are like that.
+- Earlier in the session: the numbers extraction records ([#101](https://github.com/axonarium/axonarium/pull/101)), the whole corpus triaged ([#102](https://github.com/axonarium/axonarium/pull/102), [#103](https://github.com/axonarium/axonarium/pull/103), [#106](https://github.com/axonarium/axonarium/pull/106)), refusals sent to Claude Opus 5 ([#105](https://github.com/axonarium/axonarium/pull/105)), the first claims from papers ([#107](https://github.com/axonarium/axonarium/pull/107)), and extraction from open-access papers only ([#108](https://github.com/axonarium/axonarium/pull/108)).
+- [#113](https://github.com/axonarium/axonarium/pull/113), [#115](https://github.com/axonarium/axonarium/pull/115), [#117](https://github.com/axonarium/axonarium/pull/117), [#119](https://github.com/axonarium/axonarium/pull/119), [#121](https://github.com/axonarium/axonarium/pull/121), [#122](https://github.com/axonarium/axonarium/pull/122), [#123](https://github.com/axonarium/axonarium/pull/123), [#126](https://github.com/axonarium/axonarium/pull/126), [#129](https://github.com/axonarium/axonarium/pull/129), [#130](https://github.com/axonarium/axonarium/pull/130): the open-access backlog, in runs of about 50 papers. 2,213 claims from 225 papers, all verified: 2,146 agree, 38 disagree, 29 unsure. Extraction cost about $0.20–0.25 a paper and verification about $0.05–0.08.
+- [#128](https://github.com/axonarium/axonarium/pull/128): a run's results are pushed on main as it is when the run ends, after GitHub refused a branch built on an older main; `--collect-fallback` collects a run's fallback batch too, so refusals aren't paid for twice.
+- [#110](https://github.com/axonarium/axonarium/pull/110): the Literature workflow fits its batch waits into the job's six hours (`--wait`), so a slow batch is collected later instead of lost.
+- [#111](https://github.com/axonarium/axonarium/pull/111), [#112](https://github.com/axonarium/axonarium/pull/112): `--collect latest` finds the step's own newest batch when a run's log is gone.
+- [#127](https://github.com/axonarium/axonarium/pull/127): `extract-and-verify` pushes the extracted claims whatever happens to verification.
+- [#118](https://github.com/axonarium/axonarium/pull/118), [#120](https://github.com/axonarium/axonarium/pull/120): each paper that couldn't be read says why, and a paper Europe PMC answers with a server error twice is set aside.
+- [#124](https://github.com/axonarium/axonarium/pull/124): a conduction delay of zero is left out.
+- [#125](https://github.com/axonarium/axonarium/pull/125): the guard against running over waiting results counts only the ledger rows a branch wrote, so a stale code branch no longer blocks a run.
+- [#114](https://github.com/axonarium/axonarium/pull/114): buttons no longer fade in when they are enabled, which made the contrast check fail now and then.
+- [#116](https://github.com/axonarium/axonarium/issues/116): the review queue for claims the verifier disagreed with or was unsure of.
 
 **Not done:**
-- The open-access backlog: about 350 papers, roughly $70 for extraction and verification at the first run's rate.
+- The rest of the open-access backlog: about 100 papers, two more runs.
+- The review queue ([#116](https://github.com/axonarium/axonarium/issues/116)) and its five questions. A proposed `extract@0.4.0` waits on the answers.
 - Gold v1 (0.5), and with it the harness scores (0.6, 0.6a #92) and the audit (2.5).
 - 1.8 and 1.9: their files' formats need checking from a machine that can reach figshare and Janelia.
 - The look of 3.5; homology (2.6); C.4; BAMS (blocked); SCKAN (Phase 7a); SONATA (on hold).
 
 **Surprises:**
-- Opus 5.5 refuses some papers on viral tracers and drugs of abuse; Opus 5 answered 89 of the 91 it was sent, and refused 2.
-- The verifier agreed with all 30 claims of the first run. They came from clean papers; gold v1 is what will measure it.
-- In GitHub's usage page the workflow minutes look large, but the repository is public, so standard runners cost nothing: each Literature run shows 0 billable minutes.
+- Opus 5.5 refused about half the full texts at extraction (112 of the 230 papers sent went to Opus 5), against 5% of abstracts at triage.
+- The verifier's disagreements are mostly real catches: antidromic spikes read as the wrong direction, axons labelled by a retrograde virus recorded as anterograde, chemogenetics recorded as optogenetics, other numbers read as connection probabilities, feed-forward inhibition read as an inhibitory input, and targets taken from a figure's list of abbreviations.
+- Several of its doubts are about naming, not the paper: mPFC, the superior colliculus and the amygdalostriatal transition area have no single Allen region.
+- The hidden-text screen set aside about 1 in 11 fetched papers. The ones checked were false positives: primer sequences, protocol boilerplate, figure titles.
+- Europe PMC answers some open-access papers with a server error every time, six *Nature* papers among them.
 
-**Next step:** run **Literature** with step `extract-and-verify` and limit 50, read the report and spot-check the claims, then open and merge the pull request from the branch it pushes. Repeat until the open-access backlog is done. Each run's report gives its cost.
+**Next step:** run **Literature** with step `extract-and-verify` and limit 50 until the backlog is done; open a pull request from each branch it pushes, and add its disagreements to #116. Then the maintainer's answers on #116 decide `extract@0.4.0`.
 
 ## Waiting on the maintainer
 
+- [ ] The review queue ([#116](https://github.com/axonarium/axonarium/issues/116)): retract or correct the claims the verifier disagreed with, and answer its five questions on region naming, the screen and evidence classes.
 - [ ] The look review for sprint 3.5 ([#74](https://github.com/axonarium/axonarium/issues/74)): design tokens, motion, and whether phones get a lighter home preview (it costs a phone 0.3–0.5 s of blocking time; ADR 0025). Then #74 can close.
 - [ ] Gap mode's rule (ADR 0027): whether suggestions from neighbouring subdivisions are the research prompts you want. Also whether routes and gaps should join the read API and the MCP server: two of the plan's acceptance questions ask for them.
 - [ ] Gold-set curation (sprint 0.5): the maintainer alone, or with a second curator? Its format is in `agents/evals/README.md`.
 - [ ] Whether extraction should record a population's genetic handle (a Cre line or marker, such as Prkcd-Cre) in its own field. For now the paper's own wording is kept with each claim (`extract.subject_name`, `extract.object_name`).
 - [ ] Optionally, an `OPENAI_API_KEY` in the `models` environment, so the verifier can come from a second model family (ADR 0028).
-- [ ] Turning on *Automatically delete head branches* (Settings → General), so merged `literature/…` and `claude/…` branches go; agents can't delete branches. `claude/probe-data` can go too.
+- [ ] Deleting the branch `claude/probe-data`, which merged pull requests' branches no longer leave behind; agents can't delete branches.
 - [ ] Zenodo: switch on `axonarium/axonarium` in Zenodo's GitHub settings, run **Release**, then add the concept DOI to `README.md`, `CITATION.cff` and `SUCCESSION.md` (ADR 0016). Also whether `CITATION.cff` should list CC BY 4.0 beside Apache-2.0.
 - [ ] Whether to annotate `corpus/` as CC0-1.0 in `REUSE.toml` (ADR 0019). Later Scout runs: run it from the Actions tab and open a pull request from the branch it pushes.
 - [ ] The inventory draft's open questions (spec for 2.1): where the lexicon lives, whether neuron types cite papers, how Cre-line experiments map to them.
