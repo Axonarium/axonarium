@@ -165,6 +165,19 @@ def test_pruning_keeps_what_holds_claims():
     assert "DISCUSSION" in whole and "INTRO" in whole  # without pruning, everything but references
 
 
+def test_pruning_drops_the_peer_review_printed_with_a_paper():
+    article = b"""<article><front><article-meta><title-group><article-title>BLA outputs</article-title></title-group>
+      </article-meta></front><body><sec sec-type="results"><title>Results</title><p>RESULTS</p></sec></body>
+      <sub-article article-type="decision-letter"><body><p>REVIEWER</p></body></sub-article>
+      <sub-article article-type="reply"><body><p>Thank you for pointing this out.</p>
+        <fig><caption><p>Author response image 1</p></caption></fig></body></sub-article>
+      <response><body><p>REPLY</p></body></response></article>"""
+    kept = screen_jats(article, lambda blocks: [0.0] * len(blocks), prune=sections.prune).text
+    assert "BLA outputs" in kept and "RESULTS" in kept
+    for part in ("REVIEWER", "Thank you", "Author response image", "REPLY"):
+        assert part not in kept
+
+
 def test_full_text_is_cached(tmp_path):
     asked = []
 

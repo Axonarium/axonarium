@@ -1,6 +1,8 @@
 """The parts of a JATS article that hold claims (ADR 0028): its title, abstract, methods, results and figure and table
 captions. The introduction, discussion, acknowledgements, back matter and references are dropped before the model
-reads the paper, since a paper's own results are what it claims; dropping them roughly halves what is sent."""
+reads the paper, since a paper's own results are what it claims; dropping them roughly halves what is sent. So is any
+peer-review material published with the paper (eLife's decision letters, reviews and authors' responses), which is
+correspondence about the paper, not its findings."""
 
 import re
 import xml.etree.ElementTree as ET
@@ -19,6 +21,7 @@ DROPPED_TYPES = {"intro", "introduction", "background", "discussion", "conclusio
                  "acknowledgments", "acknowledgement", "acknowledgements", "funding", "supplementary-material",
                  "data-availability", "coi-statement", "author-contributions", "ethics-statement"}
 KEPT_FLOATS = {"fig", "table-wrap"}
+REVIEW = {"sub-article", "response"}  # JATS's places for the reviews, decision letters and replies printed with a paper
 
 
 def _title(section: ET.Element) -> str:
@@ -43,12 +46,15 @@ def _floats(element: ET.Element) -> list[ET.Element]:
 
 
 def prune(root: ET.Element) -> None:
-    """Drop the sections that hold no claims, and all back matter, keeping any figures and tables they contain."""
+    """Drop the sections that hold no claims, and all back matter, keeping any figures and tables they contain; and
+    the peer-review material, figures and all."""
 
     def walk(element: ET.Element):
         for child in list(element):
             tag = local(child.tag)
-            if tag == "back" or (tag == "sec" and dropped(child)):
+            if tag in REVIEW:
+                element.remove(child)
+            elif tag == "back" or (tag == "sec" and dropped(child)):
                 kept = _floats(child)
                 element.remove(child)
                 element.extend(kept)
