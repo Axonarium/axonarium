@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: basolateral amygdala (BLA)
   extract.object_name: anterior insular cortex (aIC)
+  verify.note: The paper amplified mCherry from the viral BLA injections and confirmed labelled terminals in the rat aIC (Fig.
+    4D); rats without confirmed terminal expression were excluded, so every analysed rat had it.

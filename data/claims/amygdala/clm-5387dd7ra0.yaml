@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: motor cortex M1, layer 5/5B
   extract.object_name: preBötC
+  verify.note: M1 layer 5/5B labelling and the 3/5 vs 1/4 cortical counts match the text.

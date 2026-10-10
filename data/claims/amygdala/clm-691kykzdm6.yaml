@@ -23,7 +23,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: posterior hypothalamic area (PHA), extended A10 cell group
   extract.object_name: dlPAG
+  verify.note: The posterior hypothalamic area is one of three extended A10 sites holding double-labelled cells, and A10 gave
+    22-30% in three cases.

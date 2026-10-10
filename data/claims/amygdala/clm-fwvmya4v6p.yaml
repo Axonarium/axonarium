@@ -24,7 +24,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: globus pallidus external (GPe)
   extract.object_name: D2-MSNs in the posterior dorsomedial striatum (pDMS)
+  verify.note: GPe innervation of D2-MSNs is significantly greater than of D1-MSNs (p<0.05).

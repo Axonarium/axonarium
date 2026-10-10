@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: PmCo
   extract.object_name: entorhinal cortex (Ent)
+  verify.note: Dual Ct-b labelling with entorhinal injections was 2.8%, described as minor collateral projection.

@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: nucleus basalis magnocellularis (NBM)
   extract.object_name: basolateral amygdala (BLA), basolateral nucleus
+  verify.note: AAV-ChR2-eYFP injected in NBM labeled terminal fields in the basolateral nucleus with unlabeled BLA somata,
+    an anterograde result in this paper.

@@ -27,7 +27,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: DRN
   extract.object_name: BA (basal nucleus of the amygdala)
+  verify.note: AAV-ChR2/YFP from DRN labels dense 5-HT+ fibers in BA, with VGLUT3+ varicosities, as described in Fig. 1E–G.

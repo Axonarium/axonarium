@@ -27,7 +27,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: BLA (basal nucleus)
   extract.object_name: ventral subiculum (vSub)
+  verify.note: PHA-L injected into the BLA labelled fibres and terminal-like swellings in the vSub, with the stated densities,
+    the 25.63% increase and contacts on CB/CR/PV neurons, as reported in Results and Fig. 2.

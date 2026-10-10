@@ -26,7 +26,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: VPCNs
   extract.object_name: basolateral amygdala (BLA)
+  verify.note: BLA is the strongest anterograde target at 43.81 ± 1.77% density in 6 mice, shown in Fig. 1C and 1D.

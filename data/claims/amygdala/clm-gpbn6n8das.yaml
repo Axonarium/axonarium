@@ -24,7 +24,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: sublenticular extended amygdala (EA)
   extract.object_name: CSF-contacting nucleus
+  verify.note: The subject ID is that of the substantia innominata, which the paper treats as a region separate from the sublenticular
+    extended amygdala.

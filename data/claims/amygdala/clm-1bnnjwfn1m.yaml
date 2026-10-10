@@ -35,7 +35,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: NBM
   extract.object_name: BLA pyramidal neurons
+  verify.note: Paper's optogenetic IPSC data, TTX/4-AP test and matching latencies (2.8±0.2, n=12; 2.8±0.3, n=8) support a
+    monosynaptic inhibitory NBM input to BLA pyramidal neurons.

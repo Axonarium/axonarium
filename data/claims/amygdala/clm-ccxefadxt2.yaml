@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: Barrington's nucleus (Bar)
   extract.object_name: cNTS PPG neurons
+  verify.note: Bar is a monosynaptic RABV input, and Fig. 13 shows Crh mRNA in a subset of the labeled Bar neurons.

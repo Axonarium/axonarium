@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: posterior thalamic nuclear group (Po)
   extract.object_name: rACC
+  verify.note: Po was sporadic in young males and unlabelled in the other three groups.

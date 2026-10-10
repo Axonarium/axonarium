@@ -30,7 +30,15 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: DRN (5-HT neurons)
   extract.object_name: BA principal neurons (PNs)
+  verify.note: 93% of BA PNs (n=13) showed a WAY 100635-sensitive slow IPSC and reduced firing with 20 Hz stimulation.

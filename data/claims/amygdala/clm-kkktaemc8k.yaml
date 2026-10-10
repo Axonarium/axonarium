@@ -25,7 +25,15 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: unsure
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: insular cortex
   extract.object_name: NPY neurons in the NAc
+  verify.note: The paper says only 'insular cortex', so mapping it to the agranular insular area specifically cannot be confirmed.

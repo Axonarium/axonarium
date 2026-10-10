@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: AOB mitral/tufted cell layer
   extract.object_name: arom+ neurons in the MeA (posterior dorsal MeA)
+  verify.note: The rabies data in Figs. 3, 4 and 6 support AOB mitral/tufted input to arom+ MeA cells, with about 89% anterior
+    and 1.25 vs 0.13 cells per starter in males vs females.

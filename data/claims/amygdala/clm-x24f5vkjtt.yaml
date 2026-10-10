@@ -23,7 +23,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: stria terminalis (ST) afferents
   extract.object_name: BLA pyramidal neurons
+  verify.note: The paper reports electrically evoked monosynaptic glutamatergic EPSCs in BLA pyramidal neurons from stria
+    terminalis stimulation with polysynaptic responses excluded.

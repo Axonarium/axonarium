@@ -37,7 +37,16 @@ curation:
   model: claude-opus-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: BMA
   extract.object_name: mICCs
+  verify.note: In vivo cfos increase and light-evoked, CNQX-sensitive, TTX/4-AP-tested EPSCs in mICC neurons support an excitatory
+    functional connection with the stated response proportions out of 32 cells.

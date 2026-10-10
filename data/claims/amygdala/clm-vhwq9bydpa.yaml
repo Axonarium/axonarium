@@ -26,7 +26,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: AOB mitral cell layer
   extract.object_name: MeA (posterior dorsal MeA)
+  verify.note: Fluoro-Gold injected in the MeA labelled nearly all AOB mitral/tufted cells, split 51% anterior and 49% posterior,
+    as shown in Fig. 5.

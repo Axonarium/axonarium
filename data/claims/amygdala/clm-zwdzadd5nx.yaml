@@ -37,7 +37,16 @@ curation:
   model: claude-opus-5-5
   prompt: extract@0.3.0
   date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
 status: proposed
 extra:
   extract.subject_name: NPY neurons in the NAc
   extract.object_name: LH
+  verify.note: The 7.19% is the share of mCherry NPY neurons that were CTb-positive, not the share of CTb-labelled neurons
+    that were NPY, so the paraphrase reverses the ratio.
