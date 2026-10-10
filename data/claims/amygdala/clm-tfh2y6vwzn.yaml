@@ -1,0 +1,31 @@
+id: clm-tfh2y6vwzn
+subject:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Figures 2D,I
+paraphrase: mCherry-only neurons in the nucleus of the solitary tract were found after monosynaptic rabies tracing from both
+  SST+ and GlyT2+ preBötC neurons, indicating direct solitary tract input to both preBötC subpopulations.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: NTS
+  extract.object_name: preBötC

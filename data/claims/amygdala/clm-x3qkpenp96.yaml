@@ -1,0 +1,29 @@
+id: clm-x3qkpenp96
+subject:
+  type: region
+  id: UBERON:0003018
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:8440075
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0199-19.2019
+  pmid: '32019871'
+  pmcid: PMC7029183
+  locator: Fig. 1A, C-E; Results, first section
+paraphrase: AAV9-driven GFP or RFP injected into VPMpc labelled axons in GC, concentrated in the granular and dysgranular
+  subdivisions and found to some degree in all subdivisions. The fields overlapped most with BLA axons in dysgranular GC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VPMpc (gustatory thalamus)
+  extract.object_name: gustatory cortex (GC)

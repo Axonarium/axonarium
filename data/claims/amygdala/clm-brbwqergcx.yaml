@@ -1,0 +1,31 @@
+id: clm-brbwqergcx
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Results, suprapontine projections
+paraphrase: Rabies-labelled presynaptic neurons were detected in the bed nucleus of the stria terminalis in 2 of 5 SST-Cre
+  and 1 of 4 GlyT2-Cre preBötC tracing experiments.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: bed nucleus of the stria terminalis
+  extract.object_name: preBötC

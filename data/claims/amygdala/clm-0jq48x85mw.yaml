@@ -1,0 +1,31 @@
+id: clm-0jq48x85mw
+subject:
+  type: region
+  id: MBA:780
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Table 1; Fig. 2D,E
+paraphrase: 'After accumbens injections, retrogradely labeled cells appeared in the medial and lateral amygdalohippocampal
+  area: few after shell injections, many in the lateral part after core injections.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AHA
+  extract.object_name: Acb

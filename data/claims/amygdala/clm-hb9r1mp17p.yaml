@@ -1,0 +1,31 @@
+id: clm-hb9r1mp17p
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0163-20.2020
+  pmid: '32601096'
+  pmcid: PMC7358333
+  locator: Fig. 1D-F; Fig. 3C,M; Fig. 5A-D
+paraphrase: Retrograde CTB injections into the dorsal BNST and into the ovBNST labelled neurons in the posterior basal amygdala,
+  with a CTB pattern differing from that in the anterior BA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: posterior BA (pBA)
+  extract.object_name: dorsal BNST (dBNST) / ovBNST

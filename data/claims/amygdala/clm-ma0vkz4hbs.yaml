@@ -1,0 +1,30 @@
+id: clm-ma0vkz4hbs
+subject:
+  type: region
+  id: MBA:835
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000108
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2016.00098
+  pmid: '27777554'
+  pmcid: PMC5056182
+  locator: Figs. 2, 4C
+paraphrase: Ventral pallidum strongly targeted BF cholinergic neurons in monosynaptic rabies tracing.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VP
+  extract.object_name: BF cholinergic neurons (BFCS)

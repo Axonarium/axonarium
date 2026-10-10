@@ -1,0 +1,30 @@
+id: clm-ars3gdcwhp
+subject:
+  type: region
+  id: MBA:669
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0348-20.2020
+  pmid: '33380525'
+  pmcid: PMC7877463
+  locator: Fig. 2
+paraphrase: Secondary visual cortex was a smaller source of monosynaptic input to pDMS D2-MSNs than to D1-MSNs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: secondary visual cortex
+  extract.object_name: D2-MSNs in the posterior dorsomedial striatum (pDMS)

@@ -1,0 +1,50 @@
+id: clm-w3tevn8ray
+subject:
+  type: region
+  id: UBERON:0001907
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0003040
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.6
+  unit: '1'
+  n: 1
+- quantity: fraction_of_labelled_neurons
+  value: 0.5
+  unit: '1'
+  n: 1
+- quantity: fraction_of_labelled_neurons
+  value: 0.59
+  unit: '1'
+  n: 1
+- quantity: fraction_of_labelled_neurons
+  value: 0.45
+  unit: '1'
+  n: 1
+- quantity: fraction_of_labelled_neurons
+  value: 0.78
+  unit: '1'
+  n: 1
+source:
+  doi: 10.3389/fnana.2013.00041
+  pmid: '24367297'
+  pmcid: PMC3853869
+  locator: Results, A13 cell group; Table 1; Fig. 3
+paraphrase: After CTb injections into the dlPAG, the A13 group in the medial zona incerta held the most CTb/TH double-labelled
+  neurons of any dopaminergic group in every case. They were mostly ipsilateral and concentrated in the intermediate A13.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: A13 cell group (medial zona incerta)
+  extract.object_name: dorsolateral periaqueductal gray (dlPAG)

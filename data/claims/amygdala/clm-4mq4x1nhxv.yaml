@@ -1,0 +1,32 @@
+id: clm-4mq4x1nhxv
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnagi.2022.960868
+  pmid: '36062147'
+  pmcid: PMC9428471
+  locator: Fig. 2A, Fig. 3, Fig. 4A, Fig. 5B
+paraphrase: Orbital cortex contained densely labelled retrograde cells ipsilaterally and lightly labelled cells contralaterally
+  after rACC injection; it was a major input, reduced in middle-aged versus young females.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: orbital cortex (OC)
+  extract.object_name: rACC

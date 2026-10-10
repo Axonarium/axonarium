@@ -1,0 +1,31 @@
+id: clm-kj41qyrdw7
+subject:
+  type: region
+  id: UBERON:0002883
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0007634
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: inhibitory
+source:
+  doi: 10.2147/jpr.s441706
+  pmid: '38974829'
+  pmcid: PMC11227312
+  locator: Figs. 4C–N, 5A–R
+paraphrase: Cre-dependent synaptophysin-mRuby expressed in GAD1-positive central amygdala neurons of Gad1-iCre rats produced
+  red synaptophysin puncta in the lateral parabrachial nucleus, where they colocalized with CaMKIIa-EGFP-labelled excitable
+  neurons across serial optical z-sections; puncta per CaMKIIa cell and the number of CaMKIIa cells bearing puncta were reduced
+  by Nrxn3 knockdown in the central amygdala and puncta number was increased by whisker-pad VZV injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: central amygdala
+  extract.object_name: lateral parabrachial nucleus

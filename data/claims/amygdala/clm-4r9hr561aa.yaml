@@ -1,0 +1,30 @@
+id: clm-4r9hr561aa
+subject:
+  type: region
+  id: UBERON:0000955
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0001894
+species: NCBITaxon:10116
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.3389/fendo.2020.546350
+  pmid: '33343506'
+  pmcid: PMC7746818
+  locator: Results, 'The Innervation of the Anterior Lobe With AAV2/Retro or PRV 152 Injection'; Fig. 3
+paraphrase: PRV 152 expressing EGFP was injected into the anterior lobe and animals were examined daily from 1 to 18 days
+  afterwards; no labelled neurons appeared anywhere in the brain at any survival time, so the authors concluded the anterior
+  lobe receives no direct innervation from brain neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rat brain
+  extract.object_name: anterior pituitary (anterior lobe)

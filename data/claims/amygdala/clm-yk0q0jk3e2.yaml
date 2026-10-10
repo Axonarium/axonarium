@@ -1,0 +1,31 @@
+id: clm-yk0q0jk3e2
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0302-22.2022
+  pmid: '36635250'
+  pmcid: PMC9850927
+  locator: Materials and Methods (viral injections); Extended Data Fig. 1-1; Results, first section
+paraphrase: Bilateral injection of a retrograde AAV expressing mCherry into the BLA labelled pyramidal neurons in the agranular
+  anterior insula, in both superficial layers I–III and deep layers IV–VI, which were then targeted for whole-cell recordings.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: anterior insula (aIC), agranular aIC
+  extract.object_name: basolateral amygdala (BLA)

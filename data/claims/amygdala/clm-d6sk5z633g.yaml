@@ -1,0 +1,35 @@
+id: clm-d6sk5z633g
+subject:
+  type: neuron_type
+  id: nt-f6anb9qecd
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 1.0
+  unit: '1'
+  n: 9
+source:
+  doi: 10.1523/eneuro.0204-18.2018
+  pmid: '29971248'
+  pmcid: PMC6027956
+  locator: Fig. 5A3, 5C
+paraphrase: Light activation of ChR2-expressing glutamatergic BM axons evoked suprathreshold EPSPs from rest in every tested
+  VMH core neuron (5 DM, 4 VL).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: glutamatergic BM inputs
+  extract.object_name: VMH core neurons (DM and VL)

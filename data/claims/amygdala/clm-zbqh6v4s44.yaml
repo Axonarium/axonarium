@@ -1,0 +1,31 @@
+id: clm-zbqh6v4s44
+subject:
+  type: region
+  id: MBA:560581551
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/eneuro.0238-23.2023
+  pmid: '37775310'
+  pmcid: PMC10576262
+  locator: Fig. 3c-d; Results, Main ITC nucleus
+paraphrase: Monosynaptic rabies tracing from FoxP2+ main ITCs labelled some of the densest presynaptic populations in the
+  ethmoid thalamic nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ethmoid thalamic nucleus
+  extract.object_name: mITC

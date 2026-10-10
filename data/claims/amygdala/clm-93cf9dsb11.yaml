@@ -1,0 +1,42 @@
+id: clm-93cf9dsb11
+subject:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: modulatory
+measurements:
+- quantity: connection_probability
+  value: 0.67
+  unit: '1'
+  n: 12
+- quantity: connection_probability
+  value: 0.25
+  unit: '1'
+  n: 12
+source:
+  doi: 10.1523/jneurosci.0682-24.2024
+  pmid: '39187377'
+  pmcid: PMC11426376
+  locator: Fig. 7D–K
+paraphrase: In VTA dopamine neurons retrogradely labelled from the basolateral amygdala, photostimulation of lateral hypothalamic
+  orexin/dynorphin terminals suppressed evoked firing in two-thirds of cells, an effect blocked by the kappa-opioid antagonist
+  NorBNI; a small, statistically non-significant increase occurred in a quarter of cells, and no change remained when both
+  orexin-1 and kappa-opioid antagonists were present.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LHox/dyn
+  extract.object_name: BLA-projecting VTADA neurons

@@ -1,0 +1,43 @@
+id: clm-cnxbc4p9b2
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:196
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 4.8
+  unit: ms
+  sem: 0.2
+  n: 23
+- quantity: conduction_delay
+  value: 8.3
+  unit: ms
+  sem: 0.7
+  n: 6
+source:
+  doi: 10.1523/eneuro.0175-18.2018
+  pmid: '29911171'
+  pmcid: PMC6001136
+  locator: Fig. 6B; Results, ACPs synapse onto AOB GABAergic interneurons
+paraphrase: Light activation of Sim1-cre ChR2-expressing PmCo afferents evoked fast, short-latency EPSCs in AOB granule cells.
+  The responses survived TTX plus 4-AP, showing a monosynaptic input, and were abolished by DNQX and AP5, showing they are
+  glutamatergic.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PmCo
+  extract.object_name: AOB granule cells (GCs)

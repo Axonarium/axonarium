@@ -1,0 +1,32 @@
+id: clm-ys941s2a0h
+subject:
+  type: region
+  id: MBA:771
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Results, brainstem afferents (Figure 2)
+paraphrase: Occasional monosynaptically labelled neurons were observed in the pontine reticular nuclei in the rabies tracing
+  experiments.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: pontine reticular nuclei
+  extract.object_name: preBötC

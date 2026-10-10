@@ -1,0 +1,31 @@
+id: clm-cy4tds0prr
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:128
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.1083-25.2025
+  pmid: '41193254'
+  pmcid: PMC12696621
+  locator: Fig. S1; Fig. 6B; Results, final section
+paraphrase: Rabies tracing from Vglut2-expressing DpMe starter cells labelled almost no input neurons in the BNST, so the
+  authors conclude BNST GABAergic neurons do not directly innervate glutamatergic DpMe cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BNST
+  extract.object_name: GLUTDpMe neurons

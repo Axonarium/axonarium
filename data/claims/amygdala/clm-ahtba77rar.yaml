@@ -1,0 +1,31 @@
+id: clm-ahtba77rar
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.0682-24.2024
+  pmid: '39187377'
+  pmcid: PMC11426376
+  locator: Figs. 5A,C and 6A,C
+paraphrase: Red RetroBeads injected into either the lateral or the medial shell of the nucleus accumbens retrogradely labelled
+  tyrosine hydroxylase-positive neurons in the ventral tegmental area, which were then recorded in slices.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VTA
+  extract.object_name: lAcbSh / mAcbSh (lateral and medial shell of the nucleus accumbens)

@@ -1,0 +1,29 @@
+id: clm-5h9687gcqs
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0238-23.2023
+  pmid: '37775310'
+  pmcid: PMC10576262
+  locator: Fig. 5c-d; Results, Caudal ITCs
+paraphrase: Monosynaptic rabies tracing from caudal ITCs labelled clusters of presynaptic cells in the insular cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Insular cortices
+  extract.object_name: cITC

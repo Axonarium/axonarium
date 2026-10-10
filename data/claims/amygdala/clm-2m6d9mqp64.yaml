@@ -1,0 +1,34 @@
+id: clm-2m6d9mqp64
+subject:
+  type: region
+  id: MBA:319
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1105
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/jneurosci.2564-20.2021
+  pmid: '33637560'
+  pmcid: PMC8051692
+  locator: Fig. 1A,B,D–G; Results, first section
+paraphrase: In PACAP-EGFP reporter mice, PACAP-expressing cell bodies were concentrated in the lateral and basomedial amygdala
+  and GFP-labelled fibres densely occupied both dorsal and ventral medial intercalated cell clusters. With an intersectional
+  strategy (retrograde Cre-dependent HSV-FLP in mICCs plus FLP-dependent ChR2-eYFP in BMA), labelled axon terminals from BMA
+  were seen in the mICCs, overlapping FoxP2-positive mICC tissue.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BMA
+  extract.object_name: mICCs

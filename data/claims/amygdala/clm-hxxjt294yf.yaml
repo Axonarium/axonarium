@@ -1,0 +1,32 @@
+id: clm-hxxjt294yf
+subject:
+  type: region
+  id: MBA:835
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/jneurosci.0415-25.2026
+  pmid: '41605651'
+  pmcid: PMC12962782
+  locator: Fig. 1C-D
+paraphrase: Anterograde tracing from VP cholinergic neurons showed robust axonal labelling in the prefrontal cortex, at about
+  17% of estimated projection density.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VPCNs
+  extract.object_name: prefrontal cortex (PFC)

@@ -1,0 +1,29 @@
+id: clm-fxjam2bvp3
+subject:
+  type: neuron_type
+  id: nt-3kvfdzf7wn
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:515
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/jneurosci.1103-21.2021
+  pmid: '34470806'
+  pmcid: PMC8528505
+  locator: Results, Optogenetic excitation of VGluT2 neurons (data not shown)
+paraphrase: ChR2 activation of MeApd glutamatergic neurons did not alter c-Fos expression in the MPN relative to controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MeApd VGluT2 neurons
+  extract.object_name: MPN

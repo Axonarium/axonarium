@@ -1,0 +1,37 @@
+id: clm-yfeyv10smc
+subject:
+  type: region
+  id: MBA:292
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 1.3
+  unit: ms
+  sem: 0.2
+  n: 14
+source:
+  doi: 10.1523/eneuro.0175-18.2018
+  pmid: '29911171'
+  pmcid: PMC6001136
+  locator: Fig. 7C; Table 1; Results
+paraphrase: Fast excitatory responses in AOB mitral cells to light stimulation of the MC layer appeared only when the CaMKIIa-ChR2
+  virus had also infected the BAOT. The responses were not blocked by TTX plus 4-AP, consistent with direct BAOT input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: bed nucleus of the accessory olfactory tract (BAOT)
+  extract.object_name: AOB mitral cells (MCs)

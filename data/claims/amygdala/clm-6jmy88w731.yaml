@@ -1,0 +1,32 @@
+id: clm-6jmy88w731
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Fig. 4B-E; Table 3
+paraphrase: After posteromedial cortical amygdala injections, the densest ventral striatal terminal fields were in the cell
+  bridges and caudomedial tubercle layer 3, closely associated with the islands of Calleja, including the major island.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: COApm
+  extract.object_name: Tu and islands of Calleja

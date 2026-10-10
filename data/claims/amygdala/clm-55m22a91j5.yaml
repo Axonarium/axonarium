@@ -1,0 +1,36 @@
+id: clm-55m22a91j5
+subject:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:637
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.1808
+  unit: '1'
+source:
+  doi: 10.3389/fnagi.2022.960868
+  pmid: '36062147'
+  pmcid: PMC9428471
+  locator: Fig. 2A, Fig. 3, Fig. 4B, Fig. 6E
+paraphrase: Anterograde trans-monosynaptic AAV from rACC heavily labelled VAL/VM neurons in young mice, the major output target
+  (over 40% of output cells in most groups), with significant reduction in middle-aged mice.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rACC
+  extract.object_name: VAL/VM

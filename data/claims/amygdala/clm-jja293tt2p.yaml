@@ -1,0 +1,31 @@
+id: clm-jja293tt2p
+subject:
+  type: region
+  id: MBA:523
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2020.00058
+  pmid: '33013329'
+  pmcid: PMC7507425
+  locator: Results, suprapontine projections (Figure 4)
+paraphrase: Small numbers of rabies-labelled presynaptic neurons were observed in the medial preoptic area for both preBötC
+  starter populations.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: medial preoptic area
+  extract.object_name: preBötC

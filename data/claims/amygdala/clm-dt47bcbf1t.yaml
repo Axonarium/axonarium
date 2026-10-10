@@ -1,0 +1,41 @@
+id: clm-dt47bcbf1t
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-gv1k4bnh04
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 11.3
+  unit: ms
+  sem: 0.7
+  n: 7
+- quantity: conduction_delay
+  value: 11.0
+  unit: ms
+  sem: 0.3
+  n: 10
+source:
+  doi: 10.1523/eneuro.0132-19.2019
+  pmid: '31548367'
+  pmcid: PMC7070451
+  locator: Fig. 1C2; Fig. 6A3
+paraphrase: Blue-light activation of ChR2-expressing dorsal mPFC fibres near the stria terminalis evoked EPSCs in BLA principal
+  neurons; these were abolished by TTX and restored by 4-AP (indicating monosynaptic transmission) and blocked by the AMPA
+  antagonist DNQX, establishing a glutamatergic connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: dmPFC
+  extract.object_name: BLA principal neurons

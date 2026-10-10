@@ -1,0 +1,29 @@
+id: clm-qks5xwmkpf
+subject:
+  type: neuron_type
+  id: nt-8j60sp2qe4
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-6730a6m5pa
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.1523/jneurosci.2063-17.2018
+  pmid: '29954847'
+  pmcid: PMC6070667
+  locator: Fig. 8D–F
+paraphrase: Light stimulation of ChR2-expressing VIP+ interneurons in VIP-cre::GAD65-EGFP mice evoked postsynaptic currents
+  in EGFP+ CCK+ basket cells of the BLA. Gabazine abolished these responses, showing they were GABAA receptor-mediated.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VIP+ INs
+  extract.object_name: CCK+ basket cells

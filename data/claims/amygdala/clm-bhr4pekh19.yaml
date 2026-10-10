@@ -1,0 +1,32 @@
+id: clm-bhr4pekh19
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:196
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/eneuro.0175-18.2018
+  pmid: '29911171'
+  pmcid: PMC6001136
+  locator: Fig. 5A-D; Fig. 6A1-A3
+paraphrase: CaMKIIa-AAV and Sim1-cre-dependent ChR2-mCherry viruses injected into the PmCo labelled fibres along the stria
+  terminalis. The fibres ended in the AOB granule cell layer, where labelling was strongest.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PmCo
+  extract.object_name: AOB GC layer

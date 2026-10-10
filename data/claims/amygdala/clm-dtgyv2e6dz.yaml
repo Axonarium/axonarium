@@ -1,0 +1,32 @@
+id: clm-dtgyv2e6dz
+subject:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:639
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.24272/j.issn.2095-8137.2020.020
+  pmid: '31945810'
+  pmcid: PMC7109009
+  locator: Fig. 1C, 1D, 1I; Figs. 3, 6
+paraphrase: Retrograde rAAV2-retro injected into the anterior cortical amygdalar area labelled mitral-layer neurons of the
+  accessory olfactory bulb (about 48 labelled cells per slice, n = 6 mice). In dual-injection experiments about 64% of ACo-labelled
+  MiA neurons were also labelled from PMCo and about 39% from MeA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: mitral cell layer of AOB (MiA)
+  extract.object_name: ACo

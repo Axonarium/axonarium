@@ -1,0 +1,32 @@
+id: clm-09w3aspgfc
+subject:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:835
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fnana.2021.741868
+  pmid: '34566585'
+  pmcid: PMC8460764
+  locator: Results, Visualization and Anterograde Tracing section
+paraphrase: After Cre-dependent mCherry labelling of NAc NPY neurons, only a few labelled fibres were seen around the LH,
+  including in the ventral pallidum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: NPY neurons in the NAc
+  extract.object_name: ventral pallidum (VP)

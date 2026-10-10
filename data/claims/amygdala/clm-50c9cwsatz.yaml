@@ -1,0 +1,30 @@
+id: clm-50c9cwsatz
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0163-20.2020
+  pmid: '32601096'
+  pmcid: PMC7358333
+  locator: Fig. 5B-D
+paraphrase: CTB injected into the oval BNST retrogradely labelled cell bodies in the lateral amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral amygdala (LA)
+  extract.object_name: ovBNST

@@ -1,0 +1,28 @@
+id: clm-9wf878f4fe
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002886
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0132-19.2019
+  pmid: '31548367'
+  pmcid: PMC7070451
+  locator: Results, first section (Fig. 1C1)
+paraphrase: Virtually no YFP-labelled terminals from the dorsal mPFC injections were found in the lateral amygdaloid nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: dmPFC
+  extract.object_name: lateral amygdala (LA)

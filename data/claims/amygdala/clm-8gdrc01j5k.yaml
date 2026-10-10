@@ -1,0 +1,43 @@
+id: clm-8gdrc01j5k
+subject:
+  type: region
+  id: UBERON:0003018
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:8440075
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+measurements:
+- quantity: conduction_delay
+  value: 4.1
+  unit: ms
+- quantity: conduction_delay
+  value: 3.7
+  unit: ms
+  n: 5
+- quantity: conduction_delay
+  value: 5.8
+  unit: ms
+  sem: 0.3
+  n: 8
+source:
+  doi: 10.1523/eneuro.0199-19.2019
+  pmid: '32019871'
+  pmcid: PMC7029183
+  locator: Fig. 3C-F; Results, 'Thalamus-evoked monosynaptic responses in GC neurons'
+paraphrase: Electrical stimulation of VPMpc evoked short-latency, monosynaptic-like depolarizing PSPs in GC regular-spiking
+  neurons recorded intracellularly in vivo. The early component reversed near the AMPA reversal potential, and in half of
+  the neurons tested it was followed by a polysynaptic GABAA-like inhibitory component.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VPMpc
+  extract.object_name: GC

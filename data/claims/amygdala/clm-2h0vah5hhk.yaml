@@ -1,0 +1,33 @@
+id: clm-2h0vah5hhk
+subject:
+  type: region
+  id: MBA:204
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.24272/j.issn.2095-8137.2020.020
+  pmid: '31945810'
+  pmcid: PMC7109009
+  locator: Fig. 1A, 1B, 1I; Figs. 2, 5
+paraphrase: Retrograde rAAV2-retro injected into the bed nucleus of the stria terminalis labelled neurons in the mitral cell
+  layer of the accessory olfactory bulb (on average about 26 labelled neurons per AOB slice, the fewest of the four targets,
+  n = 10 mice). In dual-tracer experiments, about 41% of BST-labelled MiA neurons were co-labelled from PMCo and about 71%
+  were co-labelled from MeA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: mitral cell layer of AOB (MiA)
+  extract.object_name: BST

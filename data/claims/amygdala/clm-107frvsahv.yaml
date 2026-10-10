@@ -1,0 +1,36 @@
+id: clm-107frvsahv
+subject:
+  type: region
+  id: MBA:663
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:196
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.835
+  unit: '1'
+  n: 4
+source:
+  doi: 10.1523/eneuro.0175-18.2018
+  pmid: '29911171'
+  pmcid: PMC6001136
+  locator: Fig. 1H; Fig. 2A-B; Results, first and second sections
+paraphrase: Monosynaptic pseudotyped rabies tracing from nNOS-cre starter cells in the AOB granule cell layer labelled many
+  PmCo input neurons, mostly in layer III. The PmCo held most of the amygdala's share of the brain-wide inputs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PmCo
+  extract.object_name: nNOS-expressing GC layer inhibitory neurons (GCs and macs) of the AOB

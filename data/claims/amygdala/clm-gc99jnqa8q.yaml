@@ -1,0 +1,30 @@
+id: clm-gc99jnqa8q
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: CL:0000108
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.3389/fnana.2016.00098
+  pmid: '27777554'
+  pmcid: PMC5056182
+  locator: Results, Overview section; Fig. 2
+paraphrase: The thalamus overall was only sparsely labelled with input neurons to BF cholinergic cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: thalamus
+  extract.object_name: BF cholinergic neurons (BFCS)

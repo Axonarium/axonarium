@@ -1,0 +1,31 @@
+id: clm-k0f1tqr47g
+subject:
+  type: neuron_type
+  id: CL:0000101
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: CL:0000540
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.1523/eneuro.0450-17.2018
+  pmid: '29468190'
+  pmcid: PMC5819669
+  locator: Fig. 3B,E,F; Results, 'Stimulation of primary afferent Aβ fibers by light'
+paraphrase: In spinal cord slices with attached L4 dorsal root from ChR2 transgenic rats, blue light applied to the dorsal
+  root evoked monosynaptic excitatory postsynaptic currents in lamina II dorsal horn neurons; the afferents driving these
+  responses conducted at about 19.5 m/s (SEM 1.7, n = 17 fibers), within the Aβ range, and light pre-stimulation blocked the
+  electrically evoked Aβ response, confirming that light drives these fibers.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: primary afferent Aβ fibers (ChR2-expressing)
+  extract.object_name: Lamina II SDH neurons

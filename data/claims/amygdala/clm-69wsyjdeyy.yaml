@@ -1,0 +1,30 @@
+id: clm-69wsyjdeyy
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1523/eneuro.0238-23.2023
+  pmid: '37775310'
+  pmcid: PMC10576262
+  locator: Fig. 5; Results, Caudal ITCs
+paraphrase: Caudal ITCs received input from the same amygdala regions as main ITCs, the medial amygdala among them, in similar
+  proportions.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: medial amygdalae
+  extract.object_name: cITC

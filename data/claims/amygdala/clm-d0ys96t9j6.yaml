@@ -1,0 +1,30 @@
+id: clm-d0ys96t9j6
+subject:
+  type: region
+  id: MBA:749
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2010.00147
+  pmid: '21212837'
+  pmcid: PMC3014656
+  locator: Results, qualitative description; Fig. 2
+paraphrase: Dopaminergic neurons in the VTA were also retrogradely labeled from dorsal striatum, though fewer than in SNc.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ventral tegmental area (VTA)
+  extract.object_name: dorsal striatum

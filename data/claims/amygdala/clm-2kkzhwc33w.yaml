@@ -1,0 +1,31 @@
+id: clm-2kkzhwc33w
+subject:
+  type: region
+  id: MBA:327
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2011.00054
+  pmid: '22007159'
+  pmcid: PMC3159391
+  locator: Results, injections in the accessory basal nucleus (not shown)
+paraphrase: Thick labeled fibers from the anterior accessory basal injection ran in the stria terminalis to terminal fields
+  in the bed nucleus of the stria terminalis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ABa
+  extract.object_name: BST

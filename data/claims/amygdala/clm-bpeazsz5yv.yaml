@@ -1,0 +1,31 @@
+id: clm-bpeazsz5yv
+subject:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:651
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/jneurosci.2145-19.2019
+  pmid: '31666353'
+  pmcid: PMC6891065
+  locator: Fig. 1C; Fig. 5B; Table 5
+paraphrase: The hypothalamic paraventricular nucleus showed dense retrograde CTb labeling from the cNTS.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: paraventricular nucleus of the hypothalamus (PVN)
+  extract.object_name: cNTS/DVC

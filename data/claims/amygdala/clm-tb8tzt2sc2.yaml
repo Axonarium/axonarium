@@ -1,0 +1,32 @@
+id: clm-tb8tzt2sc2
+subject:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:128
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.1523/jneurosci.1083-25.2025
+  pmid: '41193254'
+  pmcid: PMC12696621
+  locator: Results, section 1; Fig. 1H; Fig. 2B; Fig. 5B
+paraphrase: Cre-dependent ChR2-EYFP injected into the BNST of Vgat-ires-Cre mice labelled dense GABAergic BNST axons within
+  the DpMe.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: GABABNST neurons
+  extract.object_name: deep mesencephalic nucleus (DpMe)

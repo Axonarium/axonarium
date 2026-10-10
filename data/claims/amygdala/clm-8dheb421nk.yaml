@@ -1,0 +1,31 @@
+id: clm-8dheb421nk
+subject:
+  type: region
+  id: MBA:639
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.24272/j.issn.2095-8137.2020.020
+  pmid: '31945810'
+  pmcid: PMC7109009
+  locator: Results, 'AOB projects to ACo and MeA simultaneously' (Fig. 6)
+paraphrase: Red fluorescence from the MeA-injected retrograde virus was observed in the ACo (image not shown), indicating
+  ACo neurons project to MeA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ACo
+  extract.object_name: MeA

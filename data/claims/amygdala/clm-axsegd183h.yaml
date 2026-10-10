@@ -1,0 +1,31 @@
+id: clm-axsegd183h
+subject:
+  type: region
+  id: MBA:1020
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2010.00147
+  pmid: '21212837'
+  pmcid: PMC3014656
+  locator: Fig. 8C-E
+paraphrase: AAV-GFP infection of posterior lateral thalamus revealed axon collaterals leaving the internal capsule to branch
+  with varicosities in a band of posterior dorsolateral striatum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PO nucleus of the thalamus
+  extract.object_name: posterior dorsolateral striatum
