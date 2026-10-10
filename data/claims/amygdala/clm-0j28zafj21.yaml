@@ -1,0 +1,41 @@
+id: clm-0j28zafj21
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2021.643272
+  pmid: '33716685'
+  pmcid: PMC7943928
+  locator: Figures 1A,B; 2B; Supplementary Figure 4; Methods (Stereotaxic Surgeries and Viral Infusions)
+paraphrase: A retrogradely transported AAV carrying eGFP-Cre was infused bilaterally into the nucleus accumbens together with
+  a Cre-dependent mCherry/DREADD AAV in the basolateral amygdala; histology showed basolateral amygdala neurons co-expressing
+  the Cre-eGFP and the Cre-dependent mCherry reporter, demonstrating that these amygdala cells send axons to the accumbens.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc
+  verify.note: Retrograde AAV-Cre in NAc with Cre-dependent reporter in BLA yielded labeled BLA neurons, supporting BLA→NAc
+    projection in mice.

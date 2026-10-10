@@ -1,0 +1,39 @@
+id: clm-ybsrvgeymd
+subject:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2026.1853168
+  pmid: '42358617'
+  pmcid: PMC13290759
+  locator: Results, OFC–vCA1 connectivity
+paraphrase: Retrograde tracer injected into ventral CA1, combined with AAV2/1-Cre in the OFC, showed no direct or indirect
+  OFC to vCA1 projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: OFC
+  extract.object_name: vCA1
+  verify.note: The paper reports no direct or indirect OFC to vCA1 projection with the retrograde virus in vCA1.

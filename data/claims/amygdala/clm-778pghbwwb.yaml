@@ -1,0 +1,47 @@
+id: clm-778pghbwwb
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0003881
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 12.7
+  unit: ms
+  n: 5
+source:
+  doi: 10.3389/fnbeh.2019.00087
+  pmid: '31114488'
+  pmcid: PMC6503755
+  locator: Figs. 2, 3, 4, 5, 6; Results sections on 1-s and 5-s stimulation
+paraphrase: Blue-light stimulation of channelrhodopsin-expressing putative glutamatergic BLA neurons in freely moving rats
+  evoked frequency-matched LFP responses in CA1 at 8, 20, 50 and 50/8 Hz, whereas control near-infrared light evoked no response.
+  The CA1 peak followed the first light pulse at 12.7 ms versus 6.67 ms in the BLA (a 6.03 ms lag, interpreted as a monosynaptic
+  BLA-to-CA1 drive); latencies after the final pulse were 14.0, 19.3, 16.0 and 9.33 ms for the 8, 20, 50 and 50/8 Hz conditions.
+  Stimulation at 50 and 50/8 Hz significantly raised CA1 slow gamma power, and only 50/8 Hz stimulation significantly increased
+  CA1 theta-gamma comodulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CA1 (pyramidal layer of intermediate hippocampus)
+  verify.note: The 12.7 ms value is the CA1 latency to peak from light onset, not a conduction delay; the BLA-to-CA1 lag the
+    paper reports is 6.03 ms.

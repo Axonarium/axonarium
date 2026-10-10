@@ -1,0 +1,44 @@
+id: clm-wvsq74f972
+subject:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.1219
+  unit: '1'
+  sem: 0.0146
+  n: 4
+source:
+  doi: 10.3389/fncir.2021.643230
+  pmid: '33935658'
+  pmcid: PMC8079783
+  locator: Figs. 3B,C, 4B,C, 5A
+paraphrase: Bilateral entorhinal cortex was a major input to vCA1 PNs (CSI 3.4 ± 0.47), with labelled cells increasing caudally.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ENT
+  extract.object_name: vCA1 projection neurons
+  verify.note: ENT gives 12.19 ± 1.46% of vCA1 inputs; it is bilateral, has a CSI of 3.4, and rises caudally.

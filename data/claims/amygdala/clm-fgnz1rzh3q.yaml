@@ -1,0 +1,41 @@
+id: clm-fgnz1rzh3q
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.3389/fncel.2021.742207
+  pmid: '34867199'
+  pmcid: PMC8635139
+  locator: Figs. 2D,G, 4B,D; Results, sections 2-3
+paraphrase: Optogenetic activation of prelimbic cortical afferents in the accumbens strongly suppressed amygdalar EPSPs in
+  the same MSN at short intervals (to ~5% of control at 40 ms, recovering by 165 ms) and abolished paired-pulse depression
+  at BLA synapses, indicating presynaptic inhibition of BLA terminals by cortical input.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PFCx
+  extract.object_name: BLA
+  verify.note: The paper shows cortical terminals presynaptically gating BLA terminals inside the accumbens, not an axonal
+    projection from prelimbic cortex to the BLA nucleus.

@@ -1,0 +1,39 @@
+id: clm-w2by58xjgv
+subject:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:470
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1611199
+  pmid: '40832125'
+  pmcid: PMC12358408
+  locator: Figs. 11D, 11H, 13C
+paraphrase: BDA injections in ventral PuI∼ gave weak terminal labeling in lateral STh, whereas Allen injections in dorsal
+  PuI∼ and CaT∼ showed no STh labeling.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PuI∼, dorsal PuI∼ and CaT∼
+  extract.object_name: lateral STh
+  verify.note: The two data sets conflict on STh labeling, so an ambiguous result is fair.

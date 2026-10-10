@@ -1,0 +1,44 @@
+id: clm-89k0n3cjd9
+subject:
+  type: neuron_type
+  id: nt-t6ymz01hv4
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:551
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.2349
+  unit: '1'
+  n: 681
+source:
+  doi: 10.3389/fncel.2025.1597131
+  pmid: '40642101'
+  pmcid: PMC12240933
+  locator: Fig. 3k; Fig. 4c; Results 2.4
+paraphrase: 'Single-cell two-photon activation of CeL SOM+ neurons evoked IPSCs in patched SOM− neurons: 160 of 681 activated
+  cells were connected in wild-type mice and 63 of 557 in SOM-PTEN-KO mice. IPSCs were also smaller in the knockout.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: SOM+ neurons (CeL)
+  extract.object_name: SOM− neurons in CeL
+  verify.note: Fig. 3k and Results 2.4 report wild-type SOM+ to SOM− connectivity of 160 of 681 (23.49%), with IPSCs isolated
+    under glutamate blockade, and Fig. 4c shows smaller knockout currents.

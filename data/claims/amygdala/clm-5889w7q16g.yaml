@@ -1,0 +1,40 @@
+id: clm-5889w7q16g
+subject:
+  type: region
+  id: MBA:111
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:926
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2016.00044
+  pmid: '27378860'
+  pmcid: PMC4906015
+  locator: Fig. 2G; Fig. 3A,B,E,G; Fig. 5A
+paraphrase: In control ACSF, AiP-evoked activity did not reach the MEC in most slices. With GABAA receptors partly blocked
+  by 1 uM bicuculline, AiP stimulation recruited the MEC last, after PER and LEC, in all slices and at all intensities.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: agranular insular cortex (AiP)
+  extract.object_name: medial entorhinal cortex (MEC)
+  verify.note: Under bicuculline, AiP stimulation reached the MEC last in all 11 slices and at every intensity tested, while
+    control slices mostly showed no MEC response.

@@ -1,0 +1,39 @@
+id: clm-wbtzxewbvd
+subject:
+  type: region
+  id: MBA:111
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:918
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2016.00044
+  pmid: '27378860'
+  pmcid: PMC4906015
+  locator: Fig. 2A,B,E,G; Fig. 3A,B,E,G
+paraphrase: AiP stimulation evoked VSD responses in the LEC at longer latency than in the PER. Activity spread rostro-caudally
+  from PER to LEC in control conditions and under bicuculline.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: agranular insular cortex (AiP)
+  extract.object_name: lateral entorhinal cortex (LEC)
+  verify.note: LEC responses followed PER responses, with latency rising from PER to LEC in both control and bicuculline conditions.

@@ -1,0 +1,40 @@
+id: clm-w9n53jkrhp
+subject:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:319
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2022.910699
+  pmid: '36090791'
+  pmcid: PMC9459227
+  locator: Supplementary Fig. 6 (described in Results, ZI-BMA circuit section)
+paraphrase: Helper viruses (hSyn-Cre, DIO-RVG, DIO-TVA-EGFP) followed by pseudotyped G-deleted rabies virus injected into
+  the basomedial amygdala produced DsRed-labelled presynaptic neurons in the zona incerta, confirming ZI input onto BMA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ZI
+  extract.object_name: BMA
+  verify.note: Rabies retrograde monosynaptic tracing from BMA labeled DsRed neurons in ZI, as described for Supplementary
+    Fig. 6.

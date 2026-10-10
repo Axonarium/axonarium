@@ -1,0 +1,45 @@
+id: clm-4srqvcxbss
+subject:
+  type: region
+  id: MBA:1097
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.0139
+  unit: '1'
+  sem: 0.0019
+  n: 4
+source:
+  doi: 10.3389/fncir.2021.643230
+  pmid: '33935658'
+  pmcid: PMC8079783
+  locator: Fig. 2B,C
+paraphrase: The hypothalamus gave weak input to vCA1 PNs, more than to dCA1 (CSI 0.38 ± 0.04).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: hypothalamus (HY)
+  extract.object_name: vCA1 projection neurons
+  verify.note: Hypothalamus gives 1.39 ± 0.19% of vCA1 inputs, with a CSI of 0.38 vs 0.12 for dCA1.

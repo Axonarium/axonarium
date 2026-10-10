@@ -1,0 +1,36 @@
+id: clm-9j7xswbdg3
+subject:
+  type: region
+  id: UBERON:0018262
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1575232
+  pmid: '40352758'
+  pmcid: PMC12061975
+  locator: Fig. 3P, 4N
+paraphrase: Far fewer labeled neurons than in LEC were present in the medial entorhinal cortex after BLpc injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: medial entorhinal cortex (MEC)
+  extract.object_name: BLpc
+  verify.note: Far fewer MEC than LEC neurons are labeled after BLpc injection.

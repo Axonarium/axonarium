@@ -1,0 +1,39 @@
+id: clm-2kp086e8b3
+subject:
+  type: neuron_type
+  id: nt-wprma5fcrr
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2022.1070015
+  pmid: '36619672'
+  pmcid: PMC9813383
+  locator: Fig. 3C-E
+paraphrase: A retrograde AAV-Cre-mCherry injected into the ACC of GAD67-GFP mice labelled BLA cell bodies. These cells did
+  not overlap with GAD67-GFP neurons and co-expressed Vglut2 mRNA, so the BLA-to-ACC projection neurons are glutamatergic.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Vglut2-positive (glutamatergic) BLA neurons projecting to the ACC
+  extract.object_name: anterior cingulate cortex (ACC)
+  verify.note: Retrograde AAV-Cre-mCherry injected into the ACC labelled BLA somata that were GAD67-GFP negative and Vglut2
+    positive, as shown in Fig. 3C-E.

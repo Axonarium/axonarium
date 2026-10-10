@@ -1,0 +1,39 @@
+id: clm-f3fjj1ewab
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2022.1070015
+  pmid: '36619672'
+  pmcid: PMC9813383
+  locator: Fig. 3A-B
+paraphrase: After an AAV-hSyn-EGFP injection into the BLA of C57BL/6J mice, many labelled axon terminals were found in the
+  ACC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: anterior cingulate cortex (ACC)
+  verify.note: An EGFP AAV injected into the BLA produced many labelled fibre terminals in the ACC, as shown in Fig. 3A-B.

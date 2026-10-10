@@ -1,0 +1,44 @@
+id: clm-kjents9x5n
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.7823
+  unit: '1'
+  sem: 0.0252
+  n: 4
+source:
+  doi: 10.3389/fncir.2021.643230
+  pmid: '33935658'
+  pmcid: PMC8079783
+  locator: Fig. 9D
+paraphrase: Most BLA input cells to vCA1 PNs lay in the posterior BLA; the value given is its share of BLA input cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLAp
+  extract.object_name: vCA1 projection neurons
+  verify.note: BLAp holds 78.23 ± 2.52% of BLA input cells.

@@ -1,0 +1,39 @@
+id: clm-4w4br1ajse
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0003881
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2019.00087
+  pmid: '31114488'
+  pmcid: PMC6503755
+  locator: Results, Histological Verification; Fig. 1D,E
+paraphrase: After AAV5-CaMKII-hChR2-EYFP infusion into the BLA, which labelled cell bodies only in the amygdala, EYFP-positive
+  axons (no labelled somata) were seen in the temporal half of the hippocampus, most notably in the stratum lacunosum-moleculare
+  of CA1.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA (basal nucleus of the amygdala)
+  extract.object_name: CA1 of the intermediate hippocampus
+  verify.note: Virally labelled BLA axons, with no labelled hippocampal somata, were seen in CA1 lacunosum-moleculare in all
+    rats, as described in the histology results and Fig. 1D,E.

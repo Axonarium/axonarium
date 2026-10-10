@@ -1,0 +1,40 @@
+id: clm-8qy6gr97t4
+subject:
+  type: region
+  id: MBA:754
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.3389/fnins.2022.815282
+  pmid: '35281496'
+  pmcid: PMC8908425
+  locator: Results, section 1
+paraphrase: No retrogradely labeled OB-projecting neurons were found in the olfactory tubercle after retrograde AAV injection
+  into the OB.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: olfactory tubercle
+  extract.object_name: main olfactory bulb (OB)
+  verify.note: The authors' own inspection found no OB-projecting neurons in the olfactory tubercle, consistent with a prior
+    report, in the first Results section.

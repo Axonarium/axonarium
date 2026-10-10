@@ -1,0 +1,39 @@
+id: clm-mvmtpf1bsr
+subject:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:922
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2016.00044
+  pmid: '27378860'
+  pmcid: PMC4906015
+  locator: Supplementary Fig. S2B
+paraphrase: DiI crystals placed in the LA of horizontal slices labelled a projection reaching the deep layers of the perirhinal
+  cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral amygdala (LA)
+  extract.object_name: perirhinal cortex (PER)
+  verify.note: The paper reports that DiI placed in the LA labelled a projection to the deep PER layers (Suppl. Fig. S2B).

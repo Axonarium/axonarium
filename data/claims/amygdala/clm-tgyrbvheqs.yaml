@@ -1,0 +1,42 @@
+id: clm-tgyrbvheqs
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.3389/fncel.2021.742207
+  pmid: '34867199'
+  pmcid: PMC8635139
+  locator: Figs. 2E,F,H, 4A,C; Results, sections 2-3
+paraphrase: Prior optogenetic stimulation of amygdalar afferents in the accumbens reduced cortically evoked EPSPs in the same
+  MSN (to about 57% of control at 40 ms) and converted paired-pulse depression of PFCx-EPSCs into facilitation, indicating
+  presynaptic suppression of glutamate release from cortical terminals; this gating was weaker than the reverse direction
+  in alcohol-naive mice and was strengthened after binge alcohol drinking.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: PFCx
+  verify.note: The suppression occurs at cortical terminals within the NAc, so it does not establish a BLA-to-prelimbic-cortex
+    connection as the claim states.

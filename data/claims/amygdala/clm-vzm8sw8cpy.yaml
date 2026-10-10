@@ -1,0 +1,38 @@
+id: clm-vzm8sw8cpy
+subject:
+  type: region
+  id: MBA:22
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1611199
+  pmid: '40832125'
+  pmcid: PMC12358408
+  locator: Results 3.4 (data not shown)
+paraphrase: Posterior parietal cortex afferents ended mostly in the CaT∼ in Allen anterograde data.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PPC
+  extract.object_name: dorsolateral caudal CP (CaT∼)
+  verify.note: PPC afferents ending mostly in the CaT∼ are reported, with the data not shown.

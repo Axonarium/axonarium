@@ -1,0 +1,41 @@
+id: clm-9eqxfwd064
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:1089
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fncel.2022.894886
+  pmid: '35726232'
+  pmcid: PMC9205755
+  locator: Fig. 2A (top)
+paraphrase: After injecting an anterograde AAV (AAV2/9-hSyn-eGFP) into the basolateral amygdala, strong fluorescent labelling
+  of axon terminals was seen in the ventral hippocampus, confirming a BLA-to-vHip projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: vHip
+  verify.note: An anterograde AAV injected into the BLA gave robust terminal labelling in the vHip (Fig. 2A top), despite
+    the text's eGFP/mCherry wording slip, and the sign is left unknown.

@@ -1,0 +1,36 @@
+id: clm-bex82r89s2
+subject:
+  type: neuron_type
+  id: nt-sexhekqxaa
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0005383
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2015.00487
+  pmid: '26733798'
+  pmcid: PMC4689854
+  locator: Results, 'Projections from CeL CRF neurons outside the CeA'; Fig. 4A
+paraphrase: Labelled CRF fibers in the dorsolateral BNST region also extended into the neighbouring dorsal striatum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeL CRF neurons
+  extract.object_name: adjacent dorsal striatum
+  verify.note: Dorsolateral BNST fibers were described as extending into the adjacent dorsal striatum.

@@ -1,0 +1,38 @@
+id: clm-mgks6b1fwa
+subject:
+  type: region
+  id: UBERON:0002889
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: moderate
+source:
+  doi: 10.3389/fncir.2025.1575232
+  pmid: '40352758'
+  pmcid: PMC12061975
+  locator: Fig. 3E–J, 4E
+paraphrase: A moderate number of labeled neurons were found in the anterior basomedial nucleus after BLpc FG injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: anterior division of the BM (BMA or BMr)
+  extract.object_name: BLpc
+  verify.note: The subject is the anterior basomedial nucleus (BMA), but the ID given is the one used for the posterior BMpc,
+    so the region named is wrong.

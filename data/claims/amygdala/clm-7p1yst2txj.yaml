@@ -1,0 +1,38 @@
+id: clm-7p1yst2txj
+subject:
+  type: region
+  id: MBA:239
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2026.1895042
+  pmid: '42591818'
+  pmcid: PMC13462475
+  locator: Fig. 4B, C
+paraphrase: The anterior thalamic group was among the top five thalamic input sources to Kremen1+ SPNs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: anterior group of dorsal thalamus (ATN)
+  extract.object_name: Kremen1+ SPNs in dorsal striatum
+  verify.note: ATN is among the top five thalamic nuclei compared in Fig. 4B–C.

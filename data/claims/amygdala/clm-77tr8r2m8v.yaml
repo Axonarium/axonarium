@@ -1,0 +1,40 @@
+id: clm-77tr8r2m8v
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2019.00220
+  pmid: '31164805'
+  pmcid: PMC6536628
+  locator: Fig. 1E-F; Fig. 2D-E; Supplementary Fig. 1
+paraphrase: Stimulating thalamic fibres in the internal capsule evoked EPSCs in lateral amygdala principal neurons. These
+  responses were larger than cortical responses at matched stimulation intensities, and the interneuron/principal-neuron ratio
+  shifted toward principal neurons in adults.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: thalamic inputs (internal capsule)
+  extract.object_name: LA principal neuron (LA-PN)
+  verify.note: Internal capsule stimulation evoked principal-neuron EPSCs that were larger than cortical ones at 1 mA (Supp.
+    Fig. 1), and the adult IN/PN ratio fell from 0.58 to 0.40.

@@ -1,0 +1,41 @@
+id: clm-5shtdaqcs5
+subject:
+  type: region
+  id: MBA:631
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2022.815282
+  pmid: '35281496'
+  pmcid: PMC8908425
+  locator: Fig. 5A-C, Fig. 6E-F
+paraphrase: OB-projecting neurons in ipsilateral CoA were absent at birth and stayed absent or low during the first postnatal
+  week. They increased abruptly between P6 and P9, reaching 47% of adult levels at P12, and outnumbered those in LEC and vCA1
+  at every age.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cortical amygdala (CoA)
+  extract.object_name: main olfactory bulb (OB)
+  verify.note: Results report CoA labeling absent at birth, a jump from P6 to P9, 47% of adult at P12, and higher counts than
+    LEC and vCA1 at all ages.

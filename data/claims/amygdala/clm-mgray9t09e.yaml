@@ -1,0 +1,37 @@
+id: clm-mgray9t09e
+subject:
+  type: region
+  id: UBERON:0001922
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002728
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fneur.2020.00441
+  pmid: '32528401'
+  pmcid: PMC7256190
+  locator: Fig. 7A; Table 2
+paraphrase: Pha-L injected into PaF anterogradely labeled fibers/terminals in ipsilateral entorhinal cortex, near MOR-positive
+  somata.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: parafascicular nucleus (PaF)
+  extract.object_name: entorhinal cortex
+  verify.note: PaF Pha-L labeled terminals in ipsilateral entorhinal cortex near MOR-positive cells, as shown in Fig. 7A.

@@ -1,0 +1,44 @@
+id: clm-w7wwnc4jtx
+subject:
+  type: region
+  id: UBERON:0034893
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.58
+  unit: '1'
+source:
+  doi: 10.3389/fnbeh.2020.580849
+  pmid: '33328918'
+  pmcid: PMC7671963
+  locator: Figs. 5A–C; Fig. 4A
+paraphrase: AAV2-retro vectors placed in the central amygdala retrogradely labelled neurons in the anterior agranular insula,
+  mostly in layers II and V, with these cells making up 58% of the labelled amygdala-projecting insular population and being
+  more numerous in the ventral agranular insula. The same projection was targeted by injecting a retrograde Cre vector into
+  the central amygdala together with Cre-dependent DREADD vectors in the insula.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: agranular insula (AID, AIV)
+  extract.object_name: central amygdala (CeA)
+  verify.note: Paper reports 58% of amygdala-projecting agranular insula neurons labelled from central amygdala, with ventral
+    predominance.

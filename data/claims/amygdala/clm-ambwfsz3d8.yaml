@@ -1,0 +1,40 @@
+id: clm-ambwfsz3d8
+subject:
+  type: region
+  id: MBA:583
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2026.1853168
+  pmid: '42358617'
+  pmcid: PMC13290759
+  locator: Fig. 1C–G
+paraphrase: Retrograde AAV2/retro-EGFP injected into dorsal CA1 labelled claustrum neurons, some of which also carried the
+  OFC-derived transsynaptic label, identifying the claustrum as a relay to dCA1.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: claustrum
+  extract.object_name: dCA1
+  verify.note: Retrograde EGFP from dCA1 labelled claustrum neurons, which the paper identifies as the relay, quantified in
+    Fig. 1G.

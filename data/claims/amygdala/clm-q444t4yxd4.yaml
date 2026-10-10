@@ -1,0 +1,36 @@
+id: clm-q444t4yxd4
+subject:
+  type: region
+  id: UBERON:0034989
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1575232
+  pmid: '40352758'
+  pmcid: PMC12061975
+  locator: Fig. 3K–N, 4L; Fig. 7
+paraphrase: Many labeled neurons were found in APir after BLpc FG injection, significantly more than after BMpc injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: amygdalopiriform transition area (APir)
+  extract.object_name: BLpc
+  verify.note: Many APir neurons are labeled after BLpc injection, significantly more than after BMpc (Fig. 7).

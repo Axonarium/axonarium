@@ -1,0 +1,46 @@
+id: clm-tg69gce6ha
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 14.3
+  unit: ms
+  sem: 1.0
+source:
+  doi: 10.3389/fnbeh.2015.00007
+  pmid: '25688195'
+  pmcid: PMC4311640
+  locator: Fig. 1D; Fig. 5C,F,I; Data collection and analysis
+paraphrase: Electrical stimulation of the basolateral amygdala in behaving mice evoked field postsynaptic potentials in the
+  medial prefrontal cortex. These potentials showed paired-pulse facilitation peaking at 40 ms and a fast-rising, long-lasting
+  LTP after high-frequency stimulation.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelimbic/infralimbic area of the mPFC
+  verify.note: The 14.3 ± 1 ms value is a time-to-peak latency, so calling it a conduction delay misstates the measure; onset
+    latencies are in Table 1.

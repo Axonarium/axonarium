@@ -1,0 +1,41 @@
+id: clm-s44pn6cmhv
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:909
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnbeh.2014.00129
+  pmid: '24834031'
+  pmcid: PMC4018552
+  locator: Fig. 1B,C; Results, 'Optogenetic targeting of glutamatergic terminals in the EC from the BLA'
+paraphrase: After AAV-CaMKIIa-ChR2-eYFP injection into the BLA, eYFP-labelled cell bodies filled the BLA and eYFP-positive
+  axonal fibers were seen in the entorhinal cortex, indicating an anterogradely traced BLA axonal projection to EC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: EC
+  verify.note: Viral eYFP expression in BLA somata with labelled fibers in EC constitutes anterograde labelling of a BLA-to-EC
+    projection, described as strong.

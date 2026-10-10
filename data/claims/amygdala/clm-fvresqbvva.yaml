@@ -1,0 +1,39 @@
+id: clm-fvresqbvva
+subject:
+  type: region
+  id: MBA:322
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1611199
+  pmid: '40832125'
+  pmcid: PMC12358408
+  locator: Figs. 4D, 5D, 6G
+paraphrase: Primary somatosensory cortex, including barrel field, contained FG-labeled layer 5 neurons after intermediate
+  and caudal CP injections.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: primary somatosensory cortex (S1BF, S1J, S1ULp)
+  extract.object_name: PuI∼ and caudal CP (CaT∼ + PuC∼)
+  verify.note: S1 subfields, including the barrel field, were labeled after both intermediate and caudal injections.

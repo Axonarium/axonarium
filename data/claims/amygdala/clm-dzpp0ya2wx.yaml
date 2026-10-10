@@ -1,0 +1,41 @@
+id: clm-dzpp0ya2wx
+subject:
+  type: region
+  id: MBA:423
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fncir.2021.643230
+  pmid: '33935658'
+  pmcid: PMC8079783
+  locator: Figs. 3, 4, 5A-C
+paraphrase: CA2 cells, mostly ipsilateral and caudal, were robustly labelled from vCA1 PNs, but more weakly than from dCA1
+  (CSI 0.76 ± 0.12).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CA2
+  extract.object_name: vCA1 projection neurons
+  verify.note: CA2 is robustly labelled in both groups, but more weakly for vCA1 (CSI 0.76 ± 0.12), mostly ipsilateral and
+    caudal.

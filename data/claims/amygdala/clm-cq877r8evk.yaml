@@ -1,0 +1,41 @@
+id: clm-cq877r8evk
+subject:
+  type: region
+  id: MBA:223
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2025.1690406
+  pmid: '41321745'
+  pmcid: PMC12660244
+  locator: Fig. 1A,B; Results, first section
+paraphrase: A retrograde AAV carrying Cre under neuronal Pomc enhancers was injected bilaterally into the medial amygdala
+  of Rosa26-Cas9-eGFP mice; GFP was subsequently detected in a subset of POMC-immunoreactive neurons of the arcuate nucleus,
+  indicating that these arcuate POMC neurons send axons to the medial amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ARC
+  extract.object_name: MeA
+  verify.note: Retrograde AAV into MeA labeled GFP in a subset of ARC POMC neurons in mice, supporting ARC→MeA projection
+    at the cited figure/section.

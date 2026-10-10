@@ -1,0 +1,40 @@
+id: clm-twp4xjk6k4
+subject:
+  type: region
+  id: MBA:247
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-659aayyts5
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fnbeh.2016.00164
+  pmid: '27601985'
+  pmcid: PMC4993868
+  locator: Fig. 2C-D; Results, Optogenetic Isolation of Synaptic Responses
+paraphrase: Blue-light activation of ChR2-expressing auditory cortex terminals in slices evoked EPSCs in lateral amygdala
+  pyramidal neurons. These currents were abolished by TTX and restored by 4-AP, consistent with direct terminal activation,
+  and were blocked by CNQX, showing they were glutamatergic.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: auditory cortex (ACx)
+  extract.object_name: pyramidal neurons in the LA
+  verify.note: Fig. 2C-D and the Results show light-evoked EPSCs in mouse LA pyramidal neurons that are TTX-sensitive, 4-AP-rescued
+    and CNQX-blocked, so a monosynaptic glutamatergic excitatory input is supported.

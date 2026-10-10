@@ -1,0 +1,40 @@
+id: clm-ss2b3jj10e
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2015.00161
+  pmid: '25972785'
+  pmcid: PMC4412064
+  locator: Fig. 1A,B,F,H; Fig. 2
+paraphrase: Retrograde tracer (retrobeads or cholera toxin B) injected into the PAG labeled neurons in ipsilateral IL, and
+  these labeled cells were confined to layer 5.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: infralimbic (IL) cortex, layer 5 cortico-PAG (CP) neurons
+  extract.object_name: periaqueductal gray (PAG)
+  verify.note: PAG retrograde injections labeled ipsilateral IL neurons only in L5 in mice (Figs 1F,H), and the dual-injection
+    data in Fig. 2 also show these cells.

@@ -1,0 +1,38 @@
+id: clm-k5ajb1wa3q
+subject:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2026.1853168
+  pmid: '42358617'
+  pmcid: PMC13290759
+  locator: Fig. 2I–L
+paraphrase: Anterograde transsynaptic AAV2/1-Cre from vCA1 labelled tdTomato-positive neurons in the basolateral amygdala.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: vCA1
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: Fig. 2I–L shows tdTomato transsynaptic labelling in the BLA from vCA1.

@@ -1,0 +1,40 @@
+id: clm-8egth1tvcw
+subject:
+  type: region
+  id: MBA:500
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncir.2021.714780
+  pmid: '34366798'
+  pmcid: PMC8343102
+  locator: Fig. 8G,H
+paraphrase: Cre-dependent tdTomato in motor cortex VIP neurons labeled passing axons in upper striae and a mesh of terminal
+  arbors in dorsal, ventral and lateral striatum, without injection spillover into striatum.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: VIP-expressing neurons of the right motor cortex
+  extract.object_name: dorsal and lateral striatum
+  verify.note: Fig. 8G,H show motor cortex VIP axons in the dorsal and lateral striatum, and the text rules out injection
+    spillover into the striatum.

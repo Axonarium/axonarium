@@ -1,0 +1,40 @@
+id: clm-q7fy724dv1
+subject:
+  type: region
+  id: UBERON:8440033
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: electrical_stimulation
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnbeh.2014.00327
+  pmid: '25278857'
+  pmcid: PMC4166996
+  locator: Results, 'Vagus nerve stimulation modulates plasticity in the IL-amygdala pathway'; Fig. 3A–D; Fig. 4
+paraphrase: In anesthetized rats, single-pulse bipolar stimulation of IL evoked negative field potentials in the BLA that
+  peaked roughly 20–25 ms after the stimulus, with amplitude scaling with stimulus intensity. Burst (HFS) or 1 Hz (LFS) stimulation
+  of IL induced long-term depression or potentiation of the BLA field response depending on fear conditioning, extinction
+  and VNS history.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: infralimbic (IL) medial prefrontal cortex
+  extract.object_name: basolateral nucleus of the amygdala (BLA)
+  verify.note: Paper's own in vivo recordings show IL stimulation evokes BLA field potentials with plasticity, matching direction,
+    species, method and locator.

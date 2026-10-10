@@ -1,0 +1,40 @@
+id: clm-arjcj1xayr
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fncel.2025.1565939
+  pmid: '40213497'
+  pmcid: PMC11983651
+  locator: Fig. 2B,C; Results 3.2
+paraphrase: Cre-dependent anterograde AAV expressing membrane GFP and synaptophysin-mRuby injected into the BLA of NPY-Cre
+  mice labelled fibres in the medial nucleus accumbens, covering both shell and core.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: NAc
+  verify.note: Cre-dependent anterograde AAV in BLA produced mGFP fibres in medial NAc shell and core as described in Results
+    3.2.

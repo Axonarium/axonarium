@@ -1,0 +1,39 @@
+id: clm-g0kaz9gcgf
+subject:
+  type: region
+  id: MBA:444
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:714
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2023.1258284
+  pmid: '37901417'
+  pmcid: PMC10601666
+  locator: Fig. 3D, 3E
+paraphrase: The medial thalamic group provided rabies-traced inputs to ORB, with significantly different numbers between males
+  and females.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: medial group of the dorsal thalamus (MED)
+  extract.object_name: orbital cortex (ORB)
+  verify.note: MED is listed as differing significantly between sexes in inputs to ORB.

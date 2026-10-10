@@ -1,0 +1,39 @@
+id: clm-a8v9kj8m2f
+subject:
+  type: region
+  id: MBA:507
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:904
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: absent
+sign: unknown
+source:
+  doi: 10.3389/fncir.2018.00099
+  pmid: '30483067'
+  pmcid: PMC6243045
+  locator: Figures 3D,E
+paraphrase: After anterograde VSV injection into the olfactory bulb, no dsRed-positive neurons were found in the medial septum/diagonal
+  band complex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: OB
+  extract.object_name: MS/DBc
+  verify.note: VSV-positive BF neurons were confined to HMSc and absent from MS/DBc.

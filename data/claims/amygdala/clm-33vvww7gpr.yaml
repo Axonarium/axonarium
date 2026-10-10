@@ -1,0 +1,40 @@
+id: clm-33vvww7gpr
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnins.2018.00496
+  pmid: '30087590'
+  pmcid: PMC6066578
+  locator: Fig. 3A–C; Fig. 4B
+paraphrase: After AAV5-syn-ChrimsonR-tdTomato was injected into the BLA, tdTomato-labelled fibres were seen in the NAc without
+  any labelled cell bodies there.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: After BLA injection of the AAV, ChrimsonR-tdTomato fibres appear in the NAc with no somatic labelling there
+    (Fig. 3B–C, Fig. 4B), which supports viral anterograde labelling of the projection.
