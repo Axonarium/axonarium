@@ -1,0 +1,39 @@
+id: clm-yhg93c59sk
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:930
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 1E; Fig. 5B3-B5
+paraphrase: Anterogradely labelled DCN axons overlapped with, and contacted, BLA-projecting neurons in the parafascicular
+  nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN
+  extract.object_name: parafascicular (PF) n.
+  verify.note: Overlap in PF and contacts on BLA-projecting neurons are shown (Fig. 1E, 5B3-B5).

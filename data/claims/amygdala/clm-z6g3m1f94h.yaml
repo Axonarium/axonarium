@@ -1,0 +1,40 @@
+id: clm-z6g3m1f94h
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Figure 2—figure supplement 1
+paraphrase: Retrograde CTB-647 injected in the zona incerta labelled neurons across all central amygdala subnuclei (capsular,
+  lateral, medial) along the rostro-caudal extent, with the highest densities between 1.06 and 1.70 mm posterior to bregma.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: ZI
+  verify.note: CTB injected in ZI labeled CeA neurons in all three subnuclei with peak density at 1.06–1.70 mm posterior to
+    bregma.

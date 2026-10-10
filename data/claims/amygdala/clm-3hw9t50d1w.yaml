@@ -1,0 +1,38 @@
+id: clm-3hw9t50d1w
+subject:
+  type: neuron_type
+  id: CL:0000700
+predicate: projects_to
+object:
+  type: region
+  id: MBA:485
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Fig. 1B–F; Figure 3—figure supplement 1, 2
+paraphrase: TVA delivered into the dorsal striatum, followed by rabies injected into VTA/SNc, labelled many midbrain neurons.
+  Nearly all of these were TH-positive dopamine neurons projecting to DS.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DAT-Cre dopamine neurons in VTA/SNc
+  extract.object_name: anterior dorsal striatum (DS)
+  verify.note: The DS TVA plus rabies experiment labelled midbrain neurons that were 98% TH-positive (Fig. 1B–F).

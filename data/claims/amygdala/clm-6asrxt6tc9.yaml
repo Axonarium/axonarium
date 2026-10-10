@@ -1,0 +1,39 @@
+id: clm-6asrxt6tc9
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.63493
+  pmid: '33372655'
+  pmcid: PMC7793624
+  locator: Fig. 1—figure supplement 2A
+paraphrase: Monosynaptic rabies tracing from PAG-USV neurons and from GABAergic PAG neurons labelled neurons in infralimbic
+  cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: infralimbic cortex
+  extract.object_name: PAG-USV neurons and GABAergic PAG neurons
+  verify.note: Fig. 1—figure supplement 2A shows infralimbic input neurons.

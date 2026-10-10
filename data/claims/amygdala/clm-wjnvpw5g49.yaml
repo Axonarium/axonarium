@@ -1,0 +1,38 @@
+id: clm-wjnvpw5g49
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:302
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.4103/1673-5374.353852
+  pmid: '36204863'
+  pmcid: PMC9700093
+  locator: Results, Overview of PRV724-traced retinorecipient regions
+paraphrase: Labelling of superior colliculus neurons after intravitreal PRV724 was inconsistent between brains, and the authors
+  therefore did not include superior colliculus data in their analysis.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: retinal ganglion cells (RGCs)
+  extract.object_name: superior colliculus (SC)
+  verify.note: SC labelling was inconsistent and excluded from analysis, which fits ambiguous.

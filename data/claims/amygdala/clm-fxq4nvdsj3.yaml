@@ -1,0 +1,45 @@
+id: clm-fxq4nvdsj3
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.037
+  unit: '1'
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 2A; Fig. 2—figure supplement 1A-C
+paraphrase: In vGAT-cre::tdTomato reporter mice, a small but consistent fraction of amygdalar neurons retrogradely labelled
+  from ventral hippocampus were vGAT-positive, and these inhibitory projection cells were intermingled with the excitatory
+  ones across all amygdala nuclei and all anatomical axes.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA (vGAT+ GABAergic neurons)
+  extract.object_name: vH (ventral hippocampus)
+  verify.note: The paper reports 3.7% of CTXβ-labelled BA neurons as vGAT+, intermingled with excitatory cells across nuclei
+    and axes.

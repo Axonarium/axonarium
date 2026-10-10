@@ -1,0 +1,38 @@
+id: clm-6gtsarrdfh
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001950
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.68617
+  pmid: '34142660'
+  pmcid: PMC8266390
+  locator: Fig. 5c; Fig. 5—figure supplement 1b
+paraphrase: Unilateral AAV-hSyn-hM4Di-mCherry injection into the BLA produced mCherry-labelled BLA axons and terminals in
+  the lOFC near the guide cannula, confirmed with immunohistochemical amplification.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: lateral orbitofrontal cortex (lOFC)
+  verify.note: The paper's own histology shows hM4Di-mCherry-labelled BLA axons/terminals in lOFC after unilateral BLA viral
+    injection, with immunoamplification, in rats.

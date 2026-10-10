@@ -1,0 +1,51 @@
+id: clm-f9zdkg97ba
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:315
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 3.5
+  unit: ms
+  sem: 0.36
+  n: 9
+- quantity: connection_probability
+  value: 1.0
+  unit: '1'
+  n: 13
+source:
+  doi: 10.7554/elife.62594
+  pmid: '33252331'
+  pmcid: PMC7704104
+  locator: Figure 5—figure supplement 1D–G; Fig. 5B,C
+paraphrase: In slices, light activation of ChR2-expressing BLA axons evoked short-latency, low-jitter EPSCs in FrA L2/3 pyramidal
+  neurons, consistent with a monosynaptic connection. In vivo, photostimulating BLA produced depolarizations in every recorded
+  FrA neuron, although these responses were weak and variable.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: L2/3 FrA pyramidal neurons
+  verify.note: Slice EPSC latency was 3.5 ± 0.36 ms (n = 9) and in vivo BLA photostimulation depolarized all 13 recorded FrA
+    neurons, matching the claim's numbers.

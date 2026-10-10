@@ -1,0 +1,40 @@
+id: clm-bagr3vn62a
+subject:
+  type: region
+  id: MBA:403
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:693
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnmol.2023.1313635
+  pmid: '38098941'
+  pmcid: PMC10720331
+  locator: Fig. 1C-D; Supplementary Fig. 1A-C
+paraphrase: An AAV expressing pre-mGRASP with mCerulean was injected into the posteroventral medial amygdala. mCerulean-labelled
+  MeApv axons and boutons were seen in the ventrolateral ventromedial hypothalamus, among dTomato-expressing VmHvl cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MeApv
+  extract.object_name: VmHvl
+  verify.note: The paper shows mCerulean-labelled MeApv boutons and axons in the VmHvl after pre-mGRASP AAV injection into
+    the MeApv (Fig. 1C-D, Supp. Fig. 1A-C).

@@ -1,0 +1,40 @@
+id: clm-86s0absc16
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.91421
+  pmid: '39023519'
+  pmcid: PMC11257676
+  locator: Figure 1c,d; Figure 2f
+paraphrase: Blue light pulses on oChIEF- or ChrimsonR-expressing thalamic axons evoked field EPSPs recorded in the lateral
+  amygdala of anesthetized mice; these responses were potentiated by high-frequency optical stimulation and were abolished
+  by the AMPA receptor blocker NBQX and by TTX, showing a glutamatergic synaptic connection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: thalamic inputs (Th)
+  extract.object_name: lateral amygdala (LA)
+  verify.note: In vivo light-evoked fEPSPs in LA from thalamic axons, abolished by NBQX/TTX, support an excitatory connection.

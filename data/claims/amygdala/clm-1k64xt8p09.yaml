@@ -1,0 +1,41 @@
+id: clm-1k64xt8p09
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:354
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fphys.2023.1074979
+  pmid: '36875016'
+  pmcid: PMC9975572
+  locator: Fig. 4A–C; Results, "An inhibitory pathway from CeAGABA to DVC"
+paraphrase: A Cre-dependent AAV expressing mCherry was injected unilaterally into the central amygdala of GAD2-Cre mice; three
+  weeks later labelled somata were confined to the CeA while many labelled fibres/terminals appeared in the dorsal vagal complex,
+  indicating an axonal projection from CeA GABAergic cells to the DVC.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeAGABA neurons
+  extract.object_name: dorsal vagal complex (DVC)
+  verify.note: Cre-dependent anterograde AAV tracing in GAD2-Cre mice showed mCherry cell bodies in CeA and labelled signals
+    in DVC, as stated in the cited results/figure.

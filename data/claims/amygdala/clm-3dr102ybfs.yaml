@@ -1,0 +1,40 @@
+id: clm-3dr102ybfs
+subject:
+  type: region
+  id: MBA:1080
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.5607/en.2018.27.5.387
+  pmid: '30429648'
+  pmcid: PMC6221842
+  locator: Fig. 1G; Fig. 2G-I; Fig. 3G-I
+paraphrase: Retrograde CTB from the NAc labelled ventral hippocampal neurons (about 600-680 cells/mm2), of which about 90%
+  (883/980) were glutamate-positive; only about 1.1% were c-Fos positive after restraint.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ventral hippocampus (vHIP)
+  extract.object_name: nucleus accumbens (NAc)
+  verify.note: The results report NAc-injected CTB labelling in vHIP at 608–684 cells/mm2, with 90.5% (883/980) glutamate-positive
+    and 1.1% c-Fos co-labelled after restraint.

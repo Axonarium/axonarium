@@ -1,0 +1,38 @@
+id: clm-76ft0a4vqz
+subject:
+  type: region
+  id: UBERON:8440032
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0003040
+species: NCBITaxon:10116
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.101667
+  pmid: '40338067'
+  pmcid: PMC12061479
+  locator: Fig. 3C-D; Results, PrLPAG intrinsic excitability section
+paraphrase: After green retrobeads were injected into the left vlPAG, labelled pyramidal neurons were found in the ipsilateral
+  PrL cortex and used as PAG-projecting cells for recordings.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: prelimbic (PrL) cortex
+  extract.object_name: ventrolateral periaqueductal gray (vlPAG)
+  verify.note: Retrobeads injected into the left vlPAG labelled PrL pyramidal cells, which were recorded as the PAG-projecting
+    population; Fig. 3 shows the injection site and the labelled PrL cells.

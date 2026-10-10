@@ -1,0 +1,39 @@
+id: clm-p83f3yrqjt
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:131
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: electrical_stimulation
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.91421
+  pmid: '39023519'
+  pmcid: PMC11257676
+  locator: Figure 5d-f
+paraphrase: Electrical stimulation of internal capsule (thalamic) afferent fibres in lateral amygdala slices evoked EPSPs
+  in putative pyramidal cells, and weak tetanic stimulation produced a transient potentiation of these responses.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: thalamic input (internal capsule)
+  extract.object_name: lateral amygdala
+  verify.note: Internal capsule stimulation evoked LA EPSPs with weak tetanus producing transient LTP.

@@ -1,0 +1,39 @@
+id: clm-ywbqahfat6
+subject:
+  type: neuron_type
+  id: CL:0000740
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.4103/1673-5374.353852
+  pmid: '36204863'
+  pmcid: PMC9700093
+  locator: Fig. 5A, Fig. 6A, D
+paraphrase: After intravitreal injection of the trans-synaptic pseudorabies virus PRV724, labelled neurons appeared in the
+  paraventricular hypothalamic nucleus of cleared whole brains, with more labelling contralateral to the injected eye; labelling
+  fell bilaterally after optic nerve crush.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: retinal ganglion cells (RGCs)
+  extract.object_name: paraventricular hypothalamic nucleus (PVH)
+  verify.note: PVH labelling was mostly contralateral and fell significantly on both sides after crush.

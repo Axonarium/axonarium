@@ -1,0 +1,41 @@
+id: clm-2v6eb7s7wz
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 5—figure supplement 1
+paraphrase: In triplet recordings, train stimulation of cBLA fibres that reliably spiked IL layer 5 pyramidal tract neurons
+  never produced action potentials in IL layer 5 or layer 2 cortico-amygdalar neurons (7 triplets, 4 animals), so cBLA does
+  not functionally drive the reciprocal cortex-to-amygdala cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cBLA
+  extract.object_name: IL L5 CA and IL L2 CA (cortico-amygdalar) neurons
+  verify.note: Triplet current-clamp recordings showed cBLA never spiked IL L5 or L2 CA neurons even when IL L5 PT fired,
+    as the paper concludes.

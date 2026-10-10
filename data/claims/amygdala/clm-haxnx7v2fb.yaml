@@ -1,0 +1,39 @@
+id: clm-haxnx7v2fb
+subject:
+  type: neuron_type
+  id: CL:0000700
+predicate: projects_to
+object:
+  type: region
+  id: MBA:186
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Figure 3—figure supplement 2
+paraphrase: TVA injected into the lateral habenula labelled only a sparse population of midbrain dopamine neurons; 122 neurons
+  in total were plotted.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DAT-Cre dopamine neurons in VTA/SNc
+  extract.object_name: lateral habenula (lHb)
+  verify.note: Labelling of lHb-projecting dopamine neurons was very sparse, with all 122 neurons plotted.

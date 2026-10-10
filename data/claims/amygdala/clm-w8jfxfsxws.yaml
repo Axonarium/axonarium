@@ -1,0 +1,41 @@
+id: clm-w8jfxfsxws
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.107145
+  pmid: '41870239'
+  pmcid: PMC13008356
+  locator: Fig. 1A–C, 1E
+paraphrase: Cre-dependent helper viruses plus EnvA-pseudotyped rabies-GFP targeted to cholinergic interneurons of the dorsomedial
+  striatum in ChAT-Cre;D1-tdTomato mice labelled presynaptic neurons in the central amygdala, indicating a direct monosynaptic
+  input onto striatal CINs. Labelling density in CeA was lower than in BNST (Mann-Whitney U = 4.000, p<0.001; 13 sections
+  from 4 mice).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: dorsal striatal cholinergic interneurons (CINs)
+  verify.note: Rabies tracing labelled CeA neurons presynaptic to CINs with the stated statistic and sample size.

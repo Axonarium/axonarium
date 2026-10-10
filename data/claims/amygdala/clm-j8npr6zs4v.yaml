@@ -1,0 +1,38 @@
+id: clm-j8npr6zs4v
+subject:
+  type: region
+  id: UBERON:0001950
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.68617
+  pmid: '34142660'
+  pmcid: PMC8266390
+  locator: Fig. 4c-d; Fig. 5c
+paraphrase: After AAV-CaMKIIa-ArchT-eYFP injection into the lOFC, eYFP-labelled lOFC axons and terminals were found by immunofluorescence
+  in the BLA near the implanted optical fibers.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral orbitofrontal cortex (lOFC)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: ArchT-eYFP injected in lOFC produced immunolabelled axons/terminals in BLA near the fibers, consistent with
+    the claimed direction and species.

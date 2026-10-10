@@ -1,0 +1,37 @@
+id: clm-8z8cz00n8y
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:8440032
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.101667
+  pmid: '40338067'
+  pmcid: PMC12061479
+  locator: Fig. 3C-D
+paraphrase: An AAV expressing ChR2-EYFP was injected into the BLA, and EYFP-labelled BLA axon terminals were imaged in the
+  PrL cortex.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelimbic (PrL) cortex
+  verify.note: ChR2-EYFP virus was injected into the BLA, and Fig. 3D images the labelled BLA terminals in the PrL.

@@ -1,0 +1,38 @@
+id: clm-r9xa42bhvk
+subject:
+  type: region
+  id: MBA:599
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 1D; Fig. 5B1; Fig. 6B
+paraphrase: Retrograde AAV and CtB injections into the BLA labelled neurons in the centromedial thalamic nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: centromedial (CM)
+  extract.object_name: BLA
+  verify.note: CM neurons were labelled both by the retrograde AAV and by CtB from the BLA (Fig. 5B1, 6B).

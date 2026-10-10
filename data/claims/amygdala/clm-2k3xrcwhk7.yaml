@@ -1,0 +1,40 @@
+id: clm-2k3xrcwhk7
+subject:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:477
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: strong
+source:
+  doi: 10.3389/fnsyn.2021.634558
+  pmid: '34295235'
+  pmcid: PMC8290482
+  locator: Results; Fig. 3A
+paraphrase: ChR2-YFP-labelled PIN/MGm axons strongly innervated the amygdalostriatal transition area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PIN/MGm
+  extract.object_name: amygdalostriatal transition area (AStr)
+  verify.note: The Results and Fig. 3A legend report strong ChR2-YFP thalamic input to the AStr, which falls within the striatum
+    hierarchy.

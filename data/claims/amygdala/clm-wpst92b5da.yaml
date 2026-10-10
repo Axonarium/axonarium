@@ -1,0 +1,44 @@
+id: clm-wpst92b5da
+subject:
+  type: region
+  id: MBA:523
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.692
+  unit: '1'
+  n: 13
+source:
+  doi: 10.7554/elife.85547
+  pmid: '37314164'
+  pmcid: PMC10353859
+  locator: Fig. 6I-J
+paraphrase: In slices, optogenetic activation of ChR2-expressing POAPAG axon terminals evoked monosynaptic IPSCs (in TTX/4AP)
+  in most recorded AmgC/M-PAG neurons, and these were abolished by gabazine; no EPSCs were seen.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: POAPAG neurons
+  extract.object_name: AmgC/M-PAG neurons
+  verify.note: IPSCs were evoked in 9 of 13 cells (0.692) in TTX/4AP and were abolished by gabazine, with no EPSCs seen.

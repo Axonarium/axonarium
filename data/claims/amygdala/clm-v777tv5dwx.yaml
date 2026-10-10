@@ -1,0 +1,39 @@
+id: clm-v777tv5dwx
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:8440032
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.52651
+  pmid: '31958061'
+  pmcid: PMC7010412
+  locator: Fig. 2A; Results, Study 1, PL innervation
+paraphrase: After BDA was injected into the BLA of juvenile and adolescent rats, labelled BLA axons were found in prelimbic
+  cortex layers 2 and 5. Stereology gave total terminal length, and this was elevated by early-life adversity at PD28 and
+  PD48 in females and at PD38 in males.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: prelimbic (PL)
+  verify.note: BDA tracing from BLA labelled axons in PL layers 2 and 5, and ELA increased innervation in females at PD28
+    and PD48 and in males at PD38, as reported in the PL section and Fig. 2A.

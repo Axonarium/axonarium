@@ -1,0 +1,39 @@
+id: clm-gvy2xqmzy2
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fphar.2021.668337
+  pmid: '34113253'
+  pmcid: PMC8185300
+  locator: Fig. 1B,D; Methods (Optogenetic strategy)
+paraphrase: After stereotaxic injection of an AAV expressing eYFP (alone or fused to an opsin) under the CaMKII promoter into
+  the right BLA of Sprague-Dawley rats, histology showed eYFP-filled axon terminals of BLA origin within the CeA, confirming
+  an anatomical BLA-to-CeA projection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: CeA
+  verify.note: Fig. 1D shows eYFP-labeled BLA axon terminals in CeA after CaMKII-AAV injection into BLA, an anterograde viral
+    tracing result in rats.

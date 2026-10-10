@@ -1,0 +1,42 @@
+id: clm-cn4k63m6v1
+subject:
+  type: region
+  id: MBA:1089
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fnsyn.2015.00012
+  pmid: '26257641'
+  pmcid: PMC4507144
+  locator: Figs. 2H–K, 3, 4, 5, 6, 8C–D
+paraphrase: Blue-light stimulation of ChR2-expressing ventral hippocampal afferents elicited glutamatergic AMPA/NMDA EPSCs
+  and EPSPs in accumbens medium spiny neurons (n = 15 cells tested for plasticity), supporting both spike-timing dependent
+  LTP and LTD; these synapses had a highly variable AMPA/NMDA ratio (mean 5.7) and weaker magnesium block of NMDA currents
+  than cortical or amygdala inputs.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: ventral (ventrolateral) hippocampus
+  extract.object_name: nucleus accumbens (NAc) MSNs
+  verify.note: Hippocampal inputs gave tLTD and tLTP in 15 cells, a variable AMPA/NMDA ratio averaging 5.7 and weaker Mg2+
+    block, all reported in the results.

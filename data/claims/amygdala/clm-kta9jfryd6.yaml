@@ -1,0 +1,39 @@
+id: clm-kta9jfryd6
+subject:
+  type: region
+  id: MBA:149
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:351
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnmol.2015.00056
+  pmid: '26557053'
+  pmcid: PMC4617378
+  locator: Figs. 5G–I; Results, section 4
+paraphrase: BNST injection of AAV9-Camk2a-TRAP produced EGFP-L10a expression restricted to Camk2a-positive neurons in the
+  paraventricular nucleus of the thalamus, consistent with retrograde transduction of thalamic neurons projecting to the BNST.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: paraventricular thalamic nucleus
+  extract.object_name: bed nucleus of the stria terminalis (BNST)
+  verify.note: PVT labeling after BNST injection is reported as cell-type-specific retrograde transduction.

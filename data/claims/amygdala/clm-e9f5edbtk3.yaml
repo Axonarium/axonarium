@@ -1,0 +1,40 @@
+id: clm-e9f5edbtk3
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 5A–C
+paraphrase: When rBLA fibres were stimulated at intensities that made PL L2 CA neurons fire, PL L5 PT neurons showed large
+  excitatory (-113 ± 24 pA) and inhibitory (508 ± 101 pA) currents, whereas subthreshold stimulation produced almost nothing
+  (-9 ± 4 pA and 17 ± 5 pA; 8 pairs, 4 animals), indicating an indirect route through superficial layers.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rBLA
+  extract.object_name: PL L5 PT neurons (polysynaptic, via PL L2 CA neurons)
+  verify.note: Suprathreshold-only EPSCs/IPSCs in PL L5 PT with the quoted amplitudes support a polysynaptic route.

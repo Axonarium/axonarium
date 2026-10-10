@@ -1,0 +1,44 @@
+id: clm-v3a9dn8wdw
+subject:
+  type: neuron_type
+  id: nt-g513b58b0y
+predicate: projects_to
+object:
+  type: region
+  id: MBA:797
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.19
+  unit: '1'
+  n: 2
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Figure 2A-B, Figure 2—figure supplement 1
+paraphrase: Cholera toxin B conjugated to Alexa 647 injected into the zona incerta of PKCδ-cre::Ai9 mice retrogradely labelled
+  central amygdala neurons, about 19% of which were also PKCδ-tdTomato positive; these double-labelled cells lay in the capsular
+  and lateral subdivisions.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA-PKCδ neurons (PKCδ-tdTomato)
+  extract.object_name: ZI
+  verify.note: CTB retrograde labeling shows ~19% of ZI-projecting CeA neurons are PKCδ-positive, n=2 mice.

@@ -1,0 +1,38 @@
+id: clm-tsazddqf50
+subject:
+  type: region
+  id: MBA:631
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 9c,d
+paraphrase: Cortical amygdala neurons were labelled as inputs to BLA axo-axonic cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: COA
+  extract.object_name: AACsBLA
+  verify.note: COA is listed among the inputs to BLA AACs.

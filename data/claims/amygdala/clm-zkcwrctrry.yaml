@@ -1,0 +1,39 @@
+id: clm-zkcwrctrry
+subject:
+  type: region
+  id: MBA:95
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.95821
+  pmid: '39088250'
+  pmcid: PMC11293866
+  locator: Fig. 5F
+paraphrase: After AAV-CaMKII-ChR2-eYFP was injected into the aIC, labelled axon terminals in the amygdala were seen mainly
+  in the basolateral nucleus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: anterior insular cortex (aIC)
+  extract.object_name: BLA, basolateral amygdaloid nucleus
+  verify.note: Fig. 5F and its text show labelled aIC terminals mainly in the BLA, together with CeA.

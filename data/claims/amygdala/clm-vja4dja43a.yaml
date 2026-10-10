@@ -1,0 +1,45 @@
+id: clm-vja4dja43a
+subject:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.552
+  unit: '1'
+  n: 29
+source:
+  doi: 10.7554/elife.63493
+  pmid: '33372655'
+  pmcid: PMC7793624
+  locator: Fig. 5C–F
+paraphrase: In brain slices, optogenetic stimulation of ChR2-expressing GABAergic AmgC/M axons in the PAG evoked IPSCs in
+  16 of 29 CANE-tagged PAG-USV neurons recorded in TTX/4AP (mean ~180 pA at 0 mV); these currents reversed near the chloride
+  equilibrium potential and were eliminated by gabazine, and no EPSCs were seen at -70 mV.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AmgC/M-PAG axons
+  extract.object_name: PAG-USV neurons
+  verify.note: 16 of 29 PAG-USV cells showed gabazine-sensitive IPSCs in TTX/4AP, which matches 0.552.

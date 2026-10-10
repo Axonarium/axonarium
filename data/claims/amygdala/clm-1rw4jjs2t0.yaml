@@ -1,0 +1,38 @@
+id: clm-1rw4jjs2t0
+subject:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:226
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.63493
+  pmid: '33372655'
+  pmcid: PMC7793624
+  locator: Fig. 2—figure supplement 3 (top left)
+paraphrase: tdTomato-labelled axons of AmgC/M-PAG neurons were observed innervating the lateral preoptic area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: AmgC/M-PAG neurons
+  extract.object_name: lateral preoptic area
+  verify.note: The top-left panel of Fig. 2—figure supplement 3 shows AmgC/M-PAG axons in the lateral POA.

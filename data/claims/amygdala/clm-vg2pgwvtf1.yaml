@@ -1,0 +1,39 @@
+id: clm-vg2pgwvtf1
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:8440032
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.101667
+  pmid: '40338067'
+  pmcid: PMC12061479
+  locator: Figs. 9-11
+paraphrase: Optogenetic activation of BLA terminals evoked excitatory currents in mCherry-tagged PrL PV interneurons. The
+  currents included monosynaptic AMPA and APV-sensitive NMDA components and asynchronous EPSCs recorded under TTX/4-AP, and
+  they were reduced by adolescent ethanol exposure.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: PrL parvalbumin interneurons (PVINs)
+  verify.note: BLA terminal stimulation evoked monosynaptic AMPA, NMDA and asynchronous EPSCs in PV interneurons, and AIE
+    reduced them (Figs. 9-11).

@@ -1,0 +1,45 @@
+id: clm-6wbpjstsmg
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: connection_probability
+  value: 0.5
+  unit: '1'
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 5C,D
+paraphrase: Activating ChR2 confined to GABAergic BA neurons evoked inhibitory (inward, high-chloride internal) currents in
+  roughly half of the identified vH interneurons recorded, showing that the long-range inhibitory projection also targets
+  local interneurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA (vGAT+ neurons)
+  extract.object_name: local vGAT+ interneurons in vH
+  verify.note: With FLEX ChR2 in vGAT+ BA neurons, inhibitory responses appeared in about half of the recorded vH interneurons
+    (Fig 5C,D).

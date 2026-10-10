@@ -1,0 +1,39 @@
+id: clm-bqe93dstx3
+subject:
+  type: region
+  id: UBERON:0002887
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0001882
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.59281
+  pmid: '33054975'
+  pmcid: PMC7588229
+  locator: Fig. 3A-H; Results, 'BLA projections to the VS'
+paraphrase: 'CaMKIIα-ChR2 in BLA with fibers over BLA terminals in ventral striatum: 15 Hz illumination reinstated avoidance
+  after extinction (effects during the standard test were at ceiling and not significant), and ArchT silencing of BLA terminals
+  in ventral striatum impaired avoidance, supporting a functional excitatory BLA-to-ventral-striatum input.'
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: basolateral amygdala (BLA)
+  extract.object_name: ventral striatum (VS)
+  verify.note: BLA terminal activation in VS reinstated avoidance post-extinction and ArchT silencing impaired it, consistent
+    with an excitatory BLA→VS input.

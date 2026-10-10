@@ -1,0 +1,45 @@
+id: clm-39tqb1e8wc
+subject:
+  type: region
+  id: MBA:564
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+strength: weak
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.02
+  unit: '1'
+  sem: 0.002
+  n: 4
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 8d-k
+paraphrase: Medial septum neurons were labelled as minor inputs to CA1 axo-axonic cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MS
+  extract.object_name: AACsCA1
+  verify.note: MS input of 2.0 ± 0.2% (N = 4) is reported and described as minor.

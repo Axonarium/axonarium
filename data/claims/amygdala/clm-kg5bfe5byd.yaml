@@ -1,0 +1,39 @@
+id: clm-kg5bfe5byd
+subject:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 2A; Fig. 2—figure supplement 1J
+paraphrase: The same periaqueductal gray injections also labelled layer 5 pyramidal tract neurons in IL, whose laminar distribution
+  was quantified.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: IL
+  extract.object_name: periaqueductal gray (PAG)
+  verify.note: PAG CTB injections labelled PT neurons in IL L5, quantified by layer.

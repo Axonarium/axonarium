@@ -1,0 +1,41 @@
+id: clm-d7x27mcms4
+subject:
+  type: neuron_type
+  id: nt-wprma5fcrr
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7150/thno.111130
+  pmid: '40225572'
+  pmcid: PMC11984391
+  locator: Fig. 6G-L; Fig. 8B-E
+paraphrase: Blue-light stimulation of ChR2-expressing BLA glutamatergic terminals evoked postsynaptic currents in layer II/III
+  ACC pyramidal neurons that were abolished by the AMPA-receptor blocker CNQX; the responses were eliminated by TTX and restored
+  by TTX plus 4-AP, indicating a direct monosynaptic excitatory input. In the pain/anxiety model these light-evoked currents
+  were larger and the paired-pulse ratio was lower than in controls.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLAGlu neurons
+  extract.object_name: ACC pyramidal neurons (layers II/III)
+  verify.note: The light-evoked EPSCs in ACC layer II/III neurons were blocked by CNQX and by TTX, then rescued by 4-AP, showing
+    a monosynaptic excitatory input; in the model they were larger and had a lower PPR (Fig. 8B-E).

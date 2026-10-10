@@ -1,0 +1,46 @@
+id: clm-wy4sjxbcv7
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 1.0
+  unit: '1'
+  n: 9
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 4A-F; Fig. 5L-N
+paraphrase: In paired recordings of neighbouring retrogradely labelled vH neurons, light activation of pan-neuronal (and separately
+  CaMKii-restricted) BA axons evoked excitatory currents at -70 mV in BA-projecting vH neurons; these were equal to those
+  in neighbouring NAc-projecting cells and much larger than in PFC-projecting cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA
+  extract.object_name: vHBA neurons (BA-projecting vH neurons)
+  verify.note: The paper reports no connection probability of 1.0 for vHBA cells; the paired designs used 9, 8 and 10 pairs,
+    so this number is unsupported.

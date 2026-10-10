@@ -1,0 +1,40 @@
+id: clm-zy5f5gfp18
+subject:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: ambiguous
+sign: unknown
+source:
+  doi: 10.7554/elife.63493
+  pmid: '33372655'
+  pmcid: PMC7793624
+  locator: Fig. 4—figure supplement 2
+paraphrase: AAV-retro-Cre injected into the caudolateral PAG of a Cre-dependent tdTomato reporter mouse produced no cell body
+  labelling in the central amygdala, but the authors attribute this to restricted tropism of the retrograde AAV rather than
+  to an absent projection, since rabies tracing did label CeA neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA
+  extract.object_name: caudolateral PAG
+  verify.note: Retro-AAV did not label the CeA, which the authors attribute to viral tropism, so the result is ambiguous.

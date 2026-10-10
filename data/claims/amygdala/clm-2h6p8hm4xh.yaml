@@ -1,0 +1,39 @@
+id: clm-2h6p8hm4xh
+subject:
+  type: region
+  id: MBA:846
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:549
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 1F
+paraphrase: Retrogradely labelled neurons in all DCN, the lateral nucleus among them, followed limbic thalamus CtB injection.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: lateral DCN
+  extract.object_name: limbic thalamus
+  verify.note: CtB injected into the limbic thalamus labelled neurons in all DCN, which includes the lateral nucleus (Fig.
+    1F).

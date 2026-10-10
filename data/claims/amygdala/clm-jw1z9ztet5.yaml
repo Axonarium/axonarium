@@ -1,0 +1,44 @@
+id: clm-jw1z9ztet5
+subject:
+  type: region
+  id: MBA:571
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.026
+  unit: '1'
+  sem: 0.004
+  n: 3
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 9c,f
+paraphrase: Thalamic inputs to BLA axo-axonic cells came mainly from the midline group of the dorsal thalamus.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MTN
+  extract.object_name: AACsBLA
+  verify.note: Thalamic inputs to BLA AACs were mainly from MTN, at 2.6 ± 0.4%.

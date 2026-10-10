@@ -1,0 +1,39 @@
+id: clm-j9xebdx0fn
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:382
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: absent
+sign: unknown
+source:
+  doi: 10.7554/elife.74758
+  pmid: '34845987'
+  pmcid: PMC8654375
+  locator: Fig. 4D-F
+paraphrase: In 8 pairs of neighbouring PFC-projecting and BA-projecting vH neurons, light activation of pan-neuronal BA input
+  produced essentially no excitatory current in the PFC-projecting cells while the BA-projecting partner responded.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BA
+  extract.object_name: vHPFC neurons (PFC-projecting vH neurons)
+  verify.note: In 8 vHBA/vHPFC pairs there was an almost complete lack of excitatory input onto the PFC-projecting cells.

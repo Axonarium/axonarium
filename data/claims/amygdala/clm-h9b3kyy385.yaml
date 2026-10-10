@@ -1,0 +1,44 @@
+id: clm-h9b3kyy385
+subject:
+  type: region
+  id: MBA:519
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:637
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: conduction_delay
+  value: 3.2
+  unit: ms
+  sem: 0.2
+source:
+  doi: 10.3389/fnsys.2022.879634
+  pmid: '35645738'
+  pmcid: PMC9136059
+  locator: Fig. 3B
+paraphrase: Stimulating DCN axons evoked short-latency synaptic responses in VM/VPM neurons, with a mean amplitude of about
+  348 pA.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DCN
+  extract.object_name: VM/VPM
+  verify.note: VM/VPM responses are reported as 347.5 pA with a latency of 3.2 ± 0.2 ms.

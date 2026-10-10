@@ -1,0 +1,44 @@
+id: clm-8hbm3prker
+subject:
+  type: region
+  id: MBA:985
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:322
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.078
+  unit: '1'
+  sem: 0.019
+  n: 3
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 7g
+paraphrase: MOp neurons provided inputs to SSp chandelier cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: MOp
+  extract.object_name: ChCsSSp
+  verify.note: MOp provides 7.8 ± 1.9% of inputs to SSp ChCs.

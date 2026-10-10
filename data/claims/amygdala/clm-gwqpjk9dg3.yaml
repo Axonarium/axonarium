@@ -1,0 +1,40 @@
+id: clm-gwqpjk9dg3
+subject:
+  type: region
+  id: MBA:311
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 2D; Fig. 3C,D,F
+paraphrase: cBLA axon stimulation produced only very small monosynaptic excitatory currents in PL layer 2 cortico-amygdalar
+  neurons (about six percent of the IL L5 PT amplitude; EPSC1 -31 ± 10 pA with trains), negligible inhibition, and never evoked
+  action potentials in these cells (firing probability 0, 7 pairs).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: cBLA
+  extract.object_name: PL L2 CA neurons
+  verify.note: Small cBLA-evoked EPSCs at PL L2 CA neurons with no spiking are reported with the quoted values.

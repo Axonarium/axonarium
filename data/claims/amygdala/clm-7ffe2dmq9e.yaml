@@ -1,0 +1,41 @@
+id: clm-7ffe2dmq9e
+subject:
+  type: region
+  id: MBA:559
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:38
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7150/ijbs.126058
+  pmid: '41608627'
+  pmcid: PMC12837740
+  locator: Fig. 8A, 8B; Results, 'CeM-PVH projections mediate chronic stress-induced hepatic lipid dysregulation'
+paraphrase: A retrogradely transported Cre-expressing AAV was placed in the paraventricular hypothalamic nucleus together
+  with a Cre-dependent hM4Di-mCherry vector in the medial central amygdala; mCherry-labelled cell bodies appeared in CeM,
+  showing that CeM neurons send axons to PVH.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeM
+  extract.object_name: PVH
+  verify.note: The paper's retro-Cre-in-PVH plus Cre-dependent hM4Di-mCherry-in-CeM strategy yielded mCherry+ CeM somata,
+    supporting a CeM→PVH projection in mice at the cited figure/section.

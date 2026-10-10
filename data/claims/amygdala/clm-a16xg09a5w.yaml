@@ -1,0 +1,40 @@
+id: clm-a16xg09a5w
+subject:
+  type: neuron_type
+  id: CL:0000617
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: CL:0000700
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+source:
+  doi: 10.3390/ijms23031114
+  pmid: '35163036'
+  pmcid: PMC8834722
+  locator: Fig. 3(c,d); Fig. 4h; Fig. 5g–i
+paraphrase: Non-specific photo-stimulation of VTA neurons, which co-activated VGAT-positive GABAergic cells (shown to express
+  ChrimsonR in Fig. 4h), failed to raise accumbal dopamine, whereas blocking GABA-A receptors with intraperitoneal bicuculline
+  before the identical stimulation produced a significant dopamine increase and c-fos activation of ChrimsonR-expressing dopamine
+  neurons, indicating that local VTA GABAergic neurons inhibit VTA dopamine neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: GABAergic neurons in the VTA
+  extract.object_name: DA neurons in the VTA
+  verify.note: The combination of non-specific stimulation, VGAT/ChrimsonR overlap, and bicuculline rescue supports local
+    GABAergic inhibition of VTA DA neurons.

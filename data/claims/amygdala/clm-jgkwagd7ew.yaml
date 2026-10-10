@@ -1,0 +1,44 @@
+id: clm-jgkwagd7ew
+subject:
+  type: neuron_type
+  id: nt-vpnb3tg80r
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:672
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: inhibitory
+measurements:
+- quantity: conduction_delay
+  value: 6.5
+  unit: ms
+  n: 8
+source:
+  doi: 10.7554/elife.107145
+  pmid: '41870239'
+  pmcid: PMC13008356
+  locator: Fig. 3G–3J
+paraphrase: AAV-FLEX-Chrimson-tdTomato was injected into both CeA and BNST of CRF-Cre;ChAT-eGFP mice; light stimulation of
+  the labelled fibres in dorsal striatum evoked short-latency synaptic currents in GFP+ cholinergic interneurons that were
+  abolished by TTX, restored by TTX+4-AP (indicating monosynaptic transmission) and blocked by the GABA-A antagonist bicuculline.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA CRF+ neurons
+  extract.object_name: dorsal striatal cholinergic interneurons (CINs)
+  verify.note: CeA CRF+ fibers (Chrimson) evoked short-latency bicuculline-sensitive currents in CINs, monosynaptic by TTX/4-AP.

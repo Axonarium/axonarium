@@ -1,0 +1,38 @@
+id: clm-8wjwt06c9x
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fphar.2022.903978
+  pmid: '35694266'
+  pmcid: PMC9177060
+  locator: Fig. 2A,B; Methods 5.7.3, 5.8
+paraphrase: After CaMKIIa-ChR2-eYFP virus injection into the external lateral parabrachial nucleus, labelled terminals were
+  found in the central amygdala, in the lateral division and more prominently in the capsular division.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: external parabrachial nucleus (PB)
+  extract.object_name: lateral and capsular division of the CeA
+  verify.note: Virally labelled terminals from the external lateral PB were seen in the lateral and, more strongly, the capsular
+    CeA, as described in Methods 5.7.3 and with histology in 5.8.

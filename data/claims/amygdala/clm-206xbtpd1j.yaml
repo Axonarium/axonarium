@@ -1,0 +1,47 @@
+id: clm-206xbtpd1j
+subject:
+  type: region
+  id: UBERON:0003040
+predicate: functionally_connects_to
+object:
+  type: region
+  id: UBERON:0002887
+species: NCBITaxon:10116
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: unknown
+measurements:
+- quantity: connection_probability
+  value: 0.1
+  unit: '1'
+  n: 320
+- quantity: connection_probability
+  value: 0.2706
+  unit: '1'
+  n: 85
+source:
+  doi: 10.7554/elife.88733
+  pmid: '39133827'
+  pmcid: PMC11318971
+  locator: Fig. 3E, 3H-L; Figure 3—figure supplement 1B-C
+paraphrase: Blue-light activation of ChR2-expressing CaMKII neurons in the dPAG of freely foraging rats raised the firing
+  of a subset of BLA units recorded with tetrodes; the authors judge the route likely indirect from latencies and anatomy.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: dorsal periaqueductal gray (dPAG)
+  extract.object_name: basolateral amygdala (BLA)
+  verify.note: dPAG optogenetic stimulation raised firing in about 10% of 320 and 23 of 85 BLA units in rats, and the authors
+    judge the route indirect, though the paper itself also gives 34 and 22 for these counts.

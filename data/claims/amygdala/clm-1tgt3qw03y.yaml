@@ -1,0 +1,42 @@
+id: clm-1tgt3qw03y
+subject:
+  type: region
+  id: MBA:972
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fnsyn.2015.00012
+  pmid: '26257641'
+  pmcid: PMC4507144
+  locator: Figs. 1B–F, 2A–C, 4, 5, 6
+paraphrase: Brief blue light stimulation of ChR2-expressing prelimbic cortical fibers reliably evoked short-latency inward
+  currents and EPSPs in accumbens medium spiny neurons; these responses were completely abolished by the AMPA/kainate blocker
+  DNQX, and the pathway showed strong paired-pulse depression, an AMPA/NMDA ratio near 2.5, and spike-timing dependent LTD
+  but no LTP.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: prelimbic prefrontal cortex (PFCx)
+  extract.object_name: nucleus accumbens (NAc) MSNs
+  verify.note: Light-evoked, DNQX-sensitive EPSCs and EPSPs from prelimbic inputs onto NAc MSNs, with strong paired-pulse
+    depression, AMPA/NMDA ratio of 2.51 and tLTD only, are all reported.

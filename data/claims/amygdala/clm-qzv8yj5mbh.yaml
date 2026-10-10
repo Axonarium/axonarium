@@ -1,0 +1,39 @@
+id: clm-qzv8yj5mbh
+subject:
+  type: region
+  id: MBA:278
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:795
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.85547
+  pmid: '37314164'
+  pmcid: PMC10353859
+  locator: Fig. 3C
+paraphrase: Cre-dependent tdTomato injected into the amygdala of Esr1-Cre mice revealed labeled axons in the caudolateral
+  PAG region containing PAG-USV neurons.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Esr1+ amygdala cells (AmgC/M)
+  extract.object_name: caudolateral PAG
+  verify.note: Cre-dependent tdTomato in the amygdala of Esr1-Cre mice labeled axons in the caudolateral PAG (Fig. 3C).

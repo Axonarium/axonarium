@@ -1,0 +1,62 @@
+id: clm-hp614cpxy4
+subject:
+  type: region
+  id: MBA:147
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: modulatory
+measurements:
+- quantity: connection_probability
+  value: 0.214
+  unit: '1'
+  n: 42
+- quantity: connection_probability
+  value: 0.095
+  unit: '1'
+  n: 42
+- quantity: conduction_delay
+  value: 129.3
+  unit: ms
+  sd: 108.9
+  n: 9
+- quantity: conduction_delay
+  value: 172.6
+  unit: ms
+  sd: 77.01
+  n: 4
+source:
+  doi: 10.7554/elife.18247
+  pmid: '28708061'
+  pmcid: PMC5550275
+  locator: Fig. 2C–F; Fig. 3C–K; Fig. 4B
+paraphrase: Light activation of ChR2-expressing LC terminals in BLA slices evoked catecholamine transients with voltammetric
+  signatures of norepinephrine (clearance t1/2 about 2 s) that fell to roughly a third of baseline after reserpine. In vivo,
+  the same terminal stimulation raised firing in a fifth of recorded BLA units and suppressed firing in a smaller fraction,
+  with long response latencies indicating a neuromodulatory rather than fast monosynaptic action, and increased BLA cFos relative
+  to opsin-negative and contralateral controls; intra-BLA beta-adrenergic blockade abolished the behavioural consequence.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: LC
+  extract.object_name: BLA
+  verify.note: Voltammetry, single-unit proportions (21.4%/9.5% of 42 units), latencies and cFos/propranolol data match the
+    paper.

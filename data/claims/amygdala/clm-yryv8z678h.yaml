@@ -1,0 +1,41 @@
+id: clm-yryv8z678h
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: projects_to
+object:
+  type: region
+  id: MBA:31
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7150/thno.111130
+  pmid: '40225572'
+  pmcid: PMC11984391
+  locator: Fig. 6B-F; Fig. 9A-B
+paraphrase: A retrograde CaMKIIα virus placed in the ACC labelled cell bodies in the BLA, most of which were also immunopositive
+  for glutamate; these ACC-projecting BLA cells made up most of the activity-labelled (c-fos positive) BLA population in the
+  pain/anxiety model. The same retrograde strategy was used to target these neurons for recording and calcium imaging.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA
+  extract.object_name: ACC
+  verify.note: The retrograde CaMKIIα virus in ACC labeled BLA neurons that were mostly glutamate-positive and made up about
+    70% of c-fos+ BLA cells, and it was reused to target these cells for recording.

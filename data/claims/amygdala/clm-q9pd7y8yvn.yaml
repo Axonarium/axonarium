@@ -1,0 +1,39 @@
+id: clm-q9pd7y8yvn
+subject:
+  type: region
+  id: UBERON:0007634
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10116
+evidence_class: single_neuron_reconstruction
+result: present
+sign: unknown
+source:
+  doi: 10.3390/ijms262311405
+  pmid: '41373566'
+  pmcid: PMC12692419
+  locator: Results (juxtacellular labeling section); Fig. 5A,C,E,F
+paraphrase: A single KF neuron filled with neurobiotin in vivo had an axon that entered the superior cerebellar peduncle and
+  gave rise to labelled terminals in the capsular central amygdala; the labelled terminals in CeC were apposed to PACAP-immunoreactive
+  perisomatic profiles. Only one of 14 attempted recordings yielded a fully labelled KF neuron.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: Kölliker–Fuse nucleus (KF), ventrolateral parabrachial complex
+  extract.object_name: capsular central amygdala (CeC)
+  verify.note: Results and Fig. 5C,E support the single labeled KF neuron's axon in SCP and PACAP-apposed terminals in CeC,
+    with one fully labeled cell of 14 attempts.

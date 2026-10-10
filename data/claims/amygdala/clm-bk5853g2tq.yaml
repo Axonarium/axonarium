@@ -1,0 +1,40 @@
+id: clm-bk5853g2tq
+subject:
+  type: region
+  id: MBA:560581563
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: neuron_type
+  id: nt-y231zwbxhf
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.3389/fnsyn.2021.697110
+  pmid: '34393751'
+  pmcid: PMC8355744
+  locator: Fig. 2D,E; Fig. 3A,D,E
+paraphrase: Blue-light activation of ChR2-expressing thalamic terminals evoked glutamatergic EPSCs in patched medial paracapsular
+  intercalated cells, with AMPA receptor-mediated currents isolated at -70 mV in bicuculline and NMDA receptor-mediated currents
+  isolated with NBQX; responses were graded with light intensity in both genotypes.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: PIN/MGm (thalamic fibers)
+  extract.object_name: mpITCs
+  verify.note: Light activation of thalamic ChR2 terminals evoked AMPA and NMDA EPSCs in mpITCs across intensities (Figs.
+    2, 3).

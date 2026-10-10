@@ -1,0 +1,39 @@
+id: clm-tr6cbjwv8z
+subject:
+  type: neuron_type
+  id: nt-w8taxnhqmz
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.89766
+  pmid: '37963179'
+  pmcid: PMC10645419
+  locator: Fig. 1V–X, 1Y–Z
+paraphrase: Optogenetic activation of Ppp1r1b axon terminals produced EPSCs in D2 (tdTomato-negative) medium spiny neurons
+  that were blocked by NBQX and D-AP5.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: BLA Ppp1r1b neurons
+  extract.object_name: NAc D2 medium spiny neurons
+  verify.note: Light-evoked EPSCs in tdTomato-negative (D2) MSNs blocked by glutamate receptor antagonists support an excitatory
+    Ppp1r1b-to-NAc connection.

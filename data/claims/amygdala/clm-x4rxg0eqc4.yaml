@@ -1,0 +1,38 @@
+id: clm-x4rxg0eqc4
+subject:
+  type: neuron_type
+  id: CL:0000700
+predicate: projects_to
+object:
+  type: region
+  id: MBA:536
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: retrograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/elife.10032
+  pmid: '26322384'
+  pmcid: PMC4598831
+  locator: Results, Distribution of dopamine neurons; Figure 3—figure supplement 1
+paraphrase: TVA delivered into the amygdala labelled dopamine neurons throughout VTA/SNc and also in the supramammillary A10rv
+  area.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: DAT-Cre dopamine neurons in VTA/SNc and supramammillary A10rv
+  extract.object_name: central amygdala (Amy)
+  verify.note: Amy-projecting labelling appeared throughout VTA/SNc and in the supramammillary A10rv area.

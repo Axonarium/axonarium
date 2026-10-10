@@ -1,0 +1,46 @@
+id: clm-rtxg17ezks
+subject:
+  type: region
+  id: MBA:295
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:56
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+measurements:
+- quantity: connection_probability
+  value: 0.571
+  unit: '1'
+  n: 14
+source:
+  doi: 10.3389/fnsyn.2015.00012
+  pmid: '26257641'
+  pmcid: PMC4507144
+  locator: Figs. 2D–G, 3, 4, 5, 6, 8A–B
+paraphrase: Light activation of ChR2-expressing fibers from the basal amygdala evoked glutamatergic AMPA- and NMDA-mediated
+  EPSCs/EPSPs in accumbens medium spiny neurons; pairing with postsynaptic spikes produced LTP in 8 of 14 recorded MSNs and
+  LTD in the remaining 6, and the AMPA/NMDA ratio averaged 2.51.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: disagree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: amygdala basal nucleus
+  extract.object_name: nucleus accumbens (NAc) MSNs
+  verify.note: The 8/14 (0.571) figure is the fraction of MSNs showing tLTP, not a connection probability, so the number is
+    misattributed.

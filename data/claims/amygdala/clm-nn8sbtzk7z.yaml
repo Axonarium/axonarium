@@ -1,0 +1,42 @@
+id: clm-nn8sbtzk7z
+subject:
+  type: region
+  id: MBA:303
+  atlas: allen-mouse-ccf-2017
+predicate: functionally_connects_to
+object:
+  type: region
+  id: MBA:44
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: optogenetic_circuit_mapping
+result: present
+sign: excitatory
+source:
+  doi: 10.7554/elife.82688
+  pmid: '36476757'
+  pmcid: PMC9803354
+  locator: Fig. 2C; Fig. 3A,B; Fig. 5D–F
+paraphrase: rBLA fibre stimulation under TTX/4-AP produced small but detectable monosynaptic excitatory currents in IL layer
+  5 pyramidal tract neurons (about nine percent of the amplitude seen at PL L2 CA cells, 8 pairs), together with inhibitory
+  currents of similar size to those in PL; because these responses did not depend on PL L2 firing the authors attribute them
+  to a direct rBLA projection to IL L5.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: rBLA
+  extract.object_name: IL L5 PT neurons
+  verify.note: Small monosynaptic rBLA input to IL L5 PT is reported and attributed to a direct projection since no polysynaptic
+    spread occurred.

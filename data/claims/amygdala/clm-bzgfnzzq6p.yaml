@@ -1,0 +1,44 @@
+id: clm-bzgfnzzq6p
+subject:
+  type: region
+  id: MBA:378
+  atlas: allen-mouse-ccf-2017
+predicate: synapses_onto
+object:
+  type: region
+  id: MBA:985
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+measurements:
+- quantity: fraction_of_labelled_neurons
+  value: 0.101
+  unit: '1'
+  sem: 0.013
+  n: 3
+source:
+  doi: 10.7554/elife.93481
+  pmid: '39012795'
+  pmcid: PMC11251723
+  locator: Fig. 7f
+paraphrase: Supplemental somatosensory cortex neurons provided inputs to MOp chandelier cells.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: SSs
+  extract.object_name: ChCsMOp
+  verify.note: SSs provides 10.1 ± 1.3% of inputs to MOp ChCs.

@@ -1,0 +1,38 @@
+id: clm-1gcybac8ex
+subject:
+  type: neuron_type
+  id: nt-g513b58b0y
+predicate: projects_to
+object:
+  type: region
+  id: MBA:194
+  atlas: allen-mouse-ccf-2017
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+strength: weak
+source:
+  doi: 10.7554/elife.68760
+  pmid: '36269044'
+  pmcid: PMC9635874
+  locator: Results, Table 1, Figure 1C-D
+paraphrase: Sparse axonal terminals from PKCδ central amygdala neurons were seen in the lateral hypothalamus of all five brains.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5
+  prompt: extract@0.3.0
+  date: '2026-10-10'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5
+  prompt: verify@0.2.0
+  verdict: agree
+  date: '2026-10-10'
+status: proposed
+extra:
+  extract.subject_name: CeA-PKCδ neurons
+  extract.object_name: lateral hypothalamus (LH)
+  verify.note: Sparse LH terminals in all five brains are reported in the results and Table 1.
