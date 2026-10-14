@@ -16,8 +16,11 @@ uv run python -m evals.harness --gold evals/fixtures/placeholder --model replay:
 | --- | --- |
 | `--model` | `anthropic:<model>` (Anthropic SDK; `ANTHROPIC_API_KEY`), `openai:<model>` (OpenAI SDK; `OPENAI_API_KEY`), or `replay:<folder>` (saved answers, `<folder>/<paper>.json`) |
 | `--prompt` | A role prompt with a versioned `id` in its front matter (default `roles/extractor.md`) |
+| `--lexicon` | The region lexicon, as the pipeline reads it (default `.cache/lexicon.json`; write it from the repository root with `uv run python -m ingest.lexicon --out .cache/lexicon.json`) |
 | `--effort` | The model's effort or reasoning level (default `high`); `none` leaves it unset, for models without one |
 | `--out` | Where the report goes (default `evals/results/`) |
+
+The model reads what the literature pipeline's extractor reads ([ADR 0028](../../docs/decisions/0028-literature-pipeline.md)), so a gold score predicts a pipeline run: the role prompt followed by the region lexicon, and each JATS paper cut to its title, abstract, methods, results and captions. It answers in the pipeline's output model, with strength and numbers, which are kept in the report but not scored. The report names the lexicon's date and hash and the pruning, since scores from runs without them (before sprint 0.6a) aren't comparable.
 
 Every run calls the model once per paper and **costs money**; the report gives the tokens used. A model that refuses, runs out of tokens or returns output that doesn't fit the schema is recorded as a failure on that paper, never retried on another model: an eval scores the model it names.
 
@@ -59,6 +62,6 @@ claims:
     locator: Fig. 3B
 ```
 
-Open-access text is fetched from Europe PMC when a run needs it and cached in `.cache/papers/`, never committed. `evals/fixtures/placeholder/` is a synthetic stand-in that exercises the harness until gold v1 exists.
+Open-access text is fetched from Europe PMC when a run needs it and cached in `.cache/papers/`, the pipeline's cache, never committed. `evals/fixtures/placeholder/` is a synthetic stand-in that exercises the harness until gold v1 exists.
 
 Every text passes the hidden-text screen first ([ADR 0023](../../docs/decisions/0023-hidden-text-screen.md)). A run starts by checking the screen against its planted fixtures (`screen/fixtures/`) and stops if one gets through. A gold paper the screen flags is never sent to the model. The report lists it as `screened`, with what was found, and its claims count as missed.

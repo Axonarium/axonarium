@@ -8,23 +8,21 @@
            or {europe_pmc: PMC1234567}    # open-access full text, fetched at run time and cached, never committed
         claims: [GoldClaim, ...]          # every claim the paper makes, absent results included
 
-Every text passes the hidden-text screen (sprint C.5) before a model may read it.
+Every text passes the hidden-text screen (sprint C.5) before a model may read it. JATS papers are cut to the parts
+that hold claims, and Europe PMC's text is fetched and cached, exactly as the pipeline reads them (sprint 0.6a), so a
+gold score predicts a pipeline run. A plain-text file is read whole: it has no sections to cut.
 """
 
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.request import Request, urlopen
 
 import yaml
 
 from evals.harness.models import GoldClaim
+from pipeline import europepmc, sections
 from screen import Screened, screen_jats, screen_text
 from screen.injection import Classifier
-
-FULL_TEXT = "https://www.ebi.ac.uk/europepmc/webservices/rest/{pmcid}/fullTextXML"
-CACHE = Path(__file__).resolve().parents[3] / ".cache" / "papers"
-USER_AGENT = "axonarium-evals (https://github.com/axonarium/axonarium; mailto:admin@axonarium.com)"
 
 
 @dataclass(frozen=True)
@@ -57,21 +55,14 @@ def load(path: Path) -> GoldSet:
     return GoldSet(path, str(manifest["version"]), manifest.get("frozen"), papers)
 
 
-def _download(url: str) -> bytes:
-    with urlopen(Request(url, headers={"User-Agent": USER_AGENT}), timeout=60) as response:  # noqa: S310 (fixed https URL)
-        return response.read()
-
-
-def text(gold: GoldSet, paper: Paper, classify: Classifier, download: Callable[[str], bytes] = _download,
-         cache: Path = CACHE) -> Screened:
-    """The paper's screened text, from its committed file or Europe PMC's open-access full text (cached as fetched)."""
+def text(gold: GoldSet, paper: Paper, classify: Classifier, download: Callable[[str], bytes] = europepmc.get,
+         cache: Path = europepmc.CACHE) -> Screened:
+    """The paper's screened text, from its committed file or Europe PMC's open-access full text (cached as fetched,
+    in the pipeline's cache); JATS pruned as the pipeline prunes it."""
     if "file" in paper.text_spec:
         return screen_text((gold.path / paper.text_spec["file"]).read_text(encoding="utf-8"), classify)
     if "jats" in paper.text_spec:
-        return screen_jats((gold.path / paper.text_spec["jats"]).read_bytes(), classify)
-    pmcid = paper.text_spec["europe_pmc"]
-    cached = cache / f"{pmcid}.xml"
-    if not cached.exists():
-        cached.parent.mkdir(parents=True, exist_ok=True)
-        cached.write_bytes(download(FULL_TEXT.format(pmcid=pmcid)))
-    return screen_jats(cached.read_bytes(), classify)
+        xml = (gold.path / paper.text_spec["jats"]).read_bytes()
+    else:
+        xml = europepmc.full_text(paper.text_spec["europe_pmc"], download, cache)
+    return screen_jats(xml, classify, prune=sections.prune)

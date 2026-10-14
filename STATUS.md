@@ -19,7 +19,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 0.5 Gold set ([#6](https://github.com/axonarium/axonarium/issues/6)) | Waiting on the maintainer, who curates it into `agents/evals/gold/v1/`, with the tool from 0.5a |
 | 0.5a Gold curation tool ([#82](https://github.com/axonarium/axonarium/issues/82)) | Built: `cd agents && uv run python -m curate` serves a local page with a paper beside a claim form and region search, and saves drafts in the gold format to `.cache/gold-drafts/` |
 | 0.6 Eval harness ([#7](https://github.com/axonarium/axonarium/issues/7)) | Built ahead of gold v1 ([#63](https://github.com/axonarium/axonarium/pull/63)); "two models scored" waits on gold v1 |
-| 0.6a Harness parity ([#92](https://github.com/axonarium/axonarium/issues/92)) | Next: the harness gives the extractor the lexicon and pruned text the pipeline does, so gold scores predict pipeline runs; a human-owned path, so it waits on the maintainer's review |
+| 0.6a Harness parity ([#92](https://github.com/axonarium/axonarium/issues/92)) | Built: the harness gives the extractor the lexicon, pruned text and output model the pipeline does, and a test shows both send the same; a human-owned path, so it waits on the maintainer's review |
 | 1.1 Licence audit | Done |
 | 1.2 Atlas layer | Done |
 | 1.3 Allen mouse connectivity | Done: 2,053 build-time claims (717 accepted), 1,039 connections, the amygdala's outputs and inputs |

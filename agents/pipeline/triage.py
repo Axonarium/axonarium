@@ -15,7 +15,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from evals.harness.models import EvidenceClass
-from evals.harness.run import read_prompt
+from evals.harness.prompts import read_prompt
 from pipeline import europepmc
 from pipeline.corpus import CORPUS, Ledger, Redo, attempts, due, recorded, set_aside
 from pipeline.llm import Request, Result, choose, request_id, spend
