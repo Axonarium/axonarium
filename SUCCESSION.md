@@ -13,10 +13,11 @@ This file lists every account the project depends on, who holds it, and how to h
 | admin@axonarium.com | Project email alias used for every account | Tyler Banks (@tjbanks) | None yet | n/a | Forwarded by Cloudflare Email Routing |
 | npm organization `axonarium` | The `@axonarium` scope, for the MCP server | Tyler Banks (@tjbanks) | None yet | n/a | |
 | PyPI organization `axonarium` | The Python client | Tyler Banks (@tjbanks) | None yet | n/a | The project name `axonarium` is claimed by the first upload, not by the organization |
+| Zenodo | Archives every GitHub release and mints its DOI (ADR 0016) | Tyler Banks (@tjbanks) | None yet | n/a | GitHub integration switched on for `axonarium/axonarium`; concept DOI 10.5281/zenodo.23381642 |
 
 ## Not created yet
 
-An LLM provider (API key with a spending cap) and Zenodo (release DOIs). Add a row for each when it is created, and rows for Vercel (site) and Supabase (database and API), which exist but aren't listed yet: their holders, second holders and renewal terms are the maintainer's to record.
+An LLM provider (API key with a spending cap). Add a row for it when it is created, and rows for Vercel (site) and Supabase (database and API), which exist but aren't listed yet: their holders, second holders and renewal terms are the maintainer's to record.
 
 ## Handing over an account
 

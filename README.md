@@ -1,5 +1,7 @@
 # [Axonarium.com](https://axonarium.com)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23381642.svg)](https://doi.org/10.5281/zenodo.23381642)
+
 An open, cited map of how the brain and body are wired.
 
 Axonarium is an open, AI-maintained map of how the brain is wired, where every connection is backed by a cited source, tagged by species and method, and exportable straight into simulations. It starts with the amygdala and is built to grow across the whole brain and body, giving neuroscientists and AI builders a trustworthy, machine-readable answer to how real circuits connect across rat, mouse and human.
@@ -28,7 +30,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Citing
 
-Cite Axonarium with the metadata in [CITATION.cff](CITATION.cff). GitHub's "Cite this repository" button reads it.
+Cite Axonarium with the metadata in [CITATION.cff](CITATION.cff). GitHub's "Cite this repository" button reads it. Every release is archived on Zenodo; [doi:10.5281/zenodo.23381642](https://doi.org/10.5281/zenodo.23381642) cites all versions and resolves to the latest.
 
 ## Licences
 
