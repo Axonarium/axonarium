@@ -38,3 +38,5 @@ extra:
   extract.object_name: NAc
   verify.note: The text states BLA inputs are more widespread in NAc than DMS referring to Fig. 2a, but the figure caption
     only describes amygdalostriatal tracing, so the NAc labelling cannot be confirmed from this text.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the evidence is in Fig. 2a, which the text-only verifier can''t
+    see.'

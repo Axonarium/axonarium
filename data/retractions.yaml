@@ -1,4 +1,321 @@
 # Every deleted or retracted claim needs an entry here, added in the same pull
 # request. Entries are never edited or removed. The maintainer owns this file
 # (.github/CODEOWNERS), so these changes always get human review: ADR 0006.
-entries: []
+entries:
+- claim: clm-c9a5xy220y
+  action: deleted
+  reason: 'Review queue #116: Chemogenetic activation recorded as optogenetic circuit mapping; chemogenetic results are not
+    connectivity claims (question 5).'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-m2fn55wgtf
+  action: deleted
+  reason: 'Review queue #116: Chemogenetic activation recorded as optogenetic circuit mapping; chemogenetic results are not
+    connectivity claims (question 5).'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-78g02vpyvj
+  action: deleted
+  reason: 'Review queue #116: Chemogenetic activation recorded as optogenetic circuit mapping; chemogenetic results are not
+    connectivity claims (question 5).'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-y73zz6rkq7
+  action: deleted
+  reason: 'Review queue #116: Chemogenetic activation recorded as optogenetic circuit mapping; chemogenetic results are not
+    connectivity claims (question 5).'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-swrjeqp16e
+  action: deleted
+  reason: 'Review queue #116: The axons were labelled by retrograde AAVrg, not an anterograde tracer, and no evidence class
+    fits.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-na1h1z5tsn
+  action: deleted
+  reason: 'Review queue #116: The axons were labelled by retrograde AAVrg, not an anterograde tracer, and no evidence class
+    fits.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-d12r90m1kn
+  action: deleted
+  reason: 'Review queue #116: The cited figure is a viral scheme for terminal photometry, not a tracing result.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-8et7jhfc4m
+  action: deleted
+  reason: 'Review queue #116: The cited panels are fibre photometry of thalamic terminals and show only the injection and
+    fibre placement, not tracing.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-7ptq0sk14e
+  action: deleted
+  reason: 'Review queue #116: The absent result rests on PACAP-EGFP reporter fibres, not an anterograde tracer from BMA.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-z9abffegwe
+  action: deleted
+  reason: 'Review queue #116: The evidence is a slice that preserved or cut the pathway, with whole-cell recording, not electrical
+    stimulation.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-hcep52rhkr
+  action: deleted
+  reason: 'Review queue #116: Direction reversed: the spikes were antidromic in LA axons projecting to BL.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-n92r4xwx9z
+  action: deleted
+  reason: 'Review queue #116: BL stimulation recruits LA principal neurons antidromically, so it doesn''t show BL input to
+    LA SOM+ cells.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-s9bd5enk4j
+  action: deleted
+  reason: 'Review queue #116: BL stimulation recruits LA recurrent circuitry antidromically, so it doesn''t show BL input
+    to LA PV+ cells.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-e5zzxrhpx8
+  action: deleted
+  reason: 'Review queue #116: The paper shows only the injection site, never labelled fibres in CeA.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-v7b78t765g
+  action: deleted
+  reason: 'Review queue #116: The cited Extended Data Fig. 10a shows no labelled cells at 48 h.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-37hzv9d78g
+  action: deleted
+  reason: 'Review queue #116: The cited Extended Data Fig. 10a shows no labelled cells at 48 h.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-fgnz1rzh3q
+  action: deleted
+  reason: 'Review queue #116: The paper shows cortical terminals gating BLA terminals inside the NAc, not a PFC to BLA projection.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-tgyrbvheqs
+  action: deleted
+  reason: 'Review queue #116: The paper shows cortical and BLA terminals interacting inside the NAc, not a BLA to PFC projection.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-5r5r66ah2m
+  action: deleted
+  reason: 'Review queue #116: The medial amygdala as the source of the Ucn3 boutons is only cited from earlier work.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-r4y422x2tr
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-g4nje223aj
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-m7es632v2t
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-py85w3rp6n
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-3w3s8vxn95
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-ancj1zw5tg
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-cggy3vvzty
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-e4y1rqc7p9
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-maewyh947e
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-vmsa9zyvja
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-ytnzgxv636
+  action: deleted
+  reason: 'Review queue #116: The target appears only in a figure''s list of abbreviations, with no labelling result described.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-mdgb8e49qa
+  action: deleted
+  reason: 'Review queue #116: The evidence is only in the Methods, which say what was done, not what was found.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-avew9z2paa
+  action: deleted
+  reason: 'Review queue #116: The evidence is only in the Methods, which say what was done, not what was found.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-f251w35wy6
+  action: deleted
+  reason: 'Review queue #116: The evidence is only in the Methods, which say what was done, not what was found.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-a17w2a6eht
+  action: deleted
+  reason: 'Review queue #116: Terminals in BNST are only implied by photoinhibition, not shown.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-1s2876z90h
+  action: deleted
+  reason: 'Review queue #116: Area PV was given the term for secondary somatosensory cortex, and no UBERON term names PV.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-gpbn6n8das
+  action: deleted
+  reason: 'Review queue #116: The sublenticular extended amygdala was given the term for the substantia innominata, and no
+    UBERON term names it.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-zc019jx22f
+  action: deleted
+  reason: 'Review queue #116: The magnocellular preoptic nucleus was given the term for the ventral pallidum, and no mammalian
+    UBERON term names it.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'
+- claim: clm-qt3vte05ek
+  action: deleted
+  reason: 'Review queue #116: The paper never tests CeA to NAc: picrotoxin only showed negligible GABAergic input, and the
+    absence of a CeA projection is cited from earlier work.'
+  curation:
+    by: human
+    orcid: 0009-0009-8339-4757
+    role: curator
+    date: '2026-10-14'

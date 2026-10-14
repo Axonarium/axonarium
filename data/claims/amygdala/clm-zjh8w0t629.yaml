@@ -10,7 +10,7 @@ object:
   atlas: allen-mouse-ccf-2017
 species: NCBITaxon:10090
 evidence_class: retrograde_tracer
-result: absent
+result: ambiguous
 sign: unknown
 source:
   doi: 10.1016/j.npep.2018.02.003
@@ -38,3 +38,5 @@ extra:
   extract.object_name: VTA
   verify.note: The paper says only the vast majority of CPu FG+ cells lacked GFP, with little to no colocalization, so a result
     of absent overstates it.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Result changed from absent to ambiguous: the paper reports little
+    to no colocalisation.'

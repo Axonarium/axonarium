@@ -1,8 +1,7 @@
 id: clm-zqrseqzkst
 subject:
   type: region
-  id: MBA:313
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0001945
 predicate: projects_to
 object:
   type: region
@@ -38,3 +37,4 @@ extra:
   extract.object_name: lateral posterior nucleus (LP)
   verify.note: The subject is coded as midbrain (MBA:313) rather than the superior colliculus the paper actually labelled,
     though the CTB evidence itself fits.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from Midbrain to superior colliculus.'

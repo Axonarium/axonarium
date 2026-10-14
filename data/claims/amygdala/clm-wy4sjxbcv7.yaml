@@ -12,11 +12,6 @@ species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: excitatory
-measurements:
-- quantity: connection_probability
-  value: 1.0
-  unit: '1'
-  n: 9
 source:
   doi: 10.7554/elife.74758
   pmid: '34845987'
@@ -44,3 +39,5 @@ extra:
   extract.object_name: vHBA neurons (BA-projecting vH neurons)
   verify.note: The paper reports no connection probability of 1.0 for vHBA cells; the paired designs used 9, 8 and 10 pairs,
     so this number is unsupported.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: the paper reports no connection probability
+    of 1.0.'

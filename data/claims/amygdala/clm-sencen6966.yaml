@@ -10,7 +10,6 @@ species: NCBITaxon:10116
 evidence_class: anterograde_tracer
 result: present
 sign: unknown
-strength: strong
 source:
   doi: 10.1186/1471-2202-8-103
   pmid: '18047654'
@@ -37,3 +36,5 @@ extra:
   extract.object_name: nucleus accumbens (core and lateral shell)
   verify.note: The strong rating is supported only for the core after a single layer III injection, while the lateral shell
     got just some fibres, so the merged claim overstates strength.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Strength dropped: dense labelling holds for the accumbens core only,
+    not the lateral shell.'

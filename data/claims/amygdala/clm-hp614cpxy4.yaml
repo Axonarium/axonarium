@@ -12,25 +12,6 @@ species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: modulatory
-measurements:
-- quantity: connection_probability
-  value: 0.214
-  unit: '1'
-  n: 42
-- quantity: connection_probability
-  value: 0.095
-  unit: '1'
-  n: 42
-- quantity: conduction_delay
-  value: 129.3
-  unit: ms
-  sd: 108.9
-  n: 9
-- quantity: conduction_delay
-  value: 172.6
-  unit: ms
-  sd: 77.01
-  n: 4
 source:
   doi: 10.7554/elife.18247
   pmid: '28708061'
@@ -60,3 +41,6 @@ extra:
   extract.object_name: BLA
   verify.note: Voltammetry, single-unit proportions (21.4%/9.5% of 42 units), latencies and cFos/propranolol data match the
     paper.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurements dropped: 21.4% and 9.5% are shares of responding BLA
+    units, and 129 and 172 ms are latencies of a slow noradrenergic effect, not conduction delays. Flagged in review; the
+    verifier agreed.'

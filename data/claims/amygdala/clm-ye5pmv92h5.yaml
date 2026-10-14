@@ -9,18 +9,7 @@ object:
 species: NCBITaxon:10116
 evidence_class: optogenetic_circuit_mapping
 result: present
-sign: inhibitory
-measurements:
-- quantity: conduction_delay
-  value: 23.3
-  unit: ms
-  sem: 1.9
-  n: 7
-- quantity: conduction_delay
-  value: 25.9
-  unit: ms
-  sem: 1.6
-  n: 10
+sign: unknown
 source:
   doi: 10.1523/eneuro.0132-19.2019
   pmid: '31548367'
@@ -48,3 +37,5 @@ extra:
   extract.object_name: BLA principal neurons
   verify.note: The dmPFC-evoked IPSCs are blocked by DNQX, indicating a polysynaptic feedback circuit rather than an inhibitory
     dmPFC connection.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Sign set to unknown: the IPSCs are DNQX-sensitive feed-forward inhibition.
+    Delays dropped: they are the polysynaptic IPSCs'' latencies.'

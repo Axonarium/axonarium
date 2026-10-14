@@ -18,9 +18,9 @@ source:
   pmid: '21991375'
   pmcid: PMC3186811
   locator: Fig. 1A-B, Fig. 3, Fig. 4C, Fig. 5B, Fig. 6B
-paraphrase: Both CTB and fluorescent microspheres injected into the VTA retrogradely labeled arcuate POMC neurons, about 5-6%
-  of them. Contralateral labeling was significantly lower than ipsilateral, and labeled cells were distributed evenly along
-  the arcuate.
+paraphrase: Both CTB and fluorescent microspheres injected into the VTA retrogradely labelled arcuate POMC neurons, about
+  5-6% of them, distributed evenly along the arcuate. Fewer CTB cells were labelled contralaterally than ipsilaterally, but
+  the share of POMC cells labelled did not differ between sides.
 curation:
   by: agent
   role: extractor
@@ -40,3 +40,5 @@ extra:
   extract.object_name: ventral tegmental area
   verify.note: The significantly lower contralateral VTA labeling applies to total CTB cells; the percent of POMC cells labeled
     did not differ between sides.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Paraphrase corrected: the side difference is in total CTB cells,
+    not POMC cells.'

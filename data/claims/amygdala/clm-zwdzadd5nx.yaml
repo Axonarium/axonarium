@@ -12,25 +12,14 @@ species: NCBITaxon:10090
 evidence_class: retrograde_tracer
 result: present
 sign: unknown
-measurements:
-- quantity: connection_probability
-  value: 0.0719
-  unit: '1'
-  sem: 0.0116
-  n: 5
-- quantity: connection_probability
-  value: 0.0955
-  unit: '1'
-  sem: 0.0215
-  n: 4
 source:
   doi: 10.3389/fnana.2021.741868
   pmid: '34566585'
   pmcid: PMC8460764
   locator: Fig. 4, Table 1; Fig. 5, Table 2
-paraphrase: CTb injected into the LH retrogradely labelled ipsilateral NAc neurons, about 7% of them mCherry-labelled NPY
-  neurons. In a second experiment, EnvA-pseudotyped rabies injected into the LH infected TVA-expressing NAc NPY neurons, labelling
-  about 9.6% of the NPY neurons.
+paraphrase: CTb injected into the LH retrogradely labelled ipsilateral NAc neurons, and about 7% of mCherry-labelled NAc NPY
+  neurons were CTb-positive. In a second experiment, EnvA-pseudotyped rabies injected into the LH infected about 9.6% of the
+  TVA-expressing NAc NPY neurons.
 curation:
   by: agent
   role: extractor
@@ -50,3 +39,5 @@ extra:
   extract.object_name: LH
   verify.note: The 7.19% is the share of mCherry NPY neurons that were CTb-positive, not the share of CTb-labelled neurons
     that were NPY, so the paraphrase reverses the ratio.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Paraphrase corrected: about 7% of NPY neurons were CTb-positive,
+    not the reverse. Measurements dropped: shares of projecting neurons are not per-pair connection probabilities.'

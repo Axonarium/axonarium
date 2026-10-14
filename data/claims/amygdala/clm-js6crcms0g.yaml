@@ -11,7 +11,7 @@ object:
 species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
-sign: excitatory
+sign: unknown
 source:
   doi: 10.1038/nn.4510
   pmid: '28218915'
@@ -40,3 +40,5 @@ extra:
   extract.object_name: ventral hippocampus (vHPC)
   verify.note: Short-latency vHPC responses and the CNQX block of the behavioural effect are reported, but the text never
     states that CNQX suppressed the evoked potentials, which leaves the excitatory sign only indirectly supported.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Sign set to unknown: the text never says CNQX blocked the evoked
+    potentials.'

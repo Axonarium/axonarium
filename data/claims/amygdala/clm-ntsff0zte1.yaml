@@ -12,11 +12,6 @@ species: NCBITaxon:10090
 evidence_class: electrical_stimulation
 result: present
 sign: unknown
-measurements:
-- quantity: conduction_delay
-  value: 13.1
-  unit: ms
-  sem: 1.2
 source:
   doi: 10.3389/fnbeh.2015.00007
   pmid: '25688195'
@@ -44,3 +39,5 @@ extra:
   extract.object_name: prelimbic/infralimbic area of the mPFC
   verify.note: The 13.1 ± 1.2 ms value is the latency to peak amplitude of the first fPSP component, not a conduction delay;
     onset latencies are reported separately in Table 1.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 13.1 ms is a time-to-peak latency, not a conduction
+    delay.'

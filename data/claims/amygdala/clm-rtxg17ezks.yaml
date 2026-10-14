@@ -12,11 +12,6 @@ species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: excitatory
-measurements:
-- quantity: connection_probability
-  value: 0.571
-  unit: '1'
-  n: 14
 source:
   doi: 10.3389/fnsyn.2015.00012
   pmid: '26257641'
@@ -44,3 +39,5 @@ extra:
   extract.object_name: nucleus accumbens (NAc) MSNs
   verify.note: The 8/14 (0.571) figure is the fraction of MSNs showing tLTP, not a connection probability, so the number is
     misattributed.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 8 of 14 is the share of MSNs showing tLTP,
+    not a connection probability.'

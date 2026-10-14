@@ -6,12 +6,11 @@ subject:
 predicate: projects_to
 object:
   type: region
-  id: MBA:835
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0002743
 species: NCBITaxon:10090
 evidence_class: anterograde_tracer
 result: present
-sign: inhibitory
+sign: unknown
 source:
   doi: 10.1097/aln.0000000000005279
   pmid: '39466630'
@@ -39,3 +38,5 @@ extra:
   extract.object_name: basal forebrain (BF)
   verify.note: Fig. 5C does show ChR2-mCherry fibres in the basal forebrain, but the paper never establishes an inhibitory
     sign, so sign should be unknown; mapping the basal forebrain to ventral pallidum is also not specified by the paper.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Object remapped from ventral pallidum to basal forebrain, as the
+    paper names it. Sign set to unknown: the paper doesn''t establish it.'

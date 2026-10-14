@@ -6,8 +6,7 @@ subject:
 predicate: projects_to
 object:
   type: region
-  id: MBA:313
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0001945
 species: NCBITaxon:10090
 evidence_class: anterograde_tracer
 result: present
@@ -38,3 +37,4 @@ extra:
   extract.object_name: superior colliculus
   verify.note: The paper specifically reports the superior colliculus, but the claim's object is mapped to the whole midbrain
     rather than the superior colliculus term.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Object remapped from Midbrain to superior colliculus.'

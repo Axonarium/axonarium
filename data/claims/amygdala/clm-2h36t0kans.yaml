@@ -17,8 +17,8 @@ source:
   pmid: '22007159'
   pmcid: PMC3159391
   locator: Fig. 3; Table 1
-paraphrase: A fluorogold injection in the ventromedial olfactory tubercle retrogradely labeled neurons in layers 2 and 3 of
-  the nucleus of the lateral olfactory tract.
+paraphrase: A fluorogold injection centred in the ventromedial olfactory tubercle retrogradely labelled neurons in the nucleus
+  of the lateral olfactory tract, among the cortical amygdaloid nuclei that held most of the labelling.
 curation:
   by: agent
   role: extractor
@@ -38,3 +38,5 @@ extra:
   extract.object_name: olfactory tubercle
   verify.note: LOT labeling is reported, but the layer 2 and 3 detail most likely refers to the three cortical nuclei listed
     after LOT.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Paraphrase corrected: the paper''s layer 2 and 3 detail is ambiguous
+    about which nuclei it covers, so it is left out.'

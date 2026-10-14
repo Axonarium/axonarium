@@ -10,9 +10,8 @@ object:
   atlas: allen-mouse-ccf-2017
 species: NCBITaxon:10090
 evidence_class: anterograde_tracer
-result: present
+result: ambiguous
 sign: unknown
-strength: weak
 source:
   doi: 10.1523/eneuro.0204-18.2018
   pmid: '29971248'
@@ -39,3 +38,5 @@ extra:
   extract.object_name: shell or core of VMH
   verify.note: The paper describes only 'very little' mCherry in VMH and frames it as a negative result, so present/weak cannot
     be settled.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Result changed to ambiguous and strength dropped: the paper reports
+    very little mCherry and frames it as negative.'

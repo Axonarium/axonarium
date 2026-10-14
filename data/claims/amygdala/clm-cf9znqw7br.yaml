@@ -6,8 +6,7 @@ subject:
 predicate: projects_to
 object:
   type: region
-  id: MBA:315
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0000451
 species: NCBITaxon:10090
 evidence_class: anterograde_tracer
 result: present
@@ -39,3 +38,4 @@ extra:
   extract.object_name: prefrontal cortex (PFC)
   verify.note: The paper measured prefrontal cortex specifically, so mapping the target to the whole Isocortex names a broader
     region than the paper means.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Object remapped from Isocortex to prefrontal cortex.'

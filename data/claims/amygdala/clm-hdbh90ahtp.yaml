@@ -12,11 +12,6 @@ species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: unknown
-measurements:
-- quantity: connection_probability
-  value: 0.964
-  unit: '1'
-  n: 27
 source:
   doi: 10.1186/s13041-025-01188-9
   pmid: '40001162'
@@ -43,3 +38,5 @@ extra:
   extract.object_name: anterior cingulate cortex (ACC)
   verify.note: The 96.4% figure is the share of shock-responding cells whose response was suppressed during terminal inhibition,
     not a connection probability, so the number is mislabelled.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 96.4% is the share of shock-responsive cells
+    suppressed, not a connection probability.'
