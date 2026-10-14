@@ -25,11 +25,11 @@ One row per paper, sorted by `key`: its DOI, else PubMed ID, else PubMed Central
 | `europe_pmc` | Europe PMC's source and ID, such as `MED:34001873` or `PPR:PPR123` |
 | `title`, `year`, `journal` | Bibliographic metadata; a preprint's journal is its server |
 | `types` | Europe PMC's publication types, such as `research-article` or `review` |
-| `open_access`, `license`, `full_text` | Whether the paper is open access, under which licence (as Europe PMC gives it), and whether Europe PMC holds its full text. Extraction reads papers that are both: Europe PMC serves full text only for its open-access subset |
+| `open_access`, `license`, `full_text` | Whether the paper is open access, under which licence (as Europe PMC gives it), and whether Europe PMC holds its full text. Extraction reads papers whose full text Europe PMC holds: it serves its open-access subset, and PMC's open data on AWS serves author manuscripts (ADR 0030) |
 | `queries` | The queries that found it |
 | `first_seen` | The day the scout first found it: a run's new papers are the extractor's next batch |
 
-Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3) reads open-access full text from Europe PMC when it needs it.
+Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3) reads full text from Europe PMC, or else from PMC's open data (ADR 0030), when it needs it.
 
 ## Reading each paper once
 
@@ -59,7 +59,7 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 
 | Column | Holds |
 | --- | --- |
-| `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unavailable` (Europe PMC had no full text to give), `unfetched` (Europe PMC failed or couldn't be reached; tried again next run, though an internal server error counts as a read, so a paper Europe PMC fails on twice is set aside), or why the request failed |
+| `outcome` | `claims` (it gave claims), `none` (it tests no connection the extractor could state), `screened` (the hidden-text screen flagged it, so no model read it), `unreadable` (its full text didn't parse), `unavailable` (neither Europe PMC nor PMC's open data had full text to give), `unfetched` (Europe PMC failed or couldn't be reached; tried again next run, though an internal server error counts as a read, so a paper Europe PMC fails on twice is set aside), or why the request failed |
 | `claims`, `dropped` | Claims written, and drafts dropped for naming a region outside the lexicon or breaking the schema's rules |
 | `attempts` | How many times a model has read it for this step |
 | `model`, `prompt`, `date` | Which model and prompt version extracted (the fallback, when it answered a refusal), and when |

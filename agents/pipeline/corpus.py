@@ -4,9 +4,12 @@ import csv
 from dataclasses import dataclass
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[2]
 CORPUS = ROOT / "corpus"
 MANIFEST = CORPUS / "manifest.csv"
+ALLOWLIST = ROOT / "data" / "allowlist.yaml"
 
 
 def read_manifest(path: Path = MANIFEST) -> list[dict]:
@@ -123,3 +126,9 @@ def set_aside(manifest: list[dict], ledger: dict[str, dict], outcome: str, finis
         if row and row.get(outcome) not in finished and int(row.get("attempts") or 0) >= MAX_ATTEMPTS:
             found.append(f"{paper['key']}: {row.get(outcome)}")
     return found
+
+
+def preprint_servers(path: Path = ALLOWLIST) -> set[str]:
+    """The preprint servers claims may cite (data/allowlist.yaml, ADR 0015). A claim citing any other would fail CI."""
+    accepted = yaml.safe_load(path.read_text(encoding="utf-8"))["accepted"]
+    return {venue for entry in accepted if entry.get("kind") == "preprint" for venue in entry.get("venues") or []}
