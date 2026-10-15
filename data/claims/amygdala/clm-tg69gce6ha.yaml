@@ -12,11 +12,6 @@ species: NCBITaxon:10090
 evidence_class: electrical_stimulation
 result: present
 sign: unknown
-measurements:
-- quantity: conduction_delay
-  value: 14.3
-  unit: ms
-  sem: 1.0
 source:
   doi: 10.3389/fnbeh.2015.00007
   pmid: '25688195'
@@ -44,3 +39,5 @@ extra:
   extract.object_name: prelimbic/infralimbic area of the mPFC
   verify.note: The 14.3 ± 1 ms value is a time-to-peak latency, so calling it a conduction delay misstates the measure; onset
     latencies are in Table 1.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 14.3 ms is a time-to-peak latency, not a conduction
+    delay.'

@@ -10,11 +10,6 @@ species: NCBITaxon:10116
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: unknown
-measurements:
-- quantity: conduction_delay
-  value: 12.7
-  unit: ms
-  n: 5
 source:
   doi: 10.3389/fnbeh.2019.00087
   pmid: '31114488'
@@ -45,3 +40,5 @@ extra:
   extract.object_name: CA1 (pyramidal layer of intermediate hippocampus)
   verify.note: The 12.7 ms value is the CA1 latency to peak from light onset, not a conduction delay; the BLA-to-CA1 lag the
     paper reports is 6.03 ms.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 12.7 ms is CA1''s latency to peak from light
+    onset, not a conduction delay.'

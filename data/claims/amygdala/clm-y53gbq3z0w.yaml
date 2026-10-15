@@ -1,8 +1,7 @@
 id: clm-y53gbq3z0w
 subject:
   type: region
-  id: MBA:313
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0001945
 predicate: synapses_onto
 object:
   type: region
@@ -39,3 +38,4 @@ extra:
   extract.object_name: lateral posterior nucleus (LP)
   verify.note: The subject is mapped to the whole midbrain (MBA:313), but the paper specifically means the superior colliculus,
     which has its own term.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from Midbrain to superior colliculus.'

@@ -37,3 +37,5 @@ extra:
   extract.object_name: BLA, basolateral nucleus of the amygdala
   verify.note: The 4 and 7 BLA cells are pooled across both stimulation sites, so the text doesn't show that any of them responded
     to MGN rather than Te3.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the paraphrase already says the BLA counts are pooled across
+    MGN and Te3 stimulation.'

@@ -37,3 +37,5 @@ extra:
   extract.subject_name: LA (lateral amygdala)
   extract.object_name: vH (ventral hippocampus, CA1/subiculum)
   verify.note: The text never names LA as containing labelled cells, and the Fig 1D caption gives no LA proportion.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the evidence is in Fig. 1C,D, which the text-only verifier
+    can''t see.'

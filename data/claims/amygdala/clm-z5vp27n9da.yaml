@@ -5,8 +5,7 @@ subject:
 predicate: projects_to
 object:
   type: region
-  id: MBA:381
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0002038
 species: NCBITaxon:10090
 evidence_class: anterograde_tracer
 result: present
@@ -37,3 +36,5 @@ extra:
   extract.subject_name: CeA-PKCδ neurons
   extract.object_name: substantia nigra (SN)
   verify.note: The paper reports labeling in 'substantia nigra' without specifying the reticular part named in the claim.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Object remapped from the reticular part to substantia nigra, as
+    the paper names it.'

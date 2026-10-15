@@ -13,10 +13,6 @@ evidence_class: transsynaptic_tracer
 result: present
 sign: unknown
 strength: strong
-measurements:
-- quantity: fraction_of_labelled_neurons
-  value: 0.1808
-  unit: '1'
 source:
   doi: 10.3389/fnagi.2022.960868
   pmid: '36062147'
@@ -43,3 +39,5 @@ extra:
   extract.object_name: VAL/VM
   verify.note: The 18.08% figure is the middle-aged male share, not the value for the strong connection described, where VAL/VM
     exceeded 40%.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 18.08% is the middle-aged male share, not the
+    strong connection''s value.'

@@ -10,7 +10,6 @@ species: NCBITaxon:10116
 evidence_class: single_neuron_reconstruction
 result: present
 sign: unknown
-strength: weak
 source:
   doi: 10.1371/journal.pone.0087709
   pmid: '24504335'
@@ -37,3 +36,4 @@ extra:
   extract.object_name: ventral pallidum
   verify.note: The Fig. 2B axon has few varicosities in the ventral pallidum, but the Fig. 3B axon appears to innervate it
     profusely, so the 'weak' strength is doubtful.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Strength dropped: one reconstructed axon contradicts weak.'

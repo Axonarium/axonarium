@@ -36,3 +36,5 @@ extra:
   extract.object_name: PL / mPFC
   verify.note: The paper expressed opsins in BLA to manipulate terminals in mPFC, but the available text never shows labelled
     terminals, and that histology is only in a supplementary figure that is not described.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the evidence is in Supplementary Fig. S8a, which the text-only
+    verifier can''t see.'

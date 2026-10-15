@@ -10,11 +10,6 @@ species: NCBITaxon:10116
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: excitatory
-measurements:
-- quantity: conduction_delay
-  value: 0.0
-  unit: ms
-  n: 12
 source:
   doi: 10.1177/17448069241226960
   pmid: '38172075'
@@ -43,3 +38,4 @@ extra:
   extract.object_name: CeLC
   verify.note: The functional IL→CeLC excitatory connection is supported, but the attached number (conduction delay 0.0 ms)
     is not a value the paper reports for this connection.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: the paper reports no 0 ms conduction delay.'

@@ -18,10 +18,6 @@ measurements:
   unit: ms
   sem: 0.3
   n: 28
-- quantity: connection_probability
-  value: 0.333
-  unit: '1'
-  n: 27
 source:
   doi: 10.1523/eneuro.0175-18.2018
   pmid: '29911171'
@@ -49,3 +45,5 @@ extra:
   extract.object_name: AOB mitral cells (MCs)
   verify.note: The 0.333 value (9 of 27 cells) is the fraction of MCs whose firing was suppressed, not a connection probability,
     and 4 of 27 cells were facilitated instead.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Connection probability dropped: 9 of 27 is the share of mitral cells
+    whose firing was suppressed.'

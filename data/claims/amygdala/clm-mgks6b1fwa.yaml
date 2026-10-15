@@ -36,3 +36,5 @@ extra:
   extract.object_name: BLpc
   verify.note: The subject is the anterior basomedial nucleus (BMA), but the ID given is the one used for the posterior BMpc,
     so the region named is wrong.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: UBERON:0002889 is the basomedial nucleus as a whole, including
+    its anterior part, so the ID fits.'

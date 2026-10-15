@@ -10,11 +10,6 @@ species: NCBITaxon:10116
 evidence_class: paired_recording
 result: present
 sign: inhibitory
-measurements:
-- quantity: connection_probability
-  value: 0.222
-  unit: '1'
-  n: 18
 source:
   doi: 10.1038/s41593-024-01676-6
   pmid: '38871992'
@@ -42,3 +37,5 @@ extra:
   verify.note: The paired recordings support inhibitory connections from 4 of 18 recruited interneurons onto non-recruited
     pyramidal neurons, but 0.222 is the share of interneurons making any connection, not a per-pair connection probability
     as this paper defines it.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 4 of 18 is the share of interneurons making
+    any connection, not a per-pair probability.'
