@@ -230,6 +230,12 @@ def number(quantity: str, value: float, **parts) -> extract.DraftMeasurement:
     return extract.DraftMeasurement(quantity=quantity, value=value, **{k: parts.get(k) for k in ("sd", "sem", "ci_low", "ci_high", "n")})
 
 
+def test_a_conduction_delay_over_50_ms_is_left_out_as_a_response_latency():
+    kept, left_out = extract.measurements([number("conduction_delay", 6.3, n=4), number("conduction_delay", 129.3, sd=108.9)])
+    assert kept == [{"quantity": "conduction_delay", "value": 6.3, "unit": "ms", "n": 4}]
+    assert left_out == ["conduction_delay 129.3 ms is over 50 ms, a response latency"]
+
+
 def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():
     lexicon = extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"])
     paper = PAPERS[0]
@@ -293,9 +299,3 @@ def test_a_paper_europe_pmc_always_fails_on_is_set_aside(tmp_path):
         "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]
     assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, ledger.read(), "extract@0.3.0")] == [
         "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]  # unfetched is tried again; unavailable is done
-
-
-def test_a_conduction_delay_over_50_ms_is_left_out_as_a_response_latency():
-    kept, left_out = extract.measurements([number("conduction_delay", 6.3, n=4), number("conduction_delay", 129.3, sd=108.9)])
-    assert kept == [{"quantity": "conduction_delay", "value": 6.3, "unit": "ms", "n": 4}]
-    assert left_out == ["conduction_delay 129.3 ms is over 50 ms, a response latency"]
