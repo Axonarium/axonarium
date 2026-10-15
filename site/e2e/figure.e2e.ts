@@ -19,7 +19,7 @@ test("the brain viewer's figures", async ({ page }) => {
 
   await expect(png).toBeEnabled(); // once the 3D view has registered its capture
   const [threeD] = await Promise.all([page.waitForEvent("download"), png.click()]);
-  expect(threeD.suggestedFilename()).toMatch(/^axonarium-outputs-all-\d{4}-\d{2}-\d{2}\.png$/);
+  expect(threeD.suggestedFilename()).toMatch(/^axonarium-mouse-amygdala-outputs-all-\d{4}-\d{2}-\d{2}\.png$/); // species and circuit
   const image = await contents(threeD);
   expect(image.subarray(1, 4).toString()).toBe("PNG");
   expect(image.readUInt32BE(16)).toBeGreaterThanOrEqual(2 * 720); // framed, at twice the size
