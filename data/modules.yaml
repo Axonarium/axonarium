@@ -33,6 +33,7 @@ modules:
       - MBA:714  # orbital area (ORB)
       - MBA:184  # frontal pole (FRP)
       - UBERON:0004167  # orbitofrontal cortex, which no Allen region maps to
+      - UBERON:4450000  # medial prefrontal cortex, which mouse claims may name (ADR 0031)
     reason: >-
       The rodent medial prefrontal cortex (anterior cingulate, prelimbic and infralimbic areas), the orbital areas and
       the frontal pole. Neither UBERON nor the Allen atlas groups them under one parent, so ACA, ORB and FRP are
