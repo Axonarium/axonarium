@@ -8,6 +8,8 @@ export interface RegionName {
   acronym: string | null;
   name: string;
   amygdala?: boolean | null;
+  /** The modules an atlas region belongs to (ADR 0034). */
+  modules?: string[] | null;
   /** What the ID names: an atlas region (the default, with a page of its own), a UBERON term, or a neuron type. */
   kind?: "region" | "uberon" | "neuron_type";
 }
@@ -65,6 +67,17 @@ export function uberonNames(terms: string[], mapped: MappedRegion[]): Record<str
     const tops = pool.filter((r) => !inPool.has(r.parent ?? "")).sort(byId);
     const label = group.map((r) => r.uberon_label).find((l): l is string => !!l);
     names[term] = { id: term, acronym: tops.length === 1 ? tops[0].acronym : null, name: label ?? tops[0].name, kind: "uberon" };
+  }
+  return names;
+}
+
+/** Names for UBERON terms no atlas region names, from UBERON's labels for the modules' terms (ADR 0034): the
+ * amygdala itself, say, or the basolateral complex, which rat claims name and no Allen region maps to. */
+export function moduleTermNames(terms: string[], modules: { labels?: Record<string, string> | null }[]): Record<string, RegionName> {
+  const names: Record<string, RegionName> = {};
+  for (const term of new Set(terms)) {
+    const label = modules.map((m) => m.labels?.[term]).find((l): l is string => !!l);
+    if (label) names[term] = { id: term, acronym: null, name: label, kind: "uberon" };
   }
   return names;
 }

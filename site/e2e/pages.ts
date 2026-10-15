@@ -20,6 +20,7 @@ const region = tables.regions.find((r) => r.amygdala) ?? tables.regions[0];
 export const PAGES: Record<string, string> = {
   home: "/",
   brain: "/brain",
+  "rat brain": "/brain/rat",
   explore: "/explore",
   regions: "/regions",
   region: regionHref(region.id),

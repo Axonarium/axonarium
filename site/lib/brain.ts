@@ -1,7 +1,9 @@
 // The 3D brain view's data: connections with their strongest projection density, and arc geometry.
 // Meshes and centroids come from the build's mesh export (build/meshes.py, ADR 0011), in millimetres with
-// x towards the animal's right, y up and z posterior.
+// x towards the animal's right, y up and z posterior. The view shows one module at a time, the circuit whose
+// outputs and inputs it draws (ADR 0034).
 
+import type { RegionName } from "./regions";
 import type { Edge, Gap, Measurement } from "./types";
 
 export type Point = [number, number, number];
@@ -18,7 +20,7 @@ export interface BrainEdge {
   papers: number;
 }
 
-/** Gap mode (ADR 0027): an untested connection from an amygdala region nobody has injected, and the regions whose
+/** Gap mode (ADR 0027): an untested connection from a module's region nobody has injected, and the regions whose
  * connections to the same target suggest it. */
 export interface BrainGap {
   id: string;
@@ -58,6 +60,52 @@ export interface BrainRegion {
   centroid: Point;
   /** In the amygdala, or one of its subdivisions (from UBERON; ADR 0009). */
   amygdala?: boolean;
+  /** The modules the region belongs to (ADR 0034); absent from meshes exported before modules. */
+  modules?: string[];
+}
+
+/** The species the brain view switches between (ADR 0034). Human waits for human connectivity (Phase 7c). */
+export type Species = "mouse" | "rat";
+
+/** A module of data/modules.yaml: a circuit the brain view can centre on. */
+export interface BrainModule {
+  id: string;
+  name: string;
+}
+
+/** The module the brain view opens on when none is chosen, the one Axonarium started with. */
+export const FIRST_MODULE: BrainModule = { id: "amygdala", name: "Amygdala" };
+
+/** Whether a region belongs to a module. Meshes exported before modules know only the amygdala. */
+export function inModule(region: BrainRegion | undefined, module: string): boolean {
+  if (!region) return false;
+  return region.modules ? region.modules.includes(module) : module === FIRST_MODULE.id && !!region.amygdala;
+}
+
+/** "the amygdala", "the hippocampal formation": a module's name inside a sentence. */
+export const moduleText = (module: BrainModule) => `the ${module.name.charAt(0).toLowerCase()}${module.name.slice(1)}`;
+
+/**
+ * The regions of a species with no meshes yet (the rat; ADR 0034), for the network view: named as the site names them
+ * (UBERON terms by the atlas regions mapped to them; lib/regions.ts), the ID where nothing names them, and placed in
+ * the modules whose UBERON terms include them.
+ */
+export function namedRegions(ids: string[], names: Record<string, RegionName>, modules: { id: string; terms: string[] }[]) {
+  return Object.fromEntries(
+    ids.map((id): [string, BrainRegion] => {
+      const name = names[id];
+      return [
+        id,
+        {
+          acronym: name?.acronym ?? name?.name ?? id,
+          name: name?.name ?? id,
+          file: "",
+          centroid: [0, 0, 0],
+          modules: modules.filter((m) => m.terms.includes(id)).map((m) => m.id),
+        },
+      ];
+    }),
+  );
 }
 
 /** index.json of one atlas's meshes. */
@@ -121,7 +169,7 @@ export interface NetworkNode {
   id: string;
   acronym: string;
   name: string;
-  /** An amygdala region with injections. */
+  /** A module's region at the module's end of a connection shown (with injections, among the outputs). */
   injected: boolean;
   /** Connections shown into this region. */
   inputs: number;
@@ -131,7 +179,7 @@ export interface NetworkLink {
   id: string;
   source: string;
   target: string;
-  /** The amygdala end, kept as an ID: the graph library replaces `source` and `target` with node objects. */
+  /** The module's end, kept as an ID: the graph library replaces `source` and `target` with node objects. */
   from: string;
   density: number | null;
   accepted: number;
@@ -139,19 +187,24 @@ export interface NetworkLink {
 
 export type Direction = "outputs" | "inputs";
 
-/** The amygdala end of a connection: its source among the outputs, its target among the inputs. */
+/** The module's end of a connection: its source among the outputs, its target among the inputs. */
 export function hubOf(edge: BrainEdge, direction: Direction): string {
   return direction === "outputs" ? edge.source : edge.target;
 }
 
-/** The amygdala's outputs (from one of its regions) or its inputs (into one, from outside it), among the drawn
- * regions. Connections within the amygdala are outputs. */
-export function directed(edges: BrainEdge[], regions: Record<string, BrainRegion>, direction: Direction): BrainEdge[] {
+/** A module's outputs (from one of its regions) or its inputs (into one, from outside it), among the drawn
+ * regions. Connections within the module are outputs. */
+export function directed(
+  edges: BrainEdge[],
+  regions: Record<string, BrainRegion>,
+  direction: Direction,
+  module: string = FIRST_MODULE.id,
+): BrainEdge[] {
   return edges.filter((e) => {
     const source = regions[e.source];
     const target = regions[e.target];
     if (!source || !target) return false;
-    return direction === "outputs" ? !!source.amygdala : !!target.amygdala && !source.amygdala;
+    return direction === "outputs" ? inModule(source, module) : inModule(target, module) && !inModule(source, module);
   });
 }
 
@@ -181,18 +234,32 @@ export function networkData(
   return { nodes, links };
 }
 
-/** How /brain?region=<id> opens: on an amygdala region's outputs, or its inputs if it has no injections; any
- * other region selected in the direction it appears in; null if no drawn connection names it. */
+/** How /brain?region=<id> opens in a module: on a module region's outputs, or its inputs if it has no injections;
+ * any other region selected in the direction it appears in; null if no drawn connection names it. */
 export function linkedView(
   edges: BrainEdge[],
   regions: Record<string, BrainRegion>,
   id: string,
+  module: string = FIRST_MODULE.id,
 ): { direction: Direction; source?: string; selected?: string } | null {
-  const outputs = directed(edges, regions, "outputs");
-  const inputs = directed(edges, regions, "inputs");
+  const outputs = directed(edges, regions, "outputs", module);
+  const inputs = directed(edges, regions, "inputs", module);
   if (outputs.some((e) => e.source === id)) return { direction: "outputs", source: id };
   if (inputs.some((e) => e.target === id)) return { direction: "inputs", source: id };
   if (outputs.some((e) => e.target === id)) return { direction: "outputs", selected: id };
   if (inputs.some((e) => e.source === id)) return { direction: "inputs", selected: id };
   return null;
+}
+
+/** The module /brain?region=<id> opens on, when the link names none: the first of the region's own modules, then of
+ * the rest, where some drawn connection names the region. */
+export function linkedModule(
+  edges: BrainEdge[],
+  regions: Record<string, BrainRegion>,
+  id: string,
+  modules: BrainModule[],
+): string | null {
+  const own = modules.filter((m) => inModule(regions[id], m.id));
+  const order = [...own, ...modules.filter((m) => !own.includes(m))];
+  return order.find((m) => linkedView(edges, regions, id, m.id) !== null)?.id ?? null;
 }
