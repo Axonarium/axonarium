@@ -45,7 +45,7 @@ def module_regions(regions: list[dict]) -> set[str]:
 
 def allen_records(loaded: dict[str, list[dict]], loader: Callable) -> list[Record]:
     """Allen connectivity claims for every loaded atlas with MBA regions (the Allen mouse atlas), as records: the
-    outputs and inputs of every module's regions (ADR 0031)."""
+    outputs and inputs of every module's regions (ADR 0034)."""
     records = []
     for atlas, rows in loaded.items():
         if not rows or not rows[0]["id"].startswith("MBA:"):

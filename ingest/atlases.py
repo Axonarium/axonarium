@@ -25,7 +25,7 @@ BRIDGES = {
              "3f904b474c54c4b799b45b6b50763bdf61e8b51e2af6fa59d690ae567a53ff9f"),
 }
 UBERON = "http://purl.obolibrary.org/obo/UBERON_"
-AMYGDALA_ROOT = "UBERON:0001876"  # the amygdala module's root; the `amygdala` column keeps its meaning (ADR 0031)
+AMYGDALA_ROOT = "UBERON:0001876"  # the amygdala module's root; the `amygdala` column keeps its meaning (ADR 0034)
 OLS_TERM = "https://www.ebi.ac.uk/ols4/api/ontologies/uberon/terms/{iri}"
 OLS_DESCENDANTS = OLS_TERM + "/hierarchicalDescendants?size=500&page={page}"
 # A region maps exactly when its equivalent class is a UBERON class restricted to a species, and nothing else.

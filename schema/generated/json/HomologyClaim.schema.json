@@ -1117,7 +1117,7 @@
         },
         "ModuleList": {
             "additionalProperties": false,
-            "description": "The circuits Axonarium covers, kept in data/modules.yaml: which regions belong to each module. The build resolves them against the pinned atlases. The maintainer owns the file, so changes always get human review (ADR 0031).",
+            "description": "The circuits Axonarium covers, kept in data/modules.yaml: which regions belong to each module. The build resolves them against the pinned atlases. The maintainer owns the file, so changes always get human review (ADR 0034).",
             "properties": {
                 "modules": {
                     "description": "The modules, in the order the site lists them.",

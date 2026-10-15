@@ -1,4 +1,4 @@
-# The circuits Axonarium covers, and which regions belong to each (ADR 0031). The build resolves each module against
+# The circuits Axonarium covers, and which regions belong to each (ADR 0034). The build resolves each module against
 # the pinned atlases: an atlas region belongs when UBERON places its term under one of the module's roots (is-a or
 # part-of, as OLS computes it), or when it is in `include`; its subdivisions belong with it. A UBERON term, which rat
 # claims name, belongs when it falls under a root, is in `include`, or is the term of a member region. `exclude`

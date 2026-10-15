@@ -30,7 +30,7 @@ export function flag(params: URLSearchParams, name: string): boolean | null {
   throw new BadRequest(`${name} must be true or false`);
 }
 
-/** The `module` query parameter: a module ID such as hippocampus (data/modules.yaml, ADR 0031), or null when absent. */
+/** The `module` query parameter: a module ID such as hippocampus (data/modules.yaml, ADR 0034), or null when absent. */
 export function moduleId(params: URLSearchParams): string | null {
   const raw = params.get("module");
   if (raw === null) return null;

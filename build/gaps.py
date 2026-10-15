@@ -1,6 +1,6 @@
 """Gap mode (sprint 3.5, ADR 0027): connections that are plausible but untested, as research prompts.
 
-The outputs of a module's region (any module, ADR 0031) are untested in a species when no claim names an output of it in that
+The outputs of a module's region (any module, ADR 0034) are untested in a species when no claim names an output of it in that
 species: not of the region, nor of a subdivision of it, nor of a region it is part of. No experiment is known to have injected it.
 A connection from such a region to a target is plausible when a neighbour, another subdivision of the same parent,
 projects there: a present claim from the neighbour or one of its subdivisions. The gap keeps the connections that
@@ -46,7 +46,7 @@ def find_gaps(claims: list[dict], regions: list[dict]) -> list[dict]:
                 stack.extend(children.get(current, []))
         return found
 
-    members = module_regions(regions)  # every module's regions (ADR 0031)
+    members = module_regions(regions)  # every module's regions (ADR 0034)
     live = [c for c in claims if c.get("status") != "retracted" and c["subject"].get("type") == "region"
             and c["object"].get("type") == "region" and c["subject"]["id"] in parent and c["object"]["id"] in parent]
     by_species: dict[str, list[dict]] = defaultdict(list)

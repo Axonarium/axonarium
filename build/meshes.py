@@ -57,7 +57,7 @@ def export_atlas(atlas: dict, region_ids: list[str], out: Path, open_atlas: Call
                  max_faces: int = MAX_FACES, root_faces: int = ROOT_FACES, amygdala: set[str] = frozenset(),
                  modules: dict[str, list[str]] | None = None) -> dict:
     """Write out/<atlas id>/: root.glb, one <structure>.glb per region with a mesh, and index.json, which marks the
-    amygdala's regions and each region's modules (with their subdivisions, ADR 0031) so the view can tell a module's
+    amygdala's regions and each region's modules (with their subdivisions, ADR 0034) so the view can tell a module's
     inputs from its outputs. Returns the index."""
     pinned = str(atlas["extra"]["brainglobe.atlas_version"])
     brainglobe = open_atlas(atlas["brainglobe_name"], pinned)

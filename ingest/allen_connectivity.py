@@ -4,7 +4,7 @@ Allen terms allow non-commercial use but not commercial redistribution, so these
 never dumped (ADR 0005); the live site shows them with the citation. Each claim is one experiment's projection
 into one target, from wild-type and Cre-line mice (ADR 0029): every target of injections in a module's regions (its
 outputs), and the module targets of injections anywhere else (its inputs). The modules are the amygdala, the
-hippocampal formation and the prefrontal cortex (ADR 0031). A Cre-line experiment's claim records its
+hippocampal formation and the prefrontal cortex (ADR 0034). A Cre-line experiment's claim records its
 line, so the labelled population can be mapped to a neuron type later.
 """
 

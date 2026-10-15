@@ -1,4 +1,4 @@
-"""Module membership (ADR 0031): UBERON roots, included and excluded regions and terms, subdivisions with their parent."""
+"""Module membership (ADR 0034): UBERON roots, included and excluded regions and terms, subdivisions with their parent."""
 
 from pathlib import Path
 

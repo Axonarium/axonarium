@@ -67,7 +67,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
     terms_loader, atlas_loader = terms_loader or network[0], atlas_loader or network[1]
     connectivity_loader = connectivity_loader or network[2]
     tables = rows(records)
-    modules = module_list.modules_of(records)  # data/modules.yaml (ADR 0031)
+    modules = module_list.modules_of(records)  # data/modules.yaml (ADR 0034)
     loaded: dict[str, list[dict]] = {}
     module_terms: dict[str, list[str]] = {}
     module_labels: dict[str, dict[str, str]] = {}

@@ -207,7 +207,7 @@ def _neuron_type_region(record: Record) -> list[Finding]:
 
 
 def _modules(record: Record) -> list[Finding]:
-    """Each module has a unique ID and at least one root or included region (ADR 0031)."""
+    """Each module has a unique ID and at least one root or included region (ADR 0034)."""
     if record.cls != "ModuleList":
         return []
     findings, seen = [], set()

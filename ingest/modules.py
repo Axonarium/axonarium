@@ -1,4 +1,4 @@
-"""Which atlas regions and UBERON terms belong to each module (ADR 0031), from data/modules.yaml and the atlases.
+"""Which atlas regions and UBERON terms belong to each module (ADR 0034), from data/modules.yaml and the atlases.
 
 A module names UBERON roots, regions to include and regions or terms to exclude. An atlas region belongs when its
 UBERON term is a root or under one, or when it is included; its subdivisions belong with it. Excluding an atlas

@@ -43,7 +43,7 @@ def summary(atlas: str, rows: list[dict], modules: list[dict] = ()) -> str:
 
 def module_problems(modules: list[dict], regions: dict[str, list[dict]]) -> list[str]:
     """Modules the Allen mouse atlas resolves no region for, and regions modules.yaml names that no loaded atlas
-    has (ADR 0031)."""
+    has (ADR 0034)."""
     problems = []
     known = {row["id"] for rows in regions.values() for row in rows}
     prefixes = {region.split(":")[0] for region in known}  # MBA: and DHBA:; Waxholm loads no regions

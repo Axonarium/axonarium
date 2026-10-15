@@ -46,10 +46,10 @@ regions = Table(
     # Set by the build for atlas regions (ADR 0009): whether UBERON places the region's term under the amygdala,
     # and that term's label.
     Column("amygdala", Boolean), _text("uberon_label"),
-    # Set by the build for atlas regions (ADR 0031): the modules the region belongs to, subdivisions included.
+    # Set by the build for atlas regions (ADR 0034): the modules the region belongs to, subdivisions included.
     Column("modules", ARRAY(Text)),
 )
-# The modules of data/modules.yaml (ADR 0031), in its order. `terms` and `labels` are set by the build when it loads
+# The modules of data/modules.yaml (ADR 0034), in its order. `terms` and `labels` are set by the build when it loads
 # the atlases: the UBERON terms that belong to the module, which rat claims name, and UBERON's labels for them.
 modules = Table(
     "modules", metadata,

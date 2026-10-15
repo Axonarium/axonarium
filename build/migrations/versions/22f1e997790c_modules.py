@@ -1,5 +1,5 @@
 """Modules: the circuits of data/modules.yaml, and the modules each atlas region belongs to, with public read access
-like the other serving tables (ADR 0031).
+like the other serving tables (ADR 0034).
 
 Revision ID: 22f1e997790c
 Revises: 5e0c1d7a9b42

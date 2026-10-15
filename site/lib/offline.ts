@@ -9,7 +9,7 @@ export interface RegionDetail extends AtlasRegion {
   atlas: string;
   parent: string | null;
   amygdala: boolean;
-  /** The modules the region belongs to, subdivisions included (ADR 0031); absent from snapshots made before them. */
+  /** The modules the region belongs to, subdivisions included (ADR 0034); absent from snapshots made before them. */
   modules?: string[] | null;
 }
 

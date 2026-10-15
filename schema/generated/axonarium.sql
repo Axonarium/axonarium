@@ -98,7 +98,7 @@ CREATE TABLE "ModuleList" (
 	id SERIAL NOT NULL,
 	PRIMARY KEY (id)
 );
-COMMENT ON TABLE "ModuleList" IS 'The circuits Axonarium covers, kept in data/modules.yaml: which regions belong to each module. The build resolves them against the pinned atlases. The maintainer owns the file, so changes always get human review (ADR 0031).';
+COMMENT ON TABLE "ModuleList" IS 'The circuits Axonarium covers, kept in data/modules.yaml: which regions belong to each module. The build resolves them against the pinned atlases. The maintainer owns the file, so changes always get human review (ADR 0034).';
 
 CREATE TABLE "RetractionLog" (
 	id SERIAL NOT NULL,

@@ -4,7 +4,7 @@ Axonarium's read API is served by the site at **https://axonarium.com/api/v1** (
 
 | Endpoint | Returns |
 | --- | --- |
-| `GET /regions?q=&atlas=&module=&amygdala=&limit=&offset=` | Atlas regions, by ID; `q` matches part of a name or acronym; `module` keeps the regions of one module (`amygdala`, `hippocampus` or `prefrontal`; [ADR 0031](../docs/decisions/0031-modules.md)), each region listing its `modules`. `amygdala=true` is kept for existing clients |
+| `GET /regions?q=&atlas=&module=&amygdala=&limit=&offset=` | Atlas regions, by ID; `q` matches part of a name or acronym; `module` keeps the regions of one module (`amygdala`, `hippocampus` or `prefrontal`; [ADR 0034](../docs/decisions/0034-modules.md)), each region listing its `modules`. `amygdala=true` is kept for existing clients |
 | `GET /regions/{id}` | A region (such as `MBA:295`) with its subregions, outputs and inputs |
 | `GET /connections?subject=&object=&species=&predicate=&min_density=&limit=&offset=` | Connections, strongest projection density first |
 | `GET /connections/{id}` | A connection (`subject\|predicate\|object\|species`, URL-encoded) with every claim behind it |
