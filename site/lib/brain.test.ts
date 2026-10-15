@@ -1,6 +1,21 @@
 import { describe, expect, it } from "vitest";
 
-import { arcMidpoint, arcWidth, brainEdges, brainGaps, byDensity, directed, gapEdge, hubOf, linkedView, networkData } from "./brain";
+import {
+  arcMidpoint,
+  arcWidth,
+  brainEdges,
+  brainGaps,
+  byDensity,
+  directed,
+  gapEdge,
+  hubOf,
+  inModule,
+  linkedModule,
+  linkedView,
+  moduleText,
+  namedRegions,
+  networkData,
+} from "./brain";
 
 const edge = (id: string, subject: string, object: string) => ({ id, subject_id: subject, object_id: object });
 const claim = (subject: string, object: string, density: number | null, status = "accepted") => ({
@@ -113,6 +128,54 @@ describe("directed", () => {
   it("names the amygdala end of each", () => {
     expect(hubOf(edges[0], "outputs")).toBe("MBA:295");
     expect(hubOf(edges[2], "inputs")).toBe("MBA:295");
+  });
+});
+
+describe("modules", () => {
+  const region = (modules?: string[], amygdala = false) => ({ acronym: "", name: "", file: "", centroid: [0, 0, 0] as [number, number, number], amygdala, modules });
+  // BLA (amygdala) projects to PL (prefrontal) and CP (no module); CA1 (hippocampus) projects to PL.
+  const regions = { "MBA:295": region(["amygdala"], true), "MBA:972": region(["prefrontal"]), "MBA:382": region(["hippocampus"]), "MBA:672": region([]) };
+  const e = (id: string, source: string, target: string) => ({ id, source, target, density: 0.1, claims: 1, accepted: 1, papers: 0 });
+  const edges = [e("bla-pl", "MBA:295", "MBA:972"), e("bla-cp", "MBA:295", "MBA:672"), e("ca1-pl", "MBA:382", "MBA:972")];
+  const MODULES = [{ id: "amygdala", name: "Amygdala" }, { id: "hippocampus", name: "Hippocampal formation" }, { id: "prefrontal", name: "Prefrontal cortex" }];
+
+  it("place a region by its modules, or by the amygdala flag in meshes exported before them", () => {
+    expect(inModule(regions["MBA:972"], "prefrontal")).toBe(true);
+    expect(inModule(regions["MBA:295"], "prefrontal")).toBe(false);
+    expect(inModule(region(undefined, true), "amygdala")).toBe(true);
+    expect(inModule(region(undefined, true), "hippocampus")).toBe(false);
+    expect(inModule(undefined, "amygdala")).toBe(false);
+  });
+
+  it("decide which end of a connection is the hub", () => {
+    expect(directed(edges, regions, "outputs", "prefrontal")).toEqual([]);
+    expect(directed(edges, regions, "inputs", "prefrontal").map((x) => x.id)).toEqual(["bla-pl", "ca1-pl"]);
+    expect(directed(edges, regions, "outputs", "hippocampus").map((x) => x.id)).toEqual(["ca1-pl"]);
+    expect(directed(edges, regions, "outputs").map((x) => x.id)).toEqual(["bla-pl", "bla-cp"]); // the amygdala by default
+  });
+
+  it("open a linked region in its own module first, else the first where a connection names it", () => {
+    expect(linkedModule(edges, regions, "MBA:972", MODULES)).toBe("prefrontal");
+    expect(linkedView(edges, regions, "MBA:972", "prefrontal")).toEqual({ direction: "inputs", source: "MBA:972" });
+    expect(linkedModule(edges, regions, "MBA:672", MODULES)).toBe("amygdala");
+    expect(linkedModule(edges, regions, "MBA:1", MODULES)).toBeNull();
+  });
+
+  it("read as part of a sentence", () => {
+    expect(moduleText(MODULES[1])).toBe("the hippocampal formation");
+  });
+
+  it("place a species's UBERON terms by the terms each module resolves to, named as the site names them", () => {
+    const names = {
+      "UBERON:0006107": { id: "UBERON:0006107", acronym: "BLA", name: "basolateral amygdaloid nuclear complex", kind: "uberon" as const },
+      "UBERON:0002421": { id: "UBERON:0002421", acronym: null, name: "hippocampal formation", kind: "uberon" as const },
+    };
+    const terms = [{ id: "amygdala", terms: ["UBERON:0006107"] }, { id: "hippocampus", terms: ["UBERON:0002421"] }];
+    expect(namedRegions(["UBERON:0006107", "UBERON:0002421", "UBERON:0001945"], names, terms)).toEqual({
+      "UBERON:0006107": { acronym: "BLA", name: "basolateral amygdaloid nuclear complex", file: "", centroid: [0, 0, 0], modules: ["amygdala"] },
+      "UBERON:0002421": { acronym: "hippocampal formation", name: "hippocampal formation", file: "", centroid: [0, 0, 0], modules: ["hippocampus"] },
+      "UBERON:0001945": { acronym: "UBERON:0001945", name: "UBERON:0001945", file: "", centroid: [0, 0, 0], modules: [] },
+    });
   });
 });
 

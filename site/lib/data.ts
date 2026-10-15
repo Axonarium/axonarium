@@ -17,13 +17,13 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { type BrainClaim, type BrainEdge, brainEdges, type BrainGap, brainGaps } from "./brain";
 import * as offline from "./offline";
-import type { RegionDetail, RegionPage, Tables } from "./offline";
+import type { ModuleRow, RegionDetail, RegionPage, Tables } from "./offline";
 import { fetchAll } from "./pages";
 import { type IndexedRegion, regionIndex } from "./region-index";
-import { type AtlasRegion, isNeuronType, isUberon, type MappedRegion, type RegionName, uberonNames } from "./regions";
+import { type AtlasRegion, isNeuronType, isUberon, type MappedRegion, moduleTermNames, type RegionName, uberonNames } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Gap, Source } from "./types";
 
-export type { RegionDetail, RegionPage } from "./offline";
+export type { ModuleRow, RegionDetail, RegionPage } from "./offline";
 
 const EDGE_SUMMARY = "id, subject_id, predicate, object_id, species, n_claims, n_present, n_absent, strength, density";
 
@@ -145,7 +145,7 @@ export async function getRegionNames(ids: string[]): Promise<Record<string, Regi
   if (ids.length === 0) return {};
   return read(
     async (db) => {
-      const found = await chunked(ids, (chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk)));
+      const found = await chunked(ids, (chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala, modules").in("id", chunk)));
       return Object.fromEntries(found.map((region) => [region.id, region]));
     },
     (t) => offline.regionNames(t, ids),
@@ -161,16 +161,18 @@ export async function getNames(ids: string[]): Promise<Record<string, RegionName
     async (db) => {
       const terms = [...new Set(ids.filter(isUberon))];
       const types = [...new Set(ids.filter(isNeuronType))];
-      const [regions, mapped, neuronTypes] = await Promise.all([
-        chunked(ids, (chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala").in("id", chunk))),
+      const [regions, mapped, neuronTypes, labelled] = await Promise.all([
+        chunked(ids, (chunk) => rows<RegionName[]>("region names", () => db.from("regions").select("id, acronym, name, amygdala, modules").in("id", chunk))),
         chunked(terms, (chunk) =>
           rows<MappedRegion[]>("UBERON names", () =>
             db.from("regions").select("id, acronym, name, atlas, parent, uberon, uberon_label").in("uberon", chunk).order("id"),
           ),
         ),
         chunked(types, (chunk) => rows<{ id: string; name: string }[]>("neuron type names", () => db.from("neuron_types").select("id, name").in("id", chunk))),
+        terms.length ? rows<Pick<ModuleRow, "labels">[]>("module labels", () => db.from("modules").select("labels").order("position")) : [],
       ]);
       return {
+        ...moduleTermNames(terms, labelled),
         ...uberonNames(terms, mapped),
         ...Object.fromEntries(neuronTypes.map((n) => [n.id, { id: n.id, acronym: null, name: n.name, kind: "neuron_type" as const }])),
         ...Object.fromEntries(regions.map((region) => [region.id, region])),
@@ -233,6 +235,41 @@ async function liveBrainEdges(db: SupabaseClient, atlas: string): Promise<BrainE
   return brainEdges(edges, claims).filter((edge) => edge.claims > 0);
 }
 
+/** Region-to-region connections of one species, between the IDs its claims name, for a species without meshes: the
+ * rat's claims name UBERON terms (ADR 0034). */
+export function getSpeciesEdges(species: string): Promise<BrainEdge[] | null> {
+  return read((db) => liveSpeciesEdges(db, species), (t) => offline.speciesBrain(t, species), null);
+}
+
+async function liveSpeciesEdges(db: SupabaseClient, species: string): Promise<BrainEdge[]> {
+  const [edges, claims] = await Promise.all([
+    fetchAll((from, to) =>
+      rows<Pick<Edge, "id" | "subject_id" | "object_id">[]>("species edges", () =>
+        db.from("edges").select("id, subject_id, object_id").eq("predicate", "projects_to").eq("subject_type", "region")
+          .eq("object_type", "region").eq("species", species).gt("n_present", 0).order("id").range(from, to),
+      ),
+    ),
+    fetchAll((from, to) =>
+      rows<BrainClaim[]>("species claims", () =>
+        db.from("connectivity_claims").select("subject_id, object_id, status, measurements, terms").eq("predicate", "projects_to")
+          .eq("result", "present").neq("status", "retracted").eq("species", species).eq("subject_type", "region")
+          .eq("object_type", "region").order("id").range(from, to),
+      ),
+    ),
+  ]);
+  return brainEdges(edges, claims).filter((edge) => edge.claims > 0);
+}
+
+/** The modules of data/modules.yaml in its order (ADR 0034), with the UBERON terms each resolves to; none from a
+ * snapshot made before modules. */
+export function getModules(): Promise<ModuleRow[] | null> {
+  return read(
+    (db) => rows<ModuleRow[]>("modules", () => db.from("modules").select("id, name, terms, labels").order("position")),
+    offline.modules,
+    null,
+  );
+}
+
 /** Gap mode's untested connections in an atlas (ADR 0027); none when neither the database nor the snapshot has them. */
 export function getBrainGaps(atlas: string): Promise<BrainGap[]> {
   return read(
@@ -282,12 +319,13 @@ async function liveRegion(db: SupabaseClient, id: string): Promise<RegionPage | 
   return { region, children, outputs, inputs, names: await getRegionNames([...new Set(ids)]) };
 }
 
-/** Every atlas region with a connection, with its numbers of outputs and inputs. */
-export async function getRegionIndex(): Promise<IndexedRegion[] | null> {
+/** Every atlas region with a connection, with its numbers of outputs and inputs; those of the modules first, in
+ * `order`. */
+export async function getRegionIndex(order?: string[]): Promise<IndexedRegion[] | null> {
   const edges = await listEdges();
   if (edges === null) return null;
   const names = await getRegionNames([...new Set(edges.flatMap((e) => [e.subject_id, e.object_id]))]);
-  return regionIndex(edges, names);
+  return regionIndex(edges, names, order?.length ? order : undefined);
 }
 
 type RegionsFilter = { q?: string | null; atlas?: string | null; amygdala?: boolean | null; module?: string | null; limit: number; offset: number };

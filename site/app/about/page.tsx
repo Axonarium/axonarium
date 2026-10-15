@@ -16,14 +16,14 @@ export default function About() {
       </p>
       <h2>What is in it today</h2>
       <p>
-        The mouse amygdala&apos;s connections at the level of brain regions, from the{" "}
+        The connections of three circuits in the mouse, the amygdala, the hippocampal formation and the prefrontal
+        cortex, at the level of brain regions, from the{" "}
         <a href="https://connectivity.brain-map.org/">Allen Mouse Brain Connectivity Atlas</a> (
         <a href="https://doi.org/10.1038/nature13186">Oh et al. 2014</a>): every target of anterograde tracer
-        injected into an amygdala nucleus, and every amygdala nucleus that injections elsewhere label, in wild-type
-        mice and Cre lines (whose claims name the line). Each experiment and target is one claim, with its projection
-        density. See them on the{" "}
-        <Link href="/brain">3D brain and network</Link>, in the <Link href="/explore">connection table</Link>, or
-        region by region. Regions come from the Allen mouse and human atlases via BrainGlobe, mapped to UBERON (
+        injected into one of their regions, and every one of their regions that injections elsewhere label, in
+        wild-type mice and Cre lines (whose claims name the line). Each experiment and target is one claim, with its
+        projection density. See them on the <Link href="/brain">3D brain and network</Link>, in the{" "}
+        <Link href="/explore">connection table</Link>, or region by region. Regions come from the Allen mouse and human atlases via BrainGlobe, mapped to UBERON (
         <Link href="/atlases">Atlases</Link>).
       </p>
       <h2>Claims from published papers</h2>
@@ -33,7 +33,8 @@ export default function About() {
         connection the paper&apos;s own experiments test: the regions, the species, the method, what was found and where
         in the paper. A second model then checks each claim against the paper, without seeing how the first one
         reasoned. Every claim names both models, their prompt versions and the paper. Rat claims name UBERON&apos;s
-        cross-species terms, because rat papers follow different atlases. Until people have audited a sample of them, these claims stay{" "}
+        cross-species terms, because rat papers follow different atlases, and the rat&apos;s connections are drawn as a{" "}
+        <Link href="/brain/rat">network</Link>. Until people have audited a sample of them, these claims stay{" "}
         <em>proposed</em>, and each shows what the check said.
       </p>
       <h2>Reading the evidence</h2>
