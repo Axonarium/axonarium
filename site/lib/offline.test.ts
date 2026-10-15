@@ -78,18 +78,28 @@ describe("the snapshot answers like the database", () => {
 
   it("names regions, leaving out IDs that aren't regions", () => {
     expect(offline.regionNames(tables, ["MBA:295", "UBERON:0006107"])).toEqual({
-      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true },
+      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true, modules: ["amygdala"] },
     });
+    expect(offline.regionNames(tables, ["MBA:672"])["MBA:672"].modules).toBeNull(); // a row without modules
   });
 
   it("names regions, the UBERON terms regions map to and neuron types for display, leaving out IDs it can't name", () => {
     const withTypes: Tables = { ...tables, neuron_types: [{ id: "nt-3kvfdzf7wn", name: "MEA glutamatergic neurons" }] };
     expect(offline.names(withTypes, ["MBA:295", "UBERON:0006107", "UBERON:0001876", "nt-3kvfdzf7wn", "nt-unknown"])).toEqual({
-      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true },
+      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true, modules: ["amygdala"] },
       "UBERON:0006107": { id: "UBERON:0006107", acronym: "BLA", name: "basolateral amygdaloid nuclear complex", kind: "uberon" },
       "nt-3kvfdzf7wn": { id: "nt-3kvfdzf7wn", acronym: null, name: "MEA glutamatergic neurons", kind: "neuron_type" },
     });
     expect(offline.names(tables, ["nt-3kvfdzf7wn"])).toEqual({}); // a snapshot without neuron types
+    // UBERON's label for a module's term no region maps to; a region's name wins where one does.
+    const labelled: Tables = {
+      ...tables,
+      modules: [{ id: "amygdala", name: "Amygdala", position: 0, terms: null, labels: { "UBERON:0001876": "amygdala", "UBERON:0006107": "BLA complex" } }],
+    };
+    expect(offline.names(labelled, ["UBERON:0001876", "UBERON:0006107"])).toEqual({
+      "UBERON:0001876": { id: "UBERON:0001876", acronym: null, name: "amygdala", kind: "uberon" },
+      "UBERON:0006107": { id: "UBERON:0006107", acronym: "BLA", name: "basolateral amygdaloid nuclear complex", kind: "uberon" },
+    });
   });
 
   it("pages sources, those with the most claims first, and the claims citing one", () => {
@@ -121,6 +131,49 @@ describe("the snapshot answers like the database", () => {
       { id: tables.edges[0].id, source: "MBA:295", target: "MBA:672", density: 0.4, claims: 2, accepted: 1, papers: 0 },
     ]);
     expect(offline.brain(tables, "waxholm-sd-rat-v4")).toEqual([]);
+  });
+
+  it("draws a species's connections by the IDs its claims name, from claims that found them", () => {
+    const RAT = "NCBITaxon:10116";
+    const rat = (id: string, subject: string, object: string, extra: Partial<ConnectivityClaim> = {}) =>
+      claim(id, subject, object, null, { subject_atlas: null, object_atlas: null, species: RAT, status: "proposed", terms: "cc-by-4.0", ...extra });
+    const ratEdge = (subject: string, object: string, extra: Partial<Edge> = {}) =>
+      edge(subject, object, null, { id: `${subject}|projects_to|${object}|${RAT}`, species: RAT, ...extra });
+    const withRat: Tables = {
+      ...tables,
+      connectivity_claims: [
+        ...tables.connectivity_claims,
+        rat("clm-r1", "UBERON:0006107", "UBERON:0001873"),
+        rat("clm-r2", "UBERON:0006107", "UBERON:0001873", { status: "retracted" }),
+        rat("clm-r3", "UBERON:0002421", "UBERON:0006107", { result: "absent" }),
+        rat("clm-r4", "UBERON:0006107", "nt-3kvfdzf7wn", { object_type: "neuron_type" }),
+      ],
+      edges: [
+        ...tables.edges,
+        ratEdge("UBERON:0006107", "UBERON:0001873"),
+        ratEdge("UBERON:0002421", "UBERON:0006107", { n_present: 0, n_absent: 1 }),
+        ratEdge("UBERON:0006107", "nt-3kvfdzf7wn", { object_type: "neuron_type" }),
+      ],
+    };
+    expect(offline.speciesBrain(withRat, RAT)).toEqual([
+      { id: `UBERON:0006107|projects_to|UBERON:0001873|${RAT}`, source: "UBERON:0006107", target: "UBERON:0001873", density: null, claims: 1, accepted: 0, papers: 1 },
+    ]);
+    expect(offline.speciesBrain(withRat, "NCBITaxon:9606")).toEqual([]);
+  });
+
+  it("lists the modules in their order, and none from a snapshot made before them", () => {
+    const withModules: Tables = {
+      ...tables,
+      modules: [
+        { id: "hippocampus", name: "Hippocampal formation", position: 1, terms: ["UBERON:0002421"] },
+        { id: "amygdala", name: "Amygdala", position: 0, terms: null },
+      ],
+    };
+    expect(offline.modules(withModules)).toEqual([
+      { id: "amygdala", name: "Amygdala", terms: null, labels: null },
+      { id: "hippocampus", name: "Hippocampal formation", terms: ["UBERON:0002421"], labels: null },
+    ]);
+    expect(offline.modules(tables)).toEqual([]);
   });
 
   it("builds a region's page: subregions, outputs strongest first, inputs and names", () => {

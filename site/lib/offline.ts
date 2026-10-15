@@ -2,7 +2,7 @@
 // (Tier 1, ADR 0017). Each matches its Supabase query: the same filters, order and pages.
 
 import { type BrainClaim, type BrainEdge, brainEdges, type BrainGap, brainGaps } from "./brain";
-import { type AtlasRegion, isNeuronType, isUberon, type RegionName, uberonNames } from "./regions";
+import { type AtlasRegion, isNeuronType, isUberon, moduleTermNames, type RegionName, uberonNames } from "./regions";
 import type { Atlas, ConnectivityClaim, Counts, Edge, EdgeSummary, Gap, Source } from "./types";
 
 export interface RegionDetail extends AtlasRegion {
@@ -11,6 +11,14 @@ export interface RegionDetail extends AtlasRegion {
   amygdala: boolean;
   /** The modules the region belongs to, subdivisions included (ADR 0034); absent from snapshots made before them. */
   modules?: string[] | null;
+}
+
+/** A module of data/modules.yaml (ADR 0034), with the UBERON terms the build resolved it to and their labels. */
+export interface ModuleRow {
+  id: string;
+  name: string;
+  terms: string[] | null;
+  labels?: Record<string, string> | null;
 }
 
 export interface RegionPage {
@@ -33,6 +41,8 @@ export interface Tables {
   /** Absent from snapshots made before gap mode (ADR 0027). */
   gaps?: Gap[];
   neuron_types?: { id: string; name: string }[];
+  /** Absent from snapshots made before modules (ADR 0034). */
+  modules?: (ModuleRow & { position: number })[];
 }
 
 /** Postgres orders these text IDs byte by byte; so does this. */
@@ -41,7 +51,7 @@ const sorted = <T extends { id: string }>(rows: T[]) => [...rows].sort(byId);
 const pick = <T, K extends keyof T>(row: T, keys: readonly K[]) => Object.fromEntries(keys.map((k) => [k, row[k]])) as Pick<T, K>;
 
 const SUMMARY = ["id", "subject_id", "predicate", "object_id", "species", "n_claims", "n_present", "n_absent", "strength", "density"] as const;
-const NAME = ["id", "acronym", "name", "amygdala"] as const;
+const NAME = ["id", "acronym", "name", "amygdala", "modules"] as const;
 const DETAIL = ["id", "name", "acronym", "atlas", "parent", "uberon", "uberon_label", "amygdala", "modules"] as const;
 const AMYGDALA = ["id", "acronym", "name", "uberon", "uberon_label"] as const;
 const ATLAS = ["id", "name", "species", "version", "url", "brainglobe_name", "citation"] as const;
@@ -70,7 +80,7 @@ export const source = (t: Tables, id: string): Source | null => t.sources.find((
 
 export function regionNames(t: Tables, ids: string[]): Record<string, RegionName> {
   const wanted = new Set(ids);
-  return Object.fromEntries(t.regions.filter((r) => wanted.has(r.id)).map((r) => [r.id, pick(r, NAME)]));
+  return Object.fromEntries(t.regions.filter((r) => wanted.has(r.id)).map((r) => [r.id, { ...pick(r, NAME), modules: r.modules ?? null }]));
 }
 
 /** Names for showing claims and connections: atlas regions, UBERON terms and neuron types (lib/data.ts, getNames). */
@@ -80,6 +90,7 @@ export function names(t: Tables, ids: string[]): Record<string, RegionName> {
   const mapped = sorted(t.regions.filter((r) => r.uberon !== null && terms.includes(r.uberon)));
   const types = (t.neuron_types ?? []).filter((n) => isNeuronType(n.id) && wanted.has(n.id));
   return {
+    ...moduleTermNames(terms, t.modules ?? []),
     ...uberonNames(terms, mapped),
     ...Object.fromEntries(types.map((n) => [n.id, { id: n.id, acronym: null, name: n.name, kind: "neuron_type" as const }])),
     ...regionNames(t, ids),
@@ -102,6 +113,18 @@ export function brain(t: Tables, atlas: string): BrainEdge[] {
   const evidence = sorted(t.connectivity_claims.filter((c) => found(c) && c.subject_atlas === atlas && c.object_atlas === atlas));
   return brainEdges(drawn, evidence.map(asBrainClaim)).filter((e) => e.claims > 0);
 }
+
+export function speciesBrain(t: Tables, species: string): BrainEdge[] {
+  const region = (x: { subject_type: string; object_type: string }) => x.subject_type === "region" && x.object_type === "region";
+  const drawn = sorted(t.edges.filter((e) => e.predicate === "projects_to" && region(e) && e.species === species && e.n_present > 0));
+  const evidence = sorted(t.connectivity_claims.filter((c) => found(c) && c.species === species && region(c)));
+  return brainEdges(drawn, evidence.map(asBrainClaim)).filter((e) => e.claims > 0);
+}
+
+export const modules = (t: Tables): ModuleRow[] =>
+  [...(t.modules ?? [])]
+    .sort((a, b) => a.position - b.position)
+    .map((m) => ({ id: m.id, name: m.name, terms: m.terms ?? null, labels: m.labels ?? null }));
 
 export function gaps(t: Tables, atlas: string): BrainGap[] {
   return brainGaps(sorted((t.gaps ?? []).filter((g) => g.atlas === atlas)));

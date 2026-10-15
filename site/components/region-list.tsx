@@ -8,7 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { regionHref } from "@/lib/format";
 import type { IndexedRegion } from "@/lib/region-index";
 
-export function RegionList({ regions }: { regions: IndexedRegion[] }) {
+/** The regions index. `modules` names the circuits a region's badges show (ADR 0034); without them, the amygdala's. */
+export function RegionList({ regions, modules = [] }: { regions: IndexedRegion[]; modules?: { id: string; name: string }[] }) {
+  const moduleName = (id: string) => modules.find((m) => m.id === id)?.name ?? (id === "amygdala" ? "Amygdala" : id);
   const [query, setQuery] = useState("");
   const q = query.trim().toLowerCase();
   const shown = q
@@ -45,7 +47,11 @@ export function RegionList({ regions }: { regions: IndexedRegion[] }) {
                   {region.acronym ?? region.id}
                 </Link>{" "}
                 <span className="text-muted-foreground">{region.name}</span>{" "}
-                {region.amygdala && <Badge variant="secondary">Amygdala</Badge>}
+                {region.modules.map((m) => (
+                  <Badge key={m} variant="secondary" className="mr-1">
+                    {moduleName(m)}
+                  </Badge>
+                ))}
               </TableCell>
               <TableCell className="text-right tabular-nums">{region.outputs}</TableCell>
               <TableCell className="text-right tabular-nums">{region.inputs}</TableCell>

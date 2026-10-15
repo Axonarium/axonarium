@@ -30,7 +30,8 @@ const PAGE = {
   "total-byte-weight": ["error", { maxNumericValue: 1_000_000 }],
 };
 
-// Pages with the 3D brain (the home page's preview, and /brain): three.js and the meshes are heavy by nature, so the
+// Pages with the 3D brain (the home page's preview, and /brain) and the rat's network (/brain/rat, the same viewer
+// without meshes; ADR 0034): three.js and the meshes are heavy by nature, so the
 // budget keeps them stable while they load, and stops them growing. Blocking time and the performance score aren't
 // judged: CI's runners have no GPU, so WebGL renders in software on the main thread, frame after frame, and Lighthouse
 // measures that (about 160 s), not what a phone's GPU does.
@@ -46,13 +47,13 @@ module.exports = {
     collect: {
       startServerCommand: "npm run start -- -p 3100",
       startServerReadyPattern: "Ready",
-      url: ["/", "/brain", ...PAGES].map((path) => BASE + path),
+      url: ["/", "/brain", "/brain/rat", ...PAGES].map((path) => BASE + path),
       numberOfRuns: 3,
     },
     assert: {
       assertMatrix: [
-        { matchingUrlPattern: ":3100/(brain)?$", aggregationMethod: "median-run", assertions: THREE_D },
-        { matchingUrlPattern: ":3100/(?!(brain)?$)", aggregationMethod: "median-run", assertions: PAGE },
+        { matchingUrlPattern: ":3100/(brain(/rat)?)?$", aggregationMethod: "median-run", assertions: THREE_D },
+        { matchingUrlPattern: ":3100/(?!(brain(/rat)?)?$)", aggregationMethod: "median-run", assertions: PAGE },
       ],
     },
     upload: { target: "filesystem", outputDir: ".lighthouseci" },

@@ -26,7 +26,8 @@ export default async function Home() {
         </h1>
         <p className="max-w-2xl text-lg text-muted-foreground">
           Every connection is backed by a cited source, tagged by species and method, and exportable into simulations.
-          Axonarium starts with the amygdala of rat, mouse and human, and grows one circuit at a time.
+          Axonarium started with the amygdala of rat, mouse and human, has added the hippocampal formation and the
+          prefrontal cortex, and grows one circuit at a time.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link href="/brain" className={buttonVariants({ size: "lg" })}>

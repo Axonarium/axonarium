@@ -43,7 +43,7 @@ export default async function Image() {
             An open, cited map of how the brain and body are wired.
           </div>
           <div style={{ fontSize: 30, color: "#cbd5e1", maxWidth: 960 }}>
-            Every connection backed by cited claims, tagged by species and method. Starting with the amygdala.
+            Every connection backed by cited claims, tagged by species and method. The amygdala, hippocampus and prefrontal cortex first.
           </div>
         </div>
         <div style={{ display: "flex", gap: 56, fontSize: 28, color: "#cbd5e1" }}>

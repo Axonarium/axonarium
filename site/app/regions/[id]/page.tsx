@@ -6,7 +6,7 @@ import { DataUnavailable } from "@/components/data-unavailable";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { BrainEdge } from "@/lib/brain";
-import { getRegion } from "@/lib/data";
+import { getModules, getRegion } from "@/lib/data";
 import { edgeFromParam, edgeHref, regionHref } from "@/lib/format";
 import type { RegionName } from "@/lib/regions";
 
@@ -76,7 +76,8 @@ function Connections({ title, edges, end, names }: {
 }
 
 export default async function RegionPage({ params }: PageProps<"/regions/[id]">) {
-  const found = await getRegion(edgeFromParam((await params).id));
+  const id = edgeFromParam((await params).id);
+  const [found, modules] = await Promise.all([getRegion(id), getModules().then((m) => m ?? [])]);
   if (found === undefined) return <DataUnavailable />;
   if (found === null) notFound();
   const { region, children, outputs, inputs, names } = found;
@@ -95,7 +96,9 @@ export default async function RegionPage({ params }: PageProps<"/regions/[id]">)
           {region.acronym} <span className="font-normal text-muted-foreground">{region.name}</span>
         </h1>
         <div className="flex flex-wrap items-center gap-2 text-sm">
-          {region.amygdala && <Badge>Amygdala</Badge>}
+          {(region.modules ?? (region.amygdala ? ["amygdala"] : [])).map((m) => (
+            <Badge key={m}>{modules.find((found) => found.id === m)?.name ?? (m === "amygdala" ? "Amygdala" : m)}</Badge>
+          ))}
           {region.uberon && (
             <a
               href={`https://www.ebi.ac.uk/ols4/ontologies/uberon/classes/${encodeURIComponent(encodeURIComponent(`http://purl.obolibrary.org/obo/${region.uberon.replace(":", "_")}`))}`}
