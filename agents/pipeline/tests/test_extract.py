@@ -1,14 +1,18 @@
 """Extraction (sprint 2.3): triaged papers' full text, pruned and screened, into proposed claim files."""
 
+import hashlib
+import json
+import math
 from pathlib import Path
 from types import SimpleNamespace
 from urllib.error import HTTPError
 
+import pytest
 import yaml
 
 from evals.harness.models import Entity
 from pipeline import cli, europepmc, extract, sections
-from pipeline.corpus import Ledger, Redo
+from pipeline.corpus import Ledger, Redo, preprint_servers
 from pipeline.llm import Result, request_id
 from screen import Finding, Screened, screen_jats
 
@@ -34,7 +38,7 @@ PAPERS = [{**paper, "full_text": "true", "open_access": "true"} for paper in (
     {"key": "doi:10.1/d", "doi": "10.1/d", "pmid": "4", "pmcid": ""},  # no PMC ID: not readable
     {"key": "doi:10.1/e", "doi": "10.1/e", "pmid": "5", "pmcid": "PMC5"},  # its fetch fails
     {"key": "doi:10.1/f", "doi": "10.1/f", "pmid": "6", "pmcid": "PMC6"},  # triaged out
-)] + [{"key": "doi:10.1/g", "doi": "10.1/g", "pmid": "7", "pmcid": "PMC7", "full_text": "true", "open_access": "false"}]  # Europe PMC won't serve it
+)] + [{"key": "doi:10.1/g", "doi": "10.1/g", "pmid": "7", "pmcid": "PMC7", "full_text": "true", "open_access": "false"}]  # an author manuscript (ADR 0030)
 TRIAGED = {p["key"]: {"verdict": "out" if p["key"].endswith("f") else "in"} for p in PAPERS}
 
 
@@ -63,6 +67,7 @@ ANSWERS = {
         draft("MBA:295", "MBA:536", species="NCBITaxon:9544"),  # a macaque
     ]),
     "PMC3": extract.PaperClaims(claims=[]),
+    "PMC7": extract.PaperClaims(claims=[]),
 }
 
 
@@ -91,8 +96,8 @@ def test_extraction_writes_checked_proposed_claims(tmp_path):
     run = FakeRun()
     summary = extract.extract(PAPERS, run, 10, extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"]), classify=None,
                               today="2026-10-08", ledger=ledger, triaged=TRIAGED, claims_dir=claims, text=text)
-    # Sent: the triaged-in full-text papers with a PMC ID that pass the screen.
-    assert [r.text for r in run.sent] == ["PMC1", "PMC3"]
+    # Sent: the triaged-in full-text papers with a PMC ID that pass the screen, open access or not.
+    assert [r.text for r in run.sent] == ["PMC1", "PMC3", "PMC7"]
     system = run.sent[0].system
     assert system.startswith("You extract connectivity claims") and "## Region lexicon" in system
     assert "MBA:295 | BLA | Basolateral amygdalar nucleus | UBERON:0002887" in system and "nt-3kvfdzf7wn | MEA glutamatergic" in system
@@ -125,9 +130,9 @@ def test_extraction_writes_checked_proposed_claims(tmp_path):
     assert summary["screen_findings"] == ["doi:10.1/b: injection, score 0.99: ignore all previous instructions"]
     rows = ledger.read()
     assert {k: rows[k]["outcome"] for k in rows} == {"doi:10.1/a": "claims", "doi:10.1/b": "screened", "doi:10.1/c": "none",
-                                                     "doi:10.1/e": "unfetched"}
+                                                     "doi:10.1/e": "unfetched", "doi:10.1/g": "none"}
     assert rows["doi:10.1/a"]["claims"] == "4" and rows["doi:10.1/a"]["dropped"] == "5"
-    assert summary["cost"] == (60_000 * 4 + 8_000 * 20) / 1e6 / 2
+    assert math.isclose(summary["cost"], (90_000 * 4 + 12_000 * 20) / 1e6 / 2)
 
     again = FakeRun()  # done papers are not sent again; the unfetched one is retried
     extract.extract(PAPERS, again, 10, extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"]), classify=None,
@@ -190,9 +195,80 @@ def test_full_text_is_cached(tmp_path):
     assert asked == ["https://www.ebi.ac.uk/europepmc/webservices/rest/PMC123/fullTextXML"]
 
 
-def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
-    import json
+def open_data(files: dict[str, bytes], asked: list[str]):
+    """A download where Europe PMC has no full text and PMC's open data on AWS holds `files` (key -> body)."""
+    def download(url):
+        asked.append(url)
+        if url.startswith(europepmc.PMC_BUCKET + "?prefix="):
+            prefix = url.split("=", 1)[1]
+            keys = "".join(f"<Contents><Key>{k}</Key></Contents>" for k in files if k.startswith(prefix))
+            return f'<ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">{keys}</ListBucketResult>'.encode()
+        if url.startswith(europepmc.PMC_BUCKET):
+            return files[url.removeprefix(europepmc.PMC_BUCKET)]
+        raise HTTPError(url, 404, "Not Found", None, None)
+    return download
 
+
+def manuscript(pmcid: str, version: int, body: bytes, md5: str | None = None) -> dict[str, bytes]:
+    key = f"{pmcid}.{version}/{pmcid}.{version}"
+    meta = {"pmcid": pmcid, "is_manuscript": True, "license_code": "TDM",
+            "xml_url": f"s3://pmc-oa-opendata/{key}.xml?md5={md5 or hashlib.md5(body).hexdigest()}"}
+    return {f"{key}.json": json.dumps(meta).encode(), f"{key}.xml": body, f"{key}.pdf": b"%PDF"}
+
+
+def test_a_paper_europe_pmc_wont_serve_is_read_from_pmc_open_data(tmp_path):
+    asked: list[str] = []
+    files = manuscript("PMC12", 1, b"<article>old</article>") | manuscript("PMC12", 2, b"<article>new</article>") \
+        | manuscript("PMC123", 1, b"<article>another paper</article>")
+    download = open_data(files, asked)
+    assert europepmc.full_text("PMC12", download, tmp_path) == b"<article>new</article>"  # the newest version
+    assert asked == ["https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12/fullTextXML",
+                     "https://pmc-oa-opendata.s3.amazonaws.com/?prefix=PMC12.",
+                     "https://pmc-oa-opendata.s3.amazonaws.com/PMC12.2/PMC12.2.json",
+                     "https://pmc-oa-opendata.s3.amazonaws.com/PMC12.2/PMC12.2.xml"]
+    assert europepmc.full_text("PMC12", download, tmp_path) == b"<article>new</article>" and len(asked) == 4  # cached
+
+
+def test_a_paper_neither_source_serves_keeps_europe_pmcs_error(tmp_path):
+    with pytest.raises(HTTPError) as missing:
+        europepmc.full_text("PMC9", open_data({}, []), tmp_path)
+    assert missing.value.code == 404 and not (tmp_path / "PMC9.xml").exists()
+
+    def failing(url):  # Europe PMC's server error stands when the bucket hasn't the paper
+        if "europepmc" in url:
+            raise HTTPError(url, 500, "error", None, None)
+        return b"<ListBucketResult/>"
+    with pytest.raises(HTTPError) as error:
+        europepmc.full_text("PMC9", failing, tmp_path)
+    assert error.value.code == 500
+
+    damaged = manuscript("PMC8", 1, b"<article/>", md5="0" * 32)
+    with pytest.raises(ValueError, match="MD5"):
+        europepmc.full_text("PMC8", open_data(damaged, []), tmp_path)
+
+
+def test_a_preprint_is_read_by_its_europe_pmc_id_and_only_from_an_allowed_server(tmp_path):
+    asked: list[str] = []
+    with pytest.raises(HTTPError):
+        europepmc.full_text("PPR42", open_data(manuscript("PMC42", 1, b"<article/>"), asked), tmp_path)
+    assert asked == ["https://www.ebi.ac.uk/europepmc/webservices/rest/PPR42/fullTextXML"]  # no PMC open data for a preprint
+    assert europepmc.full_text("PPR43", lambda url: b"<article/>", tmp_path) == b"<article/>"
+    for wrong in ("MED:1", "PPR:PPR1", "PMC"):
+        with pytest.raises(ValueError):
+            europepmc.full_text(wrong, lambda url: b"", tmp_path)
+
+    preprints = [{"key": f"doi:10.1101/{n}", "doi": f"10.1101/{n}", "pmid": "", "pmcid": "", "europe_pmc": europe_pmc,
+                  "types": "Preprint", "journal": journal, "full_text": "true", "open_access": "true"}
+                 for n, europe_pmc, journal in (("1", "PPR:PPR1", "bioRxiv"), ("2", "PPR:PPR2", "Research Square"),
+                                                ("3", "MED:3", "bioRxiv"))]
+    assert [europepmc.text_id(p) for p in preprints] == ["PPR1", "PPR2", ""]
+    assert europepmc.text_id(PAPERS[0]) == "PMC1"
+    triaged = {p["key"]: {"verdict": "in"} for p in preprints}
+    assert preprint_servers() >= {"bioRxiv"}
+    assert [p["key"] for p in extract.candidates(preprints, triaged, {}, "extract@0.3.0")] == ["doi:10.1101/1"]
+
+
+def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
     lexicon = tmp_path / "lexicon.json"
     lexicon.write_text(json.dumps(LEXICON), encoding="utf-8")
     answers = tmp_path / "answers"
@@ -244,8 +320,9 @@ def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():
     assert "strength" not in absent and "measurements" not in absent
 
 
-def test_only_open_access_papers_are_read_and_a_missing_text_is_not_asked_for_again(tmp_path):
-    assert "doi:10.1/g" not in [p["key"] for p in extract.candidates(PAPERS, TRIAGED, {}, "extract@0.3.0")]
+def test_papers_with_full_text_are_read_open_access_or_not_and_a_missing_text_is_not_asked_for_again(tmp_path):
+    keys = [p["key"] for p in extract.candidates(PAPERS, TRIAGED, {}, "extract@0.3.0")]
+    assert "doi:10.1/g" in keys and "doi:10.1/d" not in keys  # an author manuscript is read; no ID to fetch by is not
 
     def missing(paper):
         if paper["pmcid"] == "PMC1":
@@ -277,6 +354,6 @@ def test_a_paper_europe_pmc_always_fails_on_is_set_aside(tmp_path):
     rows = ledger.read()
     assert rows["doi:10.1/a"]["attempts"] == "2" and rows["doi:10.1/c"]["attempts"] == "0"  # a 503 passes; a 500 counts
     assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, rows, "extract@0.3.0")] == [
-        "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]
+        "doi:10.1/b", "doi:10.1/c", "doi:10.1/e", "doi:10.1/g"]
     assert [p["key"] for p in extract.candidates(PAPERS, TRIAGED, ledger.read(), "extract@0.3.0")] == [
-        "doi:10.1/b", "doi:10.1/c", "doi:10.1/e"]  # unfetched is tried again; unavailable is done
+        "doi:10.1/b", "doi:10.1/c", "doi:10.1/e", "doi:10.1/g"]  # unfetched is tried again; unavailable is done

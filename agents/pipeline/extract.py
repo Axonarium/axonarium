@@ -1,9 +1,10 @@
-"""Extraction (sprint 2.3, ADR 0028): the open full text of triaged papers, as proposed claim files.
+"""Extraction (sprint 2.3, ADR 0028): the full text of triaged papers, as proposed claim files.
 
-For each paper triaged in, open access with its full text in Europe PMC, and not yet extracted (pipeline.corpus.due:
-once, whatever the prompt version, unless asked for again with --redo):
+For each paper triaged in, with its full text in Europe PMC, and not yet extracted (pipeline.corpus.due: once, whatever
+the prompt version, unless asked for again with --redo):
 
-1. its JATS full text is fetched (cached in .cache/papers, never committed) and cut to the parts that hold claims;
+1. its JATS full text is fetched, from Europe PMC or else PMC's open data (ADR 0030; cached in .cache/papers, never
+   committed), and cut to the parts that hold claims;
 2. it passes the hidden-text screen, and a flagged paper is never sent;
 3. the extractor drafts claims, with the region lexicon in its instructions;
 4. each draft is checked against the lexicon and the schema's rules, and kept drafts become claim files in
@@ -29,7 +30,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from evals.harness.models import DraftClaim, values
 from evals.harness.run import read_prompt
 from pipeline import europepmc, sections
-from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, recorded, set_aside
+from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, preprint_servers, recorded, set_aside
 from pipeline.llm import Request, choose, request_id, spend
 from pipeline.triage import LEDGER as TRIAGE
 from screen import Screened, screen_jats
@@ -39,7 +40,7 @@ LEDGER = Ledger(CORPUS / "extracted.csv", ("key", "outcome", "claims", "dropped"
 CLAIMS = ROOT / "data" / "claims" / "amygdala"
 EFFORT, MAX_TOKENS = "high", 64_000
 # Outcomes that mean a paper is done; any other (a refusal, a failed fetch) is tried again while it has tries left.
-# `unavailable`: Europe PMC has no full text to give for it.
+# `unavailable`: neither Europe PMC nor PMC's open data has full text to give for it.
 DONE = {"claims", "none", "screened", "unreadable", "unavailable"}
 SPECIES = {"mouse": "NCBITaxon:10090", "rat": "NCBITaxon:10116", "human": "NCBITaxon:9606"}
 # The numbers extraction reads, with their unit and range (the data checks' own; checks/file_rules.py). Papers
@@ -233,18 +234,22 @@ def write(record: dict, folder: Path) -> Path:
 
 
 def candidates(manifest: list[dict], triaged: dict[str, dict], done: dict[str, dict], prompt_id: str,
-               redo: Redo = Redo()) -> list[dict]:
-    """Papers triaged in, open access with their full text in Europe PMC, due for extraction (pipeline.corpus.due); in
-    manifest order. Europe PMC serves full text only for its open-access subset: it holds other papers' text, such as
-    author manuscripts, but won't give it out."""
+               redo: Redo = Redo(), servers: set[str] | None = None) -> list[dict]:
+    """Papers triaged in, with their full text in Europe PMC and a PMC or preprint ID to fetch it by, due for
+    extraction (pipeline.corpus.due); in manifest order. Europe PMC serves only its open-access subset, but PMC's open
+    data also shares author manuscripts (ADR 0030); a paper neither serves is recorded `unavailable` without reaching
+    a model. A preprint is read only from a server the allowlist accepts."""
+    servers = preprint_servers() if servers is None else servers
     return [p for p in manifest
-            if (recorded(triaged, p) or {}).get("verdict") == "in" and p["full_text"] == "true" and p["open_access"] == "true"
-            and p["pmcid"] and due(p, recorded(done, p), "outcome", DONE, prompt_id, redo)]
+            if (recorded(triaged, p) or {}).get("verdict") == "in" and p["full_text"] == "true" and europepmc.text_id(p)
+            and ("Preprint" not in p.get("types", "").split(";") or p.get("journal") in servers)
+            and due(p, recorded(done, p), "outcome", DONE, prompt_id, redo)]
 
 
 def fetch_failure(error: Exception) -> str:
     """A ledger outcome for a full text that couldn't be read: `unreadable` XML, `unavailable` text (Europe PMC answers
-    that it has none), or `unfetched` (Europe PMC failed or couldn't be reached; tried again next run)."""
+    that it has none, and PMC's open data hasn't it either), or `unfetched` (Europe PMC failed or couldn't be reached;
+    tried again next run)."""
     if isinstance(error, SyntaxError):
         return "unreadable"
     return "unavailable" if isinstance(error, HTTPError) and error.code == 404 else "unfetched"
@@ -265,7 +270,7 @@ def why(error: Exception) -> str:
 
 
 def full_text(paper: dict, classify, fetch: Callable[[str], bytes] | None = None) -> Screened:
-    return screen_jats((fetch or europepmc.full_text)(paper["pmcid"]), classify, prune=sections.prune)
+    return screen_jats((fetch or europepmc.full_text)(europepmc.text_id(paper)), classify, prune=sections.prune)
 
 
 def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, today: str | None = None,
