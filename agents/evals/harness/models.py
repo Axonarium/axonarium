@@ -1,6 +1,7 @@
-"""What an extractor returns: draft connectivity claims, in the schema's own terms.
+"""Draft connectivity claims and gold claims, in the schema's own terms.
 
-The enumerations come from schema/axonarium.yaml, so a schema change reaches the harness without a code change.
+The enumerations come from schema/axonarium.yaml, so a schema change reaches the harness without a code change. What
+an extractor returns is the pipeline's `pipeline.extract.PaperClaims`: these drafts with strength and numbers added.
 """
 
 from pathlib import Path
@@ -43,13 +44,6 @@ class DraftClaim(BaseModel):
     sign: Sign
     locator: str = Field(description="Where in the paper the evidence is, such as Fig. 3B")
     paraphrase: str = Field(description="The evidence in your own words; never copied text")
-
-
-class Extraction(BaseModel):
-    """Every connectivity claim a paper makes."""
-
-    model_config = ConfigDict(extra="forbid")
-    claims: list[DraftClaim]
 
 
 class GoldEntity(BaseModel):

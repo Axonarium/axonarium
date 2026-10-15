@@ -4,7 +4,8 @@
     openai:<model>      the OpenAI SDK; OPENAI_API_KEY
     replay:<folder>     saved answers, <folder>/<paper>.json, for tests and re-scoring without a model
 
-Every provider asks for an `Extraction` as structured output, so answers are schema-valid or recorded as failures.
+Every provider asks for the pipeline's own output model, `PaperClaims`, as structured output (sprint 0.6a), so answers
+are schema-valid or recorded as failures.
 None falls back to another model on a refusal: an eval must score the model it names.
 """
 
@@ -15,14 +16,14 @@ from typing import Protocol
 
 from pydantic import ValidationError
 
-from evals.harness.models import Extraction
+from pipeline.extract import PaperClaims
 
 MAX_TOKENS = 64_000  # streamed, so a long extraction isn't cut off by an HTTP timeout
 
 
 @dataclass
 class Answer:
-    extraction: Extraction | None
+    extraction: PaperClaims | None
     stop: str  # end_turn, refusal, max_tokens, invalid, error, …
     usage: dict[str, int] = field(default_factory=dict)
     detail: str | None = None
@@ -46,10 +47,10 @@ class AnthropicProvider:
         options = {"output_config": {"effort": self.effort}} if self.effort else {}
         try:
             with self.client.messages.stream(model=self.model, max_tokens=MAX_TOKENS, system=system,
-                                             messages=[{"role": "user", "content": text}], output_format=Extraction,
+                                             messages=[{"role": "user", "content": text}], output_format=PaperClaims,
                                              **options) as stream:
                 message = stream.get_final_message()
-        except (ValidationError, ValueError) as error:  # output that isn't a valid Extraction (such as cut off)
+        except (ValidationError, ValueError) as error:  # output that isn't valid PaperClaims (such as cut off)
             return Answer(None, "invalid", detail=str(error)[:500])
         usage = {"input_tokens": message.usage.input_tokens, "output_tokens": message.usage.output_tokens}
         if message.stop_reason == "refusal":
@@ -72,7 +73,7 @@ class OpenAIProvider:
         options = {"reasoning": {"effort": self.effort}} if self.effort else {}
         try:
             response = self.client.responses.parse(model=self.model, instructions=system, input=text,
-                                                   text_format=Extraction, **options)
+                                                   text_format=PaperClaims, **options)
         except (ValidationError, ValueError) as error:
             return Answer(None, "invalid", detail=str(error)[:500])
         usage = {"input_tokens": response.usage.input_tokens, "output_tokens": response.usage.output_tokens}
@@ -90,7 +91,7 @@ class ReplayProvider:
         if not saved.exists():
             return Answer(None, "error", detail=f"no saved answer {saved}")
         try:
-            return Answer(Extraction.model_validate(json.loads(saved.read_text(encoding="utf-8"))), "end_turn")
+            return Answer(PaperClaims.model_validate(json.loads(saved.read_text(encoding="utf-8"))), "end_turn")
         except (ValidationError, ValueError) as error:
             return Answer(None, "invalid", detail=str(error)[:500])
 

@@ -28,7 +28,7 @@ import yaml
 from pydantic import BaseModel, ConfigDict, Field
 
 from evals.harness.models import DraftClaim, values
-from evals.harness.run import read_prompt
+from evals.harness.prompts import read_prompt
 from pipeline import europepmc, sections
 from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, preprint_servers, recorded, set_aside
 from pipeline.llm import Request, choose, request_id, spend
@@ -173,6 +173,15 @@ def measurements(found: list[DraftMeasurement]) -> tuple[list[dict], list[str]]:
     return kept, left_out
 
 
+def system_prompt(prompt: Path, lexicon: Lexicon) -> tuple[str, str]:
+    """The prompt's versioned ID and the extractor's instructions: the role prompt, then the region lexicon. The eval
+    harness builds its instructions here too, so a gold score measures what the pipeline sends (sprint 0.6a). The
+    lexicon also takes the rat UBERON terms in the prompt's own table of names."""
+    prompt_id, instructions = read_prompt(prompt)
+    lexicon.uberon |= set(UBERON.findall(instructions))
+    return prompt_id, instructions + "\n\n" + lexicon.text()
+
+
 def claim_id(source_key: str, draft: DraftClaim) -> str:
     """A stable ID: the same paper and claim always give the same ID (ADR 0004's shape)."""
     parts = (source_key, draft.subject.id, draft.predicate, draft.object.id, draft.species, draft.evidence_class,
@@ -279,9 +288,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     """Extract up to `limit` candidate papers with `run` (a runner from pipeline.llm). Returns a summary."""
     today, ledger, claims_dir = today or date.today().isoformat(), ledger or LEDGER, claims_dir or CLAIMS
     triaged = triaged if triaged is not None else TRIAGE.read()
-    prompt_id, instructions = read_prompt(prompt)
-    lexicon.uberon |= set(UBERON.findall(instructions))  # the rat terms in the prompt's own table of names
-    system = instructions + "\n\n" + lexicon.text()
+    prompt_id, system = system_prompt(prompt, lexicon)
     model = getattr(run, "model", "replay")
     before = ledger.read()
     papers = choose(candidates(manifest, triaged, before, prompt_id, redo), run, limit)

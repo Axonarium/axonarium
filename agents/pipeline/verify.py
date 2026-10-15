@@ -17,7 +17,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, ConfigDict, Field
 
-from evals.harness.run import read_prompt
+from evals.harness.prompts import read_prompt
 from pipeline import extract
 from pipeline.corpus import CORPUS, MAX_ATTEMPTS, Ledger, Redo, attempts, recorded
 from pipeline.extract import Lexicon
