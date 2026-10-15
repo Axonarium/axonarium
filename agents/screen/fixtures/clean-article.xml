@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Synthetic fixture for the hidden-text screen (sprint C.5, ADR 0023): a clean article holding the invisible
-     characters and styles real papers use, none of which should be flagged. Not a real paper. -->
+     characters and styles real papers use, none of which should be flagged, and eNeuro's article-history line, which
+     the classifier would score as an injection if it were read (ADR 0033). Not a real paper. -->
 <article xmlns:mml="http://www.w3.org/1998/Math/MathML" article-type="research-article">
   <front>
     <article-meta>
       <title-group>
         <article-title>Projections of the basolateral amyg&#xAD;dala to the central nucleus in the mouse</article-title>
       </title-group>
+      <notes>
+        <p>Received 2024 Sep 24; Revised 2024 Dec 18; Accepted 2024 Dec 19; Prepublished 2025 Jan 21; Collection date 2025 Jan.</p>
+      </notes>
       <abstract>
         <p>We injected an anterograde tracer into the basolateral amygdala (BLA) of adult mice and mapped labelled axons. Dense terminal fields were found in the medial central nucleus (CeM), and sparse fibres in the lateral central nucleus (CeL).</p>
       </abstract>

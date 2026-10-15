@@ -6,8 +6,7 @@ subject:
 predicate: projects_to
 object:
   type: region
-  id: MBA:313
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0001945
 species: NCBITaxon:10090
 evidence_class: anterograde_tracer
 result: present
@@ -37,3 +36,4 @@ extra:
   extract.subject_name: LPT GABAergic neurons
   extract.object_name: SC
   verify.note: The object is coded as the whole midbrain, but the 4.6% value is for the superior colliculus specifically.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Object remapped from Midbrain to superior colliculus.'

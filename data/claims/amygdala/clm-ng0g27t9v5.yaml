@@ -37,3 +37,5 @@ extra:
   extract.object_name: BLA, basolateral nucleus of the amygdala
   verify.note: The text gives BLA cell counts pooled across MGN and Te3 stimulation, so whether any BLA cell was driven by
     Te3 rests on figures whose captions don't say.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the paraphrase already says the BLA counts are pooled across
+    MGN and Te3 stimulation.'

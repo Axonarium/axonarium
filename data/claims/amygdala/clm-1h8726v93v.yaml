@@ -39,3 +39,5 @@ extra:
   extract.object_name: BLA
   verify.note: The main text only reports absence of somatic labeling in BLA; the figure caption's wording about dense axonal
     labeling is ambiguous, so axonal projection evidence cannot be settled.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the evidence is in Additional file 1, Fig. S1C, which the
+    text-only verifier can''t see.'

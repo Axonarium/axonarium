@@ -1,8 +1,7 @@
 id: clm-khy8t49zzc
 subject:
-  type: region
-  id: MBA:295
-  atlas: allen-mouse-ccf-2017
+  type: neuron_type
+  id: nt-fwck8mp6aj
 predicate: synapses_onto
 object:
   type: neuron_type
@@ -38,3 +37,5 @@ extra:
   extract.object_name: principal cells (PCs) of the BLA
   verify.note: The subject is the whole BLA region, but the paper's presynaptic element is the PV-expressing axo-axonic cell
     population, not the nucleus.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from the whole BLA to BLA parvalbumin-expressing
+    interneurons, the closest project type to the PV axo-axonic cells.'

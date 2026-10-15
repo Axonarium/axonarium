@@ -11,7 +11,7 @@ object:
 species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
-sign: excitatory
+sign: unknown
 source:
   doi: 10.7554/elife.74758
   pmid: '34845987'
@@ -39,3 +39,5 @@ extra:
   extract.object_name: vH pyramidal neurons
   verify.note: Fig 2F,G records NBQX-sensitive inhibitory currents at 0 mV, so it does not show a direct excitatory connection
     onto pyramidal cells; the sign is wrong for this evidence.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Sign set to unknown: Fig. 2F,G shows NBQX-sensitive feed-forward
+    inhibition, not a direct excitatory effect.'

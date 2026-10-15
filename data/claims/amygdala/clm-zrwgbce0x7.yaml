@@ -6,8 +6,7 @@ subject:
 predicate: functionally_connects_to
 object:
   type: region
-  id: MBA:972
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:4450000
 species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
@@ -44,3 +43,5 @@ extra:
   extract.object_name: medial prefrontal cortex (mPFC)
   verify.note: The paper records from and names only the mPFC, never the prelimbic area specifically, so the object region
     is narrower than the paper's own region.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Object remapped from PL to medial prefrontal cortex: the paper names
+    only mPFC.'

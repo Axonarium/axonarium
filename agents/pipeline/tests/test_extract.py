@@ -114,7 +114,7 @@ def test_extraction_writes_checked_proposed_claims(tmp_path):
         "species": MOUSE, "evidence_class": "anterograde_tracer", "result": "present", "sign": "unknown",
         "source": {"doi": "10.1/a", "pmid": "1", "pmcid": "PMC1", "locator": "Fig. 1"},
         "paraphrase": "An anterograde tracer in the BLA labelled axons in the CeA.",
-        "curation": {"by": "agent", "role": "extractor", "model": "claude-opus-5-5", "prompt": "extract@0.3.0", "date": "2026-10-08"},
+        "curation": {"by": "agent", "role": "extractor", "model": "claude-opus-5-5", "prompt": "extract@0.4.0", "date": "2026-10-08"},
         "status": "proposed",
         "extra": {"extract.subject_name": "name of MBA:295", "extract.object_name": "name of MBA:536"},
     }
@@ -289,8 +289,27 @@ def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
     assert len(list((tmp_path / "claims").glob("*.yaml"))) == 1 and "claims written: 1" in capsys.readouterr().out
 
 
+def test_a_mouse_claim_names_a_uberon_term_only_where_no_allen_region_fits():
+    lexicon = extract.Lexicon(LEXICON["atlases"], LEXICON["neuron_types"], uberon={"UBERON:4450000"})
+    region = lambda term: Entity(type="region", id=term, name_in_paper="mPFC")
+    # Medial prefrontal cortex (from the prompt's table) and the amygdala (a human region's term) have no mouse region.
+    assert lexicon.entity(region("UBERON:4450000"), MOUSE) == ({"type": "region", "id": "UBERON:4450000"}, None)
+    assert lexicon.entity(region("UBERON:0001876"), MOUSE) == ({"type": "region", "id": "UBERON:0001876"}, None)
+    # The basolateral nucleus has one, MBA:295, so a mouse claim names it; a rat claim still takes the UBERON term.
+    assert lexicon.entity(region("UBERON:0002887"), MOUSE) == (
+        None, "UBERON:0002887 has an Allen region, which a mouse claim names instead")
+    assert lexicon.entity(region("UBERON:0002887"), RAT) == ({"type": "region", "id": "UBERON:0002887"}, None)
+    assert lexicon.entity(region("UBERON:0001945"), MOUSE) == (None, "UBERON:0001945 is not in the region lexicon")
+
+
 def number(quantity: str, value: float, **parts) -> extract.DraftMeasurement:
     return extract.DraftMeasurement(quantity=quantity, value=value, **{k: parts.get(k) for k in ("sd", "sem", "ci_low", "ci_high", "n")})
+
+
+def test_a_conduction_delay_over_50_ms_is_left_out_as_a_response_latency():
+    kept, left_out = extract.measurements([number("conduction_delay", 6.3, n=4), number("conduction_delay", 129.3, sd=108.9)])
+    assert kept == [{"quantity": "conduction_delay", "value": 6.3, "unit": "ms", "n": 4}]
+    assert left_out == ["conduction_delay 129.3 ms is over 50 ms, a response latency"]
 
 
 def test_strength_and_numbers_are_kept_checked_and_never_on_an_absent_result():

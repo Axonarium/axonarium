@@ -1,8 +1,7 @@
 id: clm-de9n2cbc1x
 subject:
   type: region
-  id: MBA:95
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0034891
 predicate: synapses_onto
 object:
   type: region
@@ -36,3 +35,5 @@ extra:
   extract.subject_name: insular cortex
   extract.object_name: VIP interneurons in A1
   verify.note: The paper says only 'insular cortex' without specifying agranular insula, so mapping it to AI may be too narrow.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from agranular insula to insular cortex: the paper
+    says only insular cortex.'

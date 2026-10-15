@@ -12,14 +12,6 @@ species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
 sign: unknown
-measurements:
-- quantity: connection_probability
-  value: 0.54
-  unit: '1'
-- quantity: conduction_delay
-  value: 6.3
-  unit: ms
-  n: 4
 source:
   doi: 10.1038/s41598-019-48340-9
   pmid: '31434945'
@@ -47,3 +39,5 @@ extra:
   extract.object_name: amygdala
   verify.note: The 54% is the share of electrodes showing light-evoked responses, not a connection probability, and 6.3 ms
     is a maximum peak mean latency rather than a measured conduction delay.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurements dropped: 54% is the share of electrodes with light
+    responses and 6.3 ms a peak latency.'

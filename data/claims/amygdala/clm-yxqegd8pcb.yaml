@@ -1,7 +1,7 @@
 id: clm-yxqegd8pcb
 subject:
   type: region
-  id: MBA:477
+  id: MBA:278
   atlas: allen-mouse-ccf-2017
 predicate: synapses_onto
 object:
@@ -37,3 +37,5 @@ extra:
   extract.subject_name: AStria amygdalostriatal transition area
   extract.object_name: CeLCPKCδ neurons
   verify.note: The subject ID is the whole striatum rather than the amygdalostriatal transition area named in the paper.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from Striatum to the striatum-like amygdalar nuclei,
+    the project''s region for the amygdalostriatal transition area.'

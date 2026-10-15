@@ -37,3 +37,5 @@ extra:
   extract.object_name: VIP interneurons in A1
   verify.note: The text reports LA findings only as an SST-versus-PV comparison, and whether VIP cells received LA input is
     not stated outside the figure.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Kept: the evidence is in Fig. 4j,n, which the text-only verifier
+    can''t see.'

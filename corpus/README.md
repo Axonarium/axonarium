@@ -8,6 +8,7 @@ The literature the amygdala module reads (sprint 2.2, [ADR 0019](../docs/decisio
 | `manifest.csv` | Every paper the searches find, one row each, written by the scout. Never edited by hand |
 | `triage.csv` | The pipeline's triage verdict for each paper: whether its own data test a connection ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)). Written by `python -m pipeline triage` |
 | `extracted.csv` | What extraction did with each paper: how many claims it gave, or why it gave none. Written by `python -m pipeline extract` |
+| `released.csv` | Papers the hidden-text screen flagged that the maintainer has read and released to the models ([ADR 0033](../docs/decisions/0033-releasing-screened-papers.md)). Only the maintainer adds rows |
 
 Run the scout from the repository root, or with the **Scout** workflow in the Actions tab, which pushes the result to a `scout/<date>` branch to open a pull request from:
 
@@ -77,3 +78,13 @@ The ledgers below record every paper the literature pipeline has handled (ADR 00
 | `model`, `prompt`, `date` | Which model and prompt version verified (the fallback, when it answered a refusal), and when |
 
 The manifest and the ledgers grow with every run, past pre-commit's 500 KB limit for added files, so that check skips them. Each stays one file, so a run's diff shows which papers came and went.
+
+## Releasing a screened paper
+
+A paper the hidden-text screen flags is never sent to a model, and its outcome is `screened`. The run's report lists every finding in full under **Screen findings**, and the paper's key and digest under **To release**. To release it:
+
+1. Read every finding for that paper. Release it only if none is an instruction to a model: a figure title, a protocol step or an equation the classifier misread.
+2. Add its row from **To release** to `released.csv`, with the date and a short note on what the findings were: `key,findings,date,note`.
+3. Once that merges, run the step again with `--redo <key>`.
+
+The digest covers the flagged text, not the classifier's scores, so a paper whose flagged text changes is held again until it is read again. Article-history lines ("Received …; Revised …; Accepted …"), which hold only dates, are neither screened nor read.

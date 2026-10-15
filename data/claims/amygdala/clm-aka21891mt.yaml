@@ -11,13 +11,7 @@ object:
 species: NCBITaxon:10090
 evidence_class: optogenetic_circuit_mapping
 result: present
-sign: unknown
-measurements:
-- quantity: connection_probability
-  value: 0.21
-  unit: '1'
-  sd: 0.11
-  n: 5
+sign: excitatory
 source:
   doi: 10.3389/fnins.2018.00496
   pmid: '30087590'
@@ -45,3 +39,5 @@ extra:
   extract.object_name: nucleus accumbens (NAc)
   verify.note: The 21 ± 11% figure is the share of imaged NAc cells that responded in vivo, not a connection probability,
     and the slice EPSCs indicate an excitatory sign rather than unknown.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Measurement dropped: 21% is the share of imaged NAc cells that responded.
+    Sign set to excitatory from the slice EPSCs.'

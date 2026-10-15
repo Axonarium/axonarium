@@ -1,8 +1,7 @@
 id: clm-502x364kmm
 subject:
   type: region
-  id: MBA:1097
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0001928
 predicate: synapses_onto
 object:
   type: region
@@ -43,3 +42,5 @@ extra:
   extract.object_name: VPCNs
   verify.note: The 10.81% figure is for the POA alone, so it cannot stand for the whole hypothalamus, which also contains
     the separately counted LH.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from Hypothalamus to preoptic area, the region
+    the paper''s 10.81% is for.'

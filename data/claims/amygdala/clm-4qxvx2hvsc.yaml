@@ -1,8 +1,7 @@
 id: clm-4qxvx2hvsc
 subject:
   type: region
-  id: MBA:313
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0001945
 predicate: synapses_onto
 object:
   type: region
@@ -44,3 +43,4 @@ extra:
   extract.subject_name: SC
   extract.object_name: LPT GABAergic neurons
   verify.note: The subject is coded as the whole midbrain, but the paper's value refers specifically to the superior colliculus.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from Midbrain to superior colliculus.'

@@ -1,8 +1,7 @@
 id: clm-kkktaemc8k
 subject:
   type: region
-  id: MBA:95
-  atlas: allen-mouse-ccf-2017
+  id: UBERON:0034891
 predicate: synapses_onto
 object:
   type: region
@@ -37,3 +36,5 @@ extra:
   extract.subject_name: insular cortex
   extract.object_name: NPY neurons in the NAc
   verify.note: The paper says only 'insular cortex', so mapping it to the agranular insular area specifically cannot be confirmed.
+  review.note: 'Maintainer''s ruling on #116, 2026-10-14. Subject remapped from agranular insula to insular cortex: the paper
+    says only insular cortex.'
