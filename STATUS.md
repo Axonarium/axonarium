@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 10 October 2026.
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 14 October 2026.
 
 ## Phase
 
@@ -33,7 +33,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | Done for the open-access corpus, from the **Literature** workflow ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). Triage: of 2,079 papers, 1,608 in, 468 out, 3 set aside after two refusals. Extraction read all 358 open-access papers triaged in that have a PMC ID: 308 gave 3,272 claims (2,558 mouse, 714 rat), 9 gave none, 30 were screened out, and 11 are set aside because Europe PMC fails on them. Every claim has a verdict: 3,180 agree, 58 disagree, 34 unsure; the disagreements and doubts wait in [#116](https://github.com/axonarium/axonarium/issues/116). Papers without open-access full text are left out, since Europe PMC won't serve it. Claims stay proposed until Gate 2 |
 | 2.5 Audit, 2.6 homology | Not started: the audit needs gold v1 and extracted claims |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract and reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
-| 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
+| 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Done ([#56](https://github.com/axonarium/axonarium/pull/56)): [v2026.10.0](https://github.com/axonarium/axonarium/releases/tag/v2026.10.0) is archived on Zenodo, concept DOI [10.5281/zenodo.23381642](https://doi.org/10.5281/zenodo.23381642) |
 | 3.3 Explorer v1 | Done: site shell, 3D brain, network view, region pages, and the static fallback ([#57](https://github.com/axonarium/axonarium/pull/57)) |
 | 3.4 MCP server | Done: `api/mcp`, four read-only tools over the API ([ADR 0014](docs/decisions/0014-mcp-server.md)) |
 | 3.5 Visual design pass ([#74](https://github.com/axonarium/axonarium/issues/74)) | Accessibility and performance budgets in CI ([#75](https://github.com/axonarium/axonarium/pull/75), [ADR 0025](docs/decisions/0025-site-budgets.md)). Figure export ([#76](https://github.com/axonarium/axonarium/pull/76)): either brain view as a PNG, the network as an SVG, each with a title, legend and the Allen citation. Path finder: a route between two regions, drawn hop by hop with each hop's citations ([ADR 0026](docs/decisions/0026-routes-in-the-browser.md)). Gap mode: amygdala regions no claim reports outputs for, drawn to the targets their neighbours project to, as research prompts ([ADR 0027](docs/decisions/0027-gap-mode.md)). The look (tokens, motion) is next and needs the maintainer's eye |
@@ -53,7 +53,7 @@ Later phases get cards when they start.
 - Stack: GitHub as the source of truth, then Supabase, then Next.js on Vercel, with shadcn/ui, React Three Fiber and react-force-graph, plus an MCP server for agents.
 - The nine design principles in [docs/plan.md](docs/plan.md), including "adopt, don't invent".
 - Community input: identifier-only evidence for or against a claim, with an allowlist and three defensive layers.
-- Name: Axonarium ([ADR 0003](docs/decisions/0003-project-name.md)). Licences: Apache-2.0 for code and CC BY 4.0 for data ([ADR 0002](docs/decisions/0002-licensing.md)).
+- Name: Axonarium ([ADR 0003](docs/decisions/0003-project-name.md)). Licences: Apache-2.0 for code and CC BY 4.0 for data ([ADR 0002](docs/decisions/0002-licensing.md)). `CITATION.cff`, which Zenodo reads, lists both (maintainer, 14 October 2026).
 - Identifiers: w3id.org base URI, and a type prefix plus 10 random characters for claims and neuron types ([ADR 0004](docs/decisions/0004-identifiers.md)).
 - Source reuse terms: copy, link or ask first, per source; Allen data is read at build time until the Allen Institute grants permission ([ADR 0005](docs/decisions/0005-source-reuse-terms.md)).
 - Deletions and retractions: logged in data/retractions.yaml, which the maintainer owns ([ADR 0006](docs/decisions/0006-deletion-and-retraction-review.md)).
@@ -117,7 +117,6 @@ Later phases get cards when they start.
 - [ ] Whether extraction should record a population's genetic handle (a Cre line or marker, such as Prkcd-Cre) in its own field. For now the paper's own wording is kept with each claim (`extract.subject_name`, `extract.object_name`).
 - [ ] Optionally, an `OPENAI_API_KEY` in the `models` environment, so the verifier can come from a second model family (ADR 0028).
 - [ ] Deleting the branch `claude/probe-data`, which merged pull requests' branches no longer leave behind; agents can't delete branches.
-- [ ] Zenodo: switch on `axonarium/axonarium` in Zenodo's GitHub settings, run **Release**, then add the concept DOI to `README.md`, `CITATION.cff` and `SUCCESSION.md` (ADR 0016). Also whether `CITATION.cff` should list CC BY 4.0 beside Apache-2.0.
 - [ ] Whether to annotate `corpus/` as CC0-1.0 in `REUSE.toml` (ADR 0019). Later Scout runs: run it from the Actions tab and open a pull request from the branch it pushes.
 - [ ] The inventory draft's open questions (spec for 2.1): where the lexicon lives, whether neuron types cite papers, how Cre-line experiments map to them.
 - [ ] Whether low-density Allen inputs, possibly fibres of passage, need a higher threshold (ADR 0010). The reconciliation report in CI's run summary gives the numbers.
@@ -144,7 +143,7 @@ From plan Part 3.5:
 | Domains | Done: axonarium.com and axonarium.org; https://axonarium.com serves the site |
 | GitHub organization and repo | Done; a second owner is needed |
 | Vercel | Done: team and project `axonarium`, deployed from GitHub Actions |
-| Zenodo | Not started; needed for release DOIs (3.2) |
+| Zenodo | Done: every release is archived, concept DOI 10.5281/zenodo.23381642 |
 | Supabase | Done: the serving database, rebuilt by every deploy; the site falls back to a snapshot when it can't answer |
 | LLM API key with a spending cap | $1,000 of promotional API credits (8 October 2026); the key goes in the `models` environment (ADR 0028) |
 | PyPI and npm | npm scope held; PyPI project name unclaimed |
