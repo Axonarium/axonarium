@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 14 October 2026.
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 15 October 2026.
 
 ## Phase
 
@@ -40,7 +40,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 4.1 SONATA export ([#50](https://github.com/axonarium/axonarium/issues/50)) | On hold until there is more data (maintainer, 4 October 2026); its design starts from scratch then |
 | C.1 Inbox and identifier vetting ([#64](https://github.com/axonarium/axonarium/issues/64)) | Done ([#65](https://github.com/axonarium/axonarium/pull/65)): the inbox table, closed to the public API, and identifier vetting |
 | C.2 Allowlist ([#14](https://github.com/axonarium/axonarium/issues/14)) | Done ([#54](https://github.com/axonarium/axonarium/pull/54)) |
-| C.3 Evidence buttons ([#72](https://github.com/axonarium/axonarium/issues/72)) | Built ([#73](https://github.com/axonarium/axonarium/pull/73)): Supports and Contradicts on each claim page, with Turnstile and rate limits ([ADR 0024](docs/decisions/0024-evidence-buttons.md)). Hidden until the maintainer sets the keys |
+| C.3 Evidence buttons ([#72](https://github.com/axonarium/axonarium/issues/72)) | Done ([#73](https://github.com/axonarium/axonarium/pull/73)): Supports and Contradicts on each claim page, with Turnstile and rate limits ([ADR 0024](docs/decisions/0024-evidence-buttons.md)). Live on axonarium.com since 15 October 2026, when the maintainer set the keys. A dedicated database role instead of the secret key stays open (ADR 0021) |
 | C.4 Triage | Not started: waits on 2.4 |
 | 6.1 Autopilot ([#86](https://github.com/axonarium/axonarium/issues/86)) | Planned: weekly Scout, triage, extraction and verification with a spend cap and a kill switch |
 | C.5 Hidden-text screen ([#70](https://github.com/axonarium/axonarium/issues/70)) | Done ([#71](https://github.com/axonarium/axonarium/pull/71)): every paper is screened before a model reads it, and a flagged one never is ([ADR 0023](docs/decisions/0023-hidden-text-screen.md)) |
@@ -120,7 +120,6 @@ Later phases get cards when they start.
 - [ ] Whether to annotate `corpus/` as CC0-1.0 in `REUSE.toml` (ADR 0019). Later Scout runs: run it from the Actions tab and open a pull request from the branch it pushes.
 - [ ] The inventory draft's open questions (spec for 2.1): where the lexicon lives, whether neuron types cite papers, how Cre-line experiments map to them.
 - [ ] Whether low-density Allen inputs, possibly fibres of passage, need a higher threshold (ADR 0010). The reconciliation report in CI's run summary gives the numbers.
-- [ ] Opening submissions (sprint C.3, ADR 0024): create a Turnstile widget for axonarium.com in Cloudflare; set its site key as the GitHub variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (production environment), and its secret key and Supabase's secret key as `TURNSTILE_SECRET_KEY` and `SUPABASE_SECRET_KEY` in Vercel (production, sensitive). Then send one paper from a phone. A dedicated database role instead of the secret key stays open (ADR 0021).
 - [ ] Whether visitors can suggest papers that have no matching claim yet.
 - [ ] The remaining open decisions in [docs/plan.md](docs/plan.md), Part 1.
 - [ ] A trademark search before announcing: search the USPTO, WIPO and EUIPO databases for "axonarium" in classes 9, 41 and 42. The web search found none.
