@@ -25,7 +25,7 @@ Chosen option: "a module file in `data/`", because the prefrontal cortex can't b
 
 * **The file:** `data/modules.yaml`, a `ModuleList` in the schema. The maintainer owns it (CODEOWNERS), like the allowlist. Each module has an `id`, a `name`, and any of:
   * `roots`: UBERON terms; a region belongs when its term is a root or under one (is-a or part-of, as OLS computes it), as for the amygdala today;
-  * `regions`: atlas regions that belong although UBERON doesn't place them under a root;
+  * `include`: atlas regions, or UBERON terms, that belong although UBERON doesn't place them under a root;
   * `exclude`: atlas regions or UBERON terms that a root takes in but the module doesn't want, such as fibre tracts.
 * **Membership:** an atlas region belongs to a module when it, or a region it is part of, is a member by the rules above (subdivisions follow their parent, as `amygdala_structures` does now). A UBERON term, which rat claims name, belongs when it is under a root, is listed, or is the term a member atlas region maps to. A region can belong to more than one module.
 * **The first three modules:**
