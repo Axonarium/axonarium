@@ -9,11 +9,14 @@ abstract: >-
   builders a trustworthy, machine-readable answer to how real circuits connect
   across rat, mouse and human.
 type: software
+doi: 10.5281/zenodo.23381642
 authors:
   - given-names: Tyler
     family-names: Banks
 repository-code: https://github.com/axonarium/axonarium
-license: Apache-2.0
+license:
+  - Apache-2.0
+  - CC-BY-4.0
 keywords:
   - neuroscience
   - neuroinformatics
