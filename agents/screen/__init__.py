@@ -7,9 +7,13 @@ Three layers, after the plan's Part 3.3 ("limit what a poisoned paper can do"):
 3. Each paragraph left is scored by a prompt-injection classifier; any at or above its threshold is flagged
    (injection.py).
 
-A flagged paper is never given to a model. Its findings go to the maintainer instead.
+A flagged paper is never given to a model. Its findings go to the maintainer instead, who can release it after
+reading them (ADR 0033). An article-history line is neither scored nor read: it holds dates only, yet the classifier
+scores it as an injection.
 """
 
+import hashlib
+import re
 import xml.etree.ElementTree as ET
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -20,6 +24,11 @@ from screen.injection import THRESHOLD, Classifier
 
 FIXTURES = Path(__file__).parent / "fixtures"  # planted-*.xml must be flagged, clean-*.xml must not
 EXCERPT = 160
+# A publisher's article-history line, such as eNeuro's "Received 2023 Sep 20; Revised 2024 Feb 8; Accepted 2024 Feb 9;
+# Prepublished 2024 Feb 21; Collection date 2024 Mar." Only a line of events and dates matches, so no text hides in one.
+_DATE = r"\d{4}(?: [A-Z][a-z]{2}(?:-[A-Z][a-z]{2})?(?: \d{1,2})?)?"
+_EVENT = rf"(?:Received|Revised|Accepted|Prepublished|Published|Collection date) {_DATE}"
+ARTICLE_HISTORY = re.compile(rf"{_EVENT}(?:; {_EVENT})*\.?")
 
 
 @dataclass(frozen=True)
@@ -27,6 +36,7 @@ class Finding:
     layer: str  # invisible, hidden-markup or injection
     detail: str
     excerpt: str
+    text: str = ""  # the whole flagged block, which the maintainer reads before releasing a paper
 
 
 @dataclass(frozen=True)
@@ -37,6 +47,13 @@ class Screened:
     @property
     def flagged(self) -> bool:
         return bool(self.findings)
+
+    @property
+    def digest(self) -> str:
+        """The findings in 16 hex digits, which the maintainer releases a paper by (ADR 0033). Any change to the flagged
+        text changes it; the classifier's scores are left out, so a new runtime's rounding doesn't."""
+        lines = sorted(f"{f.layer}\t{'' if f.layer == 'injection' else f.detail}\t{f.text or f.excerpt}" for f in self.findings)
+        return hashlib.sha256("\n".join(lines).encode("utf-8")).hexdigest()[:16]
 
 
 def _excerpt(text: str) -> str:
@@ -56,12 +73,13 @@ def _screen_blocks(raw: list[str], classify: Classifier, findings: list[Finding]
         if suspicious:
             message = _tag_message(block)
             detail = ", ".join(f"{count} {kind}" for kind, count in sorted(suspicious.items()))
-            findings.append(Finding("invisible", detail, _excerpt(f"spells out: {message}" if message else clean)))
-        if clean:
+            shown = f"spells out: {message}" if message else clean
+            findings.append(Finding("invisible", detail, _excerpt(shown), shown))
+        if clean and not ARTICLE_HISTORY.fullmatch(clean):
             kept.append(clean)
     for block, score in zip(kept, classify(kept) if kept else [], strict=True):
         if score >= THRESHOLD:
-            findings.append(Finding("injection", f"score {score:.2f}", _excerpt(block)))
+            findings.append(Finding("injection", f"score {score:.2f}", _excerpt(block), block))
     return Screened("\n".join(kept), tuple(findings))
 
 
@@ -74,7 +92,7 @@ def screen_jats(xml: bytes, classify: Classifier, prune: Callable[[ET.Element], 
     """A JATS article: hidden elements removed, then its titles and paragraphs screened. `prune` can then drop the
     parts a model needn't read (such as the discussion); hidden markup anywhere in the article still flags it."""
     root = ET.fromstring(xml)
-    findings = [Finding("hidden-markup", reason, _excerpt(text)) for reason, text in markup.strip_hidden(root) if text]
+    findings = [Finding("hidden-markup", reason, _excerpt(text), text) for reason, text in markup.strip_hidden(root) if text]
     if prune:
         prune(root)
     return _screen_blocks(jats.blocks(root), classify, findings)
