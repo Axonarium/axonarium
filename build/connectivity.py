@@ -6,6 +6,7 @@ from pathlib import Path
 from checks.file_rules import check_file
 from checks.findings import Finding, Record
 from checks.tree_rules import check_tree
+from ingest.modules import structures
 
 FOLDER = Path("allen-connectivity")  # Where generated claims say they come from, in findings.
 
@@ -36,14 +37,21 @@ def amygdala_regions(regions: list[dict]) -> set[str]:
     return found
 
 
+def module_regions(regions: list[dict]) -> set[str]:
+    """The IDs of every module's regions, subdivisions included, among these region rows (after
+    ingest.modules.apply)."""
+    return {row["id"] for row in regions if row.get("modules")}
+
+
 def allen_records(loaded: dict[str, list[dict]], loader: Callable) -> list[Record]:
-    """Allen connectivity claims for every loaded atlas with MBA regions (the Allen mouse atlas), as records."""
+    """Allen connectivity claims for every loaded atlas with MBA regions (the Allen mouse atlas), as records: the
+    outputs and inputs of every module's regions (ADR 0031)."""
     records = []
     for atlas, rows in loaded.items():
         if not rows or not rows[0]["id"].startswith("MBA:"):
             continue
         acronyms = {int(row["id"].split(":")[1]): row["acronym"] for row in rows}
-        for claim in loader(atlas, amygdala_structures(rows), acronyms):
+        for claim in loader(atlas, structures(rows), acronyms):
             records.append(Record(FOLDER / f"{claim['id']}.yaml", "ConnectivityClaim", claim))
     return records
 

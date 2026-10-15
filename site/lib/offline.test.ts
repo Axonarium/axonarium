@@ -26,11 +26,11 @@ const claim = (id: string, subject: string, object: string, density: number | nu
 const tables: Tables = {
   atlases: [{ id: ATLAS, name: "Allen mouse", species: "NCBITaxon:10090", version: "2017", url: null, brainglobe_name: "allen_mouse_25um", citation: null, extra: null }],
   regions: [
-    region("MBA:295", "BLA", "Basolateral amygdalar nucleus", { amygdala: true, parent: "MBA:319", uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex" }),
+    region("MBA:295", "BLA", "Basolateral amygdalar nucleus", { amygdala: true, parent: "MBA:319", uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", modules: ["amygdala"] }),
     region("MBA:319", "BLAa", "Basolateral amygdalar nucleus, anterior part", { amygdala: true }),
     region("MBA:672", "CP", "Caudoputamen"),
     region("MBA:536", "CEA", "Central amygdalar nucleus", { amygdala: true }),
-    region("MBA:303", "BLAp", "Basolateral amygdalar nucleus, posterior part", { parent: "MBA:295", amygdala: true }),
+    region("MBA:303", "BLAp", "Basolateral amygdalar nucleus, posterior part", { parent: "MBA:295", amygdala: true, modules: ["amygdala"] }),
   ],
   sources: [{ id: "doi:10.1038/nature13186", kind: "journal_article", title: "A mesoscale connectome", year: 2014, journal: "Nature", license: null, open_access: null, retracted: false }],
   connectivity_claims: [
@@ -127,7 +127,7 @@ describe("the snapshot answers like the database", () => {
     const page = offline.region(tables, "MBA:295");
     expect(page?.region).toEqual({
       id: "MBA:295", name: "Basolateral amygdalar nucleus", acronym: "BLA", atlas: ATLAS, parent: "MBA:319",
-      uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", amygdala: true,
+      uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", amygdala: true, modules: ["amygdala"],
     });
     expect(page?.children).toEqual([{ id: "MBA:303", acronym: "BLAp", name: "Basolateral amygdalar nucleus, posterior part" }]);
     expect(page?.outputs.map((e) => e.target)).toEqual(["MBA:672", "MBA:536"]);
@@ -140,6 +140,12 @@ describe("the snapshot answers like the database", () => {
     expect(offline.regionsPage(tables, { q: "bla", limit: 2, offset: 0 })).toMatchObject({ total: 3, items: [{ id: "MBA:295" }, { id: "MBA:303" }] });
     expect(offline.regionsPage(tables, { q: "CAUDO", limit: 50, offset: 0 }).items.map((r) => r.id)).toEqual(["MBA:672"]);
     expect(offline.regionsPage(tables, { amygdala: false, limit: 50, offset: 0 }).total).toBe(1);
+    expect(offline.regionsPage(tables, { module: "amygdala", limit: 50, offset: 0 }).items.map((r) => [r.id, r.modules])).toEqual([
+      ["MBA:295", ["amygdala"]],
+      ["MBA:303", ["amygdala"]],
+    ]);
+    expect(offline.regionsPage(tables, { module: "hippocampus", limit: 50, offset: 0 }).total).toBe(0);
+    expect(offline.regionsPage(tables, { q: "CAUDO", limit: 50, offset: 0 }).items[0].modules).toBeNull(); // snapshots before modules
     expect(offline.regionsPage(tables, { q: "bla*,name.eq.x", limit: 50, offset: 0 }).total).toBe(0); // sanitised like the API
     expect(offline.regionsPage(tables, { atlas: "other", limit: 50, offset: 0 })).toEqual({ items: [], total: 0 });
   });

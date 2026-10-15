@@ -206,9 +206,26 @@ def _neuron_type_region(record: Record) -> list[Finding]:
     return []
 
 
+def _modules(record: Record) -> list[Finding]:
+    """Each module has a unique ID and at least one root or included region (ADR 0031)."""
+    if record.cls != "ModuleList":
+        return []
+    findings, seen = [], set()
+    for i, module in enumerate(record.data.get("modules") or []):
+        if module["id"] in seen:
+            findings.append(_finding(record, "module", f"modules/{i}: {module['id']} is listed twice"))
+        seen.add(module["id"])
+        if not module.get("roots") and not module.get("include"):
+            findings.append(_finding(record, "module", f"modules/{i}: {module['id']} has no roots and includes nothing"))
+        both = set(module.get("include") or []) & set(module.get("exclude") or [])
+        if both:
+            findings.append(_finding(record, "module", f"modules/{i}: {module['id']} includes and excludes {', '.join(sorted(both))}"))
+    return findings
+
+
 # These assume the record's types are right, so they run only once the schema check passes.
 SEMANTIC_RULES = [_json_value, _extra_mapping, _extra_key, _empty_text, _non_finite, _uncertainty, _unit, _absent_result,
-                  _role, _independent_verifier, _doi_case, _homology_pair, _neuron_type_region]
+                  _role, _independent_verifier, _doi_case, _homology_pair, _neuron_type_region, _modules]
 
 
 def check_file(record: Record) -> list[Finding]:

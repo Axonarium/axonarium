@@ -9,7 +9,7 @@ import trimesh
 
 from build.cli import main
 from build.meshes import convert, export_atlas, regions_to_draw, right_centroid, to_viewer
-from build.tests.test_regions import USED, amygdala_loader, fake_loader, no_claims
+from build.tests.test_regions import USED, fake_loader, terms_loader, no_claims
 from checks.findings import Record
 
 # allen_mouse_25um, axes: anterior->posterior, superior->inferior, left->right. BrainGlobe labels it "asr", but
@@ -115,11 +115,13 @@ def test_build_writes_meshes_for_connections(valid_tree, tmp_path, capsys):
     atlas = FakeAtlas({"root": cube(CENTER, 8000), **{int(i.split(":")[1]): cube(CENTER) for i in USED}})
     brain = tmp_path / "brain"
     assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist"), "--meshes", str(brain)],
-                atlas_loader=fake_loader(), amygdala_loader=amygdala_loader, connectivity_loader=no_claims,
+                atlas_loader=fake_loader(), terms_loader=terms_loader, connectivity_loader=no_claims,
                 mesh_opener=lambda name, version: atlas) == 0
     index = json.loads((brain / "allen-mouse-ccf-2017" / "index.json").read_text(encoding="utf-8"))
     assert "MBA:295" in index["regions"] and len(index["regions"]) > 1 and "meshes:" in capsys.readouterr().out
     assert index["regions"]["MBA:295"]["amygdala"] and not index["regions"]["MBA:131"]["amygdala"]
+    assert index["regions"]["MBA:295"]["modules"] == ["amygdala"] and index["regions"]["MBA:131"]["modules"] == []
+    assert index["regions"]["MBA:972"]["modules"] == ["prefrontal"]  # the example modules.yaml lists PL
 
 
 def test_meshes_need_the_atlases(valid_tree, tmp_path, capsys):

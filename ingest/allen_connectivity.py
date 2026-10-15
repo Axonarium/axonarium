@@ -2,8 +2,9 @@
 
 Allen terms allow non-commercial use but not commercial redistribution, so these claims are never committed and
 never dumped (ADR 0005); the live site shows them with the citation. Each claim is one experiment's projection
-into one target, from wild-type and Cre-line mice (ADR 0029): every target of injections in the amygdala (its
-outputs), and the amygdala targets of injections anywhere else (its inputs). A Cre-line experiment's claim records its
+into one target, from wild-type and Cre-line mice (ADR 0029): every target of injections in a module's regions (its
+outputs), and the module targets of injections anywhere else (its inputs). The modules are the amygdala, the
+hippocampal formation and the prefrontal cortex (ADR 0031). A Cre-line experiment's claim records its
 line, so the labelled population can be mapped to a neuron type later.
 """
 
@@ -115,10 +116,17 @@ def injections(get: Callable, found: list[dict], summary: set[int]) -> dict[int,
     return shares
 
 
-def projections(get: Callable, experiment: int) -> list[dict]:
-    """Projection density per structure, both hemispheres, outside the injection site."""
-    return paged(get, f"model::ProjectionStructureUnionize,rma::criteria,[section_data_set_id$eq{experiment}],"
-                      "[is_injection$eqfalse],[hemisphere_id$eq3]")
+def projections(get: Callable, ids: list[int]) -> dict[int, list[dict]]:
+    """Per experiment, its projection density per structure at or above DENSITY_MIN, both hemispheres, outside the
+    injection site; BATCH experiments a query, since the modules' regions are injected in hundreds of experiments."""
+    found: dict[int, list[dict]] = {i: [] for i in ids}
+    for start in range(0, len(ids), BATCH):
+        batch = ",".join(map(str, ids[start:start + BATCH]))
+        for row in paged(get, f"model::ProjectionStructureUnionize,rma::criteria,[section_data_set_id$in{batch}],"
+                              f"[is_injection$eqfalse],[hemisphere_id$eq3],[projection_density$ge{DENSITY_MIN}]"):
+            if row["section_data_set_id"] in found:
+                found[row["section_data_set_id"]].append(row)
+    return found
 
 
 def projections_into(get: Callable, targets: list[int]) -> dict[int, list[dict]]:
@@ -171,20 +179,20 @@ def build_claims(atlas: str, found: list[dict], summary: set[int], projected: di
 
 
 def load_claims(atlas: str, structure_ids: list[int], acronyms: dict[int, str], get: Callable | None = None) -> list[dict]:
-    """The claims for these structures (the amygdala and its subdivisions): every target of injections
+    """The claims for these structures (every module's regions and their subdivisions): every target of injections
     into them, and every one of them that injections elsewhere reach."""
     if not structure_ids:
         return []
     if get is None:
         session = _session()
         get = lambda criteria, num_rows=PAGE, start_row=0: _get(criteria, num_rows, session, start_row)  # noqa: E731
-    amygdala = set(structure_ids)
+    wanted = set(structure_ids)
     found = [e for e in experiments(get) if e["injection"] in acronyms]  # injection sites the pinned atlas has
     summary = summary_structures(get)
-    outputs = [e for e in found if e["injection"] in amygdala]
-    into = projections_into(get, sorted(amygdala & summary))
-    inputs = [e for e in found if e["injection"] not in amygdala and e["id"] in into]
-    projected = {e["id"]: projections(get, e["id"]) for e in outputs} | {e["id"]: into[e["id"]] for e in inputs}
+    outputs = [e for e in found if e["injection"] in wanted]
+    into = projections_into(get, sorted(wanted & summary))
+    inputs = [e for e in found if e["injection"] not in wanted and e["id"] in into]
+    projected = projections(get, [e["id"] for e in outputs]) | {e["id"]: into[e["id"]] for e in inputs}
     chosen = sorted(outputs + inputs, key=lambda e: e["id"])
     shares = injections(get, chosen, summary)
     for experiment in chosen:

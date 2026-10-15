@@ -1,6 +1,6 @@
 # Status
 
-Hand-maintained until the Steward role generates it (Phase 6). Last updated 10 October 2026.
+Hand-maintained until the Steward role generates it (Phase 6). Last updated 15 October 2026.
 
 ## Phase
 
@@ -32,6 +32,7 @@ Sprint cards are [GitHub issues labelled `sprint`](https://github.com/axonarium/
 | 2.2 Literature corpus ([#61](https://github.com/axonarium/axonarium/issues/61)) | Done ([#62](https://github.com/axonarium/axonarium/pull/62)): the first Scout run's 2,079 papers are in `corpus/manifest.csv` ([#68](https://github.com/axonarium/axonarium/pull/68)) |
 | 2.2a Abstract triage ([#79](https://github.com/axonarium/axonarium/issues/79)), 2.3 extraction ([#80](https://github.com/axonarium/axonarium/issues/80)), 2.4 verification ([#81](https://github.com/axonarium/axonarium/issues/81)) | Done for the open-access corpus, from the **Literature** workflow ([ADR 0028](docs/decisions/0028-literature-pipeline.md)). Triage: of 2,079 papers, 1,608 in, 468 out, 3 set aside after two refusals. Extraction read all 358 open-access papers triaged in that have a PMC ID: 308 gave 3,272 claims (2,558 mouse, 714 rat), 9 gave none, 30 were screened out, and 11 are set aside because Europe PMC fails on them. Every claim has a verdict: 3,180 agree, 58 disagree, 34 unsure; the disagreements and doubts wait in [#116](https://github.com/axonarium/axonarium/issues/116). Papers without open-access full text are left out, since Europe PMC won't serve it. Claims stay proposed until Gate 2 |
 | 2.5 Audit, 2.6 homology | Not started: the audit needs gold v1 and extracted claims |
+| 7d Hippocampus and prefrontal modules | Started 15 October 2026, ahead of Gate 2 for code only (maintainer): modules in `data/modules.yaml`, resolved at build time, with the Allen data for all three modules ([ADR 0031](docs/decisions/0031-modules.md)). Next: the explorer's module and species switches, rat in 3D, then the new Scout queries and triage. Extraction for the new modules waits for the 2.5 audit |
 | 3.1 Read API | Done: `/api/v1` with an OpenAPI 3.1 contract and reuse terms on every claim ([ADR 0013](docs/decisions/0013-read-api.md)) |
 | 3.2 Release job ([#55](https://github.com/axonarium/axonarium/issues/55)) | Built ([#56](https://github.com/axonarium/axonarium/pull/56)); "a test release gets a DOI" needs Zenodo switched on for the repository |
 | 3.3 Explorer v1 | Done: site shell, 3D brain, network view, region pages, and the static fallback ([#57](https://github.com/axonarium/axonarium/pull/57)) |

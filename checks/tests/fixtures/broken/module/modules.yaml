@@ -1,0 +1,8 @@
+# Broken: amygdala is listed twice, and the second has nothing to resolve.
+modules:
+  - id: amygdala
+    name: Amygdala
+    roots:
+      - UBERON:0001876
+  - id: amygdala
+    name: Amygdala again

@@ -1,0 +1,6 @@
+# expect: does not match '^[a-z]+(-[a-z]+)*$'
+modules:
+  - id: Amygdala
+    name: Amygdala
+    roots:
+      - UBERON:0001876

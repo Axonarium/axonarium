@@ -9,6 +9,8 @@ export interface RegionDetail extends AtlasRegion {
   atlas: string;
   parent: string | null;
   amygdala: boolean;
+  /** The modules the region belongs to, subdivisions included (ADR 0031); absent from snapshots made before them. */
+  modules?: string[] | null;
 }
 
 export interface RegionPage {
@@ -40,7 +42,7 @@ const pick = <T, K extends keyof T>(row: T, keys: readonly K[]) => Object.fromEn
 
 const SUMMARY = ["id", "subject_id", "predicate", "object_id", "species", "n_claims", "n_present", "n_absent", "strength", "density"] as const;
 const NAME = ["id", "acronym", "name", "amygdala"] as const;
-const DETAIL = ["id", "name", "acronym", "atlas", "parent", "uberon", "uberon_label", "amygdala"] as const;
+const DETAIL = ["id", "name", "acronym", "atlas", "parent", "uberon", "uberon_label", "amygdala", "modules"] as const;
 const AMYGDALA = ["id", "acronym", "name", "uberon", "uberon_label"] as const;
 const ATLAS = ["id", "name", "species", "version", "url", "brainglobe_name", "citation"] as const;
 
@@ -118,7 +120,7 @@ export function region(t: Tables, id: string): RegionPage | null {
   const inputs = connected("object_id");
   const ids = [row.parent, ...outputs.map((e) => e.target), ...inputs.map((e) => e.source)].filter((x): x is string => !!x);
   return {
-    region: pick(row, DETAIL),
+    region: { ...pick(row, DETAIL), modules: row.modules ?? null },
     children: sorted(t.regions.filter((r) => r.parent === id)).map((r) => pick(r, ["id", "acronym", "name"] as const)),
     outputs,
     inputs,
@@ -132,15 +134,19 @@ const page = <T>(rows: T[], limit: number, offset: number) => ({ items: rows.sli
 export const searchable = (q: string) => q.replace(/[^\p{L}\p{N} .'-]/gu, "").trim().slice(0, 100);
 
 /** A page of regions; `q` matches part of an acronym or name, ignoring case, like the API's `ilike`. */
-export function regionsPage(t: Tables, f: { q?: string | null; atlas?: string | null; amygdala?: boolean | null; limit: number; offset: number }) {
+export function regionsPage(
+  t: Tables,
+  f: { q?: string | null; atlas?: string | null; amygdala?: boolean | null; module?: string | null; limit: number; offset: number },
+) {
   const q = f.q ? searchable(f.q).toLowerCase() : "";
   const rows = sorted(t.regions).filter(
     (r) =>
       (!q || (r.acronym ?? "").toLowerCase().includes(q) || r.name.toLowerCase().includes(q)) &&
       (!f.atlas || r.atlas === f.atlas) &&
-      (f.amygdala === null || f.amygdala === undefined || r.amygdala === f.amygdala),
+      (f.amygdala === null || f.amygdala === undefined || r.amygdala === f.amygdala) &&
+      (!f.module || (r.modules ?? []).includes(f.module)),
   );
-  return page(rows.map((r) => pick(r, DETAIL)), f.limit, f.offset);
+  return page(rows.map((r) => ({ ...pick(r, DETAIL), modules: r.modules ?? null })), f.limit, f.offset);
 }
 
 /** A page of connections, strongest projection density first, then by ID; connections without a density last. */

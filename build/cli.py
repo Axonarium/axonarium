@@ -11,6 +11,7 @@ from build.dumps import write_dumps, write_snapshot
 from build.tables import rows
 from checks.cli import run_files
 from checks.loading import load_tree
+from ingest import modules as module_list
 from ingest.network import loaders
 
 
@@ -26,7 +27,7 @@ def _unsafe_out(out: Path, data: Path) -> str | None:
     return None
 
 
-def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None, connectivity_loader=None,
+def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, connectivity_loader=None,
          mesh_opener=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m build",
                                      description="Rebuild the dumps and the database from the data files.")
@@ -63,16 +64,18 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
         return 1
     records, _ = load_tree(args.data)
     network = loaders(args.http_cache)  # OLS, UBERON's bridges and the Allen API, through one retried session
-    amygdala_loader, atlas_loader = amygdala_loader or network[0], atlas_loader or network[1]
+    terms_loader, atlas_loader = terms_loader or network[0], atlas_loader or network[1]
     connectivity_loader = connectivity_loader or network[2]
     tables = rows(records)
+    modules = module_list.modules_of(records)  # data/modules.yaml (ADR 0031)
     loaded: dict[str, list[dict]] = {}
+    module_terms: dict[str, list[str]] = {}
     atlases = [r.data for r in records if r.cls == "Atlas" and r.data.get("brainglobe_name")]
     if not args.no_atlases and atlases:
         try:
-            terms = amygdala_loader()
-        except Exception as error:  # OLS unreachable: the amygdala regions can't be identified.
-            print(f"loading the amygdala's UBERON terms from OLS failed: {error}; build stopped")
+            terms = terms_loader(module_list.roots_of(modules))
+        except Exception as error:  # OLS unreachable: the modules' regions can't be identified.
+            print(f"loading the modules' UBERON terms from OLS failed: {error}; build stopped")
             return 1
         for atlas in atlases:
             try:
@@ -80,10 +83,12 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
             except Exception as error:  # BrainGlobe's S3, a UBERON bridge, or a pin: the build can't vouch for regions.
                 print(f"atlas load failed for {atlas['id']} (BrainGlobe or UBERON bridge): {error}; build stopped")
                 return 1
+        module_terms = module_list.apply(modules, loaded, terms)
         problems = atlas_regions.unknown_regions(records, loaded)
         problems += [f"{atlas}: no amygdala regions; check the atlas and its UBERON bridge"
                      for atlas, region_rows in loaded.items() if region_rows and not atlas_regions.amygdala(region_rows)]
-        for line in [str(p) for p in problems] or [atlas_regions.summary(a, r) for a, r in loaded.items() if r]:
+        problems += atlas_regions.module_problems(modules, loaded)
+        for line in [str(p) for p in problems] or [atlas_regions.summary(a, r, modules) for a, r in loaded.items() if r]:
             print(line)
         if problems:
             print(f"build stopped: {len(problems)} atlas problem(s) above; nothing was written")
@@ -116,7 +121,8 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
             try:
                 prefix = loaded[atlas_id][0]["id"].split(":")[0]
                 amygdala = {f"{prefix}:{n}" for n in connectivity.amygdala_structures(loaded[atlas_id])}
-                index = meshes.export_atlas(atlas, region_ids, args.meshes, amygdala=amygdala,
+                members = {row["id"]: row["modules"] for row in loaded[atlas_id] if row["modules"]}
+                index = meshes.export_atlas(atlas, region_ids, args.meshes, amygdala=amygdala, modules=members,
                                             **({"open_atlas": mesh_opener} if mesh_opener else {}))
             except Exception as error:  # BrainGlobe's S3 or a pin: the site would show a brain without its regions.
                 print(f"mesh export failed for {atlas_id}: {error}; build stopped")
@@ -127,6 +133,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, amygdala_loader=None,
     if args.report:
         reconcile.write_report(reconcile.reconcile(claims, region_rows), args.report)
     tables = {**atlas_regions.merge(rows(records + generated), loaded), "gaps": found_gaps}
+    tables["modules"] = [{**row, "terms": module_terms.get(row["id"])} for row in tables["modules"]]
     if args.snapshot:
         write_snapshot(tables, args.snapshot)
     if url:

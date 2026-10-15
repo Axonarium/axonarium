@@ -256,7 +256,7 @@ export function getRegion(id: string): Promise<RegionPage | null | undefined> {
 
 async function liveRegion(db: SupabaseClient, id: string): Promise<RegionPage | null> {
   const region = await rows<RegionDetail | null>("region", () =>
-    db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala").eq("id", id).maybeSingle(),
+    db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala, modules").eq("id", id).maybeSingle(),
   );
   if (!region) return null;
   const connected = (end: "subject_id" | "object_id") =>
@@ -290,7 +290,7 @@ export async function getRegionIndex(): Promise<IndexedRegion[] | null> {
   return regionIndex(edges, names);
 }
 
-type RegionsFilter = { q?: string | null; atlas?: string | null; amygdala?: boolean | null; limit: number; offset: number };
+type RegionsFilter = { q?: string | null; atlas?: string | null; amygdala?: boolean | null; module?: string | null; limit: number; offset: number };
 
 /** A page of atlas regions (read API), by ID, optionally matching part of a name or acronym. */
 export function listRegions(f: RegionsFilter): Promise<{ items: RegionDetail[]; total: number } | null> {
@@ -298,11 +298,12 @@ export function listRegions(f: RegionsFilter): Promise<{ items: RegionDetail[]; 
 }
 
 async function liveRegions(db: SupabaseClient, f: RegionsFilter) {
-  let query = db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala", { count: "exact" });
+  let query = db.from("regions").select("id, name, acronym, atlas, parent, uberon, uberon_label, amygdala, modules", { count: "exact" });
   const q = f.q ? offline.searchable(f.q) : "";
   if (q) query = query.or(`acronym.ilike.*${q}*,name.ilike.*${q}*`);
   if (f.atlas) query = query.eq("atlas", f.atlas);
   if (f.amygdala !== null && f.amygdala !== undefined) query = query.eq("amygdala", f.amygdala);
+  if (f.module) query = query.contains("modules", [f.module]);
   const { data, count: total, error } = await query.order("id").range(f.offset, f.offset + f.limit - 1);
   if (error) failed("regions page", error);
   return { items: (data ?? []) as RegionDetail[], total: total ?? 0 };

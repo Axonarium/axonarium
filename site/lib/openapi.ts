@@ -55,7 +55,13 @@ export const openapi: OpenAPIV3_1.Document = {
         parameters: [
           { name: "q", in: "query", description: "Part of a name or acronym", schema: { type: "string", maxLength: 100 } },
           { name: "atlas", in: "query", schema: { type: "string" } },
-          { name: "amygdala", in: "query", schema: { type: "boolean" } },
+          { name: "amygdala", in: "query", description: "Kept for existing clients; prefer module=amygdala", schema: { type: "boolean" } },
+          {
+            name: "module",
+            in: "query",
+            description: "Only regions in this module, subdivisions included: amygdala, hippocampus or prefrontal",
+            schema: { type: "string", pattern: "^[a-z]+(-[a-z]+)*$" },
+          },
           ...paging,
         ],
         responses: { "200": json(page("Region"), "Regions, by ID"), "400": errors["400"], "503": errors["503"] },
@@ -124,7 +130,7 @@ export const openapi: OpenAPIV3_1.Document = {
       },
       Region: {
         type: "object",
-        required: ["id", "acronym", "name", "atlas", "parent", "uberon", "uberon_label", "amygdala"],
+        required: ["id", "acronym", "name", "atlas", "parent", "uberon", "uberon_label", "amygdala", "modules"],
         properties: {
           id: { type: "string" },
           acronym: nullable("string"),
@@ -134,6 +140,7 @@ export const openapi: OpenAPIV3_1.Document = {
           uberon: nullable("string"),
           uberon_label: nullable("string"),
           amygdala: nullable("boolean"),
+          modules: { type: "array", items: { type: "string" }, description: "The modules the region is in, such as hippocampus" },
         },
       },
       Link: {

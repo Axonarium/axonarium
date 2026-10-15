@@ -34,9 +34,27 @@ def amygdala(rows: list[dict]) -> list[dict]:
     return [row for row in rows if row["amygdala"]]
 
 
-def summary(atlas: str, rows: list[dict]) -> str:
+def summary(atlas: str, rows: list[dict], modules: list[dict] = ()) -> str:
     found = amygdala(rows)
-    return f"{atlas}: {len(rows)} regions; amygdala: " + (", ".join(f"{r['acronym']} ({r['id']})" for r in found) or "none")
+    counts = "".join(f"; {m['id']}: {sum(1 for r in rows if m['id'] in (r.get('modules') or []))} regions" for m in modules)
+    return (f"{atlas}: {len(rows)} regions; amygdala: " + (", ".join(f"{r['acronym']} ({r['id']})" for r in found) or "none")
+            + counts)
+
+
+def module_problems(modules: list[dict], regions: dict[str, list[dict]]) -> list[str]:
+    """Modules the Allen mouse atlas resolves no region for, and regions modules.yaml names that no loaded atlas
+    has (ADR 0031)."""
+    problems = []
+    known = {row["id"] for rows in regions.values() for row in rows}
+    prefixes = {region.split(":")[0] for region in known}  # MBA: and DHBA:; Waxholm loads no regions
+    for module in modules:
+        for region in (module.get("include") or []) + (module.get("exclude") or []):
+            if REGION_ID.match(region) and region.split(":")[0] in prefixes and region not in known:
+                problems.append(f"modules.yaml: {module['id']} names {region}, which no loaded atlas has")
+        for atlas, rows in regions.items():
+            if rows and rows[0]["id"].startswith("MBA:") and not any(module["id"] in (r.get("modules") or []) for r in rows):
+                problems.append(f"{atlas}: no {module['id']} regions; check modules.yaml and the UBERON bridge")
+    return problems
 
 
 def merge(tables: dict[str, list[dict]], regions: dict[str, list[dict]]) -> dict[str, list[dict]]:

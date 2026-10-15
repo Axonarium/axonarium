@@ -17,8 +17,9 @@ from mcp.types import ToolAnnotations
 API = os.environ.get("AXONARIUM_API", "https://axonarium.com/api/v1")
 VERSION = "0.1.0"
 INSTRUCTIONS = """\
-Axonarium is an open, cited knowledge base of neural connectivity; today it holds the mouse amygdala's
-region-level inputs and outputs from the Allen Mouse Brain Connectivity Atlas. Find region IDs with
+Axonarium is an open, cited knowledge base of neural connectivity, built one module at a time: the amygdala,
+the hippocampal formation and the prefrontal cortex. It holds their region-level inputs and outputs from the Allen
+Mouse Brain Connectivity Atlas and claims drafted from published papers. Find region IDs with
 search_regions, list a region's strongest outputs or inputs with region_connections, and read the evidence
 behind a connection with connection_evidence. When you state a connection, cite its claims: the source (DOI
 link) and locator (the experiment), the projection density, and whether the claim is accepted or proposed
@@ -66,10 +67,11 @@ def create(http: httpx.Client | None = None) -> MCPServer:
         return response.json()
 
     @server.tool(annotations=READ_ONLY)
-    def search_regions(query: str, atlas: str | None = None, limit: int = 10) -> dict[str, Any]:
-        """Find brain regions by part of a name or acronym, such as "basolateral", "BLA" or "thalamus". Returns
-        region IDs (such as MBA:295) for the other tools, and whether each region is in the amygdala."""
-        found = get("/regions", q=query, atlas=atlas, limit=limit)
+    def search_regions(query: str, atlas: str | None = None, module: str | None = None, limit: int = 10) -> dict[str, Any]:
+        """Find brain regions by part of a name or acronym, such as "basolateral", "BLA" or "thalamus", optionally
+        only in one module (amygdala, hippocampus or prefrontal). Returns region IDs (such as MBA:295) for the other
+        tools, and the modules each region is in."""
+        found = get("/regions", q=query, atlas=atlas, module=module, limit=limit)
         return {"regions": found["items"], "total": found["total"]}
 
     @server.tool(annotations=READ_ONLY)

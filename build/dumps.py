@@ -86,9 +86,11 @@ def write_dumps(records: list[Record], rows: dict[str, list[dict]], out: Path) -
     """Write every dump into a fresh folder, then put it in place of `out`."""
     kb = {slot: sorted((r.data for r in records if r.cls == cls), key=lambda d: d["id"]) for cls, slot in KB_SLOTS.items()}
     log = next((r.data for r in records if r.cls == "RetractionLog"), {"entries": []})
+    modules = next((r.data for r in records if r.cls == "ModuleList"), {"modules": []})
     files = {
         "axonarium.json": _json(kb),
         "retractions.json": _json(log),
+        "modules.json": _json(modules),
         "edges.graphml": _graphml(rows),
         "manifest.json": _json({"schema_version": _schema_version(),
                                 "tables": {name: len(table) for name, table in rows.items()}}),

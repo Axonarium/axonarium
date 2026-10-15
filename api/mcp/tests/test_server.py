@@ -10,7 +10,7 @@ from mcp import Client
 from axonarium_mcp.server import create
 
 BLA = {"id": "MBA:295", "acronym": "BLA", "name": "Basolateral amygdalar nucleus", "atlas": "allen-mouse-ccf-2017",
-       "parent": "MBA:703", "uberon": "UBERON:0006107", "uberon_label": None, "amygdala": True}
+       "parent": "MBA:703", "uberon": "UBERON:0006107", "uberon_label": None, "amygdala": True, "modules": ["amygdala"]}
 EDGE = "MBA:295|projects_to|MBA:672|NCBITaxon:10090"
 ALLEN = {"id": "allen-institute", "name": "Allen Institute terms of use", "url": "https://alleninstitute.org/terms-of-use/",
          "note": "Non-commercial use with attribution."}
@@ -33,7 +33,9 @@ def api(request: httpx.Request) -> httpx.Response:
     path = unquote(request.url.path)
     if path == "/api/v1/regions":
         assert request.url.params["q"] == "basolateral"
-        return httpx.Response(200, json={"items": [BLA], "limit": 10, "offset": 0, "total": 1})
+        module = request.url.params.get("module")
+        found = [BLA] if module in (None, "amygdala") else []
+        return httpx.Response(200, json={"items": found, "limit": 10, "offset": 0, "total": len(found)})
     if path == "/api/v1/regions/MBA:295":
         return httpx.Response(200, json={"region": BLA, "subregions": [], "inputs": [link("MBA:31", 0.2)],
                                          "outputs": [link("MBA:672", 0.42), link("MBA:56", 0.05)]})
@@ -76,7 +78,8 @@ def test_tools_are_listed_and_read_only():
 
 def test_search_regions():
     found = result("search_regions", {"query": "basolateral"})
-    assert found["regions"][0]["id"] == "MBA:295"
+    assert found["regions"][0]["id"] == "MBA:295" and found["regions"][0]["modules"] == ["amygdala"]
+    assert result("search_regions", {"query": "basolateral", "module": "hippocampus"})["total"] == 0
 
 
 def test_region_connections_by_direction_and_density():

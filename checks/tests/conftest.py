@@ -70,6 +70,8 @@ def _data_path(cls: str, record: dict) -> Path | None:
         return Path("sources", "doi", source_file_name(record["id"]))
     if cls == "Allowlist":
         return Path("allowlist.yaml")
+    if cls == "ModuleList":
+        return Path("modules.yaml")
     return None  # RetractionLog: the valid tree starts with an empty log
 
 

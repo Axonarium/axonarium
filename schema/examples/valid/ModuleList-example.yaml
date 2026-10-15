@@ -1,0 +1,16 @@
+# Two illustrative modules: one found from UBERON alone, one that also lists a region and leaves one out.
+modules:
+  - id: amygdala
+    name: Amygdala
+    roots:
+      - UBERON:0001876
+  - id: prefrontal
+    name: Prefrontal cortex
+    roots:
+      - UBERON:0000451
+    include:
+      - MBA:972
+      - UBERON:0004167
+    exclude:
+      - MBA:44
+    reason: Illustrative; the prelimbic area is listed and the infralimbic area left out only to show both.

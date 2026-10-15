@@ -1,14 +1,15 @@
-"""Gap mode (sprint 3.5, ADR 0027): an amygdala region nobody has injected, and the targets its neighbours reach."""
+"""Gap mode (sprint 3.5, ADR 0027): a module's region nobody has injected, and the targets its neighbours reach."""
 
 import json
 
 from build.cli import main
+from build.connectivity import amygdala_regions
 from build.gaps import find_gaps
 from build.tests.test_connectivity import claim as generated
 from build.tests.test_connectivity import connectivity
 from build.tests.test_meshes import CENTER, FakeAtlas, cube
 from build.tests.test_reconcile import claim, paper, region
-from build.tests.test_regions import USED, amygdala_loader, fake_loader
+from build.tests.test_regions import USED, fake_loader, terms_loader
 
 # The amygdala (AMY) has three nuclei: LA and BLA are injected, IA isn't. BLA has two subdivisions, BLAa (injected)
 # and BLAv (not). PL, CP and BST are targets outside it; RAT is a region in another species's atlas.
@@ -18,6 +19,16 @@ REGIONS = [
     region(10, "PL"), region(11, "CP"), region(12, "BST"),
 ]
 GAP = "MBA:{}|projects_to|MBA:{}|NCBITaxon:10090"
+
+
+def in_modules(regions: list[dict], **modules: set[str]) -> list[dict]:
+    """The rows with `modules` set as the build sets it (ingest/modules.py): the amygdala's from its flag, others given."""
+    amygdala = amygdala_regions(regions)
+    return [{**row, "modules": [m for m, ids in {"amygdala": amygdala, **modules}.items() if row["id"] in ids] or None}
+            for row in regions]
+
+
+REGIONS = in_modules(REGIONS)
 
 
 def test_an_uninjected_region_gets_its_neighbours_targets():
@@ -57,7 +68,15 @@ def test_retracted_claims_and_densityless_suggestions():
     assert [(g["object_id"], g["density"]) for g in gaps if g["subject_id"] == "MBA:4"] == [("MBA:12", None)]
 
 
-def test_regions_outside_the_amygdala_and_unknown_regions_get_none():
+def test_regions_of_every_module_get_gaps():
+    # PL's two subdivisions in the prefrontal module: PLa is injected, PLb isn't; PLa's target suggests PLb's.
+    regions = in_modules([*REGIONS, region(41, "PLa", parent=10), region(42, "PLb", parent=10)],
+                         prefrontal={"MBA:10", "MBA:41", "MBA:42"})
+    gaps = find_gaps([claim(41, 12, 0.1), claim(2, 10, 0.3)], regions)
+    assert [g["object_id"] for g in gaps if g["subject_id"] == "MBA:42"] == ["MBA:12"]
+
+
+def test_regions_outside_the_modules_and_unknown_regions_get_none():
     assert all(g["subject_id"] in {"MBA:4", "MBA:32"} for g in find_gaps([claim(2, 10, 0.3), claim(31, 11, 0.2)], REGIONS))
     assert find_gaps([claim(2, 999, 0.3)], REGIONS) == []
 
@@ -70,13 +89,13 @@ def test_the_build_puts_gaps_in_the_snapshot_and_meshes_their_regions(valid_tree
             if row["id"] in ("MBA:295", "MBA:5001"):
                 row["parent"] = "MBA:5000"
             if row["id"] == "MBA:5001":
-                row["amygdala"] = True
+                row["amygdala"], row["uberon"] = True, "UBERON:0002887"
         return rows
 
     meshes = FakeAtlas({"root": cube(CENTER, 8000), 5001: cube(CENTER), **{int(i.split(":")[1]): cube(CENTER) for i in USED}})
     snapshot, brain = tmp_path / "snapshot.json", tmp_path / "brain"
     assert main(["--data", str(valid_tree), "--out", str(tmp_path / "dist"), "--snapshot", str(snapshot), "--meshes", str(brain)],
-                atlas_loader=loader, amygdala_loader=amygdala_loader, connectivity_loader=connectivity(generated()),
+                atlas_loader=loader, terms_loader=terms_loader, connectivity_loader=connectivity(generated()),
                 mesh_opener=lambda name, version: meshes) == 0
     rows = json.loads(snapshot.read_text(encoding="utf-8"))["tables"]["gaps"]
     assert f"gaps: {len(rows)} untested connection(s) from 1 region(s)" in capsys.readouterr().out
