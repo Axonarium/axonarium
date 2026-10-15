@@ -7,15 +7,15 @@ from types import SimpleNamespace
 import pytest
 
 from pipeline import cli, europepmc, extract, triage
-from pipeline.corpus import MAX_ATTEMPTS, Ledger, Redo, aliases, due, identifier, recorded
+from pipeline.corpus import MAX_ATTEMPTS, Ledger, Redo, aliases, due, identifier, module_of, of_module, recorded
 from pipeline.llm import AnthropicRunner, BatchPending, Request, Result, choose, cost, parse, request_id
 
-PAPERS = [
+PAPERS = [{**paper, "queries": "amygdala-tract-tracing"} for paper in (
     {"key": "doi:10.1/a", "title": "BLA to CeA, traced", "europe_pmc": "MED:1", "full_text": "false"},
     {"key": "doi:10.1/b", "title": "A review", "europe_pmc": "MED:2", "full_text": "true"},
     {"key": "doi:10.1/c", "title": "No abstract here", "europe_pmc": "PPR:PPR3", "full_text": "true"},
     {"key": "doi:10.1/d", "title": "Unreachable", "europe_pmc": "MED:4", "full_text": "false"},
-]
+)]
 ABSTRACTS = {"MED:1": "We injected AAV into the BLA.", "MED:2": "We review amygdala circuits.", "PPR:PPR3": ""}
 
 
@@ -213,6 +213,19 @@ def test_abstracts_are_cleaned_and_asked_for_by_source():
     assert europepmc.abstract("PPR:PPR1", lambda url: {"resultList": {"result": []}}) == ""
     with pytest.raises(ValueError):
         europepmc.abstract("8742308", answer)
+
+
+def test_a_paper_is_read_for_the_module_of_the_first_query_that_found_it():
+    queries = [{"id": "amygdala-tracing", "module": "amygdala"}, {"id": "hippocampus-tracing", "module": "hippocampus"},
+               {"id": "amygdala-titles", "module": "amygdala"}]
+    papers = [{"key": "a", "queries": "amygdala-titles"}, {"key": "b", "queries": "amygdala-titles;hippocampus-tracing"},
+              {"key": "c", "queries": "hippocampus-tracing"}, {"key": "d", "queries": "a-removed-query"}, {"key": "e", "queries": ""}]
+    # The manifest lists queries alphabetically; the module comes from the queries file's order.
+    assert [module_of(p, queries) for p in papers] == ["amygdala", "hippocampus", "hippocampus", None, None]
+    assert [p["key"] for p in of_module(papers, "amygdala", queries)] == ["a"]
+    assert [p["key"] for p in of_module(papers, "hippocampus", queries)] == ["b", "c"]
+    with pytest.raises(ValueError, match="no saved query searches for the module 'thalamus'; corpus/queries.yaml has amygdala, hippocampus"):
+        of_module(papers, "thalamus", queries)
 
 
 def test_cli_reports_a_replayed_run(tmp_path, monkeypatch, capsys):

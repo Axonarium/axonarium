@@ -1,5 +1,5 @@
-"""Command line: `python -m pipeline <step> [--limit N] [--model provider:model] [--fallback provider:model] [--effort level]
-[--now]`."""
+"""Command line: `python -m pipeline <step> [--module id] [--limit N] [--model provider:model] [--fallback provider:model]
+[--effort level] [--now]`."""
 
 import argparse
 import json
@@ -7,7 +7,7 @@ import os
 import sys
 
 from pipeline import branches, extract, triage, verify
-from pipeline.corpus import ROOT, Redo, read_manifest
+from pipeline.corpus import ROOT, Redo, of_module, read_manifest, read_queries
 from pipeline.llm import BatchPending, FallbackRunner, runner
 
 DEFAULT_MODEL = "anthropic:claude-opus-5-5"
@@ -46,6 +46,9 @@ def summarize(text: str) -> None:
 def main(argv: list[str] | None = None, classify=None) -> int:
     parser = argparse.ArgumentParser(prog="python -m pipeline", description="The literature pipeline (ADR 0028).")
     parser.add_argument("step", choices=["triage", "extract", "verify"], help="which step to run")
+    parser.add_argument("--module", default=extract.MODULE,
+                        help="read the papers of this module: those its saved queries found first, in corpus/queries.yaml's "
+                             f"order; claims go to data/claims/<module>/ (ADR 0034; default {extract.MODULE})")
     parser.add_argument("--limit", type=int, default=50, help="at most this many papers (default 50)")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"anthropic:<model> or replay:<folder> (default {DEFAULT_MODEL})")
     parser.add_argument("--fallback", default="auto",
@@ -85,8 +88,9 @@ def main(argv: list[str] | None = None, classify=None) -> int:
             elsewhere = branches.waiting(step.LEDGER)
             if elsewhere:
                 raise ValueError(branches.refusal(args.step, elsewhere))
+        manifest = of_module(read_manifest(), args.module, read_queries())
         if args.step == "triage":
-            summary = triage.triage(read_manifest(), run, args.limit, redo=redo)
+            summary = triage.triage(manifest, run, args.limit, redo=redo)
         else:
             from screen import preflight
             from screen.injection import ProtectAI
@@ -96,7 +100,8 @@ def main(argv: list[str] | None = None, classify=None) -> int:
             if problems:
                 raise ValueError("the hidden-text screen fails its fixtures: " + "; ".join(problems))
             work = extract.extract if args.step == "extract" else verify.verify
-            summary = work(read_manifest(), run, args.limit, extract.Lexicon.load(args.lexicon), classify, redo=redo)
+            summary = work(manifest, run, args.limit, extract.Lexicon.load(args.lexicon), classify, redo=redo,
+                           claims_dir=extract.CLAIMS / args.module)
     except BatchPending as pending:
         note = (f"Batch `{pending.batch_id}` is still running, so nothing was written. Collect its results later with "
                 f"`--collect {pending.batch_id}` (the Literature workflow's `collect` input), at no further cost. A run "

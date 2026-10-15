@@ -5,10 +5,11 @@ import json
 from urllib.parse import parse_qs, urlsplit
 
 import pytest
+import yaml
 
 from checks.http import Fetcher, LookupFailed
 from checks.tests.conftest import OpenerAdapter
-from ingest.scout import COLUMNS, main, manifest_rows, read_queries, run_query, scout
+from ingest.scout import COLUMNS, ROOT, main, manifest_rows, read_queries, run_query, scout
 
 
 def paper(pmid=None, doi=None, pmcid=None, *, source="MED", ppr=None, title="A paper.", year="2020", journal="J Neurosci",
@@ -91,6 +92,9 @@ def test_the_projects_queries_are_well_formed():
     queries = read_queries()
     assert len({q["id"] for q in queries}) == len(queries) >= 3
     assert all(q["id"].replace("-", "").isalnum() and q["query"].strip() and q["why"].strip() for q in queries)
+    # Each searches for a module of data/modules.yaml, whose papers the pipeline reads with --module (ADR 0034).
+    modules = [m["id"] for m in yaml.safe_load((ROOT / "data" / "modules.yaml").read_text(encoding="utf-8"))["modules"]]
+    assert {q.get("module") for q in queries} == set(modules)
 
 
 def test_scout_writes_a_sorted_manifest_and_keeps_its_history(tmp_path):
