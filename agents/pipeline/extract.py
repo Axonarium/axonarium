@@ -54,6 +54,9 @@ QUANTITIES = {
 }
 # A delay of 0 is no measurement: a draft that gives one has taken the number from somewhere else, or made it up.
 POSITIVE = {"conduction_delay"}
+# A conduction delay over 50 ms is no monosynaptic delay in a rodent brain: it is a response latency, such as a slow
+# neuromodulatory effect's (#116).
+MAX_DELAY_MS = 50.0
 EVIDENCE = {  # the schema's predicate rule: each predicate allows only its own kinds of evidence
     "projects_to": {"anterograde_tracer", "retrograde_tracer", "single_neuron_reconstruction"},
     "synapses_onto": {"electron_microscopy", "transsynaptic_tracer"},
@@ -76,6 +79,9 @@ class Lexicon:
         self.region_atlas = {r["id"]: atlas for atlas, entry in self.atlases.items() for r in entry["regions"]}
         self.atlas_species = {atlas: entry["species"] for atlas, entry in self.atlases.items()}
         self.uberon = self.uberon | {r["uberon"] for entry in self.atlases.values() for r in entry["regions"] if r.get("uberon")}
+        # The UBERON terms a mouse region maps to: a mouse claim names those by the Allen region (ADR 0031).
+        self.mouse_mapped = {r["uberon"] for entry in self.atlases.values() if entry["species"] == SPECIES["mouse"]
+                             for r in entry["regions"] if r.get("uberon")}
         self.neuron_species = {n["id"]: n["species"] for n in self.neuron_types}
         self.names = {r["id"]: f"{r['acronym']}, {r['name']}" for entry in self.atlases.values() for r in entry["regions"]}
         self.names |= {n["id"]: n["name"] for n in self.neuron_types}
@@ -114,7 +120,9 @@ class Lexicon:
             if self.atlas_species[atlas] != species:
                 return None, f"{entity.id} is a region of {atlas}, not of {species}"
             return {"type": "region", "id": entity.id, "atlas": atlas}, None
-        if entity.id in self.uberon and species != SPECIES["mouse"]:  # mouse claims name Allen regions
+        if entity.id in self.uberon:
+            if species == SPECIES["mouse"] and entity.id in self.mouse_mapped:  # mouse claims name Allen regions where one fits
+                return None, f"{entity.id} has an Allen region, which a mouse claim names instead"
             return {"type": "region", "id": entity.id}, None
         return None, f"{entity.id} is not in the region lexicon"
 
@@ -158,6 +166,8 @@ def measurements(found: list[DraftMeasurement]) -> tuple[list[dict], list[str]]:
             else f"{m.value} is outside [{low}, {high}]" + (", perhaps a percent" if unit == "1" and high == 1 and m.value <= 100 else "")
             if not low <= m.value <= high
             else f"{m.value} isn't above 0" if m.quantity in POSITIVE and m.value <= 0
+            else f"{m.value} ms is over {MAX_DELAY_MS:g} ms, a response latency"
+            if m.quantity == "conduction_delay" and m.value > MAX_DELAY_MS
             else "has a negative spread" if any(x is not None and x < 0 for x in (m.sd, m.sem))
             else "needs both ends of its interval" if (m.ci_low is None) != (m.ci_high is None)
             else "has an interval whose low end is above its high end" if m.ci_low is not None and m.ci_low > m.ci_high
