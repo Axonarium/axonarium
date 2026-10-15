@@ -32,6 +32,7 @@ from evals.harness.prompts import read_prompt
 from pipeline import europepmc, sections
 from pipeline.corpus import CORPUS, ROOT, Ledger, Redo, attempts, due, preprint_servers, recorded, set_aside
 from pipeline.llm import Request, choose, request_id, spend
+from pipeline.release import released
 from pipeline.triage import LEDGER as TRIAGE
 from screen import Screened, screen_jats
 
@@ -303,6 +304,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
     before = ledger.read()
     papers = choose(candidates(manifest, triaged, before, prompt_id, redo), run, limit)
     rows, requests, sent, flagged, failed = [], [], {}, [], []
+    to_release, freed = [], []  # flagged papers' digests, for corpus/released.csv; papers released to the model
     for paper in papers:
         base = {"key": paper["key"], "attempts": attempts(recorded(before, paper), None), "model": model, "prompt": prompt_id,
                 "date": today}
@@ -313,9 +315,12 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             rows.append({**base, "outcome": fetch_failure(error), "attempts": tries})
             failed.append(f"{paper['key']}: {why(error)}")
             continue
-        if screened.flagged:  # never sent; its findings go to the maintainer in the run's report
+        if screened.flagged and released(paper, screened):  # the maintainer read its findings (ADR 0033)
+            freed.append(f"{paper['key']}: released for findings {screened.digest}")
+        elif screened.flagged:  # never sent; its findings go to the maintainer in the run's report, whole
             rows.append({**base, "outcome": "screened"})
-            flagged += [f"{paper['key']}: {f.layer}, {f.detail}: {f.excerpt}" for f in screened.findings]
+            flagged += [f"{paper['key']}: {f.layer}, {f.detail}: {f.text or f.excerpt}" for f in screened.findings]
+            to_release.append(f"{paper['key']},{screened.digest}")
             continue
         request = Request(request_id(paper["key"]), system, screened.text)
         requests.append(request)
@@ -353,4 +358,4 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             "set_aside": set_aside([p for p in manifest if (recorded(triaged, p) or {}).get("verdict") == "in"], ledger.read(),
                                    "outcome", DONE),
             "dropped": dropped_reasons, "numbers_left_out": numbers_left_out, "screen_findings": flagged,
-            "not_read": failed}
+            "to_release": to_release, "released": freed, "not_read": failed}

@@ -22,6 +22,7 @@ from pipeline import extract
 from pipeline.corpus import CORPUS, MAX_ATTEMPTS, Ledger, Redo, attempts, recorded
 from pipeline.extract import Lexicon
 from pipeline.llm import Request, choose, request_id, spend
+from pipeline.release import released
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "verifier.md"
 LEDGER = Ledger(CORPUS / "verified.csv", ("key", "outcome", "claims", "judged", "listed", "attempts", "model", "prompt", "date"))
@@ -166,7 +167,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
             skipped.append(f"{paper['key']}: its text couldn't be read ({extract.why(error)})")
             rows.append(ledger_row((paper, claims), extract.fetch_failure(error), None))
             continue
-        if screened.flagged:
+        if screened.flagged and not released(paper, screened):
             skipped.append(f"{paper['key']}: the hidden-text screen flagged it")
             rows.append(ledger_row((paper, claims), "screened", None))
             continue
