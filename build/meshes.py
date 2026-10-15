@@ -54,9 +54,11 @@ def _triangles(brainglobe_mesh) -> tuple[np.ndarray, np.ndarray] | None:
 
 
 def export_atlas(atlas: dict, region_ids: list[str], out: Path, open_atlas: Callable = _open_brainglobe,
-                 max_faces: int = MAX_FACES, root_faces: int = ROOT_FACES, amygdala: set[str] = frozenset()) -> dict:
+                 max_faces: int = MAX_FACES, root_faces: int = ROOT_FACES, amygdala: set[str] = frozenset(),
+                 modules: dict[str, list[str]] | None = None) -> dict:
     """Write out/<atlas id>/: root.glb, one <structure>.glb per region with a mesh, and index.json, which marks the
-    amygdala's regions (with their subdivisions) so the view can tell its inputs from its outputs. Returns the index."""
+    amygdala's regions and each region's modules (with their subdivisions, ADR 0034) so the view can tell a module's
+    inputs from its outputs. Returns the index."""
     pinned = str(atlas["extra"]["brainglobe.atlas_version"])
     brainglobe = open_atlas(atlas["brainglobe_name"], pinned)
     if str(brainglobe.metadata["version"]) != pinned:
@@ -77,7 +79,8 @@ def export_atlas(atlas: dict, region_ids: list[str], out: Path, open_atlas: Call
         mesh.export(folder / f"{structure}.glb", file_type="glb", include_normals=True)
         info = brainglobe.structures[structure]
         regions[region] = {"acronym": info["acronym"], "name": info["name"], "file": f"{structure}.glb",
-                           "centroid": right_centroid(mesh), "amygdala": region in amygdala}
+                           "centroid": right_centroid(mesh), "amygdala": region in amygdala,
+                           "modules": (modules or {}).get(region, [])}
     index = {"atlas": atlas["id"], "units": "mm", "axes": "x right, y superior, z posterior",
              "root": "root.glb", "regions": regions}
     (folder / "index.json").write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")

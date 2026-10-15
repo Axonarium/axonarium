@@ -1,0 +1,40 @@
+# The circuits Axonarium covers, and which regions belong to each (ADR 0034). The build resolves each module against
+# the pinned atlases: an atlas region belongs when UBERON places its term under one of the module's roots (is-a or
+# part-of, as OLS computes it), or when it is in `include`; its subdivisions belong with it. A UBERON term, which rat
+# claims name, belongs when it falls under a root, is in `include`, or is the term of a member region. `exclude`
+# takes out atlas regions (with their subdivisions) and UBERON terms a root would bring in. The site lists modules in
+# this order. The maintainer owns this file (CODEOWNERS), so changes always get human review.
+modules:
+  - id: amygdala
+    name: Amygdala
+    roots:
+      - UBERON:0001876  # amygdala
+    reason: The amygdala as UBERON draws it, the module Axonarium started with (ADR 0009).
+  - id: hippocampus
+    name: Hippocampal formation
+    roots:
+      - UBERON:0002421  # hippocampal formation; in the Allen atlas, HPF: CA1-3, dentate gyrus, subiculum, entorhinal cortex
+    exclude:
+      - MBA:1099  # fornix system, a fibre tract
+      - UBERON:0000052  # fornix of brain
+      - UBERON:0004680  # body of fornix
+      - UBERON:0003016  # postcommissural fornix of brain
+      - UBERON:0002310  # hippocampus fimbria
+      - UBERON:0007639  # hippocampus alveus
+    reason: >-
+      The hippocampal formation as UBERON draws it, which in the Allen atlas is HPF with the retrohippocampal region
+      and so the entorhinal cortex. The fibre tracts UBERON places under it are left out: they are not grey matter.
+  - id: prefrontal
+    name: Prefrontal cortex
+    roots:
+      - UBERON:0000451  # prefrontal cortex; in the Allen bridge it finds only PL and ILA
+    include:
+      - MBA:31  # anterior cingulate area (ACA)
+      - MBA:714  # orbital area (ORB)
+      - MBA:184  # frontal pole (FRP)
+      - UBERON:0004167  # orbitofrontal cortex, which no Allen region maps to
+      - UBERON:4450000  # medial prefrontal cortex, which mouse claims may name (ADR 0031)
+    reason: >-
+      The rodent medial prefrontal cortex (anterior cingulate, prelimbic and infralimbic areas), the orbital areas and
+      the frontal pole. Neither UBERON nor the Allen atlas groups them under one parent, so ACA, ORB and FRP are
+      listed. The agranular insula is left out.

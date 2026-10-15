@@ -12,7 +12,7 @@ Each record is one YAML file. Its folder decides its class in [the schema](../sc
 
 | Path | Holds | File name |
 | --- | --- | --- |
-| `claims/<module>/` | Connectivity claims, by module such as `amygdala` | `<id>.yaml`, such as `clm-pq22bk4dtz.yaml` |
+| `claims/<module>/` | Connectivity claims, by the module whose literature run read the paper, such as `amygdala`. The folder records which run read it; a claim belongs to every module its regions are in ([ADR 0034](../docs/decisions/0034-modules.md)) | `<id>.yaml`, such as `clm-pq22bk4dtz.yaml` |
 | `homology/` | Cross-species homology claims | `<id>.yaml` |
 | `entities/atlases/` | Pinned atlas versions: the BrainGlobe atlas, its data version in `extra.brainglobe.atlas_version`, and its citation. Their regions are read at build time, never committed ([ADR 0009](../docs/decisions/0009-atlas-layer.md)) | `<id>.yaml` |
 | `entities/regions/` | Regions of atlases BrainGlobe doesn't provide. Allen (`MBA:`, `HBA:`, `DHBA:`) regions come from the pinned atlases at build time and are never committed ([ADR 0005](../docs/decisions/0005-source-reuse-terms.md), [ADR 0009](../docs/decisions/0009-atlas-layer.md)) | the ID with `:` as `_` |
@@ -20,6 +20,7 @@ Each record is one YAML file. Its folder decides its class in [the schema](../sc
 | `sources/<scheme>/` | Paper metadata, one record per cited paper, keyed by its DOI, else PubMed ID, else PMC ID, else arXiv ID; written by `checks sources` from Crossref, DataCite or NCBI, including the paper's `kind` (journal article, preprint, dataset or other) | the ID with `:` and `/` as `_`, other characters outside letters, digits and `.()-` %-encoded: `doi_10.1038_s41467-021-22915-5.yaml` |
 | `retractions.yaml` | The log of deleted and retracted claims | fixed |
 | `allowlist.yaml` | The kinds of source claims may cite, such as journal articles and bioRxiv preprints; the maintainer owns it ([ADR 0015](../docs/decisions/0015-source-allowlist.md)) | fixed |
+| `modules.yaml` | The circuits Axonarium covers (the amygdala, the hippocampal formation, the prefrontal cortex) and which regions belong to each: UBERON roots, listed regions and exclusions, resolved against the atlases at build time; the maintainer owns it ([ADR 0034](../docs/decisions/0034-modules.md)) | fixed |
 
 Edges are computed from claims at build time and are never edited by hand.
 
@@ -56,6 +57,7 @@ Each problem prints as `<path>: <rule-id>: <message>`.
 | `doi-case` | A DOI isn't lowercase |
 | `homology-pair` | A homology claim within one species, or between a region and a neuron type |
 | `neuron-type-region` | A neuron type's region isn't a region |
+| `module` | A module in `modules.yaml` is listed twice, has no roots and includes nothing, or both includes and excludes a region |
 | `duplicate-id` | Two files share an ID |
 | `unknown-reference` | A neuron type or atlas that has no record here |
 | `atlas-species` | A claim's species doesn't match the atlas its regions come from |

@@ -26,11 +26,11 @@ const claim = (id: string, subject: string, object: string, density: number | nu
 const tables: Tables = {
   atlases: [{ id: ATLAS, name: "Allen mouse", species: "NCBITaxon:10090", version: "2017", url: null, brainglobe_name: "allen_mouse_25um", citation: null, extra: null }],
   regions: [
-    region("MBA:295", "BLA", "Basolateral amygdalar nucleus", { amygdala: true, parent: "MBA:319", uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex" }),
+    region("MBA:295", "BLA", "Basolateral amygdalar nucleus", { amygdala: true, parent: "MBA:319", uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", modules: ["amygdala"] }),
     region("MBA:319", "BLAa", "Basolateral amygdalar nucleus, anterior part", { amygdala: true }),
     region("MBA:672", "CP", "Caudoputamen"),
     region("MBA:536", "CEA", "Central amygdalar nucleus", { amygdala: true }),
-    region("MBA:303", "BLAp", "Basolateral amygdalar nucleus, posterior part", { parent: "MBA:295", amygdala: true }),
+    region("MBA:303", "BLAp", "Basolateral amygdalar nucleus, posterior part", { parent: "MBA:295", amygdala: true, modules: ["amygdala"] }),
   ],
   sources: [{ id: "doi:10.1038/nature13186", kind: "journal_article", title: "A mesoscale connectome", year: 2014, journal: "Nature", license: null, open_access: null, retracted: false }],
   connectivity_claims: [
@@ -78,18 +78,28 @@ describe("the snapshot answers like the database", () => {
 
   it("names regions, leaving out IDs that aren't regions", () => {
     expect(offline.regionNames(tables, ["MBA:295", "UBERON:0006107"])).toEqual({
-      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true },
+      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true, modules: ["amygdala"] },
     });
+    expect(offline.regionNames(tables, ["MBA:672"])["MBA:672"].modules).toBeNull(); // a row without modules
   });
 
   it("names regions, the UBERON terms regions map to and neuron types for display, leaving out IDs it can't name", () => {
     const withTypes: Tables = { ...tables, neuron_types: [{ id: "nt-3kvfdzf7wn", name: "MEA glutamatergic neurons" }] };
     expect(offline.names(withTypes, ["MBA:295", "UBERON:0006107", "UBERON:0001876", "nt-3kvfdzf7wn", "nt-unknown"])).toEqual({
-      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true },
+      "MBA:295": { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", amygdala: true, modules: ["amygdala"] },
       "UBERON:0006107": { id: "UBERON:0006107", acronym: "BLA", name: "basolateral amygdaloid nuclear complex", kind: "uberon" },
       "nt-3kvfdzf7wn": { id: "nt-3kvfdzf7wn", acronym: null, name: "MEA glutamatergic neurons", kind: "neuron_type" },
     });
     expect(offline.names(tables, ["nt-3kvfdzf7wn"])).toEqual({}); // a snapshot without neuron types
+    // UBERON's label for a module's term no region maps to; a region's name wins where one does.
+    const labelled: Tables = {
+      ...tables,
+      modules: [{ id: "amygdala", name: "Amygdala", position: 0, terms: null, labels: { "UBERON:0001876": "amygdala", "UBERON:0006107": "BLA complex" } }],
+    };
+    expect(offline.names(labelled, ["UBERON:0001876", "UBERON:0006107"])).toEqual({
+      "UBERON:0001876": { id: "UBERON:0001876", acronym: null, name: "amygdala", kind: "uberon" },
+      "UBERON:0006107": { id: "UBERON:0006107", acronym: "BLA", name: "basolateral amygdaloid nuclear complex", kind: "uberon" },
+    });
   });
 
   it("pages sources, those with the most claims first, and the claims citing one", () => {
@@ -123,11 +133,54 @@ describe("the snapshot answers like the database", () => {
     expect(offline.brain(tables, "waxholm-sd-rat-v4")).toEqual([]);
   });
 
+  it("draws a species's connections by the IDs its claims name, from claims that found them", () => {
+    const RAT = "NCBITaxon:10116";
+    const rat = (id: string, subject: string, object: string, extra: Partial<ConnectivityClaim> = {}) =>
+      claim(id, subject, object, null, { subject_atlas: null, object_atlas: null, species: RAT, status: "proposed", terms: "cc-by-4.0", ...extra });
+    const ratEdge = (subject: string, object: string, extra: Partial<Edge> = {}) =>
+      edge(subject, object, null, { id: `${subject}|projects_to|${object}|${RAT}`, species: RAT, ...extra });
+    const withRat: Tables = {
+      ...tables,
+      connectivity_claims: [
+        ...tables.connectivity_claims,
+        rat("clm-r1", "UBERON:0006107", "UBERON:0001873"),
+        rat("clm-r2", "UBERON:0006107", "UBERON:0001873", { status: "retracted" }),
+        rat("clm-r3", "UBERON:0002421", "UBERON:0006107", { result: "absent" }),
+        rat("clm-r4", "UBERON:0006107", "nt-3kvfdzf7wn", { object_type: "neuron_type" }),
+      ],
+      edges: [
+        ...tables.edges,
+        ratEdge("UBERON:0006107", "UBERON:0001873"),
+        ratEdge("UBERON:0002421", "UBERON:0006107", { n_present: 0, n_absent: 1 }),
+        ratEdge("UBERON:0006107", "nt-3kvfdzf7wn", { object_type: "neuron_type" }),
+      ],
+    };
+    expect(offline.speciesBrain(withRat, RAT)).toEqual([
+      { id: `UBERON:0006107|projects_to|UBERON:0001873|${RAT}`, source: "UBERON:0006107", target: "UBERON:0001873", density: null, claims: 1, accepted: 0, papers: 1 },
+    ]);
+    expect(offline.speciesBrain(withRat, "NCBITaxon:9606")).toEqual([]);
+  });
+
+  it("lists the modules in their order, and none from a snapshot made before them", () => {
+    const withModules: Tables = {
+      ...tables,
+      modules: [
+        { id: "hippocampus", name: "Hippocampal formation", position: 1, terms: ["UBERON:0002421"] },
+        { id: "amygdala", name: "Amygdala", position: 0, terms: null },
+      ],
+    };
+    expect(offline.modules(withModules)).toEqual([
+      { id: "amygdala", name: "Amygdala", terms: null, labels: null },
+      { id: "hippocampus", name: "Hippocampal formation", terms: ["UBERON:0002421"], labels: null },
+    ]);
+    expect(offline.modules(tables)).toEqual([]);
+  });
+
   it("builds a region's page: subregions, outputs strongest first, inputs and names", () => {
     const page = offline.region(tables, "MBA:295");
     expect(page?.region).toEqual({
       id: "MBA:295", name: "Basolateral amygdalar nucleus", acronym: "BLA", atlas: ATLAS, parent: "MBA:319",
-      uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", amygdala: true,
+      uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", amygdala: true, modules: ["amygdala"],
     });
     expect(page?.children).toEqual([{ id: "MBA:303", acronym: "BLAp", name: "Basolateral amygdalar nucleus, posterior part" }]);
     expect(page?.outputs.map((e) => e.target)).toEqual(["MBA:672", "MBA:536"]);
@@ -140,6 +193,12 @@ describe("the snapshot answers like the database", () => {
     expect(offline.regionsPage(tables, { q: "bla", limit: 2, offset: 0 })).toMatchObject({ total: 3, items: [{ id: "MBA:295" }, { id: "MBA:303" }] });
     expect(offline.regionsPage(tables, { q: "CAUDO", limit: 50, offset: 0 }).items.map((r) => r.id)).toEqual(["MBA:672"]);
     expect(offline.regionsPage(tables, { amygdala: false, limit: 50, offset: 0 }).total).toBe(1);
+    expect(offline.regionsPage(tables, { module: "amygdala", limit: 50, offset: 0 }).items.map((r) => [r.id, r.modules])).toEqual([
+      ["MBA:295", ["amygdala"]],
+      ["MBA:303", ["amygdala"]],
+    ]);
+    expect(offline.regionsPage(tables, { module: "hippocampus", limit: 50, offset: 0 }).total).toBe(0);
+    expect(offline.regionsPage(tables, { q: "CAUDO", limit: 50, offset: 0 }).items[0].modules).toBeNull(); // snapshots before modules
     expect(offline.regionsPage(tables, { q: "bla*,name.eq.x", limit: 50, offset: 0 }).total).toBe(0); // sanitised like the API
     expect(offline.regionsPage(tables, { atlas: "other", limit: 50, offset: 0 })).toEqual({ items: [], total: 0 });
   });

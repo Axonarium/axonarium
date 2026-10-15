@@ -9,11 +9,11 @@ from requests.adapters import BaseAdapter
 
 from checks.http import forget, session
 from ingest.allen_connectivity import PAGE, _get, load_claims
-from ingest.atlases import amygdala_terms, load_atlas
+from ingest.atlases import descendant_terms, load_atlas
 
 
 def loaders(cache_dir: Path | None = None, transport: BaseAdapter | None = None) -> tuple[Callable, Callable, Callable]:
-    """The amygdala-term, atlas and Allen-connectivity loaders the build uses, sharing one session."""
+    """The UBERON-term, atlas and Allen-connectivity loaders the build uses, sharing one session."""
     http = session(cache_dir, transport)
 
     def fetch(url: str, timeout: int = 120):
@@ -31,6 +31,6 @@ def loaders(cache_dir: Path | None = None, transport: BaseAdapter | None = None)
             forget(http, url)
             raise
 
-    return (partial(amygdala_terms, fetch_json),
+    return (partial(descendant_terms, fetch_json=fetch_json),
             lambda atlas, terms: load_atlas(atlas, terms, fetch=lambda url: fetch(url).content),
             lambda atlas, structure_ids, acronyms: load_claims(atlas, structure_ids, acronyms, get=allen))

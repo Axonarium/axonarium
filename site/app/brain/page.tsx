@@ -3,26 +3,28 @@ import Link from "next/link";
 
 import { BrainView } from "@/components/brain/brain-view";
 import { DataUnavailable } from "@/components/data-unavailable";
-import { getBrainEdges, getBrainGaps } from "@/lib/data";
+import { getBrainEdges, getBrainGaps, getModules } from "@/lib/data";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Brain",
-  description: "The mouse amygdala's outputs and inputs in 3D and as a network, from cited tracer experiments.",
+  description:
+    "The mouse amygdala's, hippocampal formation's and prefrontal cortex's outputs and inputs in 3D and as a network, from cited tracer experiments.",
 };
 
 const ATLAS = "allen-mouse-ccf-2017";
 
 export default async function Brain() {
-  const [edges, gaps] = await Promise.all([getBrainEdges(ATLAS), getBrainGaps(ATLAS)]);
+  const [edges, gaps, modules] = await Promise.all([getBrainEdges(ATLAS), getBrainGaps(ATLAS), getModules()]);
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight">The mouse amygdala&apos;s connections</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">The mouse brain&apos;s connections</h1>
         <p className="max-w-3xl text-muted-foreground">
-          In 3D or as a network: where the amygdala sends its axons, and which regions send axons to it, from anterograde tracer injections in the Allen Mouse Brain Connectivity
-          Atlas and from mouse experiments in published papers. Each arc is a connection made from cited claims; open one to
-          see the evidence behind it. Region meshes: Allen Mouse Brain Common Coordinate Framework, via BrainGlobe.
+          In 3D or as a network, one circuit at a time: where it sends its axons, and which regions send axons to it, from
+          anterograde tracer injections in the Allen Mouse Brain Connectivity Atlas and from mouse experiments in published
+          papers. Each arc is a connection made from cited claims; open one to see the evidence behind it. Region meshes:
+          Allen Mouse Brain Common Coordinate Framework, via BrainGlobe.
         </p>
       </div>
       {edges === null ? (
@@ -30,7 +32,13 @@ export default async function Brain() {
       ) : edges.length === 0 ? (
         <p className="rounded-lg border border-dashed p-6 text-muted-foreground">No mouse connections yet.</p>
       ) : (
-        <BrainView edges={edges} gaps={gaps} base={`/brain/${ATLAS}`} />
+        <BrainView
+          edges={edges}
+          gaps={gaps}
+          base={`/brain/${ATLAS}`}
+          modules={modules?.map(({ id, name }) => ({ id, name }))}
+          species="mouse"
+        />
       )}
       <p className="text-sm text-muted-foreground">
         Prefer a table? Every connection is on{" "}

@@ -25,9 +25,9 @@ BRIDGES = {
              "3f904b474c54c4b799b45b6b50763bdf61e8b51e2af6fa59d690ae567a53ff9f"),
 }
 UBERON = "http://purl.obolibrary.org/obo/UBERON_"
-AMYGDALA_ROOT = ("UBERON:0001876", "amygdala")
-OLS_DESCENDANTS = ("https://www.ebi.ac.uk/ols4/api/ontologies/uberon/terms/{iri}/hierarchicalDescendants"
-                   "?size=500&page={page}")
+AMYGDALA_ROOT = "UBERON:0001876"  # the amygdala module's root; the `amygdala` column keeps its meaning (ADR 0034)
+OLS_TERM = "https://www.ebi.ac.uk/ols4/api/ontologies/uberon/terms/{iri}"
+OLS_DESCENDANTS = OLS_TERM + "/hierarchicalDescendants?size=500&page={page}"
 # A region maps exactly when its equivalent class is a UBERON class restricted to a species, and nothing else.
 BRIDGE_QUERY = """
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -70,23 +70,31 @@ def _get_json(url: str) -> dict:
     return response.json()
 
 
-def amygdala_terms(fetch_json: Callable[[str], dict] = _get_json) -> dict[str, str]:
-    """The amygdala and every UBERON term under it (is-a or part-of, as OLS computes it), with labels."""
-    iri = quote(quote(UBERON + AMYGDALA_ROOT[0].split(":")[1], safe=""), safe="")
-    terms, page = {AMYGDALA_ROOT[0]: AMYGDALA_ROOT[1]}, 0
-    while True:
-        answer = fetch_json(OLS_DESCENDANTS.format(iri=iri, page=page))
-        for term in answer.get("_embedded", {}).get("terms", []):
-            if str(term.get("obo_id", "")).startswith("UBERON:"):
-                terms[term["obo_id"]] = term["label"]
-        page += 1
-        if page >= answer.get("page", {}).get("totalPages", 1):
-            return terms
+def descendant_terms(roots: list[str], fetch_json: Callable[[str], dict] = _get_json) -> dict[str, dict[str, str]]:
+    """Per UBERON root, the root and every term under it (is-a or part-of, as OLS computes it), with labels."""
+    found = {}
+    for root in roots:
+        iri = quote(quote(UBERON + root.split(":")[1], safe=""), safe="")
+        terms, page = {root: fetch_json(OLS_TERM.format(iri=iri))["label"]}, 0
+        while True:
+            answer = fetch_json(OLS_DESCENDANTS.format(iri=iri, page=page))
+            for term in answer.get("_embedded", {}).get("terms", []):
+                if str(term.get("obo_id", "")).startswith("UBERON:"):
+                    terms[term["obo_id"]] = term["label"]
+            page += 1
+            if page >= answer.get("page", {}).get("totalPages", 1):
+                break
+        found[root] = terms
+    return found
 
 
 def region_rows(atlas_id: str, structures: list[dict], prefix: str, mappings: dict[str, str],
-                amygdala: dict[str, str]) -> list[dict]:
-    """One `regions` row per atlas structure, sorted by ID; every parent must be a region of the same atlas."""
+                terms: dict[str, dict[str, str]]) -> list[dict]:
+    """One `regions` row per atlas structure, sorted by ID; every parent must be a region of the same atlas. `terms`
+    are the modules' roots and their descendants (`descendant_terms`): they give the amygdala flag and term labels.
+    Which modules a region belongs to is decided by the build (build/modules.py)."""
+    amygdala = terms.get(AMYGDALA_ROOT, {})
+    labels = {term: label for found in terms.values() for term, label in found.items()}
     ids = {f"{prefix}:{s['id']}" for s in structures}
     rows = []
     for structure in structures:
@@ -98,7 +106,7 @@ def region_rows(atlas_id: str, structures: list[dict], prefix: str, mappings: di
         uberon = mappings.get(region)
         rows.append({"id": region, "name": structure["name"], "acronym": structure["acronym"], "atlas": atlas_id,
                      "parent": parent, "uberon": uberon, "amygdala": uberon in amygdala,
-                     "uberon_label": amygdala.get(uberon), "synonyms": None, "extra": None})
+                     "uberon_label": labels.get(uberon), "synonyms": None, "extra": None, "modules": None})
     return sorted(rows, key=lambda row: row["id"])
 
 
@@ -114,7 +122,7 @@ def _download(url: str) -> bytes:
     return response.content
 
 
-def load_atlas(atlas: dict, amygdala: dict[str, str], open_atlas: Callable = _open_brainglobe,
+def load_atlas(atlas: dict, terms: dict[str, dict[str, str]], open_atlas: Callable = _open_brainglobe,
                fetch: Callable[[str], str | bytes] = _download, bridges: dict = BRIDGES) -> list[dict]:
     """The region rows of one atlas record, from its pinned BrainGlobe atlas; [] if the atlas has no region IDs."""
     pinned = (atlas.get("extra") or {}).get("brainglobe.atlas_version")
@@ -134,4 +142,4 @@ def load_atlas(atlas: dict, amygdala: dict[str, str], open_atlas: Callable = _op
     if hashlib.sha256(data).hexdigest() != checksum:
         raise BridgeMismatch(f"{url} doesn't match its pinned sha256; review the new bridge and update the pin")
     mappings = bridge_mappings(data, prefix)
-    return region_rows(atlas["id"], list(brainglobe.structures.values()), prefix, mappings, amygdala)
+    return region_rows(atlas["id"], list(brainglobe.structures.values()), prefix, mappings, terms)

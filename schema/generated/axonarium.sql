@@ -94,6 +94,12 @@ CREATE TABLE "Allowlist" (
 );
 COMMENT ON TABLE "Allowlist" IS 'The kinds of source a claim may cite, kept in data/allowlist.yaml. Any other kind is refused. The maintainer owns the file, so changes always get human review (plan Part 3.3, Layer 2; ADR 0015).';
 
+CREATE TABLE "ModuleList" (
+	id SERIAL NOT NULL,
+	PRIMARY KEY (id)
+);
+COMMENT ON TABLE "ModuleList" IS 'The circuits Axonarium covers, kept in data/modules.yaml: which regions belong to each module. The build resolves them against the pinned atlases. The maintainer owns the file, so changes always get human review (ADR 0034).';
+
 CREATE TABLE "RetractionLog" (
 	id SERIAL NOT NULL,
 	PRIMARY KEY (id)
@@ -283,6 +289,20 @@ COMMENT ON COLUMN "AcceptedSource".kind IS 'What kind of publication the source 
 COMMENT ON COLUMN "AcceptedSource".reason IS 'Why, in a sentence or two.';
 COMMENT ON COLUMN "AcceptedSource"."Allowlist_id" IS 'Autocreated FK slot';
 
+CREATE TABLE "Module" (
+	id TEXT NOT NULL,
+	name TEXT NOT NULL,
+	reason TEXT,
+	"ModuleList_id" INTEGER,
+	PRIMARY KEY (id),
+	FOREIGN KEY("ModuleList_id") REFERENCES "ModuleList" (id)
+);
+COMMENT ON TABLE "Module" IS 'One circuit, such as the amygdala: the UBERON terms its regions fall under, any regions UBERON doesn''t place there, and any it places there that the module leaves out. An atlas region''s subdivisions belong with it.';
+COMMENT ON COLUMN "Module".id IS 'The record''s identifier.';
+COMMENT ON COLUMN "Module".name IS 'The entity''s full name.';
+COMMENT ON COLUMN "Module".reason IS 'Why the module''s boundary is drawn where it is, in a sentence or two.';
+COMMENT ON COLUMN "Module"."ModuleList_id" IS 'Autocreated FK slot';
+
 CREATE TABLE "RetractionEntry" (
 	id SERIAL NOT NULL,
 	claim TEXT NOT NULL,
@@ -390,6 +410,36 @@ CREATE TABLE "AcceptedSource_venues" (
 COMMENT ON TABLE "AcceptedSource_venues" IS 'None';
 COMMENT ON COLUMN "AcceptedSource_venues"."AcceptedSource_id" IS 'Autocreated FK slot';
 COMMENT ON COLUMN "AcceptedSource_venues".venues IS 'The journals or preprint servers accepted, as source records name them. Without it, every venue of the kind is accepted.';
+
+CREATE TABLE "Module_roots" (
+	"Module_id" TEXT,
+	roots TEXT,
+	PRIMARY KEY ("Module_id", roots),
+	FOREIGN KEY("Module_id") REFERENCES "Module" (id)
+);
+COMMENT ON TABLE "Module_roots" IS 'None';
+COMMENT ON COLUMN "Module_roots"."Module_id" IS 'Autocreated FK slot';
+COMMENT ON COLUMN "Module_roots".roots IS 'UBERON terms: a region belongs to the module when its term is one of these or falls under one (is-a or part-of).';
+
+CREATE TABLE "Module_include" (
+	"Module_id" TEXT,
+	include TEXT,
+	PRIMARY KEY ("Module_id", include),
+	FOREIGN KEY("Module_id") REFERENCES "Module" (id)
+);
+COMMENT ON TABLE "Module_include" IS 'None';
+COMMENT ON COLUMN "Module_include"."Module_id" IS 'Autocreated FK slot';
+COMMENT ON COLUMN "Module_include".include IS 'Atlas regions or UBERON terms that belong to the module although no root takes them in.';
+
+CREATE TABLE "Module_exclude" (
+	"Module_id" TEXT,
+	exclude TEXT,
+	PRIMARY KEY ("Module_id", exclude),
+	FOREIGN KEY("Module_id") REFERENCES "Module" (id)
+);
+COMMENT ON TABLE "Module_exclude" IS 'None';
+COMMENT ON COLUMN "Module_exclude"."Module_id" IS 'Autocreated FK slot';
+COMMENT ON COLUMN "Module_exclude".exclude IS 'Atlas regions or UBERON terms a root takes in that the module leaves out, such as fibre tracts.';
 
 CREATE TABLE "Region_synonyms" (
 	"Region_id" TEXT,

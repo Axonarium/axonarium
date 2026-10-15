@@ -26,7 +26,7 @@ def notes(version: str, commit: str, manifest: dict) -> str:
 {counts}
 
 `axonarium-{version}-dumps.zip` holds every record as JSON (`axonarium.json`), every table as CSV, the edge graph as \
-GraphML (`edges.graphml`), the retractions log and `manifest.json` (schema version {manifest["schema_version"]}). \
+GraphML (`edges.graphml`), the retractions log, the modules (`modules.json`) and `manifest.json` (schema version {manifest["schema_version"]}). \
 `SHA256SUMS` holds its checksum.
 
 **Licence:** CC BY 4.0. Credit Axonarium and the sources each claim cites. The connections the site and API make at \

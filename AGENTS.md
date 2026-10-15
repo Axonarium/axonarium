@@ -90,6 +90,7 @@ What exists now:
 | `data/README.md` | Data licence, layout and the rules the checks apply |
 | `data/retractions.yaml` | The log of deleted and retracted claims (maintainer-owned) |
 | `data/allowlist.yaml` | The kinds of source claims may cite (maintainer-owned; ADR 0015) |
+| `data/modules.yaml` | The modules (amygdala, hippocampal formation, prefrontal cortex) and which regions belong to each (maintainer-owned; ADR 0034) |
 | `data/entities/`, `data/sources/` | Pinned atlases, neuron types and the cited papers' records |
 | `ingest/` | Adapters for external sources: `atlases.py` (BrainGlobe atlases and UBERON bridges) and `allen_connectivity.py`, run by the build; `scout.py`, the literature scout |
 | `corpus/` | The scout's saved literature queries and the corpus manifest (ADR 0019) |

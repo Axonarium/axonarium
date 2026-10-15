@@ -42,6 +42,8 @@ def class_for(rel_path: Path) -> str | None:
         return "RetractionLog"
     if parts == ("allowlist.yaml",):
         return "Allowlist"
+    if parts == ("modules.yaml",):
+        return "ModuleList"
     if parts[0] == "claims" and len(parts) >= 2:
         return "ConnectivityClaim"
     if parts[0] == "homology" and len(parts) >= 2:

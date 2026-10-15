@@ -91,8 +91,9 @@ describe("the read API's shapes", () => {
   });
 
   it("regions, region details and sources conform", () => {
-    const region = { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", atlas: "allen-mouse-ccf-2017", parent: "MBA:703", uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", amygdala: true };
+    const region = { id: "MBA:295", acronym: "BLA", name: "Basolateral amygdalar nucleus", atlas: "allen-mouse-ccf-2017", parent: "MBA:703", uberon: "UBERON:0006107", uberon_label: "basolateral amygdaloid nuclear complex", amygdala: true, modules: ["amygdala"] };
     expect(conforms("Region", toRegion(region))).toBe(true);
+    expect(toRegion({ ...region, modules: undefined }).modules).toEqual([]); // a snapshot made before modules
     const detail = regionDetail({
       region,
       children: [{ id: "MBA:303", acronym: "BLAa", name: "Basolateral amygdalar nucleus, anterior part" }],

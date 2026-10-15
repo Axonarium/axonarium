@@ -7,7 +7,7 @@ import psycopg
 import pytest
 
 from build.cli import main
-from build.tests.test_regions import amygdala_loader, fake_loader
+from build.tests.test_regions import fake_loader, terms_loader
 
 TEST_URL = os.environ.get("AXONARIUM_TEST_DATABASE_URL")
 
@@ -33,7 +33,7 @@ def connectivity(*claims):
 
 def build(tree, out, *extra, claims=(claim(),)):
     return main(["--data", str(tree), "--out", str(out), *extra], atlas_loader=fake_loader(),
-                amygdala_loader=amygdala_loader, connectivity_loader=connectivity(*claims))
+                terms_loader=terms_loader, connectivity_loader=connectivity(*claims))
 
 
 def test_generated_claims_not_in_dumps(valid_tree, tmp_path, capsys):

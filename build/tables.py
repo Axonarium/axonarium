@@ -46,6 +46,16 @@ regions = Table(
     # Set by the build for atlas regions (ADR 0009): whether UBERON places the region's term under the amygdala,
     # and that term's label.
     Column("amygdala", Boolean), _text("uberon_label"),
+    # Set by the build for atlas regions (ADR 0034): the modules the region belongs to, subdivisions included.
+    Column("modules", ARRAY(Text)),
+)
+# The modules of data/modules.yaml (ADR 0034), in its order. `terms` and `labels` are set by the build when it loads
+# the atlases: the UBERON terms that belong to the module, which rat claims name, and UBERON's labels for them.
+modules = Table(
+    "modules", metadata,
+    Column("id", Text, primary_key=True), _text("name", True), Column("position", Integer, nullable=False),
+    Column("roots", ARRAY(Text)), Column("include", ARRAY(Text)), Column("exclude", ARRAY(Text)), _text("reason"),
+    Column("terms", ARRAY(Text)), Column("labels", JSONB),
 )
 neuron_types = Table(
     "neuron_types", metadata,
@@ -174,6 +184,9 @@ def rows(records: list[Record]) -> dict[str, list[dict]]:
         elif record.cls == "RetractionLog":
             tables["retractions"] = [_row("retractions", {**entry, "position": i})
                                      for i, entry in enumerate(record.data["entries"], start=1)]
+        elif record.cls == "ModuleList":
+            tables["modules"] = [_row("modules", {**module, "position": i})
+                                 for i, module in enumerate(record.data["modules"], start=1)]
     tables["edges"] = compute_edges(records)
     cited = Counter(row["source_key"] for name in ("connectivity_claims", "homology_claims") for row in tables[name]
                     if row["status"] != "retracted")

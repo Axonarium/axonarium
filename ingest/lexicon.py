@@ -12,25 +12,29 @@ import json
 from pathlib import Path
 
 from checks.loading import load_tree
+from ingest.modules import apply, modules_of, roots_of
 from ingest.network import loaders
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def lexicon(records, amygdala_loader, atlas_loader) -> dict:
-    """{"atlases": {atlas id: {species, regions: [{id, acronym, name, uberon}]}}, "neuron_types": [{id, name, ...}]}"""
-    terms = amygdala_loader()
-    atlases = {}
+def lexicon(records, terms_loader, atlas_loader) -> dict:
+    """{"atlases": {atlas id: {species, regions: [{id, acronym, name, uberon, amygdala, modules}]}},
+    "neuron_types": [{id, name, ...}]}"""
+    modules = modules_of(records)
+    terms = terms_loader(roots_of(modules))
+    loaded = {}
     for record in records:
         if record.cls != "Atlas" or not record.data.get("brainglobe_name"):
             continue
         rows = atlas_loader(record.data, terms)
         if rows:
-            atlases[record.data["id"]] = {
-                "species": record.data["species"],
-                "regions": [{"id": r["id"], "acronym": r["acronym"], "name": r["name"], "uberon": r["uberon"],
-                             "amygdala": r["amygdala"]} for r in rows],
-            }
+            loaded[record.data["id"]] = (record.data["species"], rows)
+    apply(modules, {atlas: rows for atlas, (_, rows) in loaded.items()}, terms)
+    atlases = {atlas: {"species": species,
+                       "regions": [{"id": r["id"], "acronym": r["acronym"], "name": r["name"], "uberon": r["uberon"],
+                                    "amygdala": r["amygdala"], "modules": r["modules"] or []} for r in rows]}
+               for atlas, (species, rows) in loaded.items()}
     neuron_types = sorted(({"id": r.data["id"], "name": r.data["name"], "species": r.data["species"],
                             "region": r.data["region"]["id"]} for r in records if r.cls == "NeuronType"),
                           key=lambda n: n["id"])
@@ -44,8 +48,8 @@ def main(argv: list[str] | None = None, network=None) -> int:
     parser.add_argument("--http-cache", type=Path, help="cache HTTP answers here for seven days, as the build does")
     args = parser.parse_args(argv)
     records, _ = load_tree(args.data)
-    amygdala_loader, atlas_loader, _ = network or loaders(args.http_cache)
-    found = lexicon(records, amygdala_loader, atlas_loader)
+    terms_loader, atlas_loader, _ = network or loaders(args.http_cache)
+    found = lexicon(records, terms_loader, atlas_loader)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(found, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     counts = ", ".join(f"{atlas}: {len(entry['regions'])} regions" for atlas, entry in found["atlases"].items())

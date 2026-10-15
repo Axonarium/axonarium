@@ -5,7 +5,7 @@ description: >-
   The data model of Axonarium, an open, cited map of how the brain and body
   are wired. The unit of knowledge is the claim: one statement from one source
   about one relationship in one species. See docs/plan.md, Part 1, "Data model".
-version: 0.4.0
+version: 0.5.0
 license: Apache-2.0
 see_also:
   - https://github.com/axonarium/axonarium
@@ -388,6 +388,35 @@ classes:
       - venues
       - reason
 
+  ModuleList:
+    description: >-
+      The circuits Axonarium covers, kept in data/modules.yaml: which regions
+      belong to each module. The build resolves them against the pinned
+      atlases. The maintainer owns the file, so changes always get human
+      review (ADR 0034).
+    slots:
+      - modules
+
+  Module:
+    description: >-
+      One circuit, such as the amygdala: the UBERON terms its regions fall
+      under, any regions UBERON doesn't place there, and any it places there
+      that the module leaves out. An atlas region's subdivisions belong with
+      it.
+    slots:
+      - id
+      - name
+      - roots
+      - include
+      - exclude
+      - reason
+    slot_usage:
+      id:
+        pattern: "^[a-z]+(-[a-z]+)*$"
+      reason:
+        required: false
+        description: Why the module's boundary is drawn where it is, in a sentence or two.
+
   RetractionLog:
     description: >-
       The log of deleted and retracted claims, kept in data/retractions.yaml.
@@ -656,6 +685,30 @@ slots:
     inlined_as_list: true
     required: true
     description: The kinds of source accepted.
+  modules:
+    range: Module
+    multivalued: true
+    inlined_as_list: true
+    required: true
+    description: The modules, in the order the site lists them.
+  roots:
+    multivalued: true
+    pattern: "^UBERON:\\d{7}$"
+    description: >-
+      UBERON terms: a region belongs to the module when its term is one of
+      these or falls under one (is-a or part-of).
+  include:
+    multivalued: true
+    pattern: "^((MBA|HBA|DHBA):\\d+|UBERON:\\d{7})$"
+    description: >-
+      Atlas regions or UBERON terms that belong to the module although no
+      root takes them in.
+  exclude:
+    multivalued: true
+    pattern: "^((MBA|HBA|DHBA):\\d+|UBERON:\\d{7})$"
+    description: >-
+      Atlas regions or UBERON terms a root takes in that the module leaves
+      out, such as fibre tracts.
   license:
     description: The paper's licence, as an SPDX ID where one exists.
   open_access:

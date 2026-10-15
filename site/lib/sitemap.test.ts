@@ -12,9 +12,10 @@ describe("sitemapUrls", () => {
       new Set(["MBA:295", "MBA:672", "MBA:972"]),
     );
     expect(urls).toContain(`${SITE}/brain`);
+    expect(urls).toContain(`${SITE}/brain/rat`);
     expect(urls).toContain(`${SITE}/edges/MBA%3A295%7Cprojects_to%7CMBA%3A672%7CNCBITaxon%3A10090`);
     expect(urls.filter((u) => u === `${SITE}/regions/MBA%3A295`)).toHaveLength(1);
-    expect(urls).toHaveLength(7 + 2 + 3);
+    expect(urls).toHaveLength(8 + 2 + 3);
     expect(urls).toContain(`${SITE}/regions`);
   });
 

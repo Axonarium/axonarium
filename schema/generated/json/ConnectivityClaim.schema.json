@@ -1054,6 +1054,85 @@
             "title": "Measurement",
             "type": "object"
         },
+        "Module": {
+            "additionalProperties": false,
+            "description": "One circuit, such as the amygdala: the UBERON terms its regions fall under, any regions UBERON doesn't place there, and any it places there that the module leaves out. An atlas region's subdivisions belong with it.",
+            "properties": {
+                "exclude": {
+                    "description": "Atlas regions or UBERON terms a root takes in that the module leaves out, such as fibre tracts.",
+                    "items": {
+                        "pattern": "^((MBA|HBA|DHBA):\\d+|UBERON:\\d{7})$",
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "The record's identifier.",
+                    "pattern": "^[a-z]+(-[a-z]+)*$",
+                    "type": "string"
+                },
+                "include": {
+                    "description": "Atlas regions or UBERON terms that belong to the module although no root takes them in.",
+                    "items": {
+                        "pattern": "^((MBA|HBA|DHBA):\\d+|UBERON:\\d{7})$",
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "description": "The entity's full name.",
+                    "type": "string"
+                },
+                "reason": {
+                    "description": "Why the module's boundary is drawn where it is, in a sentence or two.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "roots": {
+                    "description": "UBERON terms: a region belongs to the module when its term is one of these or falls under one (is-a or part-of).",
+                    "items": {
+                        "pattern": "^UBERON:\\d{7}$",
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "name"
+            ],
+            "title": "Module",
+            "type": "object"
+        },
+        "ModuleList": {
+            "additionalProperties": false,
+            "description": "The circuits Axonarium covers, kept in data/modules.yaml: which regions belong to each module. The build resolves them against the pinned atlases. The maintainer owns the file, so changes always get human review (ADR 0034).",
+            "properties": {
+                "modules": {
+                    "description": "The modules, in the order the site lists them.",
+                    "items": {
+                        "$ref": "#/$defs/Module"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "modules"
+            ],
+            "title": "ModuleList",
+            "type": "object"
+        },
         "NeuronType": {
             "additionalProperties": false,
             "description": "A population of neurons with a shared location, transmitter and markers. Mapped to the Cell Ontology where a term exists.",
@@ -1753,6 +1832,6 @@
     ],
     "title": "axonarium",
     "type": "object",
-    "version": "0.4.0"
+    "version": "0.5.0"
 }
 

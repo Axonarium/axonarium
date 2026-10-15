@@ -1,19 +1,19 @@
 """Gap mode (sprint 3.5, ADR 0027): connections that are plausible but untested, as research prompts.
 
-An amygdala region's outputs are untested in a species when no claim names an output of it in that species: not of
-the region, nor of a subdivision of it, nor of a region it is part of. No experiment is known to have injected it.
+The outputs of a module's region (any module, ADR 0034) are untested in a species when no claim names an output of it in that
+species: not of the region, nor of a subdivision of it, nor of a region it is part of. No experiment is known to have injected it.
 A connection from such a region to a target is plausible when a neighbour, another subdivision of the same parent,
 projects there: a present claim from the neighbour or one of its subdivisions. The gap keeps the connections that
 suggest it, and the strongest projection density among them.
 
-Inputs are left out. Allen's claims for injections outside the amygdala keep only densities of at least 0.01, so
+Inputs are left out. Allen's claims for injections outside the modules keep only densities of at least 0.01, so
 there a missing claim can't tell an untested region from a weak connection. Gaps are suggestions, never evidence:
 they are not claims, and they are never dumped, because they rest on Allen claims and atlas regions (ADR 0005).
 """
 
 from collections import defaultdict
 
-from build.connectivity import amygdala_regions
+from build.connectivity import module_regions
 
 BASIS = "neighbours"  # how a gap was suggested; homology across species may join later (ADR 0027)
 
@@ -46,7 +46,7 @@ def find_gaps(claims: list[dict], regions: list[dict]) -> list[dict]:
                 stack.extend(children.get(current, []))
         return found
 
-    amygdala = amygdala_regions(regions)
+    members = module_regions(regions)  # every module's regions (ADR 0034)
     live = [c for c in claims if c.get("status") != "retracted" and c["subject"].get("type") == "region"
             and c["object"].get("type") == "region" and c["subject"]["id"] in parent and c["object"]["id"] in parent]
     by_species: dict[str, list[dict]] = defaultdict(list)
@@ -63,7 +63,7 @@ def find_gaps(claims: list[dict], regions: list[dict]) -> list[dict]:
         for claim in found:
             if claim["result"] == "present" and claim["predicate"] == "projects_to":
                 outputs[claim["subject"]["id"]].append(claim)
-        for region in sorted(amygdala - tested):
+        for region in sorted(members - tested):
             mother = parent.get(region)
             if not mother:
                 continue

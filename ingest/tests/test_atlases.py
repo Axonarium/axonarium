@@ -5,7 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from ingest.atlases import AtlasPinMismatch, BridgeMismatch, amygdala_terms, bridge_mappings, load_atlas, region_rows
+from ingest.atlases import (AMYGDALA_ROOT, AtlasPinMismatch, BridgeMismatch, bridge_mappings, descendant_terms, load_atlas,
+                            region_rows)
 
 BRIDGE = (Path(__file__).parent / "fixtures" / "bridge.owl").read_text(encoding="utf-8")
 BRIDGES = {"MBA": ("https://example.org/bridge.owl", hashlib.sha256(BRIDGE.encode()).hexdigest())}
@@ -16,7 +17,7 @@ STRUCTURES = [
     {"id": 100000, "name": "Region big", "acronym": "RB", "parent_structure_id": 1, "structure_id_path": [997, 1, 100000]},
     {"id": 2, "name": "Region two", "acronym": "R2", "parent_structure_id": 34464, "structure_id_path": [997, 1, 100000, 2]},
 ]
-AMYGDALA = {"UBERON:0000001": "amygdala-ish nucleus"}
+AMYGDALA = {AMYGDALA_ROOT: {AMYGDALA_ROOT: "amygdala", "UBERON:0000001": "amygdala-ish nucleus"}}
 MOUSE = {"id": "allen-mouse-ccf-2017", "brainglobe_name": "allen_mouse_25um", "extra": {"brainglobe.atlas_version": "3.1"}}
 
 
@@ -51,7 +52,7 @@ def test_region_rows():
     by_id = {r["id"]: r for r in rows}
     assert by_id["MBA:1"] == {"id": "MBA:1", "name": "Region one", "acronym": "R1", "atlas": "allen-mouse-ccf-2017",
                               "parent": "MBA:997", "uberon": "UBERON:0000001", "amygdala": True,
-                              "uberon_label": "amygdala-ish nucleus", "synonyms": None, "extra": None}
+                              "uberon_label": "amygdala-ish nucleus", "synonyms": None, "extra": None, "modules": None}
     assert by_id["MBA:997"]["parent"] is None and by_id["MBA:997"]["amygdala"] is False
 
 
@@ -93,9 +94,28 @@ def test_atlas_without_region_ids_gives_no_regions():
     assert load_atlas(rat, AMYGDALA, open_atlas=opener(name="whs_sd_rat", served="3.0"), fetch=lambda url: BRIDGE) == []
 
 
-def test_amygdala_terms_from_ols():
-    answer = {"_embedded": {"terms": [{"obo_id": "UBERON:0002887", "label": "basal amygdaloid nucleus"},
-                                      {"obo_id": "BFO:0000040", "label": "not uberon"}]},
-              "page": {"totalPages": 1}}
-    terms = amygdala_terms(fetch_json=lambda url: answer)
-    assert terms == {"UBERON:0001876": "amygdala", "UBERON:0002887": "basal amygdaloid nucleus"}
+def test_descendant_terms_from_ols():
+    answers = {
+        "UBERON_0001876": {"label": "amygdala"},
+        "UBERON_0002421": {"label": "hippocampal formation"},
+        "UBERON_0001876/hierarchicalDescendants": {"_embedded": {"terms": [
+            {"obo_id": "UBERON:0002887", "label": "basal amygdaloid nucleus"}, {"obo_id": "BFO:0000040", "label": "not uberon"}]},
+            "page": {"totalPages": 1}},
+        "UBERON_0002421/hierarchicalDescendants": {"_embedded": {"terms": [{"obo_id": "UBERON:0003881", "label": "CA1 field"}]},
+                                                   "page": {"totalPages": 1}},
+    }
+
+    def fetch_json(url):
+        path = url.split("/terms/")[1].split("?")[0].replace("http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F", "")
+        return answers[path]
+
+    terms = descendant_terms(["UBERON:0001876", "UBERON:0002421"], fetch_json=fetch_json)
+    assert terms == {"UBERON:0001876": {"UBERON:0001876": "amygdala", "UBERON:0002887": "basal amygdaloid nucleus"},
+                     "UBERON:0002421": {"UBERON:0002421": "hippocampal formation", "UBERON:0003881": "CA1 field"}}
+
+
+def test_region_rows_label_terms_of_every_module():
+    terms = {**AMYGDALA, "UBERON:0002421": {"UBERON:0002421": "hippocampal formation", "UBERON:0000002": "CA-ish field"}}
+    rows = {r["id"]: r for r in region_rows("a", STRUCTURES, "MBA", {"MBA:1": "UBERON:0000001", "MBA:2": "UBERON:0000002"}, terms)}
+    assert rows["MBA:2"]["uberon_label"] == "CA-ish field" and rows["MBA:2"]["amygdala"] is False
+    assert rows["MBA:1"]["amygdala"] is True

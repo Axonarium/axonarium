@@ -4,7 +4,7 @@ from pathlib import Path
 
 from checks.file_rules import check_file
 from checks.findings import Record
-from ingest.allen_connectivity import build_claims, claim_id, experiments, load_claims, paged
+from ingest.allen_connectivity import BATCH, build_claims, claim_id, experiments, load_claims, paged, projections
 
 ATLAS = "allen-mouse-ccf-2017"
 ACRONYMS = {295: "BLA", 536: "CEA", 131: "LA", 972: "PL", 997: "root"}
@@ -44,15 +44,17 @@ ANSWERS = {
                               {"section_data_set_id": 3, "structure_id": 972, "projection_volume": 0.2}],
     # Inputs: projections into amygdala structures from every experiment; only those not injected in the amygdala
     # are inputs.
-    "[projection_density$ge": [{"section_data_set_id": 3, "structure_id": 295, "projection_density": 0.05},
-                               {"section_data_set_id": 3, "structure_id": 536, "projection_density": 0.001},
-                               {"section_data_set_id": 2, "structure_id": 536, "projection_density": 0.4},
-                               {"section_data_set_id": 1, "structure_id": 536, "projection_density": 0.2}],
-    "section_data_set_id$eq1],[is_injection$eqfalse]": [{"structure_id": 536, "projection_density": 0.2},
-                                 {"structure_id": 131, "projection_density": 0.004},
-                                 {"structure_id": 295, "projection_density": 0.9},
-                                 {"structure_id": 997, "projection_density": 0.5}],
-    "section_data_set_id$eq2],[is_injection$eqfalse]": [{"structure_id": 536, "projection_density": 0.4}],
+    "[structure_id$in": [{"section_data_set_id": 3, "structure_id": 295, "projection_density": 0.05},
+                         {"section_data_set_id": 3, "structure_id": 536, "projection_density": 0.001},
+                         {"section_data_set_id": 2, "structure_id": 536, "projection_density": 0.4},
+                         {"section_data_set_id": 1, "structure_id": 536, "projection_density": 0.2}],
+    # Outputs: every projection of the experiments injected in the amygdala, a batch at a time.
+    "[section_data_set_id$in": [{"section_data_set_id": 1, "structure_id": 536, "projection_density": 0.2},
+                                {"section_data_set_id": 1, "structure_id": 131, "projection_density": 0.004},
+                                {"section_data_set_id": 1, "structure_id": 295, "projection_density": 0.9},
+                                {"section_data_set_id": 1, "structure_id": 997, "projection_density": 0.5},
+                                {"section_data_set_id": 2, "structure_id": 536, "projection_density": 0.4},
+                                {"section_data_set_id": 9, "structure_id": 536, "projection_density": 0.4}],  # not asked for
 }
 
 
@@ -109,7 +111,7 @@ def test_claim_ids_are_stable_and_valid():
     assert set(claim_id(1, 536)[4:]) <= set("0123456789abcdefghjkmnpqrstvwxyz")
 
 
-def test_no_amygdala_structures_no_queries():
+def test_no_structures_no_queries():
     get = fake_get(ANSWERS)
     assert load_claims(ATLAS, [], ACRONYMS, get=get) == [] and get.asked == []
 
@@ -168,3 +170,10 @@ def test_cre_line_experiments_record_their_line():
     assert "of a Slc32a1-IRES-Cre mouse, the tracer Cre-dependent" in claims[0]["paraphrase"]
     assert claims[0]["curation"]["prompt"] == "allen-connectivity@1.3.0"
     assert check_file(Record(Path(f"{claims[0]['id']}.yaml"), "ConnectivityClaim", claims[0])) == []
+
+
+def test_outputs_are_read_a_batch_at_a_time():
+    get = fake_get({"[section_data_set_id$in": []})
+    found = projections(get, list(range(1, BATCH + 2)))
+    assert len(get.asked) == 2 and found[BATCH + 1] == []
+    assert all("[projection_density$ge0.01]" in criteria and "[is_injection$eqfalse]" in criteria for criteria in get.asked)

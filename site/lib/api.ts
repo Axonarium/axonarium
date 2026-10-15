@@ -48,6 +48,7 @@ export const toRegion = (r: RegionDetail) => ({
   uberon: r.uberon,
   uberon_label: r.uberon_label,
   amygdala: r.amygdala ?? null,
+  modules: r.modules ?? [],
 });
 
 export const toConnection = (e: Edge, names: Record<string, RegionName>) => ({
