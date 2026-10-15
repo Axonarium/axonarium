@@ -107,6 +107,7 @@ def test_regions_and_modules_reach_the_snapshot(valid_tree, tmp_path, capsys):
     prefrontal = tables["modules"][1]
     assert prefrontal["include"] == ["MBA:972", "UBERON:0004167"] and prefrontal["exclude"] == ["MBA:44"]
     assert prefrontal["terms"] == ["UBERON:0000451", "UBERON:0004167"]  # the root and the listed term; PL maps to none here
+    assert prefrontal["labels"] == {"UBERON:0000451": "prefrontal cortex"}  # UBERON's, for terms under the root
     dumped = (tmp_path / "dist" / "modules.csv").read_text(encoding="utf-8")
     assert dumped.startswith("id,name,position,") and "prefrontal" in dumped
     assert json.loads((tmp_path / "dist" / "modules.json").read_text(encoding="utf-8"))["modules"][0]["id"] == "amygdala"

@@ -31,6 +31,7 @@ def upgrade() -> None:
     sa.Column('exclude', postgresql.ARRAY(sa.Text()), nullable=True),
     sa.Column('reason', sa.Text(), nullable=True),
     sa.Column('terms', postgresql.ARRAY(sa.Text()), nullable=True),
+    sa.Column('labels', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.add_column('regions', sa.Column('modules', postgresql.ARRAY(sa.Text()), nullable=True))

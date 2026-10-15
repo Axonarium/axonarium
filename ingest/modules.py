@@ -69,6 +69,13 @@ def apply(modules: list[dict], loaded: dict[str, list[dict]], terms: dict[str, d
     return module_terms
 
 
+def labels(module_terms: dict[str, list[str]], terms: dict[str, dict[str, str]]) -> dict[str, dict[str, str]]:
+    """Per module, UBERON's label for each of its terms that falls under a root (the labels OLS gave with them), so
+    the site can name the terms rat claims use that no atlas region maps to."""
+    known = {term: label for found in terms.values() for term, label in found.items() if label}
+    return {module: {term: known[term] for term in found if term in known} for module, found in module_terms.items()}
+
+
 def structures(rows: list[dict], module: str | None = None) -> list[int]:
     """The Allen structure IDs of one module's regions, or of every module's, from an atlas's region rows (after
     `apply`)."""

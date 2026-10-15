@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from ingest.modules import apply, resolve, roots_of, structures
+from ingest.modules import apply, labels, resolve, roots_of, structures
 
 MODULES = yaml.safe_load((Path(__file__).resolve().parents[2] / "data" / "modules.yaml").read_text(encoding="utf-8"))["modules"]
 
@@ -68,6 +68,14 @@ def test_apply_sets_each_rows_modules_and_structures_reads_them():
     assert next(r for r in rows if r["id"] == "MBA:672")["modules"] is None
     assert structures(rows, "amygdala") == [295, 303]
     assert structures(rows) == sorted([295, 303, 1089, 382, 822, 909, 972, 44, 31, 48, 714, 184])
+
+
+def test_labels_name_the_terms_under_a_root():
+    _, terms = resolve(MODULES, ROWS, TERMS)
+    found = labels(terms, TERMS)
+    assert found["hippocampus"]["UBERON:0003881"] == "CA1 field of hippocampus"
+    assert "UBERON:0002728" not in found["hippocampus"]  # entorhinal cortex comes through ENT, not from OLS here
+    assert "UBERON:0004167" not in found["prefrontal"]  # listed, not under the root
 
 
 def test_roots_once_each_in_order():

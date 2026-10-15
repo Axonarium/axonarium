@@ -70,6 +70,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
     modules = module_list.modules_of(records)  # data/modules.yaml (ADR 0031)
     loaded: dict[str, list[dict]] = {}
     module_terms: dict[str, list[str]] = {}
+    module_labels: dict[str, dict[str, str]] = {}
     atlases = [r.data for r in records if r.cls == "Atlas" and r.data.get("brainglobe_name")]
     if not args.no_atlases and atlases:
         try:
@@ -84,6 +85,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
                 print(f"atlas load failed for {atlas['id']} (BrainGlobe or UBERON bridge): {error}; build stopped")
                 return 1
         module_terms = module_list.apply(modules, loaded, terms)
+        module_labels = module_list.labels(module_terms, terms)
         problems = atlas_regions.unknown_regions(records, loaded)
         problems += [f"{atlas}: no amygdala regions; check the atlas and its UBERON bridge"
                      for atlas, region_rows in loaded.items() if region_rows and not atlas_regions.amygdala(region_rows)]
@@ -133,7 +135,8 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
     if args.report:
         reconcile.write_report(reconcile.reconcile(claims, region_rows), args.report)
     tables = {**atlas_regions.merge(rows(records + generated), loaded), "gaps": found_gaps}
-    tables["modules"] = [{**row, "terms": module_terms.get(row["id"])} for row in tables["modules"]]
+    tables["modules"] = [{**row, "terms": module_terms.get(row["id"]), "labels": module_labels.get(row["id"]) or None}
+                         for row in tables["modules"]]
     if args.snapshot:
         write_snapshot(tables, args.snapshot)
     if url:

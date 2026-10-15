@@ -47,7 +47,7 @@ uv run pytest build/tests
 | `connectivity_claims`, `homology_claims` | Claim; subject, object and citation flattened into columns, nested parts as JSONB |
 | `edges` | Subject, predicate, object and species, aggregated from claims that aren't retracted: counts by result, evidence classes, strongest strength, strongest projection density, signs and claim IDs |
 | `retractions` | Log entry, by position |
-| `modules` | Module of `data/modules.yaml`, by ID, with its position and the UBERON terms it resolves to ([ADR 0031](../docs/decisions/0031-modules.md)); atlas regions list their modules in `regions.modules` |
+| `modules` | Module of `data/modules.yaml`, by ID, with its position, the UBERON terms it resolves to and their UBERON labels ([ADR 0031](../docs/decisions/0031-modules.md)); atlas regions list their modules in `regions.modules` |
 | `gaps` | Untested connection that gap mode suggests: a module's region no claim reports outputs for, to a target its neighbours project to, with the connections that suggest it ([ADR 0027](../docs/decisions/0027-gap-mode.md)). Suggestions, not evidence; never dumped |
 | `submissions` | The community inbox: a visitor's identifier for or against a claim ([ADR 0021](../docs/decisions/0021-community-inbox.md)). Closed to the public API, and never loaded, emptied or dumped by the build. Rows arrive only through `submit_evidence()`, which applies the rate limits and only the secret key may call ([ADR 0024](../docs/decisions/0024-evidence-buttons.md)) |
 
