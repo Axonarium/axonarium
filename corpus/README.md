@@ -1,10 +1,10 @@
 # Corpus
 
-The literature the amygdala module reads (sprint 2.2, [ADR 0019](../docs/decisions/0019-literature-corpus.md)).
+The literature each module reads (sprint 2.2, [ADR 0019](../docs/decisions/0019-literature-corpus.md); modules, [ADR 0034](../docs/decisions/0034-modules.md)).
 
 | File | Holds |
 | --- | --- |
-| `queries.yaml` | The saved searches, in Europe PMC's syntax, each with why it exists. Changes need the maintainer's review |
+| `queries.yaml` | The saved searches, in Europe PMC's syntax, each with the module of `data/modules.yaml` it searches for and why it exists. Changes need the maintainer's review |
 | `manifest.csv` | Every paper the searches find, one row each, written by the scout. Never edited by hand |
 | `triage.csv` | The pipeline's triage verdict for each paper: whether its own data test a connection ([ADR 0028](../docs/decisions/0028-literature-pipeline.md)). Written by `python -m pipeline triage` |
 | `extracted.csv` | What extraction did with each paper: how many claims it gave, or why it gave none. Written by `python -m pipeline extract` |
@@ -27,7 +27,7 @@ One row per paper, sorted by `key`: its DOI, else PubMed ID, else PubMed Central
 | `title`, `year`, `journal` | Bibliographic metadata; a preprint's journal is its server |
 | `types` | Europe PMC's publication types, such as `research-article` or `review` |
 | `open_access`, `license`, `full_text` | Whether the paper is open access, under which licence (as Europe PMC gives it), and whether Europe PMC holds its full text. Extraction reads papers whose full text Europe PMC holds: it serves its open-access subset, and PMC's open data on AWS serves author manuscripts (ADR 0030) |
-| `queries` | The queries that found it |
+| `queries` | The queries that found it. The paper is read for the module of the first of them in `queries.yaml`'s order, so one found for the amygdala and the hippocampus is read once, for the amygdala, and its claims go to `data/claims/amygdala/` |
 | `first_seen` | The day the scout first found it: a run's new papers are the extractor's next batch |
 
 Abstracts and full text are never stored here (ADR 0005). Extraction (sprint 2.3) reads full text from Europe PMC, or else from PMC's open data (ADR 0030), when it needs it.

@@ -13,3 +13,8 @@ def ledgers_in_tmp(tmp_path, monkeypatch):
         monkeypatch.setattr(ledger, "path", tmp_path / "ledgers" / ledger.path.name)
     # This checkout's own remote branches are no test's business; test_triage checks the guard itself.
     monkeypatch.setattr(cli, "branches", SimpleNamespace(waiting=lambda ledger: {}, refusal=branches.refusal))
+    # The saved queries the fixtures' papers were found by, so no test depends on corpus/queries.yaml.
+    monkeypatch.setattr(cli, "read_queries", lambda: QUERIES)
+
+
+QUERIES = [{"id": "amygdala-tract-tracing", "module": "amygdala"}, {"id": "hippocampus-tract-tracing", "module": "hippocampus"}]

@@ -147,7 +147,7 @@ def verify(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, to
            claims_dir: Path | None = None, text: Callable | None = None, prompt: Path = PROMPT, ledger: Ledger | None = None,
            redo: Redo = Redo()) -> dict:
     """Verify the claims of up to `limit` papers with `run` (a runner from pipeline.llm). Returns a summary."""
-    today, claims_dir, ledger = today or date.today().isoformat(), claims_dir or extract.CLAIMS, ledger or LEDGER
+    today, claims_dir, ledger = today or date.today().isoformat(), claims_dir or extract.CLAIMS / extract.MODULE, ledger or LEDGER
     prompt_id, system = read_prompt(prompt)
     model = getattr(run, "model", "replay")
     before, index = ledger.read(), paper_index(manifest)

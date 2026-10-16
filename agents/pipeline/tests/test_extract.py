@@ -31,14 +31,15 @@ LEXICON = {
     },
     "neuron_types": [{"id": "nt-3kvfdzf7wn", "name": "MEA glutamatergic neurons", "species": MOUSE, "region": "MBA:403"}],
 }
-PAPERS = [{**paper, "full_text": "true", "open_access": "true"} for paper in (
+PAPERS = [{**paper, "full_text": "true", "open_access": "true", "queries": "amygdala-tract-tracing"} for paper in (
     {"key": "doi:10.1/a", "doi": "10.1/a", "pmid": "1", "pmcid": "PMC1"},
     {"key": "doi:10.1/b", "doi": "10.1/b", "pmid": "2", "pmcid": "PMC2"},
     {"key": "doi:10.1/c", "doi": "10.1/c", "pmid": "3", "pmcid": "PMC3"},
     {"key": "doi:10.1/d", "doi": "10.1/d", "pmid": "4", "pmcid": ""},  # no PMC ID: not readable
     {"key": "doi:10.1/e", "doi": "10.1/e", "pmid": "5", "pmcid": "PMC5"},  # its fetch fails
     {"key": "doi:10.1/f", "doi": "10.1/f", "pmid": "6", "pmcid": "PMC6"},  # triaged out
-)] + [{"key": "doi:10.1/g", "doi": "10.1/g", "pmid": "7", "pmcid": "PMC7", "full_text": "true", "open_access": "false"}]  # an author manuscript (ADR 0030)
+)] + [{"key": "doi:10.1/g", "doi": "10.1/g", "pmid": "7", "pmcid": "PMC7", "full_text": "true", "open_access": "false",
+       "queries": "amygdala-tract-tracing"}]  # an author manuscript (ADR 0030)
 TRIAGED = {p["key"]: {"verdict": "out" if p["key"].endswith("f") else "in"} for p in PAPERS}
 
 
@@ -286,7 +287,20 @@ def test_cli_extracts_with_a_replayed_model(tmp_path, monkeypatch, capsys):
 
     monkeypatch.setattr("screen.preflight", lambda classify: [])
     assert cli.main(["extract", "--model", f"replay:{answers}", "--lexicon", str(lexicon)], classify=clean) == 0
-    assert len(list((tmp_path / "claims").glob("*.yaml"))) == 1 and "claims written: 1" in capsys.readouterr().out
+    assert len(list((tmp_path / "claims" / "amygdala").glob("*.yaml"))) == 1 and "claims written: 1" in capsys.readouterr().out
+
+    # Another module's run reads only the papers its own queries found first, and writes to its own folder (ADR 0034).
+    hippocampal = {**PAPERS[1], "queries": "amygdala-tract-tracing;hippocampus-tract-tracing"}  # the amygdala's
+    monkeypatch.setattr(cli, "read_manifest", lambda: [PAPERS[0], hippocampal, {**PAPERS[2], "queries": "hippocampus-tract-tracing"}])
+    extract.TRIAGE.update([{"key": "doi:10.1/b", "verdict": "in"}, {"key": "doi:10.1/c", "verdict": "in"}])
+    (answers / f"{request_id('doi:10.1/c')}.json").write_text(extract.PaperClaims(claims=[draft("MBA:295", "MBA:536")]).model_dump_json(),
+                                                                encoding="utf-8")
+    assert cli.main(["extract", "--module", "hippocampus", "--model", f"replay:{answers}", "--lexicon", str(lexicon)],
+                    classify=clean) == 0
+    assert "1 paper(s)" in capsys.readouterr().out
+    assert [path.parent.name for path in (tmp_path / "claims").rglob("*.yaml")].count("hippocampus") == 1
+    assert cli.main(["extract", "--module", "thalamus", "--lexicon", str(lexicon)], classify=clean) == 1
+    assert "no saved query searches for the module 'thalamus'" in capsys.readouterr().out
 
 
 def test_a_mouse_claim_names_a_uberon_term_only_where_no_allen_region_fits():

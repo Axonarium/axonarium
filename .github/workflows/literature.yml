@@ -1,7 +1,7 @@
 name: Literature
 
-# The literature pipeline (ADR 0028): one step on up to `limit` papers, on the Batch API, then a literature/<step>
-# branch for review. `extract-and-verify` runs both, so the claims arrive already checked, in one pull request. Started by hand from the Actions tab on main. The key is the `models` environment's secret, which
+# The literature pipeline (ADR 0028): one step on up to `limit` papers of one module (ADR 0034), on the Batch API,
+# then a literature/<step>-<module> branch for review. `extract-and-verify` runs both, so the claims arrive already checked, in one pull request. Started by hand from the Actions tab on main. The key is the `models` environment's secret, which
 # only main may use, so pull requests never see it. A pull request opened with this workflow's token wouldn't run CI,
 # so it is opened from the branch.
 on:
@@ -12,6 +12,11 @@ on:
         type: choice
         options: [triage, extract, verify, extract-and-verify]
         default: triage
+      module:
+        description: Which module's papers, those its saved queries in corpus/queries.yaml found first; claims go to data/claims/<module>/ (ADR 0034)
+        type: choice
+        options: [amygdala, hippocampus, prefrontal]
+        default: amygdala
       limit:
         description: At most this many papers
         type: number
@@ -77,6 +82,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           STEP: ${{ inputs.step }}
+          MODULE: ${{ inputs.module }}
           LIMIT: ${{ inputs.limit }}
           MODEL: ${{ inputs.model }}
           COLLECT: ${{ inputs.collect }}
@@ -89,18 +95,18 @@ jobs:
           deadline=$(( $(date +%s) + 330 * 60 ))
           minutes_left() { echo $(( (deadline - $(date +%s)) / 60 )); }
           if [ "$STEP" != extract-and-verify ]; then
-            uv run --frozen python -m pipeline "$STEP" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${COLLECT:+--collect "$COLLECT"} ${COLLECT_FALLBACK:+--collect-fallback "$COLLECT_FALLBACK"} ${REDO:+--redo "$REDO"}
+            uv run --frozen python -m pipeline "$STEP" --module "$MODULE" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${COLLECT:+--collect "$COLLECT"} ${COLLECT_FALLBACK:+--collect-fallback "$COLLECT_FALLBACK"} ${REDO:+--redo "$REDO"}
             exit
           fi
           if [ -n "$COLLECT$COLLECT_FALLBACK" ]; then
             echo "A batch is collected by the step that sent it: choose extract or verify." >&2
             exit 1
           fi
-          uv run --frozen python -m pipeline extract --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"}
+          uv run --frozen python -m pipeline extract --module "$MODULE" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"}
           # Extraction's claims are paid for, so they are pushed whatever happens to verification: its batch may outlive
           # the job (exit 3), or it may stop, for one because another branch holds verification results not yet merged.
           status=0
-          uv run --frozen python -m pipeline verify --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"} || status=$?
+          uv run --frozen python -m pipeline verify --module "$MODULE" --limit "$LIMIT" --model "$MODEL" --wait "$(minutes_left)" ${REDO:+--redo "$REDO"} || status=$?
           if [ "$status" -eq 3 ]; then
             echo "The extracted claims are pushed unverified. Once their pull request merges, run **verify** with that batch's ID as its collect input." >> "$GITHUB_STEP_SUMMARY"
           elif [ "$status" -ne 0 ]; then
@@ -115,18 +121,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           STEP: ${{ inputs.step }}
+          MODULE: ${{ inputs.module }}
         run: |
           if [ -z "$(git status --porcelain -- corpus data)" ]; then
             echo "Nothing changed." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
-          branch="literature/${STEP}-$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}"
+          branch="literature/${STEP}-${MODULE}-$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git switch -c "$branch"
           git add corpus data
-          git commit -q -m "Literature: ${STEP} of $(date -u +%Y-%m-%d)" -m "Run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          git commit -q -m "Literature: ${STEP} (${MODULE}) of $(date -u +%Y-%m-%d)" -m "Run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           # Build on main as it is now. A new branch is compared with main, so one based on an older main seems to undo
           # whatever main changed since, and GitHub refuses this token a branch that seems to change a workflow file.
           git fetch -q "$remote" main

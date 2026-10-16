@@ -9,12 +9,33 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 CORPUS = ROOT / "corpus"
 MANIFEST = CORPUS / "manifest.csv"
+QUERIES = CORPUS / "queries.yaml"
 ALLOWLIST = ROOT / "data" / "allowlist.yaml"
 
 
 def read_manifest(path: Path = MANIFEST) -> list[dict]:
     with path.open(encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
+
+
+def read_queries(path: Path = QUERIES) -> list[dict]:
+    """The scout's saved queries, in the file's order; each names the module it searches for (ADR 0034)."""
+    return yaml.safe_load(path.read_text(encoding="utf-8"))["queries"]
+
+
+def module_of(paper: dict, queries: list[dict]) -> str | None:
+    """The module a paper is read for: that of the first saved query, in the file's order, that found it (ADR 0034).
+    None when no saved query found it, as for a query since removed."""
+    found = set(filter(None, (paper.get("queries") or "").split(";")))
+    return next((query["module"] for query in queries if query["id"] in found), None)
+
+
+def of_module(manifest: list[dict], module: str, queries: list[dict]) -> list[dict]:
+    """The papers read for one module, in manifest order."""
+    if module not in {query["module"] for query in queries}:
+        raise ValueError(f"no saved query searches for the module {module!r}; corpus/queries.yaml has "
+                         f"{', '.join(dict.fromkeys(q['module'] for q in queries))}")
+    return [paper for paper in manifest if module_of(paper, queries) == module]
 
 
 @dataclass

@@ -8,7 +8,8 @@ the prompt version, unless asked for again with --redo):
 2. it passes the hidden-text screen, and a flagged paper is never sent;
 3. the extractor drafts claims, with the region lexicon in its instructions;
 4. each draft is checked against the lexicon and the schema's rules, and kept drafts become claim files in
-   data/claims/amygdala/, status proposed (ADR 0028), citing the paper and naming the model and prompt.
+   data/claims/<module>/, the module the paper is read for (ADR 0034), status proposed (ADR 0028), citing the paper
+   and naming the model and prompt.
 
 corpus/extracted.csv records what each paper gave.
 """
@@ -38,7 +39,8 @@ from screen import Screened, screen_jats
 
 PROMPT = Path(__file__).resolve().parents[1] / "roles" / "extractor.md"
 LEDGER = Ledger(CORPUS / "extracted.csv", ("key", "outcome", "claims", "dropped", "attempts", "model", "prompt", "date"))
-CLAIMS = ROOT / "data" / "claims" / "amygdala"
+CLAIMS = ROOT / "data" / "claims"  # a folder per module (ADR 0034)
+MODULE = "amygdala"  # the module a run reads for when none is chosen
 EFFORT, MAX_TOKENS = "high", 64_000
 # Outcomes that mean a paper is done; any other (a refusal, a failed fetch) is tried again while it has tries left.
 # `unavailable`: neither Europe PMC nor PMC's open data has full text to give for it.
@@ -297,7 +299,7 @@ def extract(manifest: list[dict], run, limit: int, lexicon: Lexicon, classify, t
             ledger: Ledger | None = None, triaged: dict | None = None, claims_dir: Path | None = None,
             text: Callable | None = None, prompt: Path = PROMPT, redo: Redo = Redo()) -> dict:
     """Extract up to `limit` candidate papers with `run` (a runner from pipeline.llm). Returns a summary."""
-    today, ledger, claims_dir = today or date.today().isoformat(), ledger or LEDGER, claims_dir or CLAIMS
+    today, ledger, claims_dir = today or date.today().isoformat(), ledger or LEDGER, claims_dir or CLAIMS / MODULE
     triaged = triaged if triaged is not None else TRIAGE.read()
     prompt_id, system = system_prompt(prompt, lexicon)
     model = getattr(run, "model", "replay")

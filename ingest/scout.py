@@ -2,8 +2,9 @@
 
 Command line: `python -m ingest.scout [--queries corpus/queries.yaml] [--out corpus/manifest.csv]`.
 
-Each query in corpus/queries.yaml runs against Europe PMC, which indexes PubMed and preprint servers and says for
-each paper whether it is open access, under which licence, and whether Europe PMC holds its full text. The manifest
+Each query in corpus/queries.yaml searches for one module (ADR 0034) and runs against Europe PMC, which indexes PubMed
+and preprint servers and says for each paper whether it is open access, under which licence, and whether Europe PMC
+holds its full text. The manifest
 is one row per paper, deduplicated by DOI, PubMed ID and PubMed Central ID, sorted by key, keeping the date each
 paper was first seen so a run shows what is new. It holds identifiers and bibliographic metadata, never abstracts
 (ADR 0005).
