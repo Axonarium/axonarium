@@ -1,8 +1,9 @@
 "use client";
 
 // The 3D brain: BrainGlobe region meshes (glTF from the build), with an arc per connection from the injected region
-// of the chosen module to each target. Loaded only in the browser (components/brain/brain-view.tsx). A species
-// without meshes (the rat, until its Waxholm meshes; ADR 0034) gets the network view alone.
+// of the chosen module to each target. Loaded only in the browser (components/brain/brain-view.tsx). The rat's
+// regions are UBERON terms, drawn on the Waxholm structures that hold them (build/waxholm.py; ADR 0034); a build
+// without its meshes gives it the network view alone.
 
 import { Html, OrbitControls, QuadraticBezierLine, useGLTF } from "@react-three/drei";
 import { Canvas, type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
@@ -28,13 +29,16 @@ import {
   type Direction,
   directed,
   FIRST_MODULE,
+  fitScale,
   gapEdge,
   hubOf,
   inModule,
   linkedModule,
   linkedView,
   moduleText,
+  placedRegions,
   type Species,
+  withMeshes,
 } from "@/lib/brain";
 
 import type { NetworkFigure } from "./network";
@@ -49,6 +53,10 @@ const ALL = "all";
 // The network view loads only when chosen.
 const Network = dynamic(() => import("./network"), { ssr: false });
 const CAMERA: [number, number, number] = [19, 9, -9];
+// The rat's atlas (data/entities/atlases/waxholm-sd-rat-v4.yaml), whose meshes are CC BY-SA 4.0 (ADR 0034).
+const WAXHOLM = "the Waxholm Space rat atlas";
+const WAXHOLM_CREDIT =
+  "Waxholm Space atlas of the Sprague Dawley rat brain v4 (Kleven et al. 2023, doi:10.1038/s41592-023-02034-3), via BrainGlobe, meshes CC BY-SA 4.0";
 
 /** Moves the camera back on narrow screens, so the whole brain stays in view. */
 function FitCamera() {
@@ -117,6 +125,7 @@ function Label({ region, detail }: { region: BrainRegion; detail?: string }) {
     <Html position={region.centroid} center distanceFactor={14} zIndexRange={[20, 0]} style={{ pointerEvents: "none" }}>
       <div className="whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-xs text-white shadow">
         <span className="font-semibold">{region.acronym}</span> {region.name}
+        {region.drawn_on && <span className="block text-white/70">Drawn on: {region.drawn_on}</span>}
         {detail && <span className="block text-white/70">{detail}</span>}
       </div>
     </Html>
@@ -189,7 +198,8 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
   gaps?: BrainGap[];
   /** The folder of the atlas's meshes, or null for a species without them, which shows the network view alone. */
   base: string | null;
-  /** The regions, for a species without meshes (lib/brain.ts, namedRegions); otherwise they come with the meshes. */
+  /** The regions, for a species whose claims name UBERON terms (lib/brain.ts, namedRegions), drawn where the meshes'
+   * index places them; otherwise they come with the meshes. */
   regions?: Record<string, BrainRegion>;
   /** The modules to switch between (ADR 0034); the amygdala alone without them. */
   modules?: BrainModule[];
@@ -197,13 +207,12 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
   compact?: boolean;
 }) {
   const modules = useMemo(() => (given?.length ? given : [FIRST_MODULE]), [given]);
-  const meshes = base !== null;
   const [index, setIndex] = useState<BrainIndex | "missing" | null>(null);
   const [source, setSource] = useState<string>(ALL);
   const [threshold, setThreshold] = useState(0.05);
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [view, setView] = useState<"3d" | "network">(meshes ? "3d" : "network");
+  const [chosenView, setView] = useState<"3d" | "network">("3d");
   const [direction, setDirection] = useState<Direction>("outputs");
   // Gap mode (ADR 0027): untested outputs instead of connections; always outputs. It stays chosen across modules, and
   // applies in those with gaps.
@@ -229,12 +238,18 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
   });
 
   useEffect(() => {
+    // Named regions without meshes (a build without them, or a species they don't exist for) make the network view.
+    const flat: BrainIndex = { atlas: species, root: "", regions: named ?? {} };
     const load: Promise<BrainIndex | "missing"> =
       base === null
-        ? Promise.resolve({ atlas: species, root: "", regions: named ?? {} })
+        ? Promise.resolve(flat)
         : fetch(`${base}/index.json`)
             // An unread body keeps the request open, so a missing index's body is cancelled.
-            .then((response) => (response.ok ? response.json() : response.body?.cancel().then(() => "missing" as const) ?? "missing"));
+            .then((response) => (response.ok ? response.json() : response.body?.cancel().then(() => "missing" as const) ?? "missing"))
+            .catch(() => "missing" as const)
+            .then((found: BrainIndex | "missing") =>
+              !named ? found : found === "missing" ? flat : { ...found, regions: placedRegions(named, found.regions) },
+            );
     load.then(
       (found) => {
         setIndex(found);
@@ -257,8 +272,13 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
     );
   }, [base, species, named, modules, asked, edges, linked, linkedRoute]);
 
-  const regions = useMemo<Record<string, BrainRegion>>(() => (index && index !== "missing" ? index.regions : {}), [index]);
   const loaded = index !== null && index !== "missing" ? index : null; // the index of regions, once loaded
+  const solid = loaded !== null && loaded.root !== ""; // there are meshes to draw
+  const view = solid ? chosenView : "network";
+  // Every region, for the network view; the 3D view draws those with a mesh (all of the mouse's, most of the rat's).
+  const all = useMemo<Record<string, BrainRegion>>(() => loaded?.regions ?? {}, [loaded]);
+  const regions = useMemo(() => (view === "3d" ? withMeshes(all) : all), [view, all]);
+  const scale = fitScale(loaded?.extent); // the rat's brain is shrunk to the mouse's frame
   // `sources` are the module's regions at the module's end of the chosen direction's connections, or in gap mode
   // the module's untested regions with gaps.
   const drawable = useMemo(() => directed(edges, regions, direction, module), [edges, regions, direction, module]);
@@ -274,11 +294,22 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
     for (const edge of pool) counts.set(hubOf(edge, direction), (counts.get(hubOf(edge, direction)) ?? 0) + 1);
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([id]) => id);
   }, [pool, direction]);
-  // One colour per region of the module, the same in both directions.
+  // One colour per region of the module, the same in both directions and both views.
   const colors = useMemo(() => {
-    const ids = Object.keys(regions).filter((id) => inModule(regions[id], module)).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+    const ids = Object.keys(all).filter((id) => inModule(all[id], module)).sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
     return Object.fromEntries(ids.map((id, i) => [id, PALETTE[i % PALETTE.length]]));
-  }, [regions, module]);
+  }, [all, module]);
+  // The connections the 3D view leaves out, as they name a region without a mesh of its own (the rat's, at times).
+  const unplaced = useMemo(
+    () => (view === "3d" && !gapMode ? directed(edges, all, direction, module).length - drawable.length : 0),
+    [view, gapMode, edges, all, direction, module, drawable],
+  );
+  // The module's regions drawn in 3D, one mesh per structure: several of the rat's regions can share one.
+  const sourceMeshes = useMemo(() => {
+    const files = new Map<string, string[]>();
+    for (const id of sources) files.set(regions[id].file, [...(files.get(regions[id].file) ?? []), id]);
+    return [...files.entries()];
+  }, [sources, regions]);
   // Only some connections state a density (Allen's do; papers' rarely), so the minimum is offered only when one does.
   const densities = pool.some((e) => e.density !== null);
   const shown = useMemo(
@@ -355,13 +386,13 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
     const papers = (hops ?? (gapMode ? [] : shown)).reduce((n, edge) => n + edge.papers, 0);
     const fromPapers = papers ? `; ${papers} claim${papers === 1 ? "" : "s"} drafted from published papers, each cited at https://axonarium.com` : "";
     const page = `https://axonarium.com${species === "mouse" ? "/brain" : "/brain/rat"}`;
-    const caption = meshes
+    const caption = species === "mouse"
       ? [
           `Data: Allen Mouse Brain Connectivity Atlas (Oh et al. 2014, doi:10.1038/nature13186), © Allen Institute${fromPapers}; region names and meshes: Allen Institute atlases, via BrainGlobe.`,
           `Figure: Axonarium, ${page}, ${date}. Width: the strongest projection density; dashed: only proposed claims.`,
         ]
       : [
-          `Data: ${papers} claim${papers === 1 ? "" : "s"} drafted from published ${species} papers, each cited at https://axonarium.com; regions: UBERON terms, named by UBERON and the Allen Institute's atlases.`,
+          `Data: ${papers} claim${papers === 1 ? "" : "s"} drafted from published ${species} papers, each cited at https://axonarium.com; regions: UBERON terms, named by UBERON and the Allen Institute's atlases${view === "3d" ? `; drawn on the ${WAXHOLM_CREDIT}` : ""}.`,
           `Figure: Axonarium, ${page}, ${date}. Dashed: only proposed claims.`,
         ];
     if (hops) {
@@ -432,9 +463,9 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
     </div>
   );
 
-  // Atlas regions have pages; the UBERON terms a species without meshes is drawn by don't.
+  // Atlas regions have pages; the UBERON terms the rat's claims name don't.
   const regionLink = (id: string, children: ReactNode, className: string) =>
-    meshes ? (
+    !named ? (
       <Link href={regionHref(id)} className={className}>
         {children}
       </Link>
@@ -454,7 +485,7 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
             Explore in 3D →
           </Link>
         )}
-        {!compact && loaded && meshes && (
+        {!compact && solid && (
           <div role="group" aria-label="View" className="absolute top-3 left-3 z-10 flex rounded-full bg-white/10 p-0.5 text-xs backdrop-blur">
             {(["3d", "network"] as const).map((v) => (
               <button
@@ -483,7 +514,7 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
             register={registerNetwork}
           />
         )}
-        {loaded && meshes && view === "3d" && (
+        {loaded && view === "3d" && (
           <Canvas
             camera={{ position: CAMERA, fov: 35, near: 0.1, far: 200 }}
             dpr={[1, 2]}
@@ -499,21 +530,25 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
             <directionalLight position={[10, 15, -5]} intensity={1.6} />
             <directionalLight position={[-10, -5, 10]} intensity={0.5} />
             <Turn>
+            <group scale={scale}>
             <Suspense fallback={null}>
               <RegionMesh url={`${base}/${loaded.root}`} color="#9fb3d1" opacity={0.08} />
             </Suspense>
-            {sources.map((id) => (
-              <Suspense key={id} fallback={null}>
-                <RegionMesh
-                  url={`${base}/${regions[id].file}`}
-                  color={colors[id]}
-                  opacity={routing ? (stops.includes(id) ? 0.95 : 0.15) : source === ALL || source === id ? 0.95 : 0.25}
-                  onClick={() => setSource(source === id ? ALL : id)}
-                  onHover={(over) => setHovered(over ? id : null)}
-                />
-              </Suspense>
-            ))}
-            {selected && !sources.includes(selected) && regions[selected] && (
+            {sourceMeshes.map(([file, ids]) => {
+              const id = ids.includes(source) ? source : ids[0]; // the chosen region, or the first, names a shared mesh
+              return (
+                <Suspense key={file} fallback={null}>
+                  <RegionMesh
+                    url={`${base}/${file}`}
+                    color={colors[id]}
+                    opacity={routing ? (ids.some((i) => stops.includes(i)) ? 0.95 : 0.15) : source === ALL || source === id ? 0.95 : 0.25}
+                    onClick={() => setSource(source === id ? ALL : id)}
+                    onHover={(over) => setHovered(over ? id : null)}
+                  />
+                </Suspense>
+              );
+            })}
+            {selected && regions[selected] && !sourceMeshes.some(([file]) => file === regions[selected].file) && (
               <Suspense fallback={null}>
                 <RegionMesh url={`${base}/${regions[selected].file}`} color="#e2e8f0" opacity={0.35} />
               </Suspense>
@@ -532,8 +567,8 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
                   color={routing ? ROUTE_COLOR : colors[hubOf(edge, direction)]}
                   lineWidth={routing ? (latest ? 4.5 : 3) : arcWidth(edge.density, strongest)}
                   dashed={edge.accepted === 0}
-                  dashSize={0.25}
-                  gapSize={0.15}
+                  dashSize={0.25 / scale}
+                  gapSize={0.15 / scale}
                   transparent
                   opacity={dim ? 0.08 : routing && !latest ? 0.7 : 0.85}
                 />
@@ -547,7 +582,7 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
                 onPointerOver={(event) => (event.stopPropagation(), setHovered(id))}
                 onPointerOut={() => setHovered(null)}
               >
-                <sphereGeometry args={[focus === id ? 0.16 : 0.1, 16, 16]} />
+                <sphereGeometry args={[(focus === id ? 0.16 : 0.1) / scale, 16, 16]} />
                 <meshBasicMaterial color={routing ? ROUTE_COLOR : source === ALL ? "#e2e8f0" : colors[source]} />
               </mesh>
             ))}
@@ -564,6 +599,7 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
                 />
               )}
             </WhenConnected>
+            </group>
             </Turn>
             {!compact && (
               <OrbitControls
@@ -732,7 +768,14 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
           </p>
         </div>
 
-        {!gapMode && meshes && (
+        {unplaced > 0 && (
+          <p className="text-xs text-muted-foreground">
+            {unplaced} more connection{unplaced === 1 ? "" : "s"} name{unplaced === 1 ? "s" : ""} a region the atlas has no
+            structure for, so {unplaced === 1 ? "it is" : "they are"} in the network view only.
+          </p>
+        )}
+
+        {!gapMode && species === "mouse" && (
           <p className="text-xs text-muted-foreground">
             Outputs come from tracer injected into {moduleText(current)}; inputs from injections elsewhere that label it.
             Arc width: the strongest projection density among a connection&apos;s claims; connections that state no
@@ -742,13 +785,20 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
             3D arcs are drawn on the right, where Allen injects. Drag to turn or move, scroll to zoom, click a region or a row.
           </p>
         )}
-        {!meshes && (
+        {species !== "mouse" && (
           <p className="text-xs text-muted-foreground">
             {species === "rat" ? "Rat" : "These"} connections come from published papers. AI models drafted their claims
             and people haven&apos;t audited them yet, so every link is dashed. Papers name regions at many levels, so
             regions are UBERON terms: a whole structure in one claim, one of its nuclei in another. Outputs are
-            connections from a region of {moduleText(current)}; inputs come into one from outside it. The 3D view comes
-            when the {species}&apos;s atlas meshes do.
+            connections from a region of {moduleText(current)}; inputs come into one from outside it.
+            {solid && (
+              <>
+                {" "}
+                In 3D, each region is drawn on the structure of {WAXHOLM} that holds it, which can be larger: the atlas
+                outlines the amygdala as one area, so all its nuclei share that area and the arcs between them
+                don&apos;t show. Hover a region to see what draws it. Drag to turn or move, scroll to zoom.
+              </>
+            )}
           </p>
         )}
       </aside>

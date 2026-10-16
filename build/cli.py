@@ -4,14 +4,16 @@ import argparse
 import os
 from pathlib import Path
 
-from build import connectivity, gaps, meshes, reconcile
+from build import connectivity, gaps, meshes, reconcile, waxholm
 from build import regions as atlas_regions
 from build.database import LoadFailed, load
 from build.dumps import write_dumps, write_snapshot
 from build.tables import rows
 from checks.cli import run_files
 from checks.loading import load_tree
+from ingest import atlases as atlas_source
 from ingest import modules as module_list
+from ingest.atlases import AMYGDALA_ROOT
 from ingest.network import loaders
 
 
@@ -69,6 +71,7 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
     tables = rows(records)
     modules = module_list.modules_of(records)  # data/modules.yaml (ADR 0034)
     loaded: dict[str, list[dict]] = {}
+    terms: dict[str, dict[str, str]] = {}
     module_terms: dict[str, list[str]] = {}
     module_labels: dict[str, dict[str, str]] = {}
     atlases = [r.data for r in records if r.cls == "Atlas" and r.data.get("brainglobe_name")]
@@ -130,6 +133,34 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
                 print(f"mesh export failed for {atlas_id}: {error}; build stopped")
                 return 1
             print(f"meshes: {len(index['regions'])} region(s) of {atlas_id} in {args.meshes / atlas_id}")
+        rat = next((a for a in atlases if a["id"] == waxholm.ATLAS), None)
+        named = waxholm.rat_terms(records)
+        if rat and named:  # rat claims name UBERON terms, drawn on Waxholm's structures (ADR 0034)
+            try:
+                bridge = waxholm.read_bridge()
+                found = terms_loader([row["term"] for row in bridge])
+                opened = (mesh_opener or atlas_source._open_brainglobe)(rat["brainglobe_name"],
+                                                                        str(rat["extra"]["brainglobe.atlas_version"]))
+                problems = waxholm.problems(bridge, opened.structures, found)
+                for line in problems or waxholm.relabelled(bridge, found):
+                    print(line)
+                if problems:
+                    print(f"build stopped: {len(problems)} problem(s) in the Waxholm bridge above; nothing was written")
+                    return 1
+                placed = waxholm.resolve(sorted(named), bridge, found)
+                index = meshes.export_atlas(
+                    rat, sorted(placed), args.meshes, open_atlas=lambda name, version: opened,
+                    amygdala=set(terms.get(AMYGDALA_ROOT, {})),
+                    modules={term: [m for m, members in module_terms.items() if term in members] for term in placed},
+                    drawn_on={term: row["structure"] for term, row in placed.items()},
+                    labels={term: label for under in found.values() for term, label in under.items()})
+            except Exception as error:  # BrainGlobe, OLS or a pin: the rat's brain would lack its regions.
+                print(f"mesh export failed for {waxholm.ATLAS}: {error}; build stopped")
+                return 1
+            left = sorted(set(named) - set(index["regions"]), key=lambda term: (-named[term], term))  # most named first
+            shown = ", ".join(left[:10]) + (f" and {len(left) - 10} more" if len(left) > 10 else "")
+            print(f"meshes: {len(index['regions'])} of {len(named)} rat region(s) drawn on {waxholm.ATLAS} in "
+                  f"{args.meshes / waxholm.ATLAS}" + (f"; in the network view only: {shown}" if left else ""))
     # Dumps hold the files' records only: atlas regions, Allen claims and the gaps they suggest stay out (ADR 0005).
     write_dumps(records, tables, args.out)
     if args.report:
@@ -145,10 +176,6 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
         except LoadFailed as error:
             print(error)
             return 1
-    for row in loaded.get("allen-mouse-ccf-2017", []):  # TEMPORARY: Allen's UBERON mappings, to write the bridge
-        if row["uberon"]:
-            print("MBA", row["id"], "|", row["acronym"], "|", row["name"], "|", row["uberon"], "|", row["uberon_label"])
     summary = ", ".join(f"{len(table)} {name}" for name, table in tables.items())
     print(f"built {args.out}: {summary}" + ("; loaded the database" if url else ""))
     return 0
-

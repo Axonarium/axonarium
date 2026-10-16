@@ -1,0 +1,144 @@
+# The bridge from UBERON to the Waxholm rat atlas (ADR 0034, "Rat in 3D"; build/waxholm.py). UBERON's own bridges
+# cover the Allen atlases but not Waxholm, so this one is kept by hand and reviewed like the modules.
+#
+# Each row pairs a structure of the pinned Waxholm atlas (data/entities/atlases/waxholm-sd-rat-v4.yaml, by its
+# BrainGlobe ID) with the UBERON term for it, and UBERON's label for the term. The file holds IDs only, no Waxholm
+# names; the build reads those from the atlas. A UBERON term that rat claims name is drawn on the structure of the
+# most specific row whose term it is or falls under, so a nucleus Waxholm doesn't delineate takes the structure
+# around it: the amygdala's nuclei share Waxholm's one amygdaloid area. A structure may draw several terms.
+#
+# The build stops if a row names a structure the atlas lacks or a term OLS doesn't know, or lists a term twice, and
+# warns if UBERON has relabelled a term.
+bridge:
+  # Telencephalon: olfactory regions
+  - {structure: 1020, term: UBERON:0002264, label: olfactory bulb}
+  - {structure: 502, term: UBERON:0002893, label: nucleus of lateral olfactory tract}
+  - {structure: 506, term: UBERON:0002266, label: anterior olfactory nucleus}
+  # Cerebral cortex, and the hippocampal formation
+  - {structure: 1015, term: UBERON:0000956, label: cerebral cortex}
+  - {structure: 1021, term: UBERON:0002421, label: hippocampal formation}
+  - {structure: 99, term: UBERON:8440013, label: fasciola cinerea}
+  - {structure: 100, term: UBERON:0002191, label: subiculum}
+  - {structure: 1022, term: UBERON:0001954, label: Ammon's horn}
+  - {structure: 98, term: UBERON:0003881, label: CA1 field of hippocampus}
+  - {structure: 97, term: UBERON:0003882, label: CA2 field of hippocampus}
+  - {structure: 95, term: UBERON:0003883, label: CA3 field of hippocampus}
+  - {structure: 96, term: UBERON:0001885, label: dentate gyrus of hippocampal formation}
+  - {structure: 108, term: UBERON:0035890, label: postrhinal area}
+  - {structure: 109, term: UBERON:0001953, label: presubiculum}
+  - {structure: 110, term: UBERON:0004683, label: parasubiculum}
+  - {structure: 1024, term: UBERON:0006083, label: perirhinal cortex}
+  - {structure: 1025, term: UBERON:0002728, label: entorhinal cortex}
+  - {structure: 114, term: UBERON:0007224, label: medial entorhinal cortex}
+  - {structure: 115, term: UBERON:0007225, label: lateral entorhinal cortex}
+  - {structure: 1056, term: UBERON:0004725, label: piriform cortex}
+  # Cingulate, insular and frontal cortex
+  - {structure: 1018, term: UBERON:0009835, label: anterior cingulate cortex}
+  - {structure: 1058, term: UBERON:0013531, label: retrosplenial region}
+  - {structure: 1059, term: UBERON:0002022, label: insula}
+  - {structure: 1060, term: UBERON:0034893, label: agranular insular cortex}
+  - {structure: 1062, term: UBERON:0004167, label: orbitofrontal cortex}
+  - {structure: 1063, term: UBERON:4450000, label: medial prefrontal cortex}
+  - {structure: 405, term: UBERON:8440032, label: prelimbic area}
+  - {structure: 413, term: UBERON:8440033, label: infralimbic area}
+  - {structure: 1064, term: UBERON:8440076, label: somatomotor area}
+  - {structure: 408, term: UBERON:0001384, label: primary motor cortex}
+  - {structure: 406, term: UBERON:0016634, label: premotor cortex}
+  # Parietal, occipital and temporal cortex
+  - {structure: 1066, term: UBERON:0008930, label: somatosensory cortex}
+  - {structure: 1067, term: UBERON:0008933, label: primary somatosensory cortex}
+  - {structure: 425, term: UBERON:0010415, label: barrel cortex}
+  - {structure: 422, term: UBERON:0008934, label: secondary somatosensory cortex}
+  - {structure: 1068, term: UBERON:0035886, label: posterior parietal association areas}
+  - {structure: 1070, term: UBERON:0000411, label: visual cortex}
+  - {structure: 442, term: UBERON:0002436, label: primary visual cortex}
+  - {structure: 444, term: UBERON:0035013, label: temporal cortex association area}
+  - {structure: 1019, term: UBERON:0001393, label: auditory cortex}
+  - {structure: 152, term: UBERON:0035885, label: dorsal auditory area}
+  # Non-laminated pallium: claustrum, endopiriform nucleus, amygdala
+  - {structure: 412, term: UBERON:0002023, label: claustrum of brain}
+  - {structure: 500, term: UBERON:0014284, label: endopiriform nucleus}
+  - {structure: 501, term: UBERON:0001876, label: amygdala}
+  # Subpallium: striatum, pallidum, basal forebrain, septum
+  - {structure: 1076, term: UBERON:0002435, label: striatum}
+  - {structure: 197, term: UBERON:0005383, label: caudate-putamen}
+  - {structure: 1077, term: UBERON:0001882, label: nucleus accumbens}
+  - {structure: 199, term: UBERON:0005403, label: ventral striatum}
+  - {structure: 1028, term: UBERON:0006514, label: pallidum}
+  - {structure: 1078, term: UBERON:0002476, label: lateral globus pallidus}
+  - {structure: 193, term: UBERON:0002778, label: ventral pallidum}
+  - {structure: 82, term: UBERON:0003017, label: substantia innominata}
+  - {structure: 82, term: UBERON:0001879, label: nucleus of diagonal band}
+  - {structure: 93, term: UBERON:0001880, label: bed nucleus of stria terminalis}
+  - {structure: 40, term: UBERON:0002663, label: septal nuclear complex}
+  - {structure: 3, term: UBERON:0001906, label: subthalamic nucleus}
+  # Diencephalon: prethalamus, epithalamus, thalamus
+  - {structure: 1080, term: UBERON:0001894, label: diencephalon}
+  - {structure: 1033, term: UBERON:0001903, label: thalamic reticular nucleus}
+  - {structure: 1082, term: UBERON:0001907, label: zona incerta}
+  - {structure: 204, term: UBERON:0002480, label: ventral lateral geniculate nucleus}
+  - {structure: 272, term: UBERON:0035975, label: intergeniculate leaflet of the lateral geniculate complex}
+  - {structure: 1083, term: UBERON:0001899, label: epithalamus}
+  - {structure: 206, term: UBERON:0001941, label: lateral habenular nucleus}
+  - {structure: 207, term: UBERON:0001942, label: medial habenular nucleus}
+  - {structure: 1084, term: UBERON:0001897, label: dorsal plus ventral thalamus}
+  - {structure: 1085, term: UBERON:0002788, label: anterior nuclear group}
+  - {structure: 213, term: UBERON:0002679, label: anterodorsal nucleus of thalamus}
+  - {structure: 1086, term: UBERON:0002685, label: anteroventral nucleus of thalamus}
+  - {structure: 254, term: UBERON:0002681, label: anteromedial nucleus of thalamus}
+  - {structure: 242, term: UBERON:0001920, label: paraventricular nucleus of thalamus}
+  - {structure: 211, term: UBERON:0002992, label: paratenial nucleus}
+  - {structure: 278, term: UBERON:0016641, label: subparafascicular nucleus}
+  - {structure: 216, term: UBERON:0002955, label: rhomboidal nucleus}
+  - {structure: 219, term: UBERON:0001921, label: reuniens nucleus}
+  - {structure: 1089, term: UBERON:0002739, label: medial dorsal nucleus of thalamus}
+  - {structure: 1090, term: UBERON:0002776, label: ventral nuclear group}
+  - {structure: 221, term: UBERON:0002614, label: ventral medial nucleus of thalamus}
+  - {structure: 1091, term: UBERON:0002596, label: ventral posterior nucleus of thalamus}
+  - {structure: 227, term: UBERON:0002945, label: ventral posteromedial nucleus of thalamus}
+  - {structure: 294, term: UBERON:0002942, label: ventral posterolateral nucleus}
+  - {structure: 266, term: UBERON:0003018, label: parvocellular part of ventral posteromedial nucleus}
+  - {structure: 222, term: UBERON:0003031, label: submedial nucleus of thalamus}
+  - {structure: 1092, term: UBERON:0002733, label: intralaminar nuclear group}
+  - {structure: 246, term: UBERON:0001924, label: paracentral nucleus}
+  - {structure: 247, term: UBERON:0001923, label: central medial nucleus}
+  - {structure: 248, term: UBERON:0003036, label: central lateral nucleus}
+  - {structure: 267, term: UBERON:0001922, label: parafascicular nucleus}
+  - {structure: 1093, term: UBERON:0002709, label: posterior nuclear complex of thalamus}
+  - {structure: 1094, term: UBERON:0002983, label: lateral posterior nucleus of thalamus}
+  - {structure: 1095, term: UBERON:0002984, label: lateral dorsal nucleus}
+  - {structure: 205, term: UBERON:0002479, label: dorsal lateral geniculate nucleus}
+  - {structure: 1032, term: UBERON:0001927, label: medial geniculate body}
+  - {structure: 298, term: UBERON:0002985, label: ventral nucleus of medial geniculate body}
+  - {structure: 295, term: UBERON:0002758, label: dorsal nucleus of medial geniculate body}
+  - {structure: 297, term: UBERON:0002759, label: magnocellular nucleus of medial geniculate body}
+  # Diencephalon: hypothalamus and pretectum
+  - {structure: 48, term: UBERON:0001898, label: hypothalamus}
+  - {structure: 94, term: UBERON:0001944, label: pretectal region}
+  # Midbrain
+  - {structure: 1035, term: UBERON:0001891, label: midbrain}
+  - {structure: 1037, term: UBERON:0001946, label: inferior colliculus}
+  - {structure: 142, term: UBERON:0002577, label: pericentral nucleus of inferior colliculus}
+  - {structure: 143, term: UBERON:0002563, label: central nucleus of inferior colliculus}
+  - {structure: 145, term: UBERON:0002571, label: external nucleus of inferior colliculus}
+  - {structure: 1038, term: UBERON:0001945, label: superior colliculus}
+  - {structure: 1098, term: UBERON:0002038, label: substantia nigra}
+  - {structure: 187, term: UBERON:0001966, label: substantia nigra pars reticulata}
+  - {structure: 188, term: UBERON:0001965, label: substantia nigra pars compacta}
+  - {structure: 196, term: UBERON:0002691, label: ventral tegmental area}
+  - {structure: 201, term: UBERON:0002144, label: peripeduncular nucleus}
+  - {structure: 71, term: UBERON:0002145, label: interpeduncular nucleus}
+  - {structure: 51, term: UBERON:0003040, label: central gray substance of midbrain}
+  - {structure: 47, term: UBERON:0002298, label: brainstem}
+  # Hindbrain
+  - {structure: 58, term: UBERON:0002151, label: pontine nuclear group}
+  - {structure: 1047, term: UBERON:0002037, label: cerebellum}
+  - {structure: 1101, term: UBERON:0001896, label: medulla oblongata}
+  - {structure: 1043, term: UBERON:0002828, label: ventral cochlear nucleus}
+  - {structure: 1044, term: UBERON:0002829, label: dorsal cochlear nucleus}
+  - {structure: 1045, term: UBERON:0002128, label: superior olivary complex}
+  - {structure: 131, term: UBERON:0007633, label: nucleus of trapezoid body}
+  - {structure: 133, term: UBERON:0002782, label: medial superior olivary nucleus}
+  - {structure: 134, term: UBERON:0002779, label: lateral superior olivary nucleus}
+  - {structure: 1046, term: UBERON:0006840, label: nucleus of lateral lemniscus}
+  - {structure: 74, term: UBERON:0002127, label: inferior olivary complex}

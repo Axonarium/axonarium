@@ -7,6 +7,8 @@ import {
   brainGaps,
   byDensity,
   directed,
+  fitScale,
+  FRAMED,
   gapEdge,
   hubOf,
   inModule,
@@ -15,6 +17,8 @@ import {
   moduleText,
   namedRegions,
   networkData,
+  placedRegions,
+  withMeshes,
 } from "./brain";
 
 const edge = (id: string, subject: string, object: string) => ({ id, subject_id: subject, object_id: object });
@@ -176,6 +180,40 @@ describe("modules", () => {
       "UBERON:0002421": { acronym: "hippocampal formation", name: "hippocampal formation", file: "", centroid: [0, 0, 0], modules: ["hippocampus"] },
       "UBERON:0001945": { acronym: "UBERON:0001945", name: "UBERON:0001945", file: "", centroid: [0, 0, 0], modules: [] },
     });
+  });
+});
+
+describe("the rat in 3D", () => {
+  const named = {
+    "UBERON:0002886": { acronym: "LA", name: "lateral amygdaloid nucleus", file: "", centroid: [0, 0, 0] as [number, number, number], modules: ["amygdala"] },
+    "UBERON:0001898": { acronym: "HY", name: "hypothalamus", file: "", centroid: [0, 0, 0] as [number, number, number], modules: [] },
+  };
+  const index = {
+    "UBERON:0002886": {
+      acronym: "lateral amygdaloid nucleus",
+      name: "lateral amygdaloid nucleus",
+      file: "501.glb",
+      centroid: [3, -2, 1] as [number, number, number],
+      modules: ["amygdala"],
+      drawn_on: "Amygdaloid area, unspecified",
+    },
+  };
+
+  it("draws a named region on the structure the index gives it, keeping the site's name for it", () => {
+    expect(placedRegions(named, index)).toEqual({
+      "UBERON:0002886": { ...named["UBERON:0002886"], file: "501.glb", centroid: [3, -2, 1], drawn_on: "Amygdaloid area, unspecified" },
+      "UBERON:0001898": named["UBERON:0001898"],
+    });
+  });
+
+  it("leaves the regions without a mesh out of the 3D view", () => {
+    expect(Object.keys(withMeshes(placedRegions(named, index)))).toEqual(["UBERON:0002886"]);
+  });
+
+  it("shrinks only a brain longer than the frame", () => {
+    expect(fitScale(39.3)).toBeCloseTo(FRAMED / 39.3);
+    expect(fitScale(11.4)).toBe(1);
+    expect(fitScale(undefined)).toBe(1);
   });
 });
 

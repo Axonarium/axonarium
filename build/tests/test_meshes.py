@@ -88,6 +88,38 @@ def test_export_atlas_writes_meshes_and_index(tmp_path):
     assert len(loaded.faces) == 12 and loaded.volume == pytest.approx(1.0)
 
 
+def test_export_atlas_mirrors_an_atlas_whose_root_winds_inwards(tmp_path):
+    # Waxholm's third axis runs right->left in BrainGlobe: the same rotation turns its faces inwards.
+    points, faces = cube(CENTER, 8000)
+    inwards = (points, faces[:, ::-1])
+    region = cube(CENTER + [0, 0, 2000])
+    atlas = FakeAtlas({"root": inwards, 295: (region[0], region[1][:, ::-1])})
+    index = export_atlas(ATLAS, ["MBA:295"], tmp_path, open_atlas=lambda name, version: atlas)
+    folder = tmp_path / "allen-mouse-ccf-2017"
+    assert trimesh.load(folder / "root.glb", force="mesh").volume == pytest.approx(512.0)  # 8³ mm³, outwards again
+    assert trimesh.load(folder / "295.glb", force="mesh").volume == pytest.approx(1.0)
+    assert index["regions"]["MBA:295"]["centroid"] == pytest.approx([-2, 0, 0])  # mirrored: now on the left
+    assert index["extent"] == 8.0
+
+
+def test_export_atlas_draws_regions_on_another_atlas_structures(tmp_path):
+    atlas = FakeAtlas({"root": cube(CENTER, 8000), 501: cube(CENTER + [500, 2000, 2000]), 98: None})
+    index = export_atlas(ATLAS, ["UBERON:0002883", "UBERON:0002887", "UBERON:0003881"], tmp_path,
+                         open_atlas=lambda name, version: atlas, amygdala={"UBERON:0002883", "UBERON:0002887"},
+                         modules={"UBERON:0002887": ["amygdala"]},
+                         drawn_on={"UBERON:0002883": 501, "UBERON:0002887": 501, "UBERON:0003881": 98},
+                         labels={"UBERON:0002883": "central amygdaloid nucleus",
+                                 "UBERON:0002887": "basal amygdaloid nucleus"})
+    folder = tmp_path / "allen-mouse-ccf-2017"
+    assert sorted(p.name for p in folder.glob("*.glb")) == ["501.glb", "root.glb"]  # one mesh for both nuclei
+    assert list(index["regions"]) == ["UBERON:0002883", "UBERON:0002887"]  # CA1's structure has no mesh
+    basal = index["regions"]["UBERON:0002887"]
+    assert basal["file"] == "501.glb" and basal["drawn_on"] == "Structure 501"
+    assert basal["acronym"] == basal["name"] == "basal amygdaloid nucleus"
+    assert basal["amygdala"] and basal["modules"] == ["amygdala"]
+    assert index["regions"]["UBERON:0002883"]["centroid"] == basal["centroid"]
+
+
 def test_export_atlas_checks_the_pin(tmp_path):
     atlas = FakeAtlas({"root": cube(CENTER)}, version="3.0")
     with pytest.raises(ValueError, match="pins"):
