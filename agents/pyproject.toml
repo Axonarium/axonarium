@@ -6,13 +6,13 @@ name = "axonarium-agents"
 version = "0.0.0"
 requires-python = ">=3.13,<3.14"
 dependencies = [
-    "anthropic==1.11.0",
+    "anthropic==1.12.1",
     "huggingface-hub==1.33.0",
-    "onnxruntime==1.30.0",
-    "openai==3.24.0",
-    "pydantic==2.13.5",
+    "onnxruntime==1.31.0",
+    "openai==3.26.1",
+    "pydantic==2.14.0",
     "pyyaml==6.0.3",
-    "tokenizers==0.23.2",
+    "tokenizers==0.23.3",
 ]
 
 [dependency-groups]
