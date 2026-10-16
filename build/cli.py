@@ -145,45 +145,10 @@ def main(argv: list[str] | None = None, atlas_loader=None, terms_loader=None, co
         except LoadFailed as error:
             print(error)
             return 1
-    _waxholm_survey(records)  # TEMPORARY: lists Waxholm's structures and the rat claims' terms, to write the bridge
+    for row in loaded.get("allen-mouse-ccf-2017", []):  # TEMPORARY: Allen's UBERON mappings, to write the bridge
+        if row["uberon"]:
+            print("MBA", row["id"], "|", row["acronym"], "|", row["name"], "|", row["uberon"], "|", row["uberon_label"])
     summary = ", ".join(f"{len(table)} {name}" for name, table in tables.items())
     print(f"built {args.out}: {summary}" + ("; loaded the database" if url else ""))
     return 0
 
-
-def _waxholm_survey(records) -> None:  # TEMPORARY
-    from collections import Counter
-
-    import requests
-
-    from ingest.atlases import OLS_TERM, UBERON, _open_brainglobe
-
-    atlas = next(r.data for r in records if r.cls == "Atlas" and r.data["id"] == "waxholm-sd-rat-v4")
-    wax = _open_brainglobe(atlas["brainglobe_name"], str(atlas["extra"]["brainglobe.atlas_version"]))
-    print("WHS-META", wax.metadata, "shape_um", wax.shape_um)
-    from build.meshes import _triangles, convert
-    root = convert(*_triangles(wax.mesh_from_structure("root")), wax.shape_um, 20000)
-    print("WHS-ROOT volume", root.volume, "bounds", root.bounds.tolist(), "watertight", root.is_watertight)
-    for s in wax.structures.values():
-        try:
-            has = wax.meshfile_from_structure(s["id"]).exists()
-        except Exception:
-            has = False
-        print("WHS", s["id"], "|", s["acronym"], "|", s["name"], "|", "/".join(map(str, s["structure_id_path"])), "|",
-              "mesh" if has else "nomesh")
-    counts = Counter()
-    for r in records:
-        if r.cls == "ConnectivityClaim" and r.data.get("species") == "NCBITaxon:10116":
-            for end in (r.data["subject"], r.data["object"]):
-                if end.get("type") == "region":
-                    counts[end["id"]] += 1
-    for term, n in counts.most_common():
-        label = "?"
-        if term.startswith("UBERON:"):
-            from urllib.parse import quote
-            iri = quote(quote(UBERON + term.split(":")[1], safe=""), safe="")
-            try:
-                label = requests.get(OLS_TERM.format(iri=iri), timeout=30).json().get("label")
-            except Exception as error:
-                label = f"? {error}"
-        print("RAT", term, "|", n, "|", label)
