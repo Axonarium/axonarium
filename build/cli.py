@@ -160,7 +160,10 @@ def _waxholm_survey(records) -> None:  # TEMPORARY
 
     atlas = next(r.data for r in records if r.cls == "Atlas" and r.data["id"] == "waxholm-sd-rat-v4")
     wax = _open_brainglobe(atlas["brainglobe_name"], str(atlas["extra"]["brainglobe.atlas_version"]))
-    print("WHS-META", wax.metadata)
+    print("WHS-META", wax.metadata, "shape_um", wax.shape_um)
+    from build.meshes import _triangles, convert
+    root = convert(*_triangles(wax.mesh_from_structure("root")), wax.shape_um, 20000)
+    print("WHS-ROOT volume", root.volume, "bounds", root.bounds.tolist(), "watertight", root.is_watertight)
     for s in wax.structures.values():
         try:
             has = wax.meshfile_from_structure(s["id"]).exists()
