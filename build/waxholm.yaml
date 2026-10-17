@@ -93,7 +93,8 @@ bridge:
   - {structure: 219, term: UBERON:0001921, label: reuniens nucleus}
   - {structure: 1089, term: UBERON:0002739, label: medial dorsal nucleus of thalamus}
   - {structure: 1090, term: UBERON:0002776, label: ventral nuclear group}
-  - {structure: 221, term: UBERON:0002614, label: ventral medial nucleus of thalamus}
+  # UBERON:0002614 is also "ventral medial nucleus of thalamus", as Allen's bridge uses it for VM.
+  - {structure: 221, term: UBERON:0002614, label: medial part of ventral lateral nucleus}
   - {structure: 1091, term: UBERON:0002596, label: ventral posterior nucleus of thalamus}
   - {structure: 227, term: UBERON:0002945, label: ventral posteromedial nucleus of thalamus}
   - {structure: 294, term: UBERON:0002942, label: ventral posterolateral nucleus}
