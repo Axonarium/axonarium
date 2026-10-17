@@ -62,6 +62,9 @@ export interface BrainRegion {
   amygdala?: boolean;
   /** The modules the region belongs to (ADR 0034); absent from meshes exported before modules. */
   modules?: string[];
+  /** The atlas structure that draws the region, when the region isn't one of the atlas's own: a rat claim's UBERON
+   * term on a Waxholm structure (build/waxholm.py), which may draw several. */
+  drawn_on?: string;
 }
 
 /** The species the brain view switches between (ADR 0034). Human waits for human connectivity (Phase 7c). */
@@ -112,8 +115,33 @@ export function namedRegions(ids: string[], names: Record<string, RegionName>, m
 export interface BrainIndex {
   atlas: string;
   root: string;
+  /** The whole brain's largest extent in millimetres; absent from meshes exported before it was recorded. */
+  extent?: number;
   regions: Record<string, BrainRegion>;
 }
+
+/** Named regions (namedRegions) with the meshes and centroids an atlas's index has for them. A region it lacks keeps
+ * no mesh, and is in the network view only. */
+export function placedRegions(named: Record<string, BrainRegion>, index: Record<string, BrainRegion>) {
+  return Object.fromEntries(
+    Object.entries(named).map(([id, region]): [string, BrainRegion] => {
+      const placed = index[id];
+      return [id, placed ? { ...region, file: placed.file, centroid: placed.centroid, drawn_on: placed.drawn_on } : region];
+    }),
+  );
+}
+
+/** The regions the 3D view can draw: those with a mesh. */
+export function withMeshes(regions: Record<string, BrainRegion>): Record<string, BrainRegion> {
+  return Object.fromEntries(Object.entries(regions).filter(([, region]) => region.file));
+}
+
+/** The longest brain the 3D view's camera frames, in millimetres: the Allen mouse atlas's volume. */
+export const FRAMED = 13.2;
+
+/** How much the 3D view shrinks a brain to fit its frame: the rat's, about three times the mouse's, to the mouse's
+ * size. Smaller brains, and meshes that don't give their extent, are drawn as they are. */
+export const fitScale = (extent?: number) => (extent && extent > FRAMED ? FRAMED / extent : 1);
 
 export interface BrainClaim {
   subject_id: string;

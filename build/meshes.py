@@ -2,9 +2,10 @@
 
 Like atlas regions, the meshes are never committed (ADR 0005): the deploy job writes them into the site build.
 Coordinates are millimetres from the centre of the atlas volume, with x towards the animal's right, y up and
-z posterior, a right-handed frame for three.js. The atlas's third axis runs from the animal's left to its right, as
-in Allen's own data (right-hemisphere injections, hemisphere_id 2, sit at large values), although BrainGlobe labels
-this atlas "asr".
+z posterior, a right-handed frame for three.js. In the Allen mouse atlas the third axis runs from the animal's left
+to its right, as in Allen's own data (right-hemisphere injections, hemisphere_id 2, sit at large values), although
+BrainGlobe labels this atlas "asr". In BrainGlobe's Waxholm rat atlas it runs the other way, which turns the root
+mesh's faces inwards; an atlas whose root does that is mirrored left to right.
 """
 
 import json
@@ -21,16 +22,19 @@ MAX_FACES = 4000  # per region; BrainGlobe's meshes are already light, and most 
 ROOT_FACES = 20000  # the whole-brain outline, drawn translucent
 
 
-def to_viewer(points: np.ndarray, shape_um) -> np.ndarray:
+def to_viewer(points: np.ndarray, shape_um, mirror: bool = False) -> np.ndarray:
     """Atlas points in microns, axes anterior->posterior, superior->inferior, left->right, to viewer millimetres:
-    x right, y superior, z posterior. A rotation, so meshes keep their handedness and winding."""
+    x right, y superior, z posterior. A rotation, so meshes keep their handedness and winding; `mirror` is for an
+    atlas whose third axis runs right->left, and makes the same frame from it."""
     centred = (np.asarray(points, dtype=float) - np.asarray(shape_um, dtype=float) / 2) / 1000
-    return np.column_stack([centred[:, 2], -centred[:, 1], centred[:, 0]]) + 0.0  # + 0.0 turns -0.0 into 0.0
+    x = -centred[:, 2] if mirror else centred[:, 2]
+    return np.column_stack([x, -centred[:, 1], centred[:, 0]]) + 0.0  # + 0.0 turns -0.0 into 0.0
 
 
-def convert(points: np.ndarray, triangles: np.ndarray, shape_um, max_faces: int) -> trimesh.Trimesh:
+def convert(points: np.ndarray, triangles: np.ndarray, shape_um, max_faces: int,
+            mirror: bool = False) -> trimesh.Trimesh:
     """One BrainGlobe mesh in viewer coordinates, simplified to at most max_faces triangles."""
-    mesh = trimesh.Trimesh(vertices=to_viewer(points, shape_um), faces=np.asarray(triangles), process=True)
+    mesh = trimesh.Trimesh(vertices=to_viewer(points, shape_um, mirror), faces=np.asarray(triangles), process=True)
     if len(mesh.faces) > max_faces:
         mesh = mesh.simplify_quadric_decimation(face_count=max_faces)
     return mesh
@@ -55,10 +59,15 @@ def _triangles(brainglobe_mesh) -> tuple[np.ndarray, np.ndarray] | None:
 
 def export_atlas(atlas: dict, region_ids: list[str], out: Path, open_atlas: Callable = _open_brainglobe,
                  max_faces: int = MAX_FACES, root_faces: int = ROOT_FACES, amygdala: set[str] = frozenset(),
-                 modules: dict[str, list[str]] | None = None) -> dict:
+                 modules: dict[str, list[str]] | None = None, drawn_on: dict[str, int] | None = None,
+                 labels: dict[str, str] | None = None) -> dict:
     """Write out/<atlas id>/: root.glb, one <structure>.glb per region with a mesh, and index.json, which marks the
     amygdala's regions and each region's modules (with their subdivisions, ADR 0034) so the view can tell a module's
-    inputs from its outputs. Returns the index."""
+    inputs from its outputs, and gives the root's largest extent so the view can frame the brain. Returns the index.
+
+    Regions are the atlas's own, unless `drawn_on` maps each to the atlas structure that draws it: the rat's UBERON
+    terms on Waxholm (build/waxholm.py), named by `labels`. Several may share a structure, whose mesh is written once,
+    and the index says which structure draws each."""
     pinned = str(atlas["extra"]["brainglobe.atlas_version"])
     brainglobe = open_atlas(atlas["brainglobe_name"], pinned)
     if str(brainglobe.metadata["version"]) != pinned:
@@ -68,21 +77,33 @@ def export_atlas(atlas: dict, region_ids: list[str], out: Path, open_atlas: Call
     root = _triangles(brainglobe.mesh_from_structure("root"))
     if root is None:
         raise ValueError(f"{atlas['id']}: BrainGlobe has no root mesh")
-    convert(*root, brainglobe.shape_um, root_faces).export(folder / "root.glb", file_type="glb", include_normals=True)
+    outline = convert(*root, brainglobe.shape_um, root_faces)
+    mirror = outline.volume < 0  # its faces wind inwards: the atlas's third axis runs right->left
+    if mirror:
+        outline = convert(*root, brainglobe.shape_um, root_faces, mirror=True)
+    outline.export(folder / "root.glb", file_type="glb", include_normals=True)
+    meshes: dict[int, trimesh.Trimesh | None] = {}
     regions = {}
     for region in region_ids:
-        structure = int(region.split(":")[1])
-        found = _triangles(brainglobe.mesh_from_structure(structure))
-        if found is None:
+        structure = drawn_on[region] if drawn_on is not None else int(region.split(":")[1])
+        if structure not in meshes:
+            found = _triangles(brainglobe.mesh_from_structure(structure))
+            meshes[structure] = None if found is None else convert(*found, brainglobe.shape_um, max_faces, mirror)
+            if meshes[structure] is not None:
+                meshes[structure].export(folder / f"{structure}.glb", file_type="glb", include_normals=True)
+        mesh = meshes[structure]
+        if mesh is None:
             continue
-        mesh = convert(*found, brainglobe.shape_um, max_faces)
-        mesh.export(folder / f"{structure}.glb", file_type="glb", include_normals=True)
         info = brainglobe.structures[structure]
-        regions[region] = {"acronym": info["acronym"], "name": info["name"], "file": f"{structure}.glb",
+        own = drawn_on is None
+        name = info["name"] if own else (labels or {}).get(region, region)
+        regions[region] = {"acronym": info["acronym"] if own else name, "name": name, "file": f"{structure}.glb",
                            "centroid": right_centroid(mesh), "amygdala": region in amygdala,
                            "modules": (modules or {}).get(region, [])}
+        if not own:
+            regions[region]["drawn_on"] = info["name"]
     index = {"atlas": atlas["id"], "units": "mm", "axes": "x right, y superior, z posterior",
-             "root": "root.glb", "regions": regions}
+             "extent": round(float(max(outline.extents)), 2), "root": "root.glb", "regions": regions}
     (folder / "index.json").write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
     return index
 

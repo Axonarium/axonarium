@@ -1,5 +1,5 @@
-// The brain viewer's switches (ADR 0034): a circuit at a time in the mouse, and the rat's network, both kept in the
-// URL, and both passing the accessibility budget (ADR 0025).
+// The brain viewer's switches (ADR 0034): a circuit at a time in the mouse and the rat, both kept in the URL, and both
+// passing the accessibility budget (ADR 0025).
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 
@@ -23,6 +23,7 @@ test("the brain viewer switches circuit and species", async ({ page }) => {
   const missing = page.getByText("This build has no brain meshes");
   const heading = page.getByRole("heading", { name: "Hippocampal formation region" });
   await expect(heading.or(missing)).toBeVisible();
+  const meshes = await heading.isVisible();
   expect(await violations(page)).toEqual([]);
 
   // The species switch keeps the circuit.
@@ -30,7 +31,8 @@ test("the brain viewer switches circuit and species", async ({ page }) => {
   await expect(page).toHaveURL(/\/brain\/rat\?module=hippocampus/);
   await expect(page.getByRole("link", { name: "Rat" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Hippocampal formation region" })).toBeVisible();
-  await expect(page.getByRole("group", { name: "View" })).toHaveCount(0); // no 3D for the rat yet
+  // The rat's 3D view comes with the meshes too; without them it has the network view alone.
+  await expect(page.getByRole("group", { name: "View" })).toHaveCount(meshes ? 1 : 0);
   expect(await violations(page)).toEqual([]);
 
   // The first circuit needs no parameter.
