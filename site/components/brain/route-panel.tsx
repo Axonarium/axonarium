@@ -117,7 +117,7 @@ export function RoutePanel({ regions, starts, ends, from, to, hops, revealed, on
                     {i + 1}. {regions[hop.source].acronym} → <span className="font-medium">{regions[hop.target].acronym}</span>
                   </span>
                   <span className="tabular-nums text-muted-foreground">{hop.density?.toFixed(3) ?? "–"}</span>
-                  <Link href={edgeHref(hop.id)} className="text-xs underline underline-offset-4">
+                  <Link href={edgeHref(hop.id)} prefetch={false} className="text-xs underline underline-offset-4">
                     evidence
                   </Link>
                 </div>

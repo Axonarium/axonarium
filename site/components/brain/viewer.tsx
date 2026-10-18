@@ -170,6 +170,7 @@ function Suggested({ gap, regions }: { gap?: BrainGap; regions: Record<string, B
   return (
     <Link
       href={edgeHref(`${gap.by[0]}|projects_to|${gap.target}|${species}`)}
+      prefetch={false}
       className="shrink-0 text-xs underline underline-offset-4"
       title={`Suggested by ${names.join(", ")}`}
     >
@@ -435,7 +436,7 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
   // Atlas regions have pages; the UBERON terms a species without meshes is drawn by don't.
   const regionLink = (id: string, children: ReactNode, className: string) =>
     meshes ? (
-      <Link href={regionHref(id)} className={className}>
+      <Link href={regionHref(id)} prefetch={false} className={className}>
         {children}
       </Link>
     ) : (
@@ -691,7 +692,7 @@ export default function BrainViewer({ edges, gaps = [], base, regions: named, mo
                     {gapMode ? (
                       <Suggested gap={gapsById.get(edge.id)} regions={regions} />
                     ) : (
-                      <Link href={`/edges/${edge.id}`} className="text-xs underline underline-offset-4" aria-label="Evidence">
+                      <Link href={edgeHref(edge.id)} prefetch={false} className="text-xs underline underline-offset-4" aria-label="Evidence">
                         claims
                       </Link>
                     )}

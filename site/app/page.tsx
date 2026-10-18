@@ -6,8 +6,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBrainEdges, getCounts } from "@/lib/data";
 
-export const revalidate = 300;
-
 const ATLAS = "allen-mouse-ccf-2017";
 
 const STEPS = [

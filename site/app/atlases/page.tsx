@@ -7,7 +7,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getAtlases } from "@/lib/data";
 import { citationParts, regionHref, speciesName } from "@/lib/format";
 
-export const revalidate = 300;
 export const metadata: Metadata = { title: "Atlases" };
 
 function uberonHref(curie: string): string {
@@ -69,7 +68,7 @@ export default async function Atlases() {
                     {amygdala.map((region) => (
                       <TableRow key={region.id}>
                         <TableCell className="font-medium">
-                          <Link href={regionHref(region.id)} className="underline-offset-4 hover:underline">
+                          <Link href={regionHref(region.id)} prefetch={false} className="underline-offset-4 hover:underline">
                             {region.acronym}
                           </Link>
                         </TableCell>

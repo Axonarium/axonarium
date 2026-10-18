@@ -5,8 +5,7 @@
 // deploy loaded into the database, so the answers are the same.
 //
 // A build with neither (pull-request CI) gets null, and pages say the data isn't connected. A configured database
-// that fails without a snapshot throws, so Next.js keeps serving the last good page and shows app/error.tsx only
-// when it has none.
+// that fails without a snapshot throws: a deploy's build stops, and a page rendered on request shows app/error.tsx.
 
 import "server-only";
 

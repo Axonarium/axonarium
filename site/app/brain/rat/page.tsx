@@ -6,7 +6,6 @@ import { DataUnavailable } from "@/components/data-unavailable";
 import { namedRegions } from "@/lib/brain";
 import { getModules, getNames, getSpeciesEdges } from "@/lib/data";
 
-export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Rat brain",
   description: "The rat amygdala's, hippocampal formation's and prefrontal cortex's outputs and inputs as a network, from cited papers.",
