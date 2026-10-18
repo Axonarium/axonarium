@@ -45,7 +45,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
           <RegionName heading label={regionLabel(c.object_id, regions)} />
         </h1>
         {c.status !== "retracted" && (
-          <Link href={edgeHref(edgeId)} className="text-sm underline underline-offset-4">
+          <Link href={edgeHref(edgeId)} prefetch={false} className="text-sm underline underline-offset-4">
             All claims for this connection
           </Link>
         )}

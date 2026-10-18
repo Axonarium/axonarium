@@ -68,7 +68,7 @@ export default async function Atlases() {
                     {amygdala.map((region) => (
                       <TableRow key={region.id}>
                         <TableCell className="font-medium">
-                          <Link href={regionHref(region.id)} className="underline-offset-4 hover:underline">
+                          <Link href={regionHref(region.id)} prefetch={false} className="underline-offset-4 hover:underline">
                             {region.acronym}
                           </Link>
                         </TableCell>

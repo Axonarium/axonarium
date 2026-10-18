@@ -31,6 +31,7 @@ Chosen option: "build the shared pages once per deploy; render the rest on reque
 
 * **Shared pages:** the home page, `/brain`, `/brain/rat`, `/regions`, `/atlases`, the sitemap and the link preview drop `revalidate`. The deploy's build renders them from the database it has just loaded, and they are served as built until the next deploy.
 * **Long-tail pages:** `/claims/[id]`, `/edges/[id]` and `/regions/[id]` drop `revalidate` and `generateStaticParams`, so Next.js renders them for each request, as `/explore` and `/sources/[id]` already are (ADR 0025).
+* **Links to long-tail pages don't prefetch** (`prefetch={false}`, as the explore table's links already did). A page rendered on request would run a function for every link that scrolls into view, and the brain viewer's links, whose connection IDs weren't URL-encoded, kept re-requesting theirs until the browser never went idle.
 * The read API keeps its five-minute edge cache (ADR 0013); edge caching is not ISR.
 
 ### Consequences
@@ -42,7 +43,7 @@ Chosen option: "build the shared pages once per deploy; render the rest on reque
 
 ### Confirmation
 
-`next build` lists the shared pages as static with no revalidate time, and `/claims/[id]`, `/edges/[id]` and `/regions/[id]` as dynamic. After a deploy, Vercel's usage page shows ISR writes flat between deploys.
+`next build` lists the shared pages as static with no revalidate time, and `/claims/[id]`, `/edges/[id]` and `/regions/[id]` as dynamic. Opening `/brain` requests no connection page until a link is clicked. After a deploy, Vercel's usage page shows ISR writes flat between deploys.
 
 ## Pros and Cons of the Options
 

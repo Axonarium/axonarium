@@ -14,7 +14,7 @@ export function ClaimCard({ claim, connection, cited = true }: { claim: Connecti
   return (
     <Card>
       <CardHeader className="flex flex-wrap items-center gap-2">
-        <Link href={`/claims/${claim.id}`} className="font-mono underline underline-offset-4">
+        <Link href={`/claims/${claim.id}`} prefetch={false} className="font-mono underline underline-offset-4">
           {claim.id}
         </Link>
         <Badge variant={claim.result === "present" ? "default" : "secondary"}>{claim.result}</Badge>

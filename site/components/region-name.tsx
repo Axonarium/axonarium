@@ -9,7 +9,7 @@ import type { Label } from "@/lib/regions";
 export function RegionName({ label, heading = false }: { label: Label; heading?: boolean }) {
   if (!label.long) return <span className="font-mono">{label.id}</span>;
   const short = label.href ? (
-    <Link href={label.href} className="underline-offset-4 hover:underline">
+    <Link href={label.href} prefetch={false} className="underline-offset-4 hover:underline">
       {label.short}
     </Link>
   ) : (

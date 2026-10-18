@@ -43,7 +43,7 @@ export function RegionList({ regions, modules = [] }: { regions: IndexedRegion[]
           {shown.map((region) => (
             <TableRow key={region.id}>
               <TableCell className="whitespace-normal">
-                <Link href={regionHref(region.id)} className="font-medium underline-offset-4 hover:underline">
+                <Link href={regionHref(region.id)} prefetch={false} className="font-medium underline-offset-4 hover:underline">
                   {region.acronym ?? region.id}
                 </Link>{" "}
                 <span className="text-muted-foreground">{region.name}</span>{" "}

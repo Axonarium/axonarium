@@ -46,7 +46,7 @@ function Connections({ title, edges, end, names }: {
               return (
                 <TableRow key={edge.id}>
                   <TableCell className="whitespace-normal">
-                    <Link href={regionHref(id)} className="font-medium underline-offset-4 hover:underline">
+                    <Link href={regionHref(id)} prefetch={false} className="font-medium underline-offset-4 hover:underline">
                       {name?.acronym ?? id}
                     </Link>{" "}
                     {name && <span className="text-muted-foreground">{name.name}</span>}
@@ -56,7 +56,7 @@ function Connections({ title, edges, end, names }: {
                     {edge.claims} ({edge.accepted})
                   </TableCell>
                   <TableCell className="text-right">
-                    <Link href={edgeHref(edge.id)} className="underline underline-offset-4">
+                    <Link href={edgeHref(edge.id)} prefetch={false} className="underline underline-offset-4">
                       evidence
                     </Link>
                   </TableCell>
@@ -106,7 +106,7 @@ export default async function RegionPage({ params }: PageProps<"/regions/[id]">)
           {parent && region.parent && (
             <span>
               Part of{" "}
-              <Link href={regionHref(region.parent)} className="underline underline-offset-4">
+              <Link href={regionHref(region.parent)} prefetch={false} className="underline underline-offset-4">
                 {parent.acronym} {parent.name}
               </Link>
             </span>
@@ -123,7 +123,7 @@ export default async function RegionPage({ params }: PageProps<"/regions/[id]">)
             {children.map((child, i) => (
               <span key={child.id}>
                 {i > 0 && ", "}
-                <Link href={regionHref(child.id)} className="underline-offset-4 hover:underline" title={child.name}>
+                <Link href={regionHref(child.id)} prefetch={false} className="underline-offset-4 hover:underline" title={child.name}>
                   {child.acronym ?? child.name}
                 </Link>
               </span>
