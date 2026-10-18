@@ -5,7 +5,6 @@ import { getCounts } from "@/lib/data";
 export const alt = "Axonarium: an open, cited map of how the brain and body are wired";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const revalidate = 3600;
 
 // The link preview: the name, the promise and today's counts. Text only, so no atlas content is redistributed.
 export default async function Image() {

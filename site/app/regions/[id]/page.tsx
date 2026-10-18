@@ -10,12 +10,7 @@ import { getModules, getRegion } from "@/lib/data";
 import { edgeFromParam, edgeHref, regionHref } from "@/lib/format";
 import type { RegionName } from "@/lib/regions";
 
-export const revalidate = 300;
-
-// Rendered on first visit, then cached and revalidated like the other pages (incremental static regeneration).
-export async function generateStaticParams() {
-  return [];
-}
+// Rendered on request, never cached, like the claim pages: there is one for every atlas region (ADR 0035).
 
 export async function generateMetadata({ params }: PageProps<"/regions/[id]">): Promise<Metadata> {
   return { title: edgeFromParam((await params).id) };

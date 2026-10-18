@@ -5,7 +5,6 @@ import { DataUnavailable } from "@/components/data-unavailable";
 import { RegionList } from "@/components/region-list";
 import { getModules, getRegionIndex } from "@/lib/data";
 
-export const revalidate = 300;
 export const metadata: Metadata = { title: "Regions" };
 
 export default async function Regions() {

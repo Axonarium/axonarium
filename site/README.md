@@ -10,6 +10,8 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_… npm run dev
 
 Both variables are public by design (the key can only read). When Supabase can't answer (a paused free project, an outage) or isn't configured, every query is answered from `snapshot/snapshot.json`, the deploy's snapshot of the same database, bundled with every server route ([ADR 0017](../docs/decisions/0017-static-fallback.md)). It holds Allen-derived rows, so it is never committed or put in `public/`. To try the site without Supabase, write one: `uv run python -m build --snapshot site/snapshot/snapshot.json` from the repository root. With neither, pages render with a "data unavailable" notice.
 
+**Caching.** The database changes only when a deploy rebuilds it, so no page is revalidated on a timer ([ADR 0035](../docs/decisions/0035-pages-built-once-per-deploy.md)). The few pages everyone shares (the home page, `/brain`, `/brain/rat`, `/regions`, `/atlases`, the sitemap and the link preview) are built once by the deploy's build. Claim, connection and region pages, tens of thousands of them, are rendered on request and never cached, like `/explore` and `/sources`, because a cached copy of each would cost an ISR write after every deploy.
+
 **Submissions** (Supports and Contradicts on each claim page; [ADR 0024](../docs/decisions/0024-evidence-buttons.md)) open once three more keys are set. Until then the buttons are hidden and `POST /api/submissions` answers 503.
 
 | Variable | Where | What |

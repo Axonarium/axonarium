@@ -11,12 +11,8 @@ import { inboxConfig } from "@/lib/inbox";
 import { regionLabel } from "@/lib/regions";
 import { checkedBy, checkNote, edgeHref, formatMeasurement, madeBy, namesInPaper, predicateLabel, proposedBecause, sourceHref, speciesName } from "@/lib/format";
 
-export const revalidate = 300;
-
-// Rendered on first visit, then cached and revalidated like the other pages (incremental static regeneration).
-export async function generateStaticParams() {
-  return [];
-}
+// Rendered on request, never cached: there are tens of thousands of claims, and a cached copy of each would cost an
+// ISR write after every deploy (ADR 0035).
 
 export async function generateMetadata({ params }: PageProps<"/claims/[id]">): Promise<Metadata> {
   return { title: `Claim ${(await params).id}` };

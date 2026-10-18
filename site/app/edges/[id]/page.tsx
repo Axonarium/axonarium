@@ -8,12 +8,7 @@ import { getClaims, getEdge, getNames } from "@/lib/data";
 import { regionLabel } from "@/lib/regions";
 import { edgeFromParam, predicateLabel, speciesName } from "@/lib/format";
 
-export const revalidate = 300;
-
-// Rendered on first visit, then cached and revalidated like the other pages (incremental static regeneration).
-export async function generateStaticParams() {
-  return [];
-}
+// Rendered on request, never cached, like the claim pages: there are thousands of connections (ADR 0035).
 
 export async function generateMetadata({ params }: PageProps<"/edges/[id]">): Promise<Metadata> {
   const [subject, predicate, object] = edgeFromParam((await params).id).split("|");

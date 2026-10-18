@@ -5,7 +5,6 @@ import { BrainView } from "@/components/brain/brain-view";
 import { DataUnavailable } from "@/components/data-unavailable";
 import { getBrainEdges, getBrainGaps, getModules } from "@/lib/data";
 
-export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Brain",
   description:
