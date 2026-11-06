@@ -11,8 +11,8 @@ dependencies = ["mcp==2.3.0", "httpx==0.28.1"]
 axonarium-mcp = "axonarium_mcp.server:main"
 
 [dependency-groups]
-dev = ["pytest==9.1.1"]
+dev = ["pytest==9.2.0"]
 
 [build-system]
-requires = ["hatchling==1.32.4"]
+requires = ["hatchling==1.33.0"]
 build-backend = "hatchling.build"
