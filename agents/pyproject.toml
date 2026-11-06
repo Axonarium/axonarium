@@ -6,17 +6,17 @@ name = "axonarium-agents"
 version = "0.0.0"
 requires-python = ">=3.13,<3.14"
 dependencies = [
-    "anthropic==1.11.0",
+    "anthropic==2.3.0",
     "huggingface-hub==1.33.0",
-    "onnxruntime==1.30.0",
-    "openai==3.24.0",
-    "pydantic==2.13.5",
+    "onnxruntime==1.31.1",
+    "openai==3.41.0",
+    "pydantic==2.14.2",
     "pyyaml==6.0.3",
-    "tokenizers==0.23.2",
+    "tokenizers==0.23.3",
 ]
 
 [dependency-groups]
-dev = ["pytest==9.1.1"]
+dev = ["pytest==9.2.0"]
 
 [tool.uv]
 package = false
