@@ -28,7 +28,7 @@ repos:
         args: [--markdown-linebreak-ext=md]
         exclude: ^schema/generated/
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.38.2
+    rev: 0.39.0
     hooks:
       - id: check-citation-file-format
       - id: check-dependabot
@@ -39,11 +39,11 @@ repos:
     hooks:
       - id: actionlint
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.30.1
+    rev: v1.32.0
     hooks:
       - id: zizmor
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v6.2.0
+    rev: v6.3.0
     hooks:
       - id: reuse
   - repo: local
