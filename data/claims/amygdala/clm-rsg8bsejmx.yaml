@@ -11,7 +11,7 @@ evidence_class: anterograde_tracer
 result: present
 sign: unknown
 source:
-  doi: 10.7554/eLife.55585
+  doi: 10.7554/elife.55585
   pmid: '32940600'
   pmcid: PMC7538160
   locator: Results, 'IC-amygdala connectivity' and Figure 3; input-output comparison

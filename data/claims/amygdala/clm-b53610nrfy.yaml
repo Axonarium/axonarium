@@ -11,7 +11,7 @@ evidence_class: anterograde_tracer
 result: present
 sign: unknown
 source:
-  doi: 10.1523/JNEUROSCI.1796-19.2020
+  doi: 10.1523/jneurosci.1796-19.2020
   pmid: '32277045'
   pmcid: PMC7219297
   locator: Results 'Dopamine neurons of the VTA project to the BA and medial CeA';
