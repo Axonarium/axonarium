@@ -1,0 +1,44 @@
+id: clm-aa59qsb5gp
+subject:
+  type: region
+  id: UBERON:0003007
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.cell.2015.05.057
+  pmid: '26186190'
+  pmcid: PMC4512641
+  locator: 'Results, Figure 1E-F: AAV1-DIO-YFP into PBel of Calca-Cre mice; terminals
+    densely innervate CeAl'
+paraphrase: In the mouse, Cre-dependent AAV anterograde labeling of CGRP (Calca) neurons
+  in the external lateral parabrachial nucleus shows axon terminals densely innervating
+  the lateral central amygdala (CeAl).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: brainmap-conn-author@0.1.0
+  date: '2026-11-25'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: brainmap-adjudicate@0.5.0
+  verdict: agree
+  date: '2026-11-25'
+status: proposed
+extra:
+  brainmap.assertion: e-lateral_parabrachial_nucleus-projects_to-central_amygdaloid_nucleus-10090#a1
+  brainmap.edge: e-lateral_parabrachial_nucleus-projects_to-central_amygdaloid_nucleus-10090
+  brainmap.ref: han2015
+  brainmap.verifiers:
+  - 'claude-opus-5-5: supports (full_text)'
+  - 'claude-sonnet-5-5: supports (full_text)'
+  brainmap.protocol: two blind verifiers on different models, neither saw the other
+    or the extractor; both read the source, at least one in full text

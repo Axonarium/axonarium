@@ -1,0 +1,44 @@
+id: clm-4376q795hj
+subject:
+  type: region
+  id: UBERON:0002892
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0001935
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.3389/fnana.2012.00033
+  pmid: '22933993'
+  pmcid: PMC3423790
+  locator: Full text (Europe PMC), Results on MePD injections in the tuberal region,
+    Fig. 5B and Figs. 7E-G; Abstract
+paraphrase: In mice, BDA/RDA anterograde tracing shows that the posterodorsal medial
+  amygdala (MePD) densely innervates the ventrolateral part and shell of the ventromedial
+  hypothalamic nucleus, with only sparse fibres in its dorsomedial and central parts.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: brainmap-conn-author@0.1.0
+  date: '2026-11-25'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: brainmap-adjudicate@0.5.0
+  verdict: agree
+  date: '2026-11-25'
+status: proposed
+extra:
+  brainmap.assertion: e-medial_amygdaloid_nucleus-projects_to-ventromedial_nucleus_of_hypothalamus-10090#a1
+  brainmap.edge: e-medial_amygdaloid_nucleus-projects_to-ventromedial_nucleus_of_hypothalamus-10090
+  brainmap.ref: pardo_bellver2012
+  brainmap.verifiers:
+  - 'claude-opus-5-5: supports (full_text)'
+  - 'claude-sonnet-5-5: supports (full_text)'
+  brainmap.protocol: two blind verifiers on different models, neither saw the other
+    or the extractor; both read the source, at least one in full text

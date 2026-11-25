@@ -1,0 +1,43 @@
+id: clm-625e601n80
+subject:
+  type: region
+  id: UBERON:0006107
+predicate: synapses_onto
+object:
+  type: region
+  id: UBERON:0002778
+species: NCBITaxon:10090
+evidence_class: transsynaptic_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.1016/j.neuron.2019.12.006
+  pmid: '31948733'
+  pmcid: PMC8573387
+  locator: Results text; Fig. S7A-G (rabies input mapping)
+paraphrase: In mouse, monosynaptic rabies tracing from ventral pallidal GABAergic
+  (PVN) and glutamatergic (NVN) neurons labels presynaptic input neurons in the basolateral
+  amygdala for both populations.
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: brainmap-conn-author@0.1.0
+  date: '2026-11-25'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: brainmap-adjudicate@0.5.0
+  verdict: agree
+  date: '2026-11-25'
+status: proposed
+extra:
+  brainmap.assertion: e-basolateral_amygdala-synapses_onto-ventral_pallidum-10090#a1
+  brainmap.edge: e-basolateral_amygdala-synapses_onto-ventral_pallidum-10090
+  brainmap.ref: stephenson_jones2020
+  brainmap.verifiers:
+  - 'claude-opus-5-5: supports (full_text)'
+  - 'claude-sonnet-5-5: supports (full_text)'
+  brainmap.protocol: two blind verifiers on different models, neither saw the other
+    or the extractor; both read the source, at least one in full text

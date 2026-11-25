@@ -1,0 +1,46 @@
+id: clm-rsg8bsejmx
+subject:
+  type: region
+  id: UBERON:0002022
+predicate: projects_to
+object:
+  type: region
+  id: UBERON:0002883
+species: NCBITaxon:10090
+evidence_class: anterograde_tracer
+result: present
+sign: unknown
+source:
+  doi: 10.7554/eLife.55585
+  pmid: '32940600'
+  pmcid: PMC7538160
+  locator: Results, 'IC-amygdala connectivity' and Figure 3; input-output comparison
+    paragraph (CeA strongly innervated by IC)
+paraphrase: In mice, viral anterograde output mapping from anterior, mid and posterior
+  insular cortex showed the central amygdala strongly innervated by the insula without
+  reciprocal projections; about 5-7% of mid/posterior insula efferents go to amygdala
+  subnuclei. Output to the medial amygdala is not stated in the text (MeA is reported
+  only as not sending inputs to the insula).
+curation:
+  by: agent
+  role: extractor
+  model: claude-opus-5-5
+  prompt: brainmap-conn-author@0.1.0
+  date: '2026-11-25'
+verification:
+  by: agent
+  role: verifier
+  model: claude-opus-5-5
+  prompt: brainmap-adjudicate@0.5.0
+  verdict: agree
+  date: '2026-11-25'
+status: proposed
+extra:
+  brainmap.assertion: e-agranular_and_dysgranular_insular_cortex-projects_to-central_amygdaloid_nucleus-10090#a1
+  brainmap.edge: e-agranular_and_dysgranular_insular_cortex-projects_to-central_amygdaloid_nucleus-10090
+  brainmap.ref: gehrlach2020
+  brainmap.verifiers:
+  - 'claude-opus-5-5: supports (full_text)'
+  - 'claude-sonnet-5-5: supports (full_text)'
+  brainmap.protocol: two blind verifiers on different models, neither saw the other
+    or the extractor; both read the source, at least one in full text
